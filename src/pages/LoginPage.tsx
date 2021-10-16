@@ -12,17 +12,18 @@ import Alert from "../ui/Alert";
 const LoginPage = () => {
 	const {status, setStatus} = useContext(AuthContext);
 	const [error, setError] = useState<ErrorResp>({message: ""});
+	const [form, setForm] = useState<{[key: string]: string}>({});
 	const onSubmit = (event: any) => {
 		event.preventDefault();
-		const {Login, Password} = event.target;
 		loginUser({
-			Login: Login.value,
-			Password: Password.value,
+			login: form.login,
+			password: form.password,
 		})
 			.then(() => {
 				setError({message: ""});
-				return authStatus().then(json => setStatus(json))
+				return authStatus();
 			})
+			.then(json => setStatus(json))
 			.catch(error => setError(error));
 	};
 	if (status && status.user) {
@@ -34,10 +35,20 @@ const LoginPage = () => {
 		}>
 			{error.message && <Alert>{error.message}</Alert>}
 			<Field title="Username:">
-				<Input type="text" name="Login" placeholder="Username" required autoFocus/>
+				<Input
+					type="text" name="login" placeholder="Username"
+					value={form.login}
+					onValueChange={(value) => setForm({...form, login: value})}
+					required autoFocus
+				/>
 			</Field>
 			<Field title="Password:">
-				<Input type="password" name="Password" placeholder="Password" required/>
+				<Input
+					type="password" name="password" placeholder="Password"
+					value={form.password}
+					onValueChange={(value) => setForm({...form, password: value})}
+					required
+				/>
 			</Field>
 		</FormBlock>
 	</Page>;

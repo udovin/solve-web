@@ -47,7 +47,7 @@ const RegisterPage = () => {
 				<Input
 					type="text" name="login" placeholder="Username"
 					value={form.login || ""}
-					onChange={(event) => setForm({...form, login: event.target.value})}
+					onValueChange={(value) => setForm({...form, login: value})}
 					required autoFocus
 				/>
 				{error.invalid_fields && error.invalid_fields["login"] && <Alert>{error.invalid_fields["login"].message}</Alert>}
@@ -56,7 +56,7 @@ const RegisterPage = () => {
 				<Input
 					type="text" name="email" placeholder="E-mail"
 					value={form.email || ""}
-					onChange={(event) => setForm({...form, email: event.target.value})}
+					onValueChange={(value) => setForm({...form, email: value})}
 					required
 				/>
 				{error.invalid_fields && error.invalid_fields["email"] && <Alert>{error.invalid_fields["email"].message}</Alert>}
@@ -65,7 +65,7 @@ const RegisterPage = () => {
 				<Input
 					type="password" name="password" placeholder="Password"
 					value={form.password || ""}
-					onChange={(event) => setForm({...form, password: event.target.value})}
+					onValueChange={(value) => setForm({...form, password: value})}
 					required
 				/>
 				{error.invalid_fields && error.invalid_fields["password"] && <Alert>{error.invalid_fields["password"].message}</Alert>}
@@ -74,7 +74,7 @@ const RegisterPage = () => {
 				<Input
 					type="password" name="password_repeat" placeholder="Repeat password"
 					value={form.password_repeat || ""}
-					onChange={(event) => setForm({...form, password_repeat: event.target.value})}
+					onValueChange={(value) => setForm({...form, password_repeat: value})}
 					required
 				/>
 				{disabled && form.password && <Alert>Passwords does not match</Alert>}
@@ -83,7 +83,7 @@ const RegisterPage = () => {
 				<Input
 					type="text" name="first_name" placeholder="First name"
 					value={form.first_name || ""}
-					onChange={(event) => setForm({...form, first_name: event.target.value})}
+					onValueChange={(value) => setForm({...form, first_name: value})}
 				/>
 				{error.invalid_fields && error.invalid_fields["first_name"] && <Alert>{error.invalid_fields["first_name"].message}</Alert>}
 			</Field>
@@ -91,7 +91,7 @@ const RegisterPage = () => {
 				<Input
 					type="text" name="last_name" placeholder="Last name"
 					value={form.last_name || ""}
-					onChange={(event) => setForm({...form, last_name: event.target.value})}
+					onValueChange={(value) => setForm({...form, last_name: value})}
 				/>
 				{error.invalid_fields && error.invalid_fields["last_name"] && <Alert>{error.invalid_fields["last_name"].message}</Alert>}
 			</Field>
@@ -99,7 +99,7 @@ const RegisterPage = () => {
 				<Input
 					type="text" name="middle_name" placeholder="Middle name"
 					value={form.middle_name || ""}
-					onChange={(event) => setForm({...form, middle_name: event.target.value})}
+					onValueChange={(value) => setForm({...form, middle_name: value})}
 				/>
 				{error.invalid_fields && error.invalid_fields["middle_name"] && <Alert>{error.invalid_fields["middle_name"].message}</Alert>}
 			</Field>

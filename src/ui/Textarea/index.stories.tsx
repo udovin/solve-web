@@ -1,11 +1,17 @@
-import React from "react";
-import Textarea from "./index";
+import React, {FC, useState} from "react";
+import Textarea, {TextareaProps} from "./index";
 
 const config = {title: "Textarea"};
 
 export default config;
 
+const TestTextarea: FC<TextareaProps> = props => {
+	const {value, ...rest} = props;
+	const [newValue, setNewValue] = useState<string>(value || "");
+	return <Textarea value={newValue} onValueChange={setNewValue} {...rest}/>
+};
+
 export const common = () => <>
-	<p><Textarea defaultValue="Default"/></p>
-	<p><Textarea defaultValue="Disabled" disabled/></p>
+	<p><TestTextarea value="Default"/></p>
+	<p><TestTextarea value="Disabled" disabled/></p>
 </>;

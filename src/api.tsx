@@ -157,8 +157,8 @@ export const getDefense = (verdict?: number) => {
 };
 
 export type LoginUserForm = {
-	Login: string;
-	Password: string;
+	login: string;
+	password: string;
 };
 
 export type RegisterUserForm = {
