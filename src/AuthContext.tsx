@@ -1,9 +1,9 @@
 import React, {FC, useEffect, useState} from "react";
-import {authStatus, AuthStatus} from "./api";
+import {statusUser, Status} from "./api";
 
 type Auth = {
-	status?: AuthStatus;
-	setStatus(status?: AuthStatus): void;
+	status?: Status;
+	setStatus(status?: Status): void;
 };
 
 const AuthContext = React.createContext<Auth>({
@@ -11,9 +11,9 @@ const AuthContext = React.createContext<Auth>({
 });
 
 const AuthProvider: FC = props => {
-	const [status, setStatus] = useState<AuthStatus>();
+	const [status, setStatus] = useState<Status>();
 	useEffect(() => {
-		authStatus()
+		statusUser()
 			.then(result => setStatus(result))
 			.catch(error => setStatus(undefined))
 	}, []);

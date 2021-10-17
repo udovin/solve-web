@@ -1,89 +1,221 @@
-import React, {useContext, useEffect, useState} from "react";
-import {Redirect, RouteComponentProps} from "react-router";
+import React, {FC, useContext, useEffect, useState} from "react";
+import {RouteComponentProps} from "react-router";
 import Page from "../components/Page";
 import {
 	ErrorResp,
+	Session,
+	User,
+	UserID,
 	observeUser,
 	observeUserSessions,
-	Session,
-	User
+	deleteSession,
+	updateUserPassword,
+	updateUser,
+	UpdateUserForm,
 } from "../api";
+import Block from "../ui/Block";
 import FormBlock from "../components/FormBlock";
 import Input from "../ui/Input";
-import Button from "../ui/Button";
-import SessionsBlock from "../components/SessionsBlock";
+import Button from "../ui/Button";	
+import Field from "../ui/Field";
+import Alert from "../ui/Alert";
 import {AuthContext} from "../AuthContext";
 
 type UserPageParams = {
 	user_id: string;
 }
 
+type ChangeUserParams = {
+	user: User;
+	onUpdateUser(user: User): void;
+};
+
+const ChangeUserForm: FC<ChangeUserParams> = params => {
+	const {user, onUpdateUser} = params;
+	const [form, setForm] = useState<UpdateUserForm>({});
+	const [error, setError] = useState<ErrorResp>();
+	const onSubmit = (event: any) => {
+		event.preventDefault();
+		console.log(form);
+		updateUser(user.id, form)
+			.then(user => {
+				onUpdateUser(user);
+				setForm({});
+				setError(undefined);
+			})
+			.catch(setError);
+	};
+	return <FormBlock onSubmit={onSubmit} footer={<>
+		<Button
+			type="submit" color="primary"
+			disabled={!Object.keys(form).length}
+		>Change</Button>
+		<Button type="reset" disabled={!Object.keys(form).length} onClick={() => setForm({})}>Reset</Button>
+	</>}>
+		{error && error.message && <Alert>{error.message}</Alert>}
+		<Field title="First name:">
+			<Input
+				type="text" name="first_name" placeholder="First name"
+				value={form.first_name ?? user.first_name}
+				onValueChange={(value) => setForm({...form, first_name: value})}
+			/>
+			{error && error.invalid_fields && error.invalid_fields["first_name"] && <Alert>{error.invalid_fields["first_name"].message}</Alert>}
+		</Field>
+		<Field title="Last name:">
+			<Input
+				type="text" name="last_name" placeholder="Last name"
+				value={form.last_name ?? user.last_name}
+				onValueChange={(value) => setForm({...form, last_name: value})}
+			/>
+			{error && error.invalid_fields && error.invalid_fields["last_name"] && <Alert>{error.invalid_fields["last_name"].message}</Alert>}
+		</Field>
+		<Field title="Middle name:">
+			<Input
+				type="text" name="middle_name" placeholder="Middle name"
+				value={form.middle_name ?? user.middle_name}
+				onValueChange={(value) => setForm({...form, middle_name: value})}
+			/>
+			{error && error.invalid_fields && error.invalid_fields["middle_name"] && <Alert>{error.invalid_fields["middle_name"].message}</Alert>}
+		</Field>
+	</FormBlock>;
+};
+
+type ChangePasswordFormParams = {
+	userID: UserID;
+};
+
+const ChangePasswordForm: FC<ChangePasswordFormParams> = params => {
+	const {userID} = params;
+	const [error, setError] = useState<ErrorResp>();
+	const [form, setForm] = useState<{[key: string]: string}>({});
+	const equalPasswords = form.password === form.password_repeat;
+	const onSubmit = (event: any) => {
+		event.preventDefault();
+		updateUserPassword(userID, {
+			old_password: form.old_password,
+			password: form.password,
+		})
+			.then(() => {
+				setForm({});
+				setError(undefined);
+			})
+			.catch(setError);
+	};
+	return <FormBlock title="Change password" onSubmit={onSubmit} footer={
+		<Button
+			type="submit" color="primary"
+			disabled={!form.old_password || !form.password || !equalPasswords}
+		>Change</Button>
+	}>
+		{error && error.message && <Alert>{error.message}</Alert>}
+		<Field title="Old password:">
+			<Input
+				type="password" name="old_password" placeholder="Old password"
+				value={form.old_password}
+				onValueChange={(value) => setForm({...form, old_password: value})}
+				required
+			/>
+			{error && error.invalid_fields && error.invalid_fields["old_password"] && <Alert>{error.invalid_fields["old_password"].message}</Alert>}
+		</Field>
+		<Field title="New password:">
+			<Input
+				type="password" name="password" placeholder="New password"
+				value={form.password}
+				onValueChange={(value) => setForm({...form, password: value})}
+				required
+			/>
+			{error && error.invalid_fields && error.invalid_fields["password"] && <Alert>{error.invalid_fields["password"].message}</Alert>}
+		</Field>
+		<Field title="Repeat new password:">
+			<Input
+				type="password" name="password_repeat" placeholder="Repeat new password"
+				value={form.password_repeat}
+				onValueChange={(value) => setForm({...form, password_repeat: value})}
+				required
+			/>
+			{form.password && !equalPasswords && <Alert>Passwords does not match</Alert>}
+		</Field>
+	</FormBlock>;
+};
+
+type CurrentSessionsBlockParams = {
+	userID: UserID;
+};
+
+const CurrentSessionsBlock: FC<CurrentSessionsBlockParams> = params => {
+	const {userID} = params;
+	const {status} = useContext(AuthContext);
+	const [error, setError] = useState<ErrorResp>();
+	const [sessions, setSessions] = useState<Session[]>();
+	const [deletedSessions, setDeletedSessions] = useState<{[key: number]: boolean}>();
+	useEffect(() => {
+		observeUserSessions(userID)
+			.then(sessions => {
+				setSessions(sessions);
+				setDeletedSessions({});
+				setError(undefined);
+			})
+			.catch(setError);
+	}, [userID]);
+	const onDeleteSession = (session: Session) => {
+		deleteSession(session.id)
+			.then((session: Session) => {
+				setDeletedSessions({...deletedSessions, [session.id]: true});
+			})
+			.catch(console.log);
+	};
+	return <Block title="Current sessions">{error ? 
+		<Alert>{error.message}</Alert> : 
+		<table className="ui-table">
+			<thead>
+			<tr>
+				<th className="id">#</th>
+				<th className="actions">Actions</th>
+			</tr>
+			</thead>
+			<tbody>
+			{sessions && sessions.map((session: Session, key: number) => {
+				const {id} = session;
+				const current = status?.session.id === id;
+				const deleted = !!deletedSessions?.[session.id];
+				return <tr key={key} className={`session ${current ? "success" : (deleted ? "deleted" : "")}`}>
+					<td className="id">{id}</td>
+					<td className="actions">
+						{!current && <Button
+							disabled={deleted}
+							onClick={() => onDeleteSession(session)}
+						>Close</Button>}
+					</td>
+				</tr>;
+			})}
+			</tbody>
+		</table>
+	}</Block>;
+};
+
 const EditUserPage = ({match}: RouteComponentProps<UserPageParams>) => {
 	const {user_id} = match.params;
 	const [user, setUser] = useState<User>();
-	const [sessions, setSessions] = useState<Session[]>();
-	const {status} = useContext(AuthContext);
-	const [success, setSuccess] = useState<boolean>();
-	const [error, setError] = useState<ErrorResp>({message: ""});
+	const [error, setError] = useState<ErrorResp>();
 	useEffect(() => {
 		observeUser(user_id)
 			.then(user => {
-				setError({message: ""});
 				setUser(user);
+				setError(undefined);
 			})
-			.catch(error => setError(error));
+			.catch(setError);
 	}, [user_id]);
-	useEffect(() => {
-		observeUserSessions(user_id)
-			.then(sessions => setSessions(sessions))
-			.catch(console.log);
-	}, [user_id]);
-	if (!status || !user) {
-		return <>Loading...</>;
+	if (error) {
+		return <Page title="Error">{error.message && <Alert>{error.message}</Alert>}</Page>;
 	}
-	const onSubmit = (event: any) => {
-		event.preventDefault();
-		const {password, passwordRepeat} = event.target;
-		if (password.value.length < 8 || password.value.length > 32 ||
-			password.value !== passwordRepeat.value) {
-			setSuccess(false);
-			return;
-		}
-		fetch("/api/v0/users/" + user.id, {
-			method: "PATCH",
-			headers: {
-				"Content-Type": "application/json; charset=UTF-8",
-			},
-			body: JSON.stringify({
-				Password: password.value,
-			})
-		})
-			.then(() => setSuccess(true));
-	};
-	if (success) {
-		return <Redirect to={"/users/" + user_id} push={true}/>
+	if (!user) {
+		return <Page title="Edit user">Loading...</Page>;
 	}
-	const {login} = user;
-	return <Page title={login}>
-		<FormBlock title="Change password" onSubmit={onSubmit} footer={
-			<Button type="submit">Change</Button>
-		}>
-			<div className="ui-field">
-				<label>
-					<span className="label">New password:</span>
-					<Input type="password" name="password" placeholder="New password" required autoFocus/>
-				</label>
-			</div>
-			<div className="ui-field">
-				<label>
-					<span className="label">Repeat new password:</span>
-					<Input type="password" name="passwordRepeat" placeholder="Repeat new password" required/>
-				</label>
-			</div>
-		</FormBlock>
-		{sessions ?
-			<SessionsBlock sessions={sessions} currentSession={status.session}/> :
-			<>Loading...</>}
+	const {id, login} = user;
+	return <Page title={`Edit user: ${login}`}>
+		<ChangeUserForm user={user} onUpdateUser={setUser}/>
+		<ChangePasswordForm userID={id}/>
+		<CurrentSessionsBlock userID={id}/>
 	</Page>;
 };
 

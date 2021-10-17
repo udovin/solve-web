@@ -1,3 +1,5 @@
+export type UserID = number | string;
+
 export type ErrorField = {
 	message: string;
 };
@@ -23,7 +25,7 @@ export type Session = {
 	expire_time: number;
 };
 
-export type AuthStatus = {
+export type Status = {
 	session: Session;
 	user: User;
 	roles: string[];
@@ -156,12 +158,12 @@ export const getDefense = (verdict?: number) => {
 	return "?";
 };
 
-export type LoginUserForm = {
+export type LoginForm = {
 	login: string;
 	password: string;
 };
 
-export type RegisterUserForm = {
+export type RegisterForm = {
 	login: string;
 	password: string;
 	email: string;
@@ -172,6 +174,10 @@ export type RegisterUserForm = {
 
 const HEADERS = {
 	"Solve-Web-Version": "0.1.0",
+};
+
+const POST_JSON_HEADERS = {
+	"Content-Type": "application/json; charset=UTF-8",
 };
 
 const parseResp = (promise: Promise<Response>) => {
@@ -185,43 +191,72 @@ const parseResp = (promise: Promise<Response>) => {
 		});
 };
 
-export const loginUser = (form: LoginUserForm) => {
+export const loginUser = (form: LoginForm) => {
 	return parseResp(fetch("/api/v0/login", {
 		method: "POST",
-		headers: {...HEADERS, ...{
-			"Content-Type": "application/json; charset=UTF-8",
-		}},
+		headers: {...HEADERS, ...POST_JSON_HEADERS},
 		body: JSON.stringify(form)
 	}));
 };
 
-export const registerUser = (form: RegisterUserForm) => {
+export const registerUser = (form: RegisterForm) => {
 	return parseResp(fetch("/api/v0/register", {
 		method: "POST",
-		headers: {...HEADERS, ...{
-			"Content-Type": "application/json; charset=UTF-8",
-		}},
+		headers: {...HEADERS, ...POST_JSON_HEADERS},
 		body: JSON.stringify(form),
 	}));
 };
 
-export const observeUser = (userID: string | number) => {
+export const observeUser = (userID: UserID) => {
 	return parseResp(fetch(`/api/v0/users/${userID}`, {
 		method: "GET",
 		headers: HEADERS,
 	}));
 };
 
-export const observeUserSessions = (userID: string | number) => {
+export type UpdateUserForm = {
+	first_name?: string;
+	last_name?: string;
+	middle_name?: string;
+};
+
+export const updateUser = (userID: UserID, form: UpdateUserForm) => {
+	return parseResp(fetch(`/api/v0/users/${userID}`, {
+		method: "PATCH",
+		headers: {...HEADERS, ...POST_JSON_HEADERS},
+		body: JSON.stringify(form),
+	}));
+};
+
+export const observeUserSessions = (userID: UserID) => {
 	return parseResp(fetch(`/api/v0/users/${userID}/sessions`, {
 		method: "GET",
 		headers: HEADERS,
 	}));
 };
 
-export const authStatus = () => {
-	return parseResp(fetch("/api/v0/auth-status", {
+export const statusUser = () => {
+	return parseResp(fetch("/api/v0/status", {
 		method: "GET",
 		headers: HEADERS,
+	}));
+};
+
+export const deleteSession = (sessionID: number) => {
+	return parseResp(fetch(`/api/v0/sessions/${sessionID}`, {
+		method: "DELETE",
+	}));
+};
+
+export type UpdatePasswordForm = {
+	password: string;
+	old_password?: string;
+};
+
+export const updateUserPassword = (userID: UserID, form: UpdatePasswordForm) => {
+	return parseResp(fetch(`/api/v0/users/${userID}/password`, {
+		method: "POST",
+		headers: {...HEADERS, ...POST_JSON_HEADERS},
+		body: JSON.stringify(form),
 	}));
 };

@@ -5,8 +5,8 @@ import Input from "../ui/Input";
 import Button from "../ui/Button";
 import FormBlock from "../components/FormBlock";
 import Field from "../ui/Field";
-import {ErrorResp, registerUser} from "../api";
 import Alert from "../ui/Alert";
+import {ErrorResp, registerUser} from "../api";
 
 const RegisterPage = () => {
 	const [success, setSuccess] = useState<boolean>();
@@ -31,12 +31,12 @@ const RegisterPage = () => {
 	if (success) {
 		return <Redirect to={"/login"}/>
 	}
-	const disabled = !form.password || form.password !== form.password_repeat;
+	const equalPasswords = form.password === form.password_repeat;
 	return <Page title="Register">
 		<FormBlock onSubmit={onSubmit} title="Register" footer={
 			<Button
 				type="submit" color="primary"
-				disabled={disabled}
+				disabled={!form.password || !equalPasswords}
 			>Register</Button>
 		}>
 			{error.message && <Alert>{error.message}</Alert>}
@@ -64,7 +64,7 @@ const RegisterPage = () => {
 			<Field title="Password:">
 				<Input
 					type="password" name="password" placeholder="Password"
-					value={form.password || ""}
+					value={form.password}
 					onValueChange={(value) => setForm({...form, password: value})}
 					required
 				/>
@@ -73,11 +73,11 @@ const RegisterPage = () => {
 			<Field title="Repeat password:">
 				<Input
 					type="password" name="password_repeat" placeholder="Repeat password"
-					value={form.password_repeat || ""}
+					value={form.password_repeat}
 					onValueChange={(value) => setForm({...form, password_repeat: value})}
 					required
 				/>
-				{disabled && form.password && <Alert>Passwords does not match</Alert>}
+				{form.password && !equalPasswords && <Alert>Passwords does not match</Alert>}
 			</Field>
 			<Field title="First name:">
 				<Input

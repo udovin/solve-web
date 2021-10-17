@@ -6,7 +6,7 @@ import FormBlock from "../components/FormBlock";
 import {Redirect} from "react-router";
 import {AuthContext} from "../AuthContext";
 import Field from "../ui/Field";
-import {authStatus, ErrorResp, loginUser} from "../api";
+import {statusUser, ErrorResp, loginUser} from "../api";
 import Alert from "../ui/Alert";
 
 const LoginPage = () => {
@@ -21,7 +21,7 @@ const LoginPage = () => {
 		})
 			.then(() => {
 				setError({message: ""});
-				return authStatus();
+				return statusUser();
 			})
 			.then(json => setStatus(json))
 			.catch(error => setError(error));
