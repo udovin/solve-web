@@ -45,12 +45,16 @@ const ChangeUserForm: FC<ChangeUserParams> = params => {
 			})
 			.catch(setError);
 	};
+	const onResetForm = () => {
+		setForm({});
+		setError(undefined);
+	};
 	return <FormBlock onSubmit={onSubmit} footer={<>
 		<Button
 			type="submit" color="primary"
 			disabled={!Object.keys(form).length}
 		>Change</Button>
-		<Button type="reset" disabled={!Object.keys(form).length} onClick={() => setForm({})}>Reset</Button>
+		<Button type="reset" disabled={!Object.keys(form).length} onClick={onResetForm}>Reset</Button>
 	</>}>
 		{error && error.message && <Alert>{error.message}</Alert>}
 		<Field title="First name:">
