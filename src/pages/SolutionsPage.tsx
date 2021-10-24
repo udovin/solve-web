@@ -1,25 +1,28 @@
 import React, {useEffect, useState} from "react";
 import Page from "../components/Page";
-import {Solution} from "../api";
-import "./ContestPage.scss"
+import {ErrorResp, observeSolutions, SolutionsResp} from "../api";
 import {SolutionsBlock} from "../components/solutions";
-import NotFoundPage from "./NotFoundPage";
+import Alert from "../ui/Alert";
+import Sidebar from "../components/Sidebar";
+import "./ContestPage.scss";
+
 
 const SolutionsPage = () => {
-	const [solutions, setSolutions] = useState<Solution[]>();
-	const [notFound, setNotFound] = useState<boolean>(false);
+	const [solutions, setSolutions] = useState<SolutionsResp>();
+	const [error, setError] = useState<ErrorResp>();
 	useEffect(() => {
-		fetch("/api/v0/solutions")
-			.then(result => result.json())
-			.then(result => setSolutions(result))
-			.catch(error => setNotFound(true));
+		observeSolutions()
+			.then(solutions => setSolutions(solutions))
+			.catch(setError);
 	}, []);
-	if (notFound) {
-		return <NotFoundPage/>;
+	if (error) {
+		return <Page title="Solutions" sidebar={<Sidebar/>}>
+			<Alert>{error.message}</Alert>
+		</Page>;
 	}
-	return <Page title="Solutions">
+	return <Page title="Solutions" sidebar={<Sidebar/>}>
 		{solutions ?
-			<SolutionsBlock title="Solutions" solutions={solutions}/> :
+			<SolutionsBlock title="Solutions" solutions={solutions.solutions || []}/> :
 			<>Loading...</>}
 	</Page>;
 };

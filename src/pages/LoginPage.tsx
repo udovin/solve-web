@@ -8,6 +8,7 @@ import {AuthContext} from "../AuthContext";
 import Field from "../ui/Field";
 import {statusUser, ErrorResp, loginUser} from "../api";
 import Alert from "../ui/Alert";
+import Sidebar from "../components/Sidebar";
 
 const LoginPage = () => {
 	const {status, setStatus} = useContext(AuthContext);
@@ -29,7 +30,7 @@ const LoginPage = () => {
 	if (status && status.user) {
 		return <Redirect to={"/"}/>
 	}
-	return <Page title="Login">
+	return <Page title="Login" sidebar={<Sidebar/>}>
 		<FormBlock onSubmit={onSubmit} title="Login" footer={
 			<Button type="submit" color="primary">Login</Button>
 		}>

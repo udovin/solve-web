@@ -1,18 +1,26 @@
 import React, {useEffect, useState} from "react";
 import Page from "../components/Page";
 import ContestsBlock from "../components/ContestsBlock";
-import {Contest} from "../api";
+import {ContestsResp, ErrorResp, observeContests} from "../api";
+import Sidebar from "../components/Sidebar";
+import Alert from "../ui/Alert";
 
 const ContestsPage = () => {
-	const [contests, setContests] = useState<Contest[]>([]);
+	const [contests, setContests] = useState<ContestsResp>();
+	const [error, setError] = useState<ErrorResp>();
 	useEffect(() => {
-		fetch("/api/v0/contests")
-			.then(result => result.json())
-			.then(result => setContests(result));
+		observeContests()
+			.then(contests => setContests(contests))
+			.catch(setError);
 	}, []);
-	return <Page title="Contests">
+	if (error) {
+		return <Page title="Contests" sidebar={<Sidebar/>}>
+			<Alert>{error.message}</Alert>
+		</Page>;
+	}
+	return <Page title="Contests" sidebar={<Sidebar/>}>
 		{contests ?
-			<ContestsBlock contests={contests}/> :
+			<ContestsBlock contests={contests.contests || []}/> :
 			<>Loading...</>}
 	</Page>;
 };

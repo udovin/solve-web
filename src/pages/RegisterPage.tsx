@@ -7,6 +7,7 @@ import FormBlock from "../components/FormBlock";
 import Field from "../ui/Field";
 import Alert from "../ui/Alert";
 import {ErrorResp, registerUser} from "../api";
+import Sidebar from "../components/Sidebar";
 
 const RegisterPage = () => {
 	const [success, setSuccess] = useState<boolean>();
@@ -32,7 +33,7 @@ const RegisterPage = () => {
 		return <Redirect to={"/login"}/>
 	}
 	const equalPasswords = form.password === form.password_repeat;
-	return <Page title="Register">
+	return <Page title="Register" sidebar={<Sidebar/>}>
 		<FormBlock onSubmit={onSubmit} title="Register" footer={
 			<Button
 				type="submit" color="primary"

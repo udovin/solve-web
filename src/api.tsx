@@ -53,6 +53,10 @@ export type Contest = {
 	Problems: ContestProblem[];
 };
 
+export type ContestsResp = {
+	contests?: Contest[];
+};
+
 export type Compiler = {
 	ID: number;
 	Name: string;
@@ -104,6 +108,10 @@ export type Solution = {
 	SourceCode: string;
 	CreateTime: number;
 	Report?: Report;
+};
+
+export type SolutionsResp = {
+	solutions?: Solution[];
 };
 
 export const RUNNING: number = -1;
@@ -258,5 +266,19 @@ export const updateUserPassword = (userID: UserID, form: UpdatePasswordForm) => 
 		method: "POST",
 		headers: {...HEADERS, ...POST_JSON_HEADERS},
 		body: JSON.stringify(form),
+	}));
+};
+
+export const observeContests = () => {
+	return parseResp(fetch(`/api/v0/contests`, {
+		method: "GET",
+		headers: HEADERS,
+	}));
+};
+
+export const observeSolutions = () => {
+	return parseResp(fetch(`/api/v0/solutions`, {
+		method: "GET",
+		headers: HEADERS,
 	}));
 };

@@ -20,6 +20,7 @@ import Button from "../ui/Button";
 import Field from "../ui/Field";
 import Alert from "../ui/Alert";
 import {AuthContext} from "../AuthContext";
+import Sidebar from "../components/Sidebar";
 
 type UserPageParams = {
 	user_id: string;
@@ -216,7 +217,7 @@ const EditUserPage = ({match}: RouteComponentProps<UserPageParams>) => {
 		return <Page title="Edit user">Loading...</Page>;
 	}
 	const {id, login} = user;
-	return <Page title={`Edit user: ${login}`}>
+	return <Page title={`Edit user: ${login}`} sidebar={<Sidebar/>}>
 		<ChangeUserForm user={user} onUpdateUser={setUser}/>
 		<ChangePasswordForm userID={id}/>
 		<CurrentSessionsBlock userID={id}/>
