@@ -7,7 +7,9 @@ export type PageProps = {
 
 const Page: FC<PageProps> = props => {
 	const {title, sidebar, children} = props;
-	document.title = title;
+	if (typeof window !== "undefined") {
+		document.title = title;
+	}
 	return <main id="main">
 		{sidebar && <div id="sidebar-wrap"><div id="sidebar">{sidebar}</div></div>}
 		<div id="content-wrap"><div id="content">{children}</div></div>
