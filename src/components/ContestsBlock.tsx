@@ -19,10 +19,10 @@ const ContestsBlock: FC<ContestsBlockProps> = props => {
 			</thead>
 			<tbody>
 			{contests && contests.map((contest, index) => {
-				const {ID, Title} = contest;
+				const {id, title} = contest;
 				return <tr key={index} className="contest">
 					<td className="title">
-						<Link to={`/contests/${ID}`}>{Title}</Link>
+						<Link to={`/contests/${id}`}>{title}</Link>
 					</td>
 				</tr>;
 			})}

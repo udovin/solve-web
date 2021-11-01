@@ -26,8 +26,8 @@ type ContestBlockParams = {
 
 const ContestProblemsBlock: FC<ContestBlockParams> = props => {
 	const {contest} = props;
-	const {ID, Title, Problems} = contest;
-	return <Block title={Title} id="block-contest-problems">
+	const {id, title, Problems} = contest;
+	return <Block title={title} id="block-contest-problems">
 		<table className="ui-table">
 			<thead>
 			<tr>
@@ -38,10 +38,10 @@ const ContestProblemsBlock: FC<ContestBlockParams> = props => {
 			<tbody>{Problems && Problems.map(
 				(problem, index) => <tr className="problem" key={index}>
 					<td className="id">
-						<Link to={"/contests/" + ID + "/problems/" + problem.Code}>{problem.Code}</Link>
+						<Link to={`/contests/${id}/problems/${problem.Code}`}>{problem.Code}</Link>
 					</td>
 					<td className="name">
-						<Link to={"/contests/" + ID + "/problems/" + problem.Code}>{problem.Title}</Link>
+						<Link to={`/contests/${id}/problems/${problem.Code}`}>{problem.Title}</Link>
 					</td>
 				</tr>
 			)}</tbody>
@@ -53,10 +53,10 @@ const ContestSolutionsBlock: FC<ContestBlockParams> = props => {
 	const {contest} = props;
 	const [solutions, setSolutions] = useState<Solution[]>();
 	useEffect(() => {
-		fetch("/api/v0/contests/" + contest.ID + "/solutions")
+		fetch("/api/v0/contests/" + contest.id + "/solutions")
 			.then(result => result.json())
 			.then(result => setSolutions(result || []));
-	}, [contest.ID]);
+	}, [contest.id]);
 	if (!solutions) {
 		return <>Loading...</>;
 	}
@@ -180,11 +180,11 @@ const ContestPage = ({match}: RouteComponentProps<ContestPageParams>) => {
 	if (!contest) {
 		return <>Loading...</>;
 	}
-	const {Title} = contest;
-	return <Page title={Title} sidebar={<Switch>
+	const {title} = contest;
+	return <Page title={title} sidebar={<Switch>
 		<Route exact path="/contests/:ContestID/problems/:ProblemCode" component={ContestProblemSideBlock}/>
 	</Switch>}>
-		<ContestTabs contestID={contest.ID} currentTab={currentTab}/>
+		<ContestTabs contestID={contest.id} currentTab={currentTab}/>
 		<Switch>
 			<Route exact path="/contests/:ContestID">
 				{() => {

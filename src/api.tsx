@@ -46,11 +46,9 @@ export type ContestProblem = Problem & {
 };
 
 export type Contest = {
-	ID: number;
-	UserID: number;
-	CreateTime: number;
-	Title: string;
-	Problems: ContestProblem[];
+	id: number;
+	title: string;
+	Problems?: ContestProblem[];
 };
 
 export type ContestsResp = {
@@ -273,6 +271,18 @@ export const observeContests = () => {
 	return parseResp(fetch(`/api/v0/contests`, {
 		method: "GET",
 		headers: HEADERS,
+	}));
+};
+
+export type CreateContestForm = {
+	title: string;
+};
+
+export const createContest = (form: CreateContestForm) => {
+	return parseResp(fetch(`/api/v0/contests`, {
+		method: "POST",
+		headers: {...HEADERS, ...POST_JSON_HEADERS},
+		body: JSON.stringify(form),
 	}));
 };
 
