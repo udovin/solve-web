@@ -1,6 +1,6 @@
 import React, {FC, useContext, useEffect, useState} from "react";
 import {RouteComponentProps} from "react-router";
-import Page from "../components/Page";
+import Page from "../../components/Page";
 import {
 	ErrorResp,
 	Session,
@@ -12,15 +12,16 @@ import {
 	updateUserPassword,
 	updateUser,
 	UpdateUserForm,
-} from "../api";
-import Block from "../ui/Block";
-import FormBlock from "../components/FormBlock";
-import Input from "../ui/Input";
-import Button from "../ui/Button";	
-import Field from "../ui/Field";
-import Alert from "../ui/Alert";
-import {AuthContext} from "../AuthContext";
-import Sidebar from "../components/Sidebar";
+} from "../../api";
+import Block from "../../ui/Block";
+import FormBlock from "../../components/FormBlock";
+import Input from "../../ui/Input";
+import Button from "../../ui/Button";	
+import Field from "../../ui/Field";
+import Alert from "../../ui/Alert";
+import {AuthContext} from "../../AuthContext";
+import Sidebar from "../../components/Sidebar";
+import "./index.scss";
 
 type UserPageParams = {
 	user_id: string;
@@ -50,7 +51,7 @@ const ChangeUserForm: FC<ChangeUserParams> = params => {
 		setForm({});
 		setError(undefined);
 	};
-	return <FormBlock onSubmit={onSubmit} footer={<>
+	return <FormBlock className="block-profile-edit" title="Edit profile" onSubmit={onSubmit} footer={<>
 		<Button
 			type="submit" color="primary"
 			disabled={!Object.keys(form).length}
@@ -211,10 +212,12 @@ const EditUserPage = ({match}: RouteComponentProps<UserPageParams>) => {
 			.catch(setError);
 	}, [user_id]);
 	if (error) {
-		return <Page title="Error">{error.message && <Alert>{error.message}</Alert>}</Page>;
+		return <Page title="Error" sidebar={<Sidebar/>}>
+			{error.message && <Alert>{error.message}</Alert>}
+		</Page>;
 	}
 	if (!user) {
-		return <Page title="Edit user">Loading...</Page>;
+		return <Page title="Edit user" sidebar={<Sidebar/>}>Loading...</Page>;
 	}
 	const {id, login} = user;
 	return <Page title={`Edit user: ${login}`} sidebar={<Sidebar/>}>

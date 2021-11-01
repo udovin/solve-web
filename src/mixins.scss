@@ -10,6 +10,19 @@
 	-webkit-box-sizing: $sizing;
 }
 
+@mixin clear-fix {
+	&:after {
+		content: '.';
+		display: block;
+		clear: both;
+		height: 0;
+		line-height: 0;
+		font-size: 0;
+		color: transparent;
+		visibility: hidden;
+	}
+}
+
 // Default background color for all elements like block.
 $background-color: #ffffff;
 // Background color of body.

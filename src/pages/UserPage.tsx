@@ -15,20 +15,22 @@ type UserPageParams = {
 const UserPage = ({match}: RouteComponentProps<UserPageParams>) => {
 	const {user_id} = match.params;
 	const [user, setUser] = useState<User>();
-	const [error, setError] = useState<ErrorResp>({message: ""});
+	const [error, setError] = useState<ErrorResp>();
 	useEffect(() => {
 		observeUser(user_id)
 			.then(user => {
-				setError({message: ""});
+				setError(undefined);
 				setUser(user);
 			})
 			.catch(error => setError(error));
 	}, [user_id]);
-	if (error.message) {
-		return <Alert>{error.message}</Alert>;
+	if (error) {
+		return <Page title="Error" sidebar={<Sidebar/>}>
+			{error.message && <Alert>{error.message}</Alert>}
+		</Page>;
 	}
 	if (!user) {
-		return <>Loading...</>;
+		return <Page title="User" sidebar={<Sidebar/>}>Loading...</Page>;
 	}
 	const {login, email, first_name, last_name, middle_name} = user;
 	return <Page title={login} sidebar={<Sidebar/>}>

@@ -1,0 +1,12 @@
+@import "../../mixins.scss";
+
+.block-profile-edit {
+    .ui-block-footer {
+        @include clear-fix;
+        .ui-button {
+            display: block;
+            float: left;
+            margin-right: 8px;
+        }
+    }
+}

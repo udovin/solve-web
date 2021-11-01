@@ -20,11 +20,11 @@ const Header: FC<RouteComponentProps> = props => {
 		{(!status || (!status.session && status.roles.includes("login"))) && <li>
 			<Link to="/login">Login</Link>
 		</li>}
+		{(!status || (!status.session && status.roles.includes("register"))) && <li>
+			<Link to="/register">Register</Link>
+		</li>}
 		{status && status.session && status.roles.includes("logout") && <li>
 			<Link to="/logout">Logout</Link>
-		</li>}
-		{(!status || status.roles.includes("register")) && <li>
-			<Link to="/register">Register</Link>
 		</li>}
 	</>;
 	return <header id="header">
