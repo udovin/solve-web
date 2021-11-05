@@ -7,7 +7,7 @@ import Block from "../ui/Block";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
 import SolutionRow from "../components/SolutionRow";
-import "./ContestPage.scss"
+// import "./ContestPage.scss"
 
 type SolutionPageParams = {
 	SolutionID: string;

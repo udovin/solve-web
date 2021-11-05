@@ -1,12 +1,37 @@
 @import "../../mixins.scss";
 
-.block-profile-edit {
+.b-profile-edit {
     .ui-block-footer {
         @include clear-fix;
         .ui-button {
             display: block;
             float: left;
             margin-right: 8px;
+        }
+    }
+}
+
+.b-current-sessions {
+    .ui-block-content {
+        padding: 0;
+        overflow-x: auto;
+    }
+  
+    .ui-table {
+        border: none;
+
+        .id {
+            text-align: right;
+            width: 1%;
+        }
+
+        .created, .expires {
+            text-align: center;
+            width: 40%;
+        }
+
+        .actions {
+            text-align: left;
         }
     }
 }

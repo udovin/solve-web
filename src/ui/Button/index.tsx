@@ -5,7 +5,7 @@ export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button: FC<ButtonProps> = (props) => {
 	const {color, ...rest} = props;
-	return <button className={["ui-button", color].join(" ")} {...rest}/>;
+	return <button className={`ui-button ${color ?? ""}`} {...rest}/>;
 };
 
 export default Button;

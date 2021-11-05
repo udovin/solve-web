@@ -5,36 +5,38 @@ import Input from "../../ui/Input";
 import Button from "../../ui/Button";
 import FormBlock from "../../components/FormBlock";
 import {Contest, ErrorResp, createContest} from "../../api";
+import Field from "../../ui/Field";
+import Alert from "../../ui/Alert";
 
 const CreateContestPage: FC = () => {
-	const [contest, setContest] = useState<Contest>();
+	const [newContest, setNewContest] = useState<Contest>();
 	const [error, setError] = useState<ErrorResp>();
 	const [form, setForm] = useState<{[key: string]: string}>({});
 	const onSubmit = (event: any) => {
 		event.preventDefault();
+		setError(undefined);
 		createContest({
 			title: form.title,
 		})
-			.then(setContest)
+			.then(setNewContest)
 			.catch(setError);
 	};
-	if (contest) {
-		return <Redirect to={"/contests/" + contest.id}/>
+	if (newContest) {
+		return <Redirect to={"/contests/" + newContest.id}/>
 	}
 	return <Page title="Create contest">
 		<FormBlock onSubmit={onSubmit} title="Create contest" footer={
 			<Button type="submit" color="primary">Create</Button>
 		}>
-			<div className="ui-field">
-				<label>
-					<span className="label">Title:</span>
-					<Input
-						type="text" name="title" placeholder="Title"
-						value={form.title || ""}
-						onValueChange={value => setForm({...form, title: value})}
-						required autoFocus/>
-				</label>
-			</div>
+			{error && error.message && <Alert>{error.message}</Alert>}
+			<Field title="Title:">
+				<Input
+					type="text" name="title" placeholder="Title"
+					value={form.title || ""}
+					onValueChange={value => setForm({...form, title: value})}
+					required autoFocus/>
+				{error && error.invalid_fields && error.invalid_fields["title"] && <Alert>{error.invalid_fields["title"].message}</Alert>}
+			</Field>
 		</FormBlock>
 	</Page>;
 };

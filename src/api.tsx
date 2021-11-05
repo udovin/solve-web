@@ -49,6 +49,7 @@ export type Contest = {
 	id: number;
 	title: string;
 	Problems?: ContestProblem[];
+	permissions?: string[];
 };
 
 export type ContestsResp = {
@@ -286,9 +287,29 @@ export const createContest = (form: CreateContestForm) => {
 	}));
 };
 
+export type UpdateContestForm = {
+	title?: string;
+};
+
+export const updateContest = (id: number, form: UpdateContestForm) => {
+	return parseResp(fetch(`/api/v0/contests/${id}`, {
+		method: "PATCH",
+		headers: {...HEADERS, ...POST_JSON_HEADERS},
+		body: JSON.stringify(form),
+	}));
+};
+
+export const deleteContest = (id: number) => {
+	return parseResp(fetch(`/api/v0/contests/${id}`, {
+		method: "DELETE",
+		headers: HEADERS,
+	}));
+};
+
 export const observeSolutions = () => {
 	return parseResp(fetch(`/api/v0/solutions`, {
 		method: "GET",
 		headers: HEADERS,
 	}));
 };
+

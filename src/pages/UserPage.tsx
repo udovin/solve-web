@@ -3,7 +3,7 @@ import {RouteComponentProps} from "react-router";
 import Page from "../components/Page";
 import {ErrorResp, observeUser, User} from "../api";
 import Block from "../ui/Block";
-import "./ContestPage.scss"
+// import "./ContestPage.scss"
 import Sidebar from "../components/Sidebar";
 import Field from "../ui/Field";
 import Alert from "../ui/Alert";
@@ -33,7 +33,7 @@ const UserPage = ({match}: RouteComponentProps<UserPageParams>) => {
 		return <Page title="User" sidebar={<Sidebar/>}>Loading...</Page>;
 	}
 	const {login, email, first_name, last_name, middle_name} = user;
-	return <Page title={login} sidebar={<Sidebar/>}>
+	return <Page title={`User: ${login}`} sidebar={<Sidebar/>}>
 		<Block title={login} id="block-user">
 			{email && <Field title="E-mail:"><span>{email}</span></Field>}
 			{first_name && <Field title="First name:"><span>{first_name}</span></Field>}

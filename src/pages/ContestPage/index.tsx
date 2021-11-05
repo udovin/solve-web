@@ -1,20 +1,20 @@
 import React, {FC, useEffect, useState} from "react";
 import {Redirect, Route, RouteComponentProps, Switch} from "react-router";
 import {Link} from "react-router-dom";
-import Page from "../components/Page";
-import {Compiler, Contest, ContestProblem, Solution} from "../api";
-import Block from "../ui/Block";
-import ContestTabs from "../components/ContestTabs";
-import "./ContestPage.scss"
+import Page from "../../components/Page";
+import {Compiler, Contest, ContestProblem, deleteContest, ErrorResp, Solution, updateContest} from "../../api";
+import Block, { BlockProps } from "../../ui/Block";
 import {
 	SolutionsBlock,
 	SolutionsSideBlock,
 	SubmitSolutionSideBlock
-} from "../components/solutions";
-import FormBlock from "../components/FormBlock";
-import Field from "../ui/Field";
-import Input from "../ui/Input";
-import Button from "../ui/Button";
+} from "../../components/solutions";
+import FormBlock from "../../components/FormBlock";
+import Field from "../../ui/Field";
+import Input from "../../ui/Input";
+import Button from "../../ui/Button";
+import "./index.scss";
+import Alert from "../../ui/Alert";
 
 type ContestPageParams = {
 	ContestID: string;
@@ -168,6 +168,111 @@ const ContestProblemBlock = ({match}: RouteComponentProps<ContestProblemPagePara
 	</Block>;
 };
 
+type ContestTabsProps = BlockProps & {
+	contest: Contest;
+	currentTab?: string;
+};
+
+const ContestTabs: FC<ContestTabsProps> = props => {
+	const {contest, currentTab} = props;
+	const getActiveClass = (name: string): string => {
+		return name === currentTab ? "active" : "";
+	};
+	return <Block className="b-contest-tabs">
+		<ul className="ui-tabs">
+			<li className={getActiveClass("problems")}>
+				<Link to={`/contests/${contest.id}`}>Problems</Link>
+			</li>
+			<li className={getActiveClass("solutions")}>
+				<Link to={`/contests/${contest.id}/solutions`}>Solutions</Link>
+			</li>
+			{contest.permissions && (contest.permissions.includes("update_contest") || contest.permissions.includes("delete_contest")) && <li className={getActiveClass("manage")}>
+				<Link to={`/contests/${contest.id}/manage`}>Manage</Link>
+			</li>}
+		</ul>
+	</Block>;
+};
+
+export type EditContestBlockProps = {
+	contest: Contest;
+};
+
+const EditContestBlock: FC<EditContestBlockProps> = props => {
+	const {contest} = props;
+	const [form, setForm] = useState<{[key: string]: string}>({});
+	const [error, setError] = useState<ErrorResp>();
+	const onSubmit = (event: any) => {
+		event.preventDefault();
+		updateContest(contest.id, form)
+			.then(contest => {
+				setForm({});
+				setError(undefined);
+			})
+			.catch(setError);
+	};
+	const onResetForm = () => {
+		setForm({});
+		setError(undefined);
+	};
+	return <FormBlock className="b-contest-edit" title="Edit contest" onSubmit={onSubmit} footer={<>
+		<Button
+			type="submit" color="primary"
+			disabled={!Object.keys(form).length}
+		>Change</Button>
+		{!!Object.keys(form).length && <Button type="reset" onClick={onResetForm}>Reset</Button>}
+	</>}>
+		{error && error.message && <Alert>{error.message}</Alert>}
+		<Field title="Title:">
+			<Input
+				type="text" name="title" placeholder="Title"
+				value={form.title ?? contest.title}
+				onValueChange={value => setForm({...form, title: value})}
+				required autoFocus/>
+			{error && error.invalid_fields && error.invalid_fields["title"] && <Alert>{error.invalid_fields["title"].message}</Alert>}
+		</Field>
+	</FormBlock>;
+};
+
+export type DeleteContestBlockProps = {
+	contest: Contest;
+};
+
+const DeleteContestBlock: FC<DeleteContestBlockProps> = props => {
+	const {contest} = props;
+	const [redirect, setRedirect] = useState<boolean>(false);
+	const [title, setTitle] = useState<string>();
+	const [error, setError] = useState<ErrorResp>();
+	const onSubmit = (event: any) => {
+		event.preventDefault();
+		deleteContest(contest.id)
+			.then(() => setRedirect(true))
+			.catch(setError);
+	};
+	const onResetForm = () => {
+		setTitle(undefined);
+		setError(undefined);
+	};
+	if (redirect) {
+		return <Redirect to="/"/>;
+	}
+	return <FormBlock className="b-contest-edit" title="Delete contest" onSubmit={onSubmit} footer={<>
+		<Button
+			type="submit" color="danger"
+			disabled={title !== contest.title}
+		>Delete contest</Button>
+		{title && <Button type="reset" onClick={onResetForm}>Reset</Button>}
+	</>}>
+		{error && error.message && <Alert>{error.message}</Alert>}
+		<Field title="Enter title of contest:">
+			<Input
+				type="text" name="title" placeholder="Title"
+				value={title ?? ""}
+				onValueChange={value => setTitle(value)}
+				required autoFocus autoComplete="off"/>
+		</Field>
+	</FormBlock>;
+};
+
 const ContestPage = ({match}: RouteComponentProps<ContestPageParams>) => {
 	const {ContestID} = match.params;
 	const [contest, setContest] = useState<Contest>();
@@ -180,22 +285,32 @@ const ContestPage = ({match}: RouteComponentProps<ContestPageParams>) => {
 	if (!contest) {
 		return <>Loading...</>;
 	}
-	const {title} = contest;
-	return <Page title={title} sidebar={<Switch>
+	const {title, permissions} = contest;
+	return <Page title={`Contest: ${title}`} sidebar={<Switch>
 		<Route exact path="/contests/:ContestID/problems/:ProblemCode" component={ContestProblemSideBlock}/>
 	</Switch>}>
-		<ContestTabs contestID={contest.id} currentTab={currentTab}/>
+		<ContestTabs contest={contest} currentTab={currentTab}/>
 		<Switch>
 			<Route exact path="/contests/:ContestID">
 				{() => {
 					setCurrentTab("problems");
-					return <ContestProblemsBlock contest={contest} />;
+					return <ContestProblemsBlock contest={contest}/>;
 				}}
 			</Route>
 			<Route exact path="/contests/:ContestID/solutions">
 				{() => {
 					setCurrentTab("solutions");
-					return <ContestSolutionsBlock contest={contest} />;
+					return <></>;
+					// return <ContestSolutionsBlock contest={contest}/>;
+				}}
+			</Route>
+			<Route exact path="/contests/:ContestID/manage">
+				{() => {
+					setCurrentTab("manage");
+					return <>
+						{permissions && permissions.includes("update_contest") && <EditContestBlock contest={contest}/>}
+						{permissions && permissions.includes("delete_contest") && <DeleteContestBlock contest={contest}/>}
+					</>;
 				}}
 			</Route>
 			<Route exact path="/contests/:ContestID/problems/create" component={CreateContestProblemBlock}/>

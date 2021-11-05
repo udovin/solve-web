@@ -26,7 +26,7 @@ const Textarea: FC<TextareaProps> = props => {
 	useEffect(updateSize, [value]);
 	return <textarea
 		ref={textRef}
-		className={`ui-textarea ${className}`}
+		className={`ui-textarea ${className ?? ""}`}
 		value={value || ""}
 		onChange={onValueChange ? (e) => onValueChange(e.target.value) : onChange}
 		{...rest}

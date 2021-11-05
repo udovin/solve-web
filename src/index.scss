@@ -72,6 +72,104 @@ h5 {
 	font-size: 16px;
 }
 
+.ui-table {
+	width: 100%;
+	border: 1px solid #dddddd;
+	border-radius: 4px;
+	border-spacing: 0;
+	background-color: #ffffff;
+
+	> thead > tr > th,
+	> tbody > tr > td,
+	> tfoot > tr > td {
+		padding: 8px 10px;
+		border-top: 1px solid #dddddd;
+		border-right: 1px solid #dddddd;
+	}
+
+	> thead > tr > th:last-child,
+	> tbody > tr > td:last-child,
+	> tfoot > tr > td:last-child {
+		border-right: none;
+	}
+
+	> thead:first-child > tr:first-child > th,
+	> tbody:first-child > tr:first-child > td,
+	> tfoot:first-child > tr:first-child > td {
+		border-top: none;
+	}
+}
+
+.ui-tabs {
+	margin: 0 0 10px 0;
+	padding: 0;
+	border-bottom: 1px solid #dddddd;
+	list-style: none;
+}
+
+.ui-tabs:last-child {
+	margin-bottom: 0;
+}
+
+.ui-tabs:after {
+	content: '.';
+	display: block;
+	clear: both;
+	height: 0;
+	line-height: 0;
+	font-size: 0;
+	color: transparent;
+	visibility: hidden;
+}
+
+.ui-tabs > li {
+	display: block;
+	float: left;
+	margin: 0 4px 0 0;
+}
+
+.ui-tabs > li:last-child {
+	margin-right: 0;
+}
+
+.ui-tabs > li > a {
+	display: block;
+	padding: 0 10px;
+	height: 32px;
+	line-height: 32px;
+	border: 1px solid #ffffff;
+	border-bottom: 0;
+	border-radius: 4px 4px 0 0;
+	background-color: #ffffff;
+	transition: border-color 150ms ease-out,
+	background-color 150ms ease-out;
+	-moz-transition: border-color 150ms ease-out,
+	background-color 150ms ease-out;
+	-o-transition: border-color 150ms ease-out,
+	background-color 150ms ease-out;
+	-webkit-transition: border-color 150ms ease-out,
+	background-color 150ms ease-out;
+}
+
+.ui-tabs > li > a:hover {
+	background-color: #eeeeee;
+	transition: border-color 150ms ease-in,
+	background-color 150ms ease-in;
+	-moz-transition: border-color 150ms ease-in,
+	background-color 150ms ease-in;
+	-o-transition: border-color 150ms ease-in,
+	background-color 150ms ease-in;
+	-webkit-transition: border-color 150ms ease-in,
+	background-color 150ms ease-in;
+	text-decoration: none;
+}
+
+.ui-tabs > li.active > a {
+	border-color: #0073aa;
+	background-color: #0085ba;
+	color: #ffffff;
+}
+
 //
 ///*
 // * Selects style
@@ -282,36 +380,7 @@ h5 {
 //	background-size: 600% 600%;
 //}
 //
-///*
-// * Tables style
-// */
-//.ui-table {
-//	width: 100%;
-//	border: 1px solid #dddddd;
-//	border-radius: 4px;
-//	border-spacing: 0;
-//	background-color: #ffffff;
-//}
-//
-//.ui-table > thead > tr > th,
-//.ui-table > tbody > tr > td,
-//.ui-table > tfoot > tr > td {
-//	padding: 8px 10px;
-//	border-top: 1px solid #dddddd;
-//	border-right: 1px solid #dddddd;
-//}
-//
-//.ui-table > thead > tr > th:last-child,
-//.ui-table > tbody > tr > td:last-child,
-//.ui-table > tfoot > tr > td:last-child {
-//	border-right: none;
-//}
-//
-//.ui-table > thead:first-child > tr:first-child > th,
-//.ui-table > tbody:first-child > tr:first-child > td,
-//.ui-table > tfoot:first-child > tr:first-child > td {
-//	border-top: none;
-//}
+
 //
 //
 ///**
@@ -378,78 +447,6 @@ h5 {
 //	color: #a94442;
 //}
 //
-///**
-// * Tabs
-// */
-//.ui-tabs {
-//	margin: 0 0 10px 0;
-//	padding: 0;
-//	border-bottom: 1px solid #dddddd;
-//	list-style: none;
-//}
-//
-//.ui-tabs:last-child {
-//	margin-bottom: 0;
-//}
-//
-//.ui-tabs:after {
-//	content: '.';
-//	display: block;
-//	clear: both;
-//	height: 0;
-//	line-height: 0;
-//	font-size: 0;
-//	color: transparent;
-//	visibility: hidden;
-//}
-//
-//.ui-tabs > li {
-//	display: block;
-//	float: left;
-//	margin: 0 4px 0 0;
-//}
-//
-//.ui-tabs > li:last-child {
-//	margin-right: 0;
-//}
-//
-//.ui-tabs > li > a {
-//	display: block;
-//	padding: 0 10px;
-//	height: 32px;
-//	line-height: 32px;
-//	border: 1px solid #ffffff;
-//	border-bottom: 0;
-//	border-radius: 4px 4px 0 0;
-//	background-color: #ffffff;
-//	transition: border-color 150ms ease-out,
-//	background-color 150ms ease-out;
-//	-moz-transition: border-color 150ms ease-out,
-//	background-color 150ms ease-out;
-//	-o-transition: border-color 150ms ease-out,
-//	background-color 150ms ease-out;
-//	-webkit-transition: border-color 150ms ease-out,
-//	background-color 150ms ease-out;
-//}
-//
-//.ui-tabs > li > a:hover {
-//	background-color: #eeeeee;
-//	transition: border-color 150ms ease-in,
-//	background-color 150ms ease-in;
-//	-moz-transition: border-color 150ms ease-in,
-//	background-color 150ms ease-in;
-//	-o-transition: border-color 150ms ease-in,
-//	background-color 150ms ease-in;
-//	-webkit-transition: border-color 150ms ease-in,
-//	background-color 150ms ease-in;
-//	text-decoration: none;
-//}
-//
-//.ui-tabs > li.active > a {
-//	border-color: #0073aa;
-//	background-color: #0085ba;
-//	color: #ffffff;
-//}
 //
 ///**
 // * Pages

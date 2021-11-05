@@ -44,12 +44,12 @@ const Header: FC<RouteComponentProps> = props => {
 				<li className={getActiveClass("/")}>
 					<Link to="/">Index</Link>
 				</li>
-				<li className={getActiveClass("/contests")}>
+				{status && status.roles.includes("observe_contests") && <li className={getActiveClass("/contests")}>
 					<Link to="/contests">Contests</Link>
-				</li>
-				<li className={getActiveClass("/solutions")}>
+				</li>}
+				{status && status.roles.includes("observe_solutions") && <li className={getActiveClass("/solutions")}>
 					<Link to="/solutions">Solutions</Link>
-				</li>
+				</li>}
 			</ul>
 		</nav>
 		<div id="header-version" title="Version">0.0.1</div>

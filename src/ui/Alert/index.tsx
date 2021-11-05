@@ -14,7 +14,7 @@ export type AlertProps = BaseHTMLAttributes<HTMLDivElement> & {
 
 const Alert: FC<AlertProps> = props => {
 	const {kind, children, ...rest} = props;
-	return <div className={"ui-alert " + (kind || AlertKind.DANGER)} {...rest}>
+	return <div className={`ui-alert ${kind ?? AlertKind.DANGER}`} {...rest}>
 		<div className="ui-alert-content">{children}</div>
 	</div>;
 };

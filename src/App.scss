@@ -5,7 +5,7 @@
 	margin: 0 auto;
 	padding: 0 4px;
 	width: auto;
-	max-width: 960px;
+	max-width: 1060px;
 }
 
 /*
@@ -194,14 +194,14 @@
 	display: block;
 	position: relative;
 	float: right;
-	width: 250px;
+	width: 260px;
 	z-index: 20;
 }
 
 #content-wrap {
 	display: block;
 	position: relative;
-	margin-right: 250px;
+	margin-right: 260px;
 	padding-right: 10px;
 	z-index: 10;
 }
@@ -225,6 +225,16 @@
 }
 
 /* For mobile devices */
+@media (max-width: 840px) {
+	#sidebar-wrap {
+		width: 250px;
+	}
+
+	#content-wrap {
+		margin-right: 250px;
+	}
+}
+
 @media (max-width: 600px) {
 	#sidebar-wrap {
 		float: none;

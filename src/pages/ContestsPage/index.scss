@@ -1,0 +1,14 @@
+.b-contests {
+    .ui-block-content {
+        padding: 0;
+        overflow-x: auto;
+    }
+  
+    .ui-table {
+        border: none;
+
+        .title {
+            text-align: left;
+        }
+    }
+}

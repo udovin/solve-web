@@ -1,12 +1,40 @@
 import {FC, useEffect, useState, useContext} from "react";
 import {Link} from "react-router-dom";
 import {AuthContext} from "../../AuthContext";
-import {ContestsResp, ErrorResp, observeContests} from "../../api";
+import {ContestsResp, ErrorResp, Contest, observeContests} from "../../api";
 import Alert from "../../ui/Alert";
 import Button from "../../ui/Button";
-import ContestsBlock from "../../components/ContestsBlock";
 import Page from "../../components/Page";
 import Sidebar from "../../components/Sidebar";
+import Block, {BlockProps} from "../../ui/Block";
+import "./index.scss";
+
+export type ContestsBlockProps = BlockProps & {
+	contests: Contest[];
+};
+
+const ContestsBlock: FC<ContestsBlockProps> = props => {
+	const {contests, ...rest} = props;
+	return <Block className="b-contests" title="Contests" {...rest}>
+		<table className="ui-table">
+			<thead>
+			<tr>
+				<th className="title">Title</th>
+			</tr>
+			</thead>
+			<tbody>
+			{contests && contests.map((contest, index) => {
+				const {id, title} = contest;
+				return <tr key={index} className="contest">
+					<td className="title">
+						<Link to={`/contests/${id}`}>{title}</Link>
+					</td>
+				</tr>;
+			})}
+			</tbody>
+		</table>
+	</Block>
+};
 
 const ContestsPage: FC = () => {
 	const [contests, setContests] = useState<ContestsResp>();

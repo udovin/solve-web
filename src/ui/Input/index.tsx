@@ -9,7 +9,7 @@ export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
 const Input: FC<InputProps> = props => {
 	const {value, onValueChange, onChange, className, ...rest} = props;
 	return <input
-		className={`ui-input ${className}`}
+		className={`ui-input ${className ?? ""}`}
 		value={value || ""}
 		onChange={onValueChange ? (e) => onValueChange(e.target.value) : onChange}
 		{...rest}

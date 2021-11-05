@@ -12,8 +12,7 @@ const Block: FC<BlockProps> = props => {
 	if (title) {
 		header = <span className="title">{title}</span>;
 	}
-	className = className ? "ui-block-wrap " + className : "ui-block-wrap";
-	return <div className={className} {...rest}>
+	return <div className={`ui-block-wrap ${className ?? ""}`} {...rest}>
 		<div className="ui-block">
 			{header && <div className="ui-block-header">{header}</div>}
 			<div className="ui-block-content">{children}</div>

@@ -4,7 +4,7 @@ import {ErrorResp, observeSolutions, SolutionsResp} from "../api";
 import {SolutionsBlock} from "../components/solutions";
 import Alert from "../ui/Alert";
 import Sidebar from "../components/Sidebar";
-import "./ContestPage.scss";
+// import "./ContestPage.scss";
 
 
 const SolutionsPage = () => {

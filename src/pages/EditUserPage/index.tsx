@@ -21,24 +21,24 @@ import Field from "../../ui/Field";
 import Alert from "../../ui/Alert";
 import {AuthContext} from "../../AuthContext";
 import Sidebar from "../../components/Sidebar";
+import Time from "../../ui/Time";
 import "./index.scss";
 
 type UserPageParams = {
 	user_id: string;
 }
 
-type ChangeUserParams = {
+type EditUserForm = {
 	user: User;
 	onUpdateUser(user: User): void;
 };
 
-const ChangeUserForm: FC<ChangeUserParams> = params => {
-	const {user, onUpdateUser} = params;
-	const [form, setForm] = useState<UpdateUserForm>({});
+const EditUserForm: FC<EditUserForm> = props => {
+	const {user, onUpdateUser} = props;
+	const [form, setForm] = useState<{[key: string]: string}>({});
 	const [error, setError] = useState<ErrorResp>();
 	const onSubmit = (event: any) => {
 		event.preventDefault();
-		console.log(form);
 		updateUser(user.id, form)
 			.then(user => {
 				onUpdateUser(user);
@@ -51,12 +51,12 @@ const ChangeUserForm: FC<ChangeUserParams> = params => {
 		setForm({});
 		setError(undefined);
 	};
-	return <FormBlock className="block-profile-edit" title="Edit profile" onSubmit={onSubmit} footer={<>
+	return <FormBlock className="b-profile-edit" title="Edit profile" onSubmit={onSubmit} footer={<>
 		<Button
 			type="submit" color="primary"
 			disabled={!Object.keys(form).length}
 		>Change</Button>
-		<Button type="reset" disabled={!Object.keys(form).length} onClick={onResetForm}>Reset</Button>
+		{!!Object.keys(form).length && <Button type="reset" onClick={onResetForm}>Reset</Button>}
 	</>}>
 		{error && error.message && <Alert>{error.message}</Alert>}
 		<Field title="First name:">
@@ -170,22 +170,26 @@ const CurrentSessionsBlock: FC<CurrentSessionsBlockParams> = params => {
 			})
 			.catch(console.log);
 	};
-	return <Block title="Current sessions">{error ? 
+	return <Block title="Current sessions" className="b-current-sessions">{error ? 
 		<Alert>{error.message}</Alert> : 
 		<table className="ui-table">
 			<thead>
 			<tr>
 				<th className="id">#</th>
+				<th className="created">Created</th>
+				<th className="expires">Expires</th>
 				<th className="actions">Actions</th>
 			</tr>
 			</thead>
 			<tbody>
 			{sessions && sessions.map((session: Session, key: number) => {
-				const {id} = session;
+				const {id, create_time, expire_time} = session;
 				const current = status?.session.id === id;
 				const deleted = !!deletedSessions?.[session.id];
 				return <tr key={key} className={`session ${current ? "success" : (deleted ? "deleted" : "")}`}>
 					<td className="id">{id}</td>
+					<td className="created"><Time value={create_time}/></td>
+					<td className="expires"><Time value={expire_time}/></td>
 					<td className="actions">
 						{!current && <Button
 							disabled={deleted}
@@ -221,7 +225,7 @@ const EditUserPage = ({match}: RouteComponentProps<UserPageParams>) => {
 	}
 	const {id, login} = user;
 	return <Page title={`Edit user: ${login}`} sidebar={<Sidebar/>}>
-		<ChangeUserForm user={user} onUpdateUser={setUser}/>
+		<EditUserForm user={user} onUpdateUser={setUser}/>
 		<ChangePasswordForm userID={id}/>
 		<CurrentSessionsBlock userID={id}/>
 	</Page>;
