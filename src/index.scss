@@ -105,69 +105,60 @@ h5 {
 	padding: 0;
 	border-bottom: 1px solid #dddddd;
 	list-style: none;
-}
 
-.ui-tabs:last-child {
-	margin-bottom: 0;
-}
+	@include clear-fix;
 
-.ui-tabs:after {
-	content: '.';
-	display: block;
-	clear: both;
-	height: 0;
-	line-height: 0;
-	font-size: 0;
-	color: transparent;
-	visibility: hidden;
-}
+	&:last-child {
+		margin-bottom: 0;
+	}
+	
+	> li {
+		display: block;
+		float: left;
+		margin: 0 4px 0 0;
 
-.ui-tabs > li {
-	display: block;
-	float: left;
-	margin: 0 4px 0 0;
-}
+		&:last-child {
+			margin-right: 0;
+		}
 
-.ui-tabs > li:last-child {
-	margin-right: 0;
-}
+		> a {
+			display: block;
+			padding: 0 10px;
+			height: 32px;
+			line-height: 32px;
+			border: 1px solid #ffffff;
+			border-bottom: 0;
+			border-radius: 4px 4px 0 0;
+			background-color: #ffffff;
+			transition: border-color 150ms ease-out,
+			background-color 150ms ease-out;
+			-moz-transition: border-color 150ms ease-out,
+			background-color 150ms ease-out;
+			-o-transition: border-color 150ms ease-out,
+			background-color 150ms ease-out;
+			-webkit-transition: border-color 150ms ease-out,
+			background-color 150ms ease-out;
 
-.ui-tabs > li > a {
-	display: block;
-	padding: 0 10px;
-	height: 32px;
-	line-height: 32px;
-	border: 1px solid #ffffff;
-	border-bottom: 0;
-	border-radius: 4px 4px 0 0;
-	background-color: #ffffff;
-	transition: border-color 150ms ease-out,
-	background-color 150ms ease-out;
-	-moz-transition: border-color 150ms ease-out,
-	background-color 150ms ease-out;
-	-o-transition: border-color 150ms ease-out,
-	background-color 150ms ease-out;
-	-webkit-transition: border-color 150ms ease-out,
-	background-color 150ms ease-out;
-}
+			&:hover {
+				background-color: #eeeeee;
+				transition: border-color 150ms ease-in,
+				background-color 150ms ease-in;
+				-moz-transition: border-color 150ms ease-in,
+				background-color 150ms ease-in;
+				-o-transition: border-color 150ms ease-in,
+				background-color 150ms ease-in;
+				-webkit-transition: border-color 150ms ease-in,
+				background-color 150ms ease-in;
+				text-decoration: none;
+			}
+		}
 
-.ui-tabs > li > a:hover {
-	background-color: #eeeeee;
-	transition: border-color 150ms ease-in,
-	background-color 150ms ease-in;
-	-moz-transition: border-color 150ms ease-in,
-	background-color 150ms ease-in;
-	-o-transition: border-color 150ms ease-in,
-	background-color 150ms ease-in;
-	-webkit-transition: border-color 150ms ease-in,
-	background-color 150ms ease-in;
-	text-decoration: none;
-}
-
-.ui-tabs > li.active > a {
-	border-color: #0073aa;
-	background-color: #0085ba;
-	color: #ffffff;
+		&.active > a {
+			border-color: #0073aa;
+			background-color: #0085ba;
+			color: #ffffff;
+		}
+	}
 }
 
 //

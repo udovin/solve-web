@@ -11,7 +11,6 @@ import {
 	deleteSession,
 	updateUserPassword,
 	updateUser,
-	UpdateUserForm,
 } from "../../api";
 import Block from "../../ui/Block";
 import FormBlock from "../../components/FormBlock";
@@ -22,18 +21,15 @@ import Alert from "../../ui/Alert";
 import {AuthContext} from "../../AuthContext";
 import Sidebar from "../../components/Sidebar";
 import Time from "../../ui/Time";
+import {UserPageParams} from "../UserPage";
 import "./index.scss";
 
-type UserPageParams = {
-	user_id: string;
-}
-
-type EditUserForm = {
+type EditUserBlockProps = {
 	user: User;
 	onUpdateUser(user: User): void;
 };
 
-const EditUserForm: FC<EditUserForm> = props => {
+const EditUserBlock: FC<EditUserBlockProps> = props => {
 	const {user, onUpdateUser} = props;
 	const [form, setForm] = useState<{[key: string]: string}>({});
 	const [error, setError] = useState<ErrorResp>();
@@ -86,12 +82,12 @@ const EditUserForm: FC<EditUserForm> = props => {
 	</FormBlock>;
 };
 
-type ChangePasswordFormParams = {
+type ChangePasswordBlockProps = {
 	userID: UserID;
 };
 
-const ChangePasswordForm: FC<ChangePasswordFormParams> = params => {
-	const {userID} = params;
+const ChangePasswordBlock: FC<ChangePasswordBlockProps> = props => {
+	const {userID} = props;
 	const [error, setError] = useState<ErrorResp>();
 	const [form, setForm] = useState<{[key: string]: string}>({});
 	const equalPasswords = form.password === form.password_repeat;
@@ -144,12 +140,12 @@ const ChangePasswordForm: FC<ChangePasswordFormParams> = params => {
 	</FormBlock>;
 };
 
-type CurrentSessionsBlockParams = {
+type CurrentSessionsBlockProps = {
 	userID: UserID;
 };
 
-const CurrentSessionsBlock: FC<CurrentSessionsBlockParams> = params => {
-	const {userID} = params;
+const CurrentSessionsBlock: FC<CurrentSessionsBlockProps> = props => {
+	const {userID} = props;
 	const {status} = useContext(AuthContext);
 	const [error, setError] = useState<ErrorResp>();
 	const [sessions, setSessions] = useState<Session[]>();
@@ -225,8 +221,8 @@ const EditUserPage = ({match}: RouteComponentProps<UserPageParams>) => {
 	}
 	const {id, login} = user;
 	return <Page title={`Edit user: ${login}`} sidebar={<Sidebar/>}>
-		<EditUserForm user={user} onUpdateUser={setUser}/>
-		<ChangePasswordForm userID={id}/>
+		<EditUserBlock user={user} onUpdateUser={setUser}/>
+		<ChangePasswordBlock userID={id}/>
 		<CurrentSessionsBlock userID={id}/>
 	</Page>;
 };

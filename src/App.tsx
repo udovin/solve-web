@@ -33,7 +33,7 @@ const App: FC = () => {
 					<Route exact path="/problems/:ProblemID/update" component={UpdateProblemPage}/>
 					<Route exact path="/contests" component={ContestsPage}/>
 					<Route exact path="/contests/create" component={CreateContestPage}/>
-					<Route path="/contests/:ContestID" component={ContestPage}/>
+					<Route path="/contests/:contest_id" component={ContestPage}/>
 					<Route exact path="/compilers/create" component={CreateCompilerPage}/>
 					<Route exact path="/solutions" component={SolutionsPage}/>
 					<Route exact path="/solutions/:SolutionID" component={SolutionPage}/>

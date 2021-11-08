@@ -1,14 +1,13 @@
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {RouteComponentProps} from "react-router";
-import Page from "../components/Page";
-import {ErrorResp, observeUser, User} from "../api";
-import Block from "../ui/Block";
-// import "./ContestPage.scss"
-import Sidebar from "../components/Sidebar";
-import Field from "../ui/Field";
-import Alert from "../ui/Alert";
+import Page from "../../components/Page";
+import {ErrorResp, observeUser, User} from "../../api";
+import Block from "../../ui/Block";
+import Sidebar from "../../components/Sidebar";
+import Field from "../../ui/Field";
+import Alert from "../../ui/Alert";
 
-type UserPageParams = {
+export type UserPageParams = {
 	user_id: string;
 }
 

@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from "react";
+import {FC, useEffect, useState} from "react";
 import {Redirect, Route, RouteComponentProps, Switch} from "react-router";
 import {Link} from "react-router-dom";
 import Page from "../../components/Page";
@@ -17,7 +17,7 @@ import "./index.scss";
 import Alert from "../../ui/Alert";
 
 type ContestPageParams = {
-	ContestID: string;
+	contest_id: string;
 }
 
 type ContestBlockParams = {
@@ -64,12 +64,12 @@ const ContestSolutionsBlock: FC<ContestBlockParams> = props => {
 };
 
 const CreateContestProblemBlock = ({match}: RouteComponentProps<ContestPageParams>) => {
-	const {ContestID} = match.params;
+	const {contest_id} = match.params;
 	const [success, setSuccess] = useState<boolean>();
 	const onSubmit = (event: any) => {
 		event.preventDefault();
 		const {problemID, code} = event.target;
-		fetch("/api/v0/contests/" + ContestID + "/problems", {
+		fetch("/api/v0/contests/" + contest_id + "/problems", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json; charset=UTF-8",
@@ -82,7 +82,7 @@ const CreateContestProblemBlock = ({match}: RouteComponentProps<ContestPageParam
 			.then(() => setSuccess(true));
 	};
 	if (success) {
-		return <Redirect to={"/contests/" + ContestID}/>
+		return <Redirect to={"/contests/" + contest_id}/>
 	}
 	return <FormBlock onSubmit={onSubmit} title="Add contest problem" footer={
 		<Button type="submit" color="primary">Create</Button>
@@ -97,11 +97,11 @@ const CreateContestProblemBlock = ({match}: RouteComponentProps<ContestPageParam
 };
 
 type ContestProblemPageParams = ContestPageParams & {
-	ProblemCode: string;
+	problem_code: string;
 }
 
 const ContestProblemSideBlock = ({match}: RouteComponentProps<ContestProblemPageParams>) => {
-	const {ContestID, ProblemCode} = match.params;
+	const {contest_id, problem_code} = match.params;
 	const [problem, setProblem] = useState<ContestProblem>();
 	const [compilers, setCompilers] = useState<Compiler[]>();
 	const [solution, setSolution] = useState<Solution>();
@@ -109,7 +109,7 @@ const ContestProblemSideBlock = ({match}: RouteComponentProps<ContestProblemPage
 		event.preventDefault();
 		const {sourceFile, sourceText, compilerID} = event.target;
 		let create = (code: string) => {
-			fetch("/api/v0/contests/" + ContestID + "/problems/" + ProblemCode, {
+			fetch("/api/v0/contests/" + contest_id + "/problems/" + problem_code, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json; charset=UTF-8",
@@ -136,10 +136,10 @@ const ContestProblemSideBlock = ({match}: RouteComponentProps<ContestProblemPage
 			.then(result => setCompilers(result))
 	}, []);
 	useEffect(() => {
-		fetch("/api/v0/contests/" + ContestID + "/problems/" + ProblemCode)
+		fetch("/api/v0/contests/" + contest_id + "/problems/" + problem_code)
 			.then(result => result.json())
 			.then(result => setProblem(result));
-	}, [ContestID, ProblemCode]);
+	}, [contest_id, problem_code]);
 	if (solution) {
 		return <Redirect to={"/solutions/" + solution.ID} push={true}/>;
 	}
@@ -153,13 +153,13 @@ const ContestProblemSideBlock = ({match}: RouteComponentProps<ContestProblemPage
 };
 
 const ContestProblemBlock = ({match}: RouteComponentProps<ContestProblemPageParams>) => {
-	const {ContestID, ProblemCode} = match.params;
+	const {contest_id, problem_code} = match.params;
 	const [problem, setProblem] = useState<ContestProblem>();
 	useEffect(() => {
-		fetch("/api/v0/contests/" + ContestID + "/problems/" + ProblemCode)
+		fetch("/api/v0/contests/" + contest_id + "/problems/" + problem_code)
 			.then(result => result.json())
 			.then(result => setProblem(result));
-	}, [ContestID, ProblemCode]);
+	}, [contest_id, problem_code]);
 	if (!problem) {
 		return <>Loading...</>;
 	}
@@ -274,37 +274,37 @@ const DeleteContestBlock: FC<DeleteContestBlockProps> = props => {
 };
 
 const ContestPage = ({match}: RouteComponentProps<ContestPageParams>) => {
-	const {ContestID} = match.params;
+	const {contest_id} = match.params;
 	const [contest, setContest] = useState<Contest>();
 	const [currentTab, setCurrentTab] = useState<string>();
 	useEffect(() => {
-		fetch("/api/v0/contests/" + ContestID)
+		fetch("/api/v0/contests/" + contest_id)
 			.then(result => result.json())
 			.then(result => setContest(result));
-	}, [ContestID]);
+	}, [contest_id]);
 	if (!contest) {
 		return <>Loading...</>;
 	}
 	const {title, permissions} = contest;
 	return <Page title={`Contest: ${title}`} sidebar={<Switch>
-		<Route exact path="/contests/:ContestID/problems/:ProblemCode" component={ContestProblemSideBlock}/>
+		<Route exact path="/contests/:contest_id/problems/:ProblemCode" component={ContestProblemSideBlock}/>
 	</Switch>}>
 		<ContestTabs contest={contest} currentTab={currentTab}/>
 		<Switch>
-			<Route exact path="/contests/:ContestID">
+			<Route exact path="/contests/:contest_id">
 				{() => {
 					setCurrentTab("problems");
 					return <ContestProblemsBlock contest={contest}/>;
 				}}
 			</Route>
-			<Route exact path="/contests/:ContestID/solutions">
+			<Route exact path="/contests/:contest_id/solutions">
 				{() => {
 					setCurrentTab("solutions");
 					return <></>;
 					// return <ContestSolutionsBlock contest={contest}/>;
 				}}
 			</Route>
-			<Route exact path="/contests/:ContestID/manage">
+			<Route exact path="/contests/:contest_id/manage">
 				{() => {
 					setCurrentTab("manage");
 					return <>
@@ -313,8 +313,8 @@ const ContestPage = ({match}: RouteComponentProps<ContestPageParams>) => {
 					</>;
 				}}
 			</Route>
-			<Route exact path="/contests/:ContestID/problems/create" component={CreateContestProblemBlock}/>
-			<Route exact path="/contests/:ContestID/problems/:ProblemCode" component={ContestProblemBlock}/>
+			<Route exact path="/contests/:contest_id/problems/create" component={CreateContestProblemBlock}/>
+			<Route exact path="/contests/:contest_id/problems/:problem_code" component={ContestProblemBlock}/>
 		</Switch>
 	</Page>;
 };
