@@ -4,7 +4,7 @@ export type ErrorField = {
 	message: string;
 };
 
-export type ErrorResp = {
+export type ErrorResponse = {
 	message: string;
 	missing_roles?: string[];
 	invalid_fields?: {[key: string]: ErrorField};
@@ -32,27 +32,17 @@ export type Status = {
 };
 
 export type Problem = {
-	ID: number;
-	UserID: number;
-	CreateTime: number;
-	Title: string;
-	Description: string;
-	Solutions?: Solution[];
-};
-
-export type ContestProblem = Problem & {
-	ContestID: number;
-	Code: string;
+	id: number;
+	title: string;
 };
 
 export type Contest = {
 	id: number;
 	title: string;
-	Problems?: ContestProblem[];
 	permissions?: string[];
 };
 
-export type ContestsResp = {
+export type Contests = {
 	contests?: Contest[];
 };
 
@@ -109,8 +99,17 @@ export type Solution = {
 	Report?: Report;
 };
 
-export type SolutionsResp = {
+export type Solutions = {
 	solutions?: Solution[];
+};
+
+export type ContestProblem = Problem & {
+	code: string;
+	contest_id: number;
+};
+
+export type ContestProblems = {
+	problems?: ContestProblem[];
 };
 
 export const RUNNING: number = -1;
@@ -313,3 +312,9 @@ export const observeSolutions = () => {
 	}));
 };
 
+export const observeContestProblems = (id: number) => {
+	return parseResp(fetch(`/api/v0/contests/${id}/problems`, {
+		method: "GET",
+		headers: HEADERS,
+	}));
+};

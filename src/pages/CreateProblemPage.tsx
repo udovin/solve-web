@@ -23,7 +23,7 @@ const CreateProblemPage = () => {
 			.catch(error => console.log(error));
 	};
 	if (problem) {
-		return <Redirect to={"/problems/" + problem.ID}/>
+		return <Redirect to={"/problems/" + problem.id}/>
 	}
 	return <Page title="Create problem">
 		<FormBlock onSubmit={onSubmit} title="Create problem" footer={

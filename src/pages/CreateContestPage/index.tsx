@@ -4,13 +4,13 @@ import Page from "../../components/Page";
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
 import FormBlock from "../../components/FormBlock";
-import {Contest, ErrorResp, createContest} from "../../api";
+import {Contest, ErrorResponse, createContest} from "../../api";
 import Field from "../../ui/Field";
 import Alert from "../../ui/Alert";
 
 const CreateContestPage: FC = () => {
 	const [newContest, setNewContest] = useState<Contest>();
-	const [error, setError] = useState<ErrorResp>();
+	const [error, setError] = useState<ErrorResponse>();
 	const [form, setForm] = useState<{[key: string]: string}>({});
 	const onSubmit = (event: any) => {
 		event.preventDefault();

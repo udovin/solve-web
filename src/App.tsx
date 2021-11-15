@@ -15,9 +15,7 @@ import CreateContestPage from "./pages/CreateContestPage";
 import ContestPage from "./pages/ContestPage";
 import CreateCompilerPage from "./pages/CreateCompilerPage";
 import LogoutPage from "./pages/LogoutPage";
-import SolutionPage from "./pages/SolutionPage";
 import UpdateProblemPage from "./pages/UpdateProblemPage";
-import SolutionsPage from "./pages/SolutionsPage";
 import UserPage from "./pages/UserPage";
 import EditUserPage from "./pages/EditUserPage";
 
@@ -35,8 +33,8 @@ const App: FC = () => {
 					<Route exact path="/contests/create" component={CreateContestPage}/>
 					<Route path="/contests/:contest_id" component={ContestPage}/>
 					<Route exact path="/compilers/create" component={CreateCompilerPage}/>
-					<Route exact path="/solutions" component={SolutionsPage}/>
-					<Route exact path="/solutions/:SolutionID" component={SolutionPage}/>
+					{/* <Route exact path="/solutions" component={SolutionsPage}/> */}
+					{/* <Route exact path="/solutions/:SolutionID" component={SolutionPage}/> */}
 					<Route exact path="/login" component={LoginPage}/>
 					<Route exact path="/logout" component={LogoutPage}/>
 					<Route exact path="/register" component={RegisterPage}/>

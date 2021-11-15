@@ -1,7 +1,7 @@
 import {FC, useEffect, useState, useContext} from "react";
 import {Link} from "react-router-dom";
 import {AuthContext} from "../../AuthContext";
-import {ContestsResp, ErrorResp, Contest, observeContests} from "../../api";
+import {Contests, ErrorResponse, Contest, observeContests} from "../../api";
 import Alert from "../../ui/Alert";
 import Button from "../../ui/Button";
 import Page from "../../components/Page";
@@ -37,8 +37,8 @@ const ContestsBlock: FC<ContestsBlockProps> = props => {
 };
 
 const ContestsPage: FC = () => {
-	const [contests, setContests] = useState<ContestsResp>();
-	const [error, setError] = useState<ErrorResp>();
+	const [contests, setContests] = useState<Contests>();
+	const [error, setError] = useState<ErrorResponse>();
 	const {status} = useContext(AuthContext);
 	useEffect(() => {
 		setContests(undefined);

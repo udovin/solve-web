@@ -19,9 +19,9 @@ const ProblemPage = ({match}: RouteComponentProps<ProblemPageParams>) => {
 	if (!problem) {
 		return <>Loading...</>;
 	}
-	return <Page title={problem.Title}>
-		<Block title={problem.Title}>
-			<div className="problem-statement" dangerouslySetInnerHTML={{__html: problem.Description}}/>
+	return <Page title={problem.title}>
+		<Block title={problem.title}>
+			{/* <div className="problem-statement" dangerouslySetInnerHTML={{__html: problem.Description}}/> */}
 		</Block>
 	</Page>;
 };

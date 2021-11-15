@@ -2,7 +2,7 @@ import React, {FC, useContext, useEffect, useState} from "react";
 import {RouteComponentProps} from "react-router";
 import Page from "../../components/Page";
 import {
-	ErrorResp,
+	ErrorResponse,
 	Session,
 	User,
 	UserID,
@@ -32,7 +32,7 @@ type EditUserBlockProps = {
 const EditUserBlock: FC<EditUserBlockProps> = props => {
 	const {user, onUpdateUser} = props;
 	const [form, setForm] = useState<{[key: string]: string}>({});
-	const [error, setError] = useState<ErrorResp>();
+	const [error, setError] = useState<ErrorResponse>();
 	const onSubmit = (event: any) => {
 		event.preventDefault();
 		updateUser(user.id, form)
@@ -88,7 +88,7 @@ type ChangePasswordBlockProps = {
 
 const ChangePasswordBlock: FC<ChangePasswordBlockProps> = props => {
 	const {userID} = props;
-	const [error, setError] = useState<ErrorResp>();
+	const [error, setError] = useState<ErrorResponse>();
 	const [form, setForm] = useState<{[key: string]: string}>({});
 	const equalPasswords = form.password === form.password_repeat;
 	const onSubmit = (event: any) => {
@@ -147,7 +147,7 @@ type CurrentSessionsBlockProps = {
 const CurrentSessionsBlock: FC<CurrentSessionsBlockProps> = props => {
 	const {userID} = props;
 	const {status} = useContext(AuthContext);
-	const [error, setError] = useState<ErrorResp>();
+	const [error, setError] = useState<ErrorResponse>();
 	const [sessions, setSessions] = useState<Session[]>();
 	const [deletedSessions, setDeletedSessions] = useState<{[key: number]: boolean}>();
 	useEffect(() => {
@@ -202,7 +202,7 @@ const CurrentSessionsBlock: FC<CurrentSessionsBlockProps> = props => {
 const EditUserPage = ({match}: RouteComponentProps<UserPageParams>) => {
 	const {user_id} = match.params;
 	const [user, setUser] = useState<User>();
-	const [error, setError] = useState<ErrorResp>();
+	const [error, setError] = useState<ErrorResponse>();
 	useEffect(() => {
 		observeUser(user_id)
 			.then(user => {

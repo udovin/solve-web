@@ -81,3 +81,33 @@
 		}
 	}
 }
+
+.b-contest-problems {
+	.ui-block-content {
+        padding: 0;
+        overflow-x: auto;
+    }
+  
+    .ui-table {
+        border: none;
+        .code {
+            text-align: right;
+            width: 1%;
+        }
+        .title {
+            text-align: left;
+        }
+        .actions {
+            text-align: left;
+        }
+		tfoot {
+			td {
+				padding: 0px;
+			}
+			.ui-input {
+				width: 100%;
+				min-width: 60px;
+			}
+		}
+    }
+}

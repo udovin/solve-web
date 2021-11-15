@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import {useState} from "react";
 import {Redirect} from "react-router";
 import Page from "../components/Page";
 import Input from "../ui/Input";
@@ -6,12 +6,12 @@ import Button from "../ui/Button";
 import FormBlock from "../components/FormBlock";
 import Field from "../ui/Field";
 import Alert from "../ui/Alert";
-import {ErrorResp, registerUser} from "../api";
+import {ErrorResponse, registerUser} from "../api";
 import Sidebar from "../components/Sidebar";
 
 const RegisterPage = () => {
 	const [success, setSuccess] = useState<boolean>();
-	const [error, setError] = useState<ErrorResp>({message: ""});
+	const [error, setError] = useState<ErrorResponse>({message: ""});
 	const [form, setForm] = useState<{[key: string]: string}>({});
 	const onSubmit = (event: any) => {
 		event.preventDefault();

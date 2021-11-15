@@ -30,7 +30,7 @@ const UpdateProblemPage = ({match}: RouteComponentProps<UpdateProblemPageParams>
 			.catch(error => console.log(error));
 	};
 	if (problem) {
-		return <Redirect to={"/problems/" + problem.ID}/>
+		return <Redirect to={"/problems/" + problem.id}/>
 	}
 	return <Page title="Update problem">
 		<FormBlock onSubmit={onSubmit} title="Update problem" footer={

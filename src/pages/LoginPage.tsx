@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import {useContext, useState} from "react";
 import Page from "../components/Page";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
@@ -6,13 +6,13 @@ import FormBlock from "../components/FormBlock";
 import {Redirect} from "react-router";
 import {AuthContext} from "../AuthContext";
 import Field from "../ui/Field";
-import {statusUser, ErrorResp, loginUser} from "../api";
+import {ErrorResponse, statusUser, loginUser} from "../api";
 import Alert from "../ui/Alert";
 import Sidebar from "../components/Sidebar";
 
 const LoginPage = () => {
 	const {status, setStatus} = useContext(AuthContext);
-	const [error, setError] = useState<ErrorResp>({message: ""});
+	const [error, setError] = useState<ErrorResponse>({message: ""});
 	const [form, setForm] = useState<{[key: string]: string}>({});
 	const onSubmit = (event: any) => {
 		event.preventDefault();

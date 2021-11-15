@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {RouteComponentProps} from "react-router";
 import Page from "../../components/Page";
-import {ErrorResp, observeUser, User} from "../../api";
+import {ErrorResponse, observeUser, User} from "../../api";
 import Block from "../../ui/Block";
 import Sidebar from "../../components/Sidebar";
 import Field from "../../ui/Field";
@@ -14,7 +14,7 @@ export type UserPageParams = {
 const UserPage = ({match}: RouteComponentProps<UserPageParams>) => {
 	const {user_id} = match.params;
 	const [user, setUser] = useState<User>();
-	const [error, setError] = useState<ErrorResp>();
+	const [error, setError] = useState<ErrorResponse>();
 	useEffect(() => {
 		observeUser(user_id)
 			.then(user => {
