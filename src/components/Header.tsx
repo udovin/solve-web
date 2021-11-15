@@ -47,6 +47,9 @@ const Header: FC<RouteComponentProps> = props => {
 				{status && status.roles.includes("observe_contests") && <li className={getActiveClass("/contests")}>
 					<Link to="/contests">Contests</Link>
 				</li>}
+				{status && status.roles.includes("observe_problems") && <li className={getActiveClass("/problems")}>
+					<Link to="/problems">Problems</Link>
+				</li>}
 				{status && status.roles.includes("observe_solutions") && <li className={getActiveClass("/solutions")}>
 					<Link to="/solutions">Solutions</Link>
 				</li>}

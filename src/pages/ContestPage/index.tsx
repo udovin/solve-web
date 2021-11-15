@@ -1,14 +1,12 @@
-import {FC, useEffect, useState} from "react";
+import {FC, FormEvent, useEffect, useState} from "react";
 import {Redirect, Route, RouteComponentProps, Switch} from "react-router";
 import {Link} from "react-router-dom";
 import Page from "../../components/Page";
-import {Contest, ContestProblem, ContestProblems, deleteContest, ErrorResponse, observeContestProblems, Solution, updateContest} from "../../api";
-import Block, { BlockProps } from "../../ui/Block";
-// import {
-// 	SolutionsBlock,
-// 	SolutionsSideBlock,
-// 	SubmitSolutionSideBlock
-// } from "../../components/solutions";
+import {
+	Contest, ContestProblem, ContestProblems, createContestProblem, ErrorResponse, Solution,
+	observeContestProblems, updateContest, deleteContest,
+} from "../../api";
+import Block, {BlockProps} from "../../ui/Block";
 import FormBlock from "../../components/FormBlock";
 import Field from "../../ui/Field";
 import Input from "../../ui/Input";
@@ -36,6 +34,15 @@ const ContestProblemsBlock: FC<ContestBlockParams> = props => {
 			})
 			.catch(setError)
 	}, [contest.id]);
+	if (!problems) {
+		return <Block title="Problems" className="b-contest-problems">
+			{error ? <Alert>{error.message}</Alert> : "Loading..."}
+		</Block>;
+	}
+	let contestProblems: ContestProblem[] = problems.problems ?? [];
+	contestProblems.sort((a, b: ContestProblem) => {
+		return String(a.code).localeCompare(b.code);
+	});
 	return <Block title="Problems" className="b-contest-problems">{error ? 
 		<Alert>{error.message}</Alert> : 
 		<table className="ui-table">
@@ -46,7 +53,7 @@ const ContestProblemsBlock: FC<ContestBlockParams> = props => {
 			</tr>
 			</thead>
 			<tbody>
-			{problems?.problems && problems.problems.map((problem: ContestProblem, key: number) => {
+			{contestProblems.map((problem: ContestProblem, key: number) => {
 				const {code, title} = problem;
 				return <tr key={key} className="problem">
 					<td className="code">{code}</td>
@@ -291,18 +298,56 @@ const EditContestProblemsBlock: FC<EditContestProblemsBlockProps> = props => {
 	const {contest} = props;
 	const [error, setError] = useState<ErrorResponse>();
 	const [problems, setProblems] = useState<ContestProblems>();
+	const [form, setForm] = useState<{[key: string]: string}>({});
 	useEffect(() => {
 		observeContestProblems(contest.id)
 			.then(problems => {
 				setProblems(problems)
 				setError(undefined)
 			})
-			.catch(setError)
+			.catch(setError);
 	}, [contest.id]);
+	const onSubmit = (event: FormEvent) => {
+		event.preventDefault();
+		createContestProblem(contest.id, {
+			code: form.code ?? "",
+			problem_id: Number(form.problem_id ?? 0),
+		})
+			.then(problem => {
+				setProblems({...problems, problems: [...(problems?.problems ?? []), problem]});
+				setForm({});
+				setError(undefined);
+			})
+			.catch(setError);
+	};
 	const canCreateProblem = contest.permissions && contest.permissions.includes("create_contest_problem");
 	const canDeleteProblem = contest.permissions && contest.permissions.includes("delete_contest_problem");
-	return <Block title="Problems" className="b-contest-problems">{error ? 
-		<Alert>{error.message}</Alert> : 
+	if (!problems) {
+		return <Block title="Problems" className="b-contest-problems">
+			{error ? <Alert>{error.message}</Alert> : "Loading..."}
+		</Block>;
+	}
+	let contestProblems: ContestProblem[] = problems.problems ?? [];
+	contestProblems.sort((a, b: ContestProblem) => {
+		return String(a.code).localeCompare(b.code);
+	});
+	return <Block
+		title="Problems" className="b-contest-problems"
+		footer={canCreateProblem && <form onSubmit={onSubmit}>
+			<Input name="code"
+				value={form.code || ""}
+				onValueChange={value => setForm({...form, code: value})}
+				placeholder="Code"
+				required/>
+			<Input name="problem_id"
+				value={form.problem_id || ""}
+				onValueChange={value => setForm({...form, problem_id: value})}
+				placeholder="Problem ID"
+				required/>
+			<Button type="submit">Create</Button>
+		</form>}
+	>
+		{error && <Alert>{error.message}</Alert>}
 		<table className="ui-table">
 			<thead>
 			<tr>
@@ -312,7 +357,7 @@ const EditContestProblemsBlock: FC<EditContestProblemsBlockProps> = props => {
 			</tr>
 			</thead>
 			<tbody>
-			{problems?.problems && problems.problems.map((problem: ContestProblem, key: number) => {
+			{contestProblems.map((problem: ContestProblem, key: number) => {
 				const {code, title} = problem;
 				return <tr key={key} className="problem">
 					<td className="code">{code}</td>
@@ -321,15 +366,8 @@ const EditContestProblemsBlock: FC<EditContestProblemsBlockProps> = props => {
 				</tr>;
 			})}
 			</tbody>
-			<tfoot>
-			{canCreateProblem && <tr>
-				<td className="code"><Input/></td>
-				<td className="title"><Input/></td>
-				<td className="actions"><Button>Create</Button></td>
-			</tr>}
-			</tfoot>
 		</table>
-	}</Block>;
+	</Block>;
 };
 
 

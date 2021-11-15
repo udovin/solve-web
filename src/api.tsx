@@ -36,6 +36,10 @@ export type Problem = {
 	title: string;
 };
 
+export type Problems = {
+	problems?: Problem[];
+};
+
 export type Contest = {
 	id: number;
 	title: string;
@@ -316,5 +320,41 @@ export const observeContestProblems = (id: number) => {
 	return parseResp(fetch(`/api/v0/contests/${id}/problems`, {
 		method: "GET",
 		headers: HEADERS,
+	}));
+};
+
+export type CreateContestProblemForm = {
+	code: string;
+	problem_id: number;
+};
+
+export const createContestProblem = (contestID: number, form: CreateContestProblemForm) => {
+	return parseResp(fetch(`/api/v0/contests/${contestID}/problems`, {
+		method: "POST",
+		headers: {...HEADERS, ...POST_JSON_HEADERS},
+		body: JSON.stringify(form),
+	}));
+};
+
+export const observeProblems = () => {
+	return parseResp(fetch(`/api/v0/problems`, {
+		method: "GET",
+		headers: HEADERS,
+	}));
+};
+
+export type CreateProblemForm = {
+	title: string;
+	package: File;
+};
+
+export const createProblem = (form: CreateProblemForm) => {
+	const formData = new FormData();
+	formData.append("title", form.title);
+	formData.append("package", form.package, form.package.name);
+	return parseResp(fetch(`/api/v0/problems`, {
+		method: "POST",
+		headers: HEADERS,
+		body: formData,
 	}));
 };

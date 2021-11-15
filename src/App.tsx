@@ -9,15 +9,15 @@ import IndexPage from "./pages/IndexPage";
 import LanguagePage from "./pages/LanguagePage";
 import {AuthProvider} from "./AuthContext";
 import CreateProblemPage from "./pages/CreateProblemPage";
-import ProblemPage from "./pages/ProblemPage";
+import ProblemsPage from "./pages/ProblemsPage";
 import ContestsPage from "./pages/ContestsPage";
 import CreateContestPage from "./pages/CreateContestPage";
 import ContestPage from "./pages/ContestPage";
 import CreateCompilerPage from "./pages/CreateCompilerPage";
 import LogoutPage from "./pages/LogoutPage";
-import UpdateProblemPage from "./pages/UpdateProblemPage";
 import UserPage from "./pages/UserPage";
 import EditUserPage from "./pages/EditUserPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 const App: FC = () => {
 	return (
@@ -26,12 +26,14 @@ const App: FC = () => {
 				<Header/>
 				<Switch>
 					<Route exact path="/" component={IndexPage}/>
-					<Route exact path="/problems/create" component={CreateProblemPage}/>
+					{/* <Route exact path="/problems/create" component={CreateProblemPage}/>
 					<Route exact path="/problems/:ProblemID" component={ProblemPage}/>
-					<Route exact path="/problems/:ProblemID/update" component={UpdateProblemPage}/>
+					<Route exact path="/problems/:ProblemID/update" component={UpdateProblemPage}/> */}
 					<Route exact path="/contests" component={ContestsPage}/>
 					<Route exact path="/contests/create" component={CreateContestPage}/>
 					<Route path="/contests/:contest_id" component={ContestPage}/>
+					<Route exact path="/problems" component={ProblemsPage}/>
+					<Route exact path="/problems/create" component={CreateProblemPage}/>
 					<Route exact path="/compilers/create" component={CreateCompilerPage}/>
 					{/* <Route exact path="/solutions" component={SolutionsPage}/> */}
 					{/* <Route exact path="/solutions/:SolutionID" component={SolutionPage}/> */}
@@ -41,6 +43,7 @@ const App: FC = () => {
 					<Route exact path="/language" component={LanguagePage}/>
 					<Route exact path="/users/:user_id" component={UserPage}/>
 					<Route exact path="/users/:user_id/edit" component={EditUserPage}/>
+					<Route component={NotFoundPage}/>
 				</Switch>
 				<Footer/>
 			</AuthProvider>
