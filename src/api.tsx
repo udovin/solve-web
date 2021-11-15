@@ -336,6 +336,13 @@ export const createContestProblem = (contestID: number, form: CreateContestProbl
 	}));
 };
 
+export const deleteContestProblem = (contestID: number, code: string) => {
+	return parseResp(fetch(`/api/v0/contests/${contestID}/problems/${code}`, {
+		method: "DELETE",
+		headers: HEADERS,
+	}));
+};
+
 export const observeProblems = () => {
 	return parseResp(fetch(`/api/v0/problems`, {
 		method: "GET",

@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import Page from "../../components/Page";
 import {
 	Contest, ContestProblem, ContestProblems, createContestProblem, ErrorResponse, Solution,
-	observeContestProblems, updateContest, deleteContest,
+	observeContestProblems, updateContest, deleteContest, deleteContestProblem,
 } from "../../api";
 import Block, {BlockProps} from "../../ui/Block";
 import FormBlock from "../../components/FormBlock";
@@ -329,7 +329,11 @@ const EditContestProblemsBlock: FC<EditContestProblemsBlockProps> = props => {
 	}
 	let contestProblems: ContestProblem[] = problems.problems ?? [];
 	contestProblems.sort((a, b: ContestProblem) => {
-		return String(a.code).localeCompare(b.code);
+		const codeDiff = String(a.code).localeCompare(b.code);
+		if (codeDiff) {
+			return codeDiff;
+		}
+		return String(a.title).localeCompare(b.title);
 	});
 	return <Block
 		title="Problems" className="b-contest-problems"
@@ -359,10 +363,24 @@ const EditContestProblemsBlock: FC<EditContestProblemsBlockProps> = props => {
 			<tbody>
 			{contestProblems.map((problem: ContestProblem, key: number) => {
 				const {code, title} = problem;
+				const deleteProblem = () => {
+					deleteContestProblem(contest.id, code)
+						.then(problem => {
+							const contestProblems = [...(problems?.problems ?? [])];
+							const pos = contestProblems.findIndex(value => value.code === problem.code && value.title === problem.title);
+							if (pos >= 0) {
+								contestProblems.splice(pos, 1);
+							}
+							setProblems({...problems, problems: contestProblems});
+							setForm({});
+							setError(undefined);
+						})
+						.catch(setError);
+				};
 				return <tr key={key} className="problem">
 					<td className="code">{code}</td>
 					<td className="title">{title}</td>
-					<td className="actions">{canDeleteProblem && <Button>Delete</Button>}</td>
+					<td className="actions">{canDeleteProblem && <Button onClick={deleteProblem}>Delete</Button>}</td>
 				</tr>;
 			})}
 			</tbody>
