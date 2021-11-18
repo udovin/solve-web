@@ -11,6 +11,7 @@ import {
 	deleteSession,
 	updateUserPassword,
 	updateUser,
+	Sessions,
 } from "../../api";
 import Block from "../../ui/Block";
 import FormBlock from "../../components/FormBlock";
@@ -148,7 +149,7 @@ const CurrentSessionsBlock: FC<CurrentSessionsBlockProps> = props => {
 	const {userID} = props;
 	const {status} = useContext(AuthContext);
 	const [error, setError] = useState<ErrorResponse>();
-	const [sessions, setSessions] = useState<Session[]>();
+	const [sessions, setSessions] = useState<Sessions>();
 	const [deletedSessions, setDeletedSessions] = useState<{[key: number]: boolean}>();
 	useEffect(() => {
 		observeUserSessions(userID)
@@ -178,7 +179,7 @@ const CurrentSessionsBlock: FC<CurrentSessionsBlockProps> = props => {
 			</tr>
 			</thead>
 			<tbody>
-			{sessions && sessions.map((session: Session, key: number) => {
+			{sessions && sessions.sessions && sessions.sessions.map((session: Session, key: number) => {
 				const {id, create_time, expire_time} = session;
 				const current = status?.session.id === id;
 				const deleted = !!deletedSessions?.[session.id];

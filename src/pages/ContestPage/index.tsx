@@ -56,8 +56,12 @@ const ContestProblemsBlock: FC<ContestBlockParams> = props => {
 			{contestProblems.map((problem: ContestProblem, key: number) => {
 				const {code, title} = problem;
 				return <tr key={key} className="problem">
-					<td className="code">{code}</td>
-					<td className="title">{title}</td>
+					<td className="code">
+						<Link to={`/contests/${contest.id}/problems/${code}`}>{code}</Link>
+					</td>
+					<td className="title">
+						<Link to={`/contests/${contest.id}/problems/${code}`}>{title}</Link>
+					</td>
 				</tr>;
 			})}
 			</tbody>
@@ -105,7 +109,7 @@ const CreateContestProblemBlock = ({match}: RouteComponentProps<ContestPageParam
 		<Button type="submit" color="primary">Create</Button>
 	}>
 		<Field title="Problem ID:">
-			<Input type="number" name="problemID" placeholder="ID" required autoFocus/>
+			<Input type="number" name="problemID" placeholder="ID" required/>
 		</Field>
 		<Field title="Code:">
 			<Input type="text" name="code" placeholder="Code" required/>
@@ -244,7 +248,7 @@ const EditContestBlock: FC<EditContestBlockProps> = props => {
 				type="text" name="title" placeholder="Title"
 				value={form.title ?? contest.title}
 				onValueChange={value => setForm({...form, title: value})}
-				required autoFocus/>
+				required/>
 			{error && error.invalid_fields && error.invalid_fields["title"] && <Alert>{error.invalid_fields["title"].message}</Alert>}
 		</Field>
 	</FormBlock>;
@@ -285,7 +289,7 @@ const DeleteContestBlock: FC<DeleteContestBlockProps> = props => {
 				type="text" name="title" placeholder="Title"
 				value={title ?? ""}
 				onValueChange={value => setTitle(value)}
-				required autoFocus autoComplete="off"/>
+				required autoComplete="off"/>
 		</Field>
 	</FormBlock>;
 };

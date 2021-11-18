@@ -25,6 +25,10 @@ export type Session = {
 	expire_time: number;
 };
 
+export type Sessions = {
+	sessions?: Session[];
+};
+
 export type Status = {
 	session: Session;
 	user: User;
