@@ -102,3 +102,24 @@
         }
     }
 }
+
+.b-contest-participants {
+	.ui-block-content {
+        padding: 0;
+        overflow-x: auto;
+    }
+
+	.ui-table {
+        border: none;
+        .id {
+            text-align: right;
+            width: 1%;
+        }
+        .login {
+            text-align: left;
+        }
+        .actions {
+            text-align: left;
+        }
+    }
+}

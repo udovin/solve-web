@@ -116,6 +116,15 @@ export type ContestProblems = {
 	problems?: ContestProblem[];
 };
 
+export type ContestParticipant = {
+	id: number;
+	user?: User;
+};
+
+export type ContestParticipants = {
+	participants?: ContestParticipant[];
+};
+
 export const RUNNING: number = -1;
 export const QUEUED: number = 0;
 export const ACCEPTED: number = 1;
@@ -338,6 +347,33 @@ export const createContestProblem = (contestID: number, form: CreateContestProbl
 
 export const deleteContestProblem = (contestID: number, code: string) => {
 	return parseResp(fetch(`/api/v0/contests/${contestID}/problems/${code}`, {
+		method: "DELETE",
+		headers: HEADERS,
+	}));
+};
+
+export const observeContestParticipants = (id: number) => {
+	return parseResp(fetch(`/api/v0/contests/${id}/participants`, {
+		method: "GET",
+		headers: HEADERS,
+	}));
+};
+
+export type CreateContestParticipantForm = {
+	user_id: number;
+	user_login: string;
+};
+
+export const createContestParticipant = (contestID: number, form: CreateContestParticipantForm) => {
+	return parseResp(fetch(`/api/v0/contests/${contestID}/participants`, {
+		method: "POST",
+		headers: {...HEADERS, ...POST_JSON_HEADERS},
+		body: JSON.stringify(form),
+	}));
+};
+
+export const deleteContestParticipant = (contestID: number, participantID: number) => {
+	return parseResp(fetch(`/api/v0/contests/${contestID}/participants/${participantID}`, {
 		method: "DELETE",
 		headers: HEADERS,
 	}));
