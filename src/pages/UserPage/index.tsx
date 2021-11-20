@@ -1,7 +1,7 @@
-import {useEffect, useState} from "react";
-import {RouteComponentProps} from "react-router";
+import { useEffect, useState } from "react";
+import { RouteComponentProps } from "react-router";
 import Page from "../../components/Page";
-import {ErrorResponse, observeUser, User} from "../../api";
+import { ErrorResponse, observeUser, User } from "../../api";
 import Block from "../../ui/Block";
 import Sidebar from "../../components/Sidebar";
 import Field from "../../ui/Field";
@@ -11,8 +11,8 @@ export type UserPageParams = {
 	user_id: string;
 }
 
-const UserPage = ({match}: RouteComponentProps<UserPageParams>) => {
-	const {user_id} = match.params;
+const UserPage = ({ match }: RouteComponentProps<UserPageParams>) => {
+	const { user_id } = match.params;
 	const [user, setUser] = useState<User>();
 	const [error, setError] = useState<ErrorResponse>();
 	useEffect(() => {
@@ -24,15 +24,15 @@ const UserPage = ({match}: RouteComponentProps<UserPageParams>) => {
 			.catch(error => setError(error));
 	}, [user_id]);
 	if (error) {
-		return <Page title="Error" sidebar={<Sidebar/>}>
+		return <Page title="Error" sidebar={<Sidebar />}>
 			{error.message && <Alert>{error.message}</Alert>}
 		</Page>;
 	}
 	if (!user) {
-		return <Page title="User" sidebar={<Sidebar/>}>Loading...</Page>;
+		return <Page title="User" sidebar={<Sidebar />}>Loading...</Page>;
 	}
-	const {login, email, first_name, last_name, middle_name} = user;
-	return <Page title={`User: ${login}`} sidebar={<Sidebar/>}>
+	const { login, email, first_name, last_name, middle_name } = user;
+	return <Page title={`User: ${login}`} sidebar={<Sidebar />}>
 		<Block title={login} id="block-user">
 			{email && <Field title="E-mail:"><span>{email}</span></Field>}
 			{first_name && <Field title="First name:"><span>{first_name}</span></Field>}

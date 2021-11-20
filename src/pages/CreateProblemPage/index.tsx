@@ -1,10 +1,10 @@
-import {FC, useState, FormEvent, ChangeEvent} from "react";
-import {Redirect} from "react-router";
+import { FC, useState, FormEvent, ChangeEvent } from "react";
+import { Redirect } from "react-router";
 import Page from "../../components/Page";
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
 import FormBlock from "../../components/FormBlock";
-import {Problem, ErrorResponse, createProblem} from "../../api";
+import { Problem, ErrorResponse, createProblem } from "../../api";
 import Field from "../../ui/Field";
 import Alert from "../../ui/Alert";
 import "./index.scss";
@@ -12,7 +12,7 @@ import "./index.scss";
 const CreateProblemPage: FC = () => {
 	const [newProblem, setNewProblem] = useState<Problem>();
 	const [error, setError] = useState<ErrorResponse>();
-	const [form, setForm] = useState<{[key: string]: string}>({});
+	const [form, setForm] = useState<{ [key: string]: string }>({});
 	const [file, setFile] = useState<File>();
 	const onSubmit = (event: FormEvent) => {
 		event.preventDefault();
@@ -25,7 +25,7 @@ const CreateProblemPage: FC = () => {
 			.catch(setError);
 	};
 	if (newProblem) {
-		return <Redirect to={"/problems/" + newProblem.id}/>
+		return <Redirect to={"/problems/" + newProblem.id} />
 	}
 	const errorMessage = error && error.message;
 	const invalidFields = (error && error.invalid_fields) || {};
@@ -38,15 +38,15 @@ const CreateProblemPage: FC = () => {
 				<Input
 					type="text" name="title" placeholder="Title"
 					value={form.title || ""}
-					onValueChange={value => setForm({...form, title: value})}
-					required autoFocus/>
+					onValueChange={value => setForm({ ...form, title: value })}
+					required autoFocus />
 				{invalidFields["title"] && <Alert>{invalidFields["title"].message}</Alert>}
 			</Field>
 			<Field title="Package:">
-				<input 
+				<input
 					type="file" name="package"
 					onChange={(e: ChangeEvent<HTMLInputElement>) => setFile(e.target.files?.[0])}
-					required/>
+					required />
 				{invalidFields["package"] && <Alert>{invalidFields["package"].message}</Alert>}
 			</Field>
 		</FormBlock>

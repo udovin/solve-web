@@ -1,5 +1,5 @@
-import {FC} from "react";
-import {Switch, Route} from "react-router-dom";
+import { FC } from "react";
+import { Switch, Route } from "react-router-dom";
 import "./App.scss";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -7,7 +7,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import IndexPage from "./pages/IndexPage";
 import LanguagePage from "./pages/LanguagePage";
-import {AuthProvider} from "./AuthContext";
+import { AuthProvider } from "./AuthContext";
 import CreateProblemPage from "./pages/CreateProblemPage";
 import ProblemsPage from "./pages/ProblemsPage";
 import ContestsPage from "./pages/ContestsPage";
@@ -23,29 +23,24 @@ const App: FC = () => {
 	return (
 		<div id="layout">
 			<AuthProvider>
-				<Header/>
+				<Header />
 				<Switch>
-					<Route exact path="/" component={IndexPage}/>
-					{/* <Route exact path="/problems/create" component={CreateProblemPage}/>
-					<Route exact path="/problems/:ProblemID" component={ProblemPage}/>
-					<Route exact path="/problems/:ProblemID/update" component={UpdateProblemPage}/> */}
-					<Route exact path="/contests" component={ContestsPage}/>
-					<Route exact path="/contests/create" component={CreateContestPage}/>
-					<Route path="/contests/:contest_id" component={ContestPage}/>
-					<Route exact path="/problems" component={ProblemsPage}/>
-					<Route exact path="/problems/create" component={CreateProblemPage}/>
-					<Route exact path="/compilers/create" component={CreateCompilerPage}/>
-					{/* <Route exact path="/solutions" component={SolutionsPage}/> */}
-					{/* <Route exact path="/solutions/:SolutionID" component={SolutionPage}/> */}
-					<Route exact path="/login" component={LoginPage}/>
-					<Route exact path="/logout" component={LogoutPage}/>
-					<Route exact path="/register" component={RegisterPage}/>
-					<Route exact path="/language" component={LanguagePage}/>
-					<Route exact path="/users/:user_id" component={UserPage}/>
-					<Route exact path="/users/:user_id/edit" component={EditUserPage}/>
-					<Route component={NotFoundPage}/>
+					<Route exact path="/" component={IndexPage} />
+					<Route exact path="/contests" component={ContestsPage} />
+					<Route exact path="/contests/create" component={CreateContestPage} />
+					<Route path="/contests/:contest_id" component={ContestPage} />
+					<Route exact path="/problems" component={ProblemsPage} />
+					<Route exact path="/problems/create" component={CreateProblemPage} />
+					<Route exact path="/compilers/create" component={CreateCompilerPage} />
+					<Route exact path="/login" component={LoginPage} />
+					<Route exact path="/logout" component={LogoutPage} />
+					<Route exact path="/register" component={RegisterPage} />
+					<Route exact path="/users/:user_id" component={UserPage} />
+					<Route exact path="/users/:user_id/edit" component={EditUserPage} />
+					<Route exact path="/language" component={LanguagePage} />
+					<Route component={NotFoundPage} />
 				</Switch>
-				<Footer/>
+				<Footer />
 			</AuthProvider>
 		</div>
 	);

@@ -1,18 +1,32 @@
-import {FC, FormEvent, useEffect, useState} from "react";
-import {Redirect, Route, RouteComponentProps, Switch} from "react-router";
-import {Link} from "react-router-dom";
+import { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
+import { Redirect, Route, RouteComponentProps, Switch } from "react-router";
+import { Link } from "react-router-dom";
 import Page from "../../components/Page";
 import {
-	Contest, ContestProblem, ContestProblems, createContestProblem, ErrorResponse, Solution,
-	observeContestProblems, updateContest, deleteContest, deleteContestProblem, observeContestParticipants, ContestParticipants, createContestParticipant, ContestParticipant, deleteContestParticipant,
+	Contest,
+	ContestParticipant,
+	ContestParticipants,
+	ContestProblem,
+	ContestProblems,
+	createContestParticipant,
+	createContestProblem,
+	deleteContest,
+	deleteContestParticipant,
+	deleteContestProblem,
+	ErrorResponse,
+	observeContestParticipants,
+	observeContestProblems,
+	Solution,
+	submitContestSolution,
+	updateContest,
 } from "../../api";
-import Block, {BlockProps} from "../../ui/Block";
+import Block, { BlockProps } from "../../ui/Block";
 import FormBlock from "../../components/FormBlock";
 import Field from "../../ui/Field";
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
-import "./index.scss";
 import Alert from "../../ui/Alert";
+import "./index.scss";
 
 type ContestPageParams = {
 	contest_id: string;
@@ -23,7 +37,7 @@ type ContestBlockParams = {
 };
 
 const ContestProblemsBlock: FC<ContestBlockParams> = props => {
-	const {contest} = props;
+	const { contest } = props;
 	const [error, setError] = useState<ErrorResponse>();
 	const [problems, setProblems] = useState<ContestProblems>();
 	useEffect(() => {
@@ -43,34 +57,34 @@ const ContestProblemsBlock: FC<ContestBlockParams> = props => {
 	contestProblems.sort((a, b: ContestProblem) => {
 		return String(a.code).localeCompare(b.code);
 	});
-	return <Block title="Problems" className="b-contest-problems">{error ? 
-		<Alert>{error.message}</Alert> : 
+	return <Block title="Problems" className="b-contest-problems">{error ?
+		<Alert>{error.message}</Alert> :
 		<table className="ui-table">
 			<thead>
-			<tr>
-				<th className="code">#</th>
-				<th className="title">Title</th>
-			</tr>
+				<tr>
+					<th className="code">#</th>
+					<th className="title">Title</th>
+				</tr>
 			</thead>
 			<tbody>
-			{contestProblems.map((problem: ContestProblem, key: number) => {
-				const {code, title} = problem;
-				return <tr key={key} className="problem">
-					<td className="code">
-						<Link to={`/contests/${contest.id}/problems/${code}`}>{code}</Link>
-					</td>
-					<td className="title">
-						<Link to={`/contests/${contest.id}/problems/${code}`}>{title}</Link>
-					</td>
-				</tr>;
-			})}
+				{contestProblems.map((problem: ContestProblem, key: number) => {
+					const { code, title } = problem;
+					return <tr key={key} className="problem">
+						<td className="code">
+							<Link to={`/contests/${contest.id}/problems/${code}`}>{code}</Link>
+						</td>
+						<td className="title">
+							<Link to={`/contests/${contest.id}/problems/${code}`}>{title}</Link>
+						</td>
+					</tr>;
+				})}
 			</tbody>
 		</table>
 	}</Block>;
 };
 
 const ContestSolutionsBlock: FC<ContestBlockParams> = props => {
-	const {contest} = props;
+	const { contest } = props;
 	const [solutions, setSolutions] = useState<Solution[]>();
 	useEffect(() => {
 		fetch("/api/v0/contests/" + contest.id + "/solutions")
@@ -84,12 +98,12 @@ const ContestSolutionsBlock: FC<ContestBlockParams> = props => {
 	// return <SolutionsBlock title="Solutions" solutions={solutions}/>;
 };
 
-const CreateContestProblemBlock = ({match}: RouteComponentProps<ContestPageParams>) => {
-	const {contest_id} = match.params;
+const CreateContestProblemBlock = ({ match }: RouteComponentProps<ContestPageParams>) => {
+	const { contest_id } = match.params;
 	const [success, setSuccess] = useState<boolean>();
 	const onSubmit = (event: any) => {
 		event.preventDefault();
-		const {problemID, code} = event.target;
+		const { problemID, code } = event.target;
 		fetch("/api/v0/contests/" + contest_id + "/problems", {
 			method: "POST",
 			headers: {
@@ -103,16 +117,16 @@ const CreateContestProblemBlock = ({match}: RouteComponentProps<ContestPageParam
 			.then(() => setSuccess(true));
 	};
 	if (success) {
-		return <Redirect to={"/contests/" + contest_id}/>
+		return <Redirect to={"/contests/" + contest_id} />
 	}
 	return <FormBlock onSubmit={onSubmit} title="Add contest problem" footer={
 		<Button type="submit" color="primary">Create</Button>
 	}>
 		<Field title="Problem ID:">
-			<Input type="number" name="problemID" placeholder="ID" required/>
+			<Input type="number" name="problemID" placeholder="ID" required />
 		</Field>
 		<Field title="Code:">
-			<Input type="text" name="code" placeholder="Code" required/>
+			<Input type="text" name="code" placeholder="Code" required />
 		</Field>
 	</FormBlock>;
 };
@@ -121,60 +135,68 @@ type ContestProblemPageParams = ContestPageParams & {
 	problem_code: string;
 }
 
-// const ContestProblemSideBlock = ({match}: RouteComponentProps<ContestProblemPageParams>) => {
-// 	const {contest_id, problem_code} = match.params;
-// 	const [problem, setProblem] = useState<ContestProblem>();
-// 	const [compilers, setCompilers] = useState<Compiler[]>();
-// 	const [solution, setSolution] = useState<Solution>();
-// 	const onSubmit = (event: any) => {
-// 		event.preventDefault();
-// 		const {sourceFile, sourceText, compilerID} = event.target;
-// 		let create = (code: string) => {
-// 			fetch("/api/v0/contests/" + contest_id + "/problems/" + problem_code, {
-// 				method: "POST",
-// 				headers: {
-// 					"Content-Type": "application/json; charset=UTF-8",
-// 				},
-// 				body: JSON.stringify({
-// 					CompilerID: Number(compilerID.value),
-// 					SourceCode: code,
-// 				})
-// 			})
-// 				.then(result => result.json())
-// 				.then(result => setSolution(result));
-// 		};
-// 		if (sourceFile.files.length > 0) {
-// 			let reader = new FileReader();
-// 			reader.onload = (event: any) => create(event.target.result);
-// 			reader.readAsText(sourceFile.files[0]);
-// 		} else {
-// 			create(sourceText.value);
-// 		}
-// 	};
-// 	useEffect(() => {
-// 		fetch("/api/v0/compilers")
-// 			.then(result => result.json())
-// 			.then(result => setCompilers(result))
-// 	}, []);
-// 	useEffect(() => {
-// 		fetch("/api/v0/contests/" + contest_id + "/problems/" + problem_code)
-// 			.then(result => result.json())
-// 			.then(result => setProblem(result));
-// 	}, [contest_id, problem_code]);
-// 	if (solution) {
-// 		return <Redirect to={"/solutions/" + solution.ID} push={true}/>;
-// 	}
-// 	if (!problem) {
-// 		return <>Loading...</>;
-// 	}
-// 	return <>
-// 		<SubmitSolutionSideBlock onSubmit={onSubmit} compilers={compilers}/>
-// 		{problem.Solutions && <SolutionsSideBlock solutions={problem.Solutions}/>}
-// 	</>;
-// };
+const ContestProblemSideBlock = ({ match }: RouteComponentProps<ContestProblemPageParams>) => {
+	const { contest_id, problem_code } = match.params;
+	const [newSolution, setNewSolution] = useState<Solution>();
+	const [file, setFile] = useState<File>();
+	const [error, setError] = useState<ErrorResponse>();
+	const onSubmit = (event: any) => {
+		event.preventDefault();
+		setError(undefined);
+		file && submitContestSolution(Number(contest_id), problem_code, {
+			file: file,
+		})
+			.then(solution => {
+				setNewSolution(solution);
+				setFile(undefined);
+				setError(undefined);
+			})
+			.catch(setError);
+	};
+	if (newSolution) {
+		return <Redirect to={`/solutions/${newSolution.id}`} />
+	}
+	const errorMessage = error && error.message;
+	const invalidFields = (error && error.invalid_fields) || {};
+	return <FormBlock onSubmit={onSubmit} title="Submit solution" footer={
+		<Button color="primary">Submit</Button>
+	}>
+		{errorMessage && <Alert>{errorMessage}</Alert>}
+		<Field title="Solution file:">
+			<input
+				type="file" name="file"
+				onChange={(e: ChangeEvent<HTMLInputElement>) => setFile(e.target.files?.[0])}
+				required />
+			{invalidFields["file"] && <Alert>{invalidFields["file"].message}</Alert>}
+		</Field>
+	</FormBlock>;
+	// 	const [problem, setProblem] = useState<ContestProblem>();
+	// 	const [compilers, setCompilers] = useState<Compiler[]>();
+	// 	const [solution, setSolution] = useState<Solution>();
+	// 	useEffect(() => {
+	// 		fetch("/api/v0/compilers")
+	// 			.then(result => result.json())
+	// 			.then(result => setCompilers(result))
+	// 	}, []);
+	// 	useEffect(() => {
+	// 		fetch("/api/v0/contests/" + contest_id + "/problems/" + problem_code)
+	// 			.then(result => result.json())
+	// 			.then(result => setProblem(result));
+	// 	}, [contest_id, problem_code]);
+	// 	if (solution) {
+	// 		return <Redirect to={"/solutions/" + solution.ID} push={true}/>;
+	// 	}
+	// 	if (!problem) {
+	// 		return <>Loading...</>;
+	// 	}
+	// 	return <>
+	// 		<SubmitSolutionSideBlock onSubmit={onSubmit} compilers={compilers}/>
+	// 		{problem.Solutions && <SolutionsSideBlock solutions={problem.Solutions}/>}
+	// 	</>;
+};
 
-const ContestProblemBlock = ({match}: RouteComponentProps<ContestProblemPageParams>) => {
-	const {contest_id, problem_code} = match.params;
+const ContestProblemBlock = ({ match }: RouteComponentProps<ContestProblemPageParams>) => {
+	const { contest_id, problem_code } = match.params;
 	const [problem, setProblem] = useState<ContestProblem>();
 	useEffect(() => {
 		fetch("/api/v0/contests/" + contest_id + "/problems/" + problem_code)
@@ -195,7 +217,7 @@ type ContestTabsProps = BlockProps & {
 };
 
 const ContestTabs: FC<ContestTabsProps> = props => {
-	const {contest, currentTab} = props;
+	const { contest, currentTab } = props;
 	const getActiveClass = (name: string): string => {
 		return name === currentTab ? "active" : "";
 	};
@@ -219,8 +241,8 @@ export type EditContestBlockProps = {
 };
 
 const EditContestBlock: FC<EditContestBlockProps> = props => {
-	const {contest} = props;
-	const [form, setForm] = useState<{[key: string]: string}>({});
+	const { contest } = props;
+	const [form, setForm] = useState<{ [key: string]: string }>({});
 	const [error, setError] = useState<ErrorResponse>();
 	const onSubmit = (event: any) => {
 		event.preventDefault();
@@ -247,8 +269,8 @@ const EditContestBlock: FC<EditContestBlockProps> = props => {
 			<Input
 				type="text" name="title" placeholder="Title"
 				value={form.title ?? contest.title}
-				onValueChange={value => setForm({...form, title: value})}
-				required/>
+				onValueChange={value => setForm({ ...form, title: value })}
+				required />
 			{error && error.invalid_fields && error.invalid_fields["title"] && <Alert>{error.invalid_fields["title"].message}</Alert>}
 		</Field>
 	</FormBlock>;
@@ -259,7 +281,7 @@ export type DeleteContestBlockProps = {
 };
 
 const DeleteContestBlock: FC<DeleteContestBlockProps> = props => {
-	const {contest} = props;
+	const { contest } = props;
 	const [redirect, setRedirect] = useState<boolean>(false);
 	const [title, setTitle] = useState<string>();
 	const [error, setError] = useState<ErrorResponse>();
@@ -274,7 +296,7 @@ const DeleteContestBlock: FC<DeleteContestBlockProps> = props => {
 		setError(undefined);
 	};
 	if (redirect) {
-		return <Redirect to="/"/>;
+		return <Redirect to="/" />;
 	}
 	return <FormBlock className="b-contest-edit" title="Delete contest" onSubmit={onSubmit} footer={<>
 		<Button
@@ -289,7 +311,7 @@ const DeleteContestBlock: FC<DeleteContestBlockProps> = props => {
 				type="text" name="title" placeholder="Title"
 				value={title ?? ""}
 				onValueChange={value => setTitle(value)}
-				required autoComplete="off"/>
+				required autoComplete="off" />
 		</Field>
 	</FormBlock>;
 };
@@ -299,10 +321,10 @@ type EditContestProblemsBlockProps = {
 };
 
 const EditContestProblemsBlock: FC<EditContestProblemsBlockProps> = props => {
-	const {contest} = props;
+	const { contest } = props;
 	const [error, setError] = useState<ErrorResponse>();
 	const [problems, setProblems] = useState<ContestProblems>();
-	const [form, setForm] = useState<{[key: string]: string}>({});
+	const [form, setForm] = useState<{ [key: string]: string }>({});
 	useEffect(() => {
 		observeContestProblems(contest.id)
 			.then(problems => {
@@ -318,7 +340,7 @@ const EditContestProblemsBlock: FC<EditContestProblemsBlockProps> = props => {
 			problem_id: Number(form.problem_id ?? 0),
 		})
 			.then(problem => {
-				setProblems({...problems, problems: [...(problems?.problems ?? []), problem]});
+				setProblems({ ...problems, problems: [...(problems?.problems ?? []), problem] });
 				setForm({});
 				setError(undefined);
 			})
@@ -344,64 +366,63 @@ const EditContestProblemsBlock: FC<EditContestProblemsBlockProps> = props => {
 		footer={canCreateProblem && <form onSubmit={onSubmit}>
 			<Input name="code"
 				value={form.code || ""}
-				onValueChange={value => setForm({...form, code: value})}
+				onValueChange={value => setForm({ ...form, code: value })}
 				placeholder="Code"
-				required/>
+				required />
 			<Input name="problem_id"
 				value={form.problem_id || ""}
-				onValueChange={value => setForm({...form, problem_id: value})}
+				onValueChange={value => setForm({ ...form, problem_id: value })}
 				placeholder="Problem ID"
-				required/>
+				required />
 			<Button type="submit">Create</Button>
 		</form>}
 	>
 		{error && <Alert>{error.message}</Alert>}
 		<table className="ui-table">
 			<thead>
-			<tr>
-				<th className="code">#</th>
-				<th className="title">Title</th>
-				<th className="actions">Actions</th>
-			</tr>
+				<tr>
+					<th className="code">#</th>
+					<th className="title">Title</th>
+					<th className="actions">Actions</th>
+				</tr>
 			</thead>
 			<tbody>
-			{contestProblems.map((problem: ContestProblem, key: number) => {
-				const {code, title} = problem;
-				const deleteProblem = () => {
-					deleteContestProblem(contest.id, code)
-						.then(problem => {
-							const contestProblems = [...(problems?.problems ?? [])];
-							const pos = contestProblems.findIndex(value => value.code === problem.code && value.title === problem.title);
-							if (pos >= 0) {
-								contestProblems.splice(pos, 1);
-							}
-							setProblems({...problems, problems: contestProblems});
-							setForm({});
-							setError(undefined);
-						})
-						.catch(setError);
-				};
-				return <tr key={key} className="problem">
-					<td className="code">{code}</td>
-					<td className="title">{title}</td>
-					<td className="actions">{canDeleteProblem && <Button onClick={deleteProblem}>Delete</Button>}</td>
-				</tr>;
-			})}
+				{contestProblems.map((problem: ContestProblem, key: number) => {
+					const { code, title } = problem;
+					const deleteProblem = () => {
+						deleteContestProblem(contest.id, code)
+							.then(problem => {
+								const contestProblems = [...(problems?.problems ?? [])];
+								const pos = contestProblems.findIndex(value => value.code === problem.code && value.title === problem.title);
+								if (pos >= 0) {
+									contestProblems.splice(pos, 1);
+								}
+								setProblems({ ...problems, problems: contestProblems });
+								setForm({});
+								setError(undefined);
+							})
+							.catch(setError);
+					};
+					return <tr key={key} className="problem">
+						<td className="code">{code}</td>
+						<td className="title">{title}</td>
+						<td className="actions">{canDeleteProblem && <Button onClick={deleteProblem}>Delete</Button>}</td>
+					</tr>;
+				})}
 			</tbody>
 		</table>
 	</Block>;
 };
-
 
 type EditContestParticipantsBlockProps = {
 	contest: Contest;
 };
 
 const EditContestParticipantsBlock: FC<EditContestParticipantsBlockProps> = props => {
-	const {contest} = props;
+	const { contest } = props;
 	const [error, setError] = useState<ErrorResponse>();
 	const [participants, setParticipants] = useState<ContestParticipants>();
-	const [form, setForm] = useState<{[key: string]: string}>({});
+	const [form, setForm] = useState<{ [key: string]: string }>({});
 	useEffect(() => {
 		observeContestParticipants(contest.id)
 			.then(participants => {
@@ -417,7 +438,7 @@ const EditContestParticipantsBlock: FC<EditContestParticipantsBlockProps> = prop
 			user_login: form.user_id,
 		})
 			.then(participant => {
-				setParticipants({...participants, participants: [...(participants?.participants ?? []), participant]});
+				setParticipants({ ...participants, participants: [...(participants?.participants ?? []), participant] });
 				setForm({});
 				setError(undefined);
 			})
@@ -439,52 +460,52 @@ const EditContestParticipantsBlock: FC<EditContestParticipantsBlockProps> = prop
 		footer={canCreateParticipant && <form onSubmit={onSubmit}>
 			<Input name="user_id"
 				value={form.user_id || ""}
-				onValueChange={value => setForm({...form, user_id: value})}
+				onValueChange={value => setForm({ ...form, user_id: value })}
 				placeholder="User ID"
-				required/>
+				required />
 			<Button type="submit">Create</Button>
 		</form>}
 	>
 		{error && <Alert>{error.message}</Alert>}
 		<table className="ui-table">
 			<thead>
-			<tr>
-				<th className="id">#</th>
-				<th className="login">Login</th>
-				<th className="actions">Actions</th>
-			</tr>
+				<tr>
+					<th className="id">#</th>
+					<th className="login">Login</th>
+					<th className="actions">Actions</th>
+				</tr>
 			</thead>
 			<tbody>
-			{contestParticipants.map((participant: ContestParticipant, key: number) => {
-				const {id, user} = participant;
-				const deleteParticipant = () => {
-					deleteContestParticipant(contest.id, id)
-						.then(participant => {
-							const contestParticipants = [...(participants?.participants ?? [])];
-							const pos = contestParticipants.findIndex(value => value.id === participant.id);
-							if (pos >= 0) {
-								contestParticipants.splice(pos, 1);
-							}
-							setParticipants({...participants, participants: contestParticipants});
-							setForm({});
-							setError(undefined);
-						})
-						.catch(setError);
-				};
-				return <tr key={key} className="participant">
-					<td className="id">{id}</td>
-					<td className="login">{user?.login}</td>
-					<td className="actions">{canDeleteParticipant && <Button onClick={deleteParticipant}>Delete</Button>}</td>
-				</tr>;
-			})}
+				{contestParticipants.map((participant: ContestParticipant, key: number) => {
+					const { id, user } = participant;
+					const deleteParticipant = () => {
+						deleteContestParticipant(contest.id, id)
+							.then(participant => {
+								const contestParticipants = [...(participants?.participants ?? [])];
+								const pos = contestParticipants.findIndex(value => value.id === participant.id);
+								if (pos >= 0) {
+									contestParticipants.splice(pos, 1);
+								}
+								setParticipants({ ...participants, participants: contestParticipants });
+								setForm({});
+								setError(undefined);
+							})
+							.catch(setError);
+					};
+					return <tr key={key} className="participant">
+						<td className="id">{id}</td>
+						<td className="login">{user?.login}</td>
+						<td className="actions">{canDeleteParticipant && <Button onClick={deleteParticipant}>Delete</Button>}</td>
+					</tr>;
+				})}
 			</tbody>
 		</table>
 	</Block>;
 };
 
 
-const ContestPage = ({match}: RouteComponentProps<ContestPageParams>) => {
-	const {contest_id} = match.params;
+const ContestPage = ({ match }: RouteComponentProps<ContestPageParams>) => {
+	const { contest_id } = match.params;
 	const [contest, setContest] = useState<Contest>();
 	const [currentTab, setCurrentTab] = useState<string>();
 	useEffect(() => {
@@ -495,16 +516,16 @@ const ContestPage = ({match}: RouteComponentProps<ContestPageParams>) => {
 	if (!contest) {
 		return <>Loading...</>;
 	}
-	const {title, permissions} = contest;
+	const { title, permissions } = contest;
 	return <Page title={`Contest: ${title}`} sidebar={<Switch>
-		{/* <Route exact path="/contests/:contest_id/problems/:ProblemCode" component={ContestProblemSideBlock}/> */}
+		<Route exact path="/contests/:contest_id/problems/:problem_code" component={ContestProblemSideBlock} />
 	</Switch>}>
-		<ContestTabs contest={contest} currentTab={currentTab}/>
+		<ContestTabs contest={contest} currentTab={currentTab} />
 		<Switch>
 			<Route exact path="/contests/:contest_id">
 				{() => {
 					setCurrentTab("problems");
-					return <ContestProblemsBlock contest={contest}/>;
+					return <ContestProblemsBlock contest={contest} />;
 				}}
 			</Route>
 			<Route exact path="/contests/:contest_id/solutions">
@@ -518,15 +539,15 @@ const ContestPage = ({match}: RouteComponentProps<ContestPageParams>) => {
 				{() => {
 					setCurrentTab("manage");
 					return <>
-						{permissions && permissions.includes("update_contest") && <EditContestBlock contest={contest}/>}
-						{permissions && (permissions.includes("observe_contest_problems")) && <EditContestProblemsBlock contest={contest}/>}
-						{permissions && (permissions.includes("observe_contest_participants")) && <EditContestParticipantsBlock contest={contest}/>}
-						{permissions && permissions.includes("delete_contest") && <DeleteContestBlock contest={contest}/>}
+						{permissions && permissions.includes("update_contest") && <EditContestBlock contest={contest} />}
+						{permissions && (permissions.includes("observe_contest_problems")) && <EditContestProblemsBlock contest={contest} />}
+						{permissions && (permissions.includes("observe_contest_participants")) && <EditContestParticipantsBlock contest={contest} />}
+						{permissions && permissions.includes("delete_contest") && <DeleteContestBlock contest={contest} />}
 					</>;
 				}}
 			</Route>
-			<Route exact path="/contests/:contest_id/problems/create" component={CreateContestProblemBlock}/>
-			<Route exact path="/contests/:contest_id/problems/:problem_code" component={ContestProblemBlock}/>
+			<Route exact path="/contests/:contest_id/problems/create" component={CreateContestProblemBlock} />
+			<Route exact path="/contests/:contest_id/problems/:problem_code" component={ContestProblemBlock} />
 		</Switch>
 	</Page>;
 };

@@ -1,12 +1,12 @@
-import {FC, useEffect, useState, useContext} from "react";
-import {Link} from "react-router-dom";
-import {AuthContext} from "../../AuthContext";
-import {Problems, ErrorResponse, Problem, observeProblems} from "../../api";
+import { FC, useEffect, useState, useContext } from "react";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../../AuthContext";
+import { Problems, ErrorResponse, Problem, observeProblems } from "../../api";
 import Alert from "../../ui/Alert";
 import Button from "../../ui/Button";
 import Page from "../../components/Page";
 import Sidebar from "../../components/Sidebar";
-import Block, {BlockProps} from "../../ui/Block";
+import Block, { BlockProps } from "../../ui/Block";
 import "./index.scss";
 
 export type ProblemsBlockProps = BlockProps & {
@@ -14,23 +14,23 @@ export type ProblemsBlockProps = BlockProps & {
 };
 
 const ProblemsBlock: FC<ProblemsBlockProps> = props => {
-	const {problems, ...rest} = props;
+	const { problems, ...rest } = props;
 	return <Block className="b-problems" title="Problems" {...rest}>
 		<table className="ui-table">
 			<thead>
-			<tr>
-				<th className="title">Title</th>
-			</tr>
+				<tr>
+					<th className="title">Title</th>
+				</tr>
 			</thead>
 			<tbody>
-			{problems && problems.map((problem, index) => {
-				const {id, title} = problem;
-				return <tr key={index} className="problem">
-					<td className="title">
-						<Link to={`/problems/${id}`}>{title}</Link>
-					</td>
-				</tr>;
-			})}
+				{problems && problems.map((problem, index) => {
+					const { id, title } = problem;
+					return <tr key={index} className="problem">
+						<td className="title">
+							<Link to={`/problems/${id}`}>{title}</Link>
+						</td>
+					</tr>;
+				})}
 			</tbody>
 		</table>
 	</Block>
@@ -39,7 +39,7 @@ const ProblemsBlock: FC<ProblemsBlockProps> = props => {
 const ProblemsPage: FC = () => {
 	const [problems, setProblems] = useState<Problems>();
 	const [error, setError] = useState<ErrorResponse>();
-	const {status} = useContext(AuthContext);
+	const { status } = useContext(AuthContext);
 	useEffect(() => {
 		setProblems(undefined);
 		observeProblems()
@@ -47,19 +47,19 @@ const ProblemsPage: FC = () => {
 			.catch(setError);
 	}, []);
 	if (error) {
-		return <Page title="Error" sidebar={<Sidebar/>}>
+		return <Page title="Error" sidebar={<Sidebar />}>
 			{error.message && <Alert>{error.message}</Alert>}
 		</Page>;
 	}
 	if (!problems) {
-		return <Page title="Problems" sidebar={<Sidebar/>}>Loading...</Page>;
+		return <Page title="Problems" sidebar={<Sidebar />}>Loading...</Page>;
 	}
-	return <Page title="Problems" sidebar={<Sidebar/>}>
+	return <Page title="Problems" sidebar={<Sidebar />}>
 		{status?.roles.includes("create_problem") && <p>
 			<Link to={"/problems/create"}><Button>Create</Button></Link>
 		</p>}
 		{problems ?
-			<ProblemsBlock problems={problems.problems || []}/> :
+			<ProblemsBlock problems={problems.problems || []} /> :
 			<>Loading...</>}
 	</Page>;
 };

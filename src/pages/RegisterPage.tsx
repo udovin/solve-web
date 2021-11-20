@@ -1,18 +1,18 @@
-import {useState} from "react";
-import {Redirect} from "react-router";
+import { useState } from "react";
+import { Redirect } from "react-router";
 import Page from "../components/Page";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
 import FormBlock from "../components/FormBlock";
 import Field from "../ui/Field";
 import Alert from "../ui/Alert";
-import {ErrorResponse, registerUser} from "../api";
+import { ErrorResponse, registerUser } from "../api";
 import Sidebar from "../components/Sidebar";
 
 const RegisterPage = () => {
 	const [success, setSuccess] = useState<boolean>();
-	const [error, setError] = useState<ErrorResponse>({message: ""});
-	const [form, setForm] = useState<{[key: string]: string}>({});
+	const [error, setError] = useState<ErrorResponse>({ message: "" });
+	const [form, setForm] = useState<{ [key: string]: string }>({});
 	const onSubmit = (event: any) => {
 		event.preventDefault();
 		registerUser({
@@ -24,16 +24,16 @@ const RegisterPage = () => {
 			middle_name: form.middle_name,
 		})
 			.then(() => {
-				setError({message: ""});
+				setError({ message: "" });
 				setSuccess(true);
 			})
 			.catch(error => setError(error));
 	};
 	if (success) {
-		return <Redirect to={"/login"}/>
+		return <Redirect to={"/login"} />
 	}
 	const equalPasswords = form.password === form.password_repeat;
-	return <Page title="Register" sidebar={<Sidebar/>}>
+	return <Page title="Register" sidebar={<Sidebar />}>
 		<FormBlock onSubmit={onSubmit} title="Register" footer={
 			<Button
 				type="submit" color="primary"
@@ -48,7 +48,7 @@ const RegisterPage = () => {
 				<Input
 					type="text" name="login" placeholder="Username"
 					value={form.login || ""}
-					onValueChange={(value) => setForm({...form, login: value})}
+					onValueChange={(value) => setForm({ ...form, login: value })}
 					required autoFocus
 				/>
 				{error.invalid_fields && error.invalid_fields["login"] && <Alert>{error.invalid_fields["login"].message}</Alert>}
@@ -57,7 +57,7 @@ const RegisterPage = () => {
 				<Input
 					type="text" name="email" placeholder="E-mail"
 					value={form.email || ""}
-					onValueChange={(value) => setForm({...form, email: value})}
+					onValueChange={(value) => setForm({ ...form, email: value })}
 					required
 				/>
 				{error.invalid_fields && error.invalid_fields["email"] && <Alert>{error.invalid_fields["email"].message}</Alert>}
@@ -66,7 +66,7 @@ const RegisterPage = () => {
 				<Input
 					type="password" name="password" placeholder="Password"
 					value={form.password}
-					onValueChange={(value) => setForm({...form, password: value})}
+					onValueChange={(value) => setForm({ ...form, password: value })}
 					required
 				/>
 				{error.invalid_fields && error.invalid_fields["password"] && <Alert>{error.invalid_fields["password"].message}</Alert>}
@@ -75,7 +75,7 @@ const RegisterPage = () => {
 				<Input
 					type="password" name="password_repeat" placeholder="Repeat password"
 					value={form.password_repeat}
-					onValueChange={(value) => setForm({...form, password_repeat: value})}
+					onValueChange={(value) => setForm({ ...form, password_repeat: value })}
 					required
 				/>
 				{form.password && !equalPasswords && <Alert>Passwords does not match</Alert>}
@@ -84,7 +84,7 @@ const RegisterPage = () => {
 				<Input
 					type="text" name="first_name" placeholder="First name"
 					value={form.first_name || ""}
-					onValueChange={(value) => setForm({...form, first_name: value})}
+					onValueChange={(value) => setForm({ ...form, first_name: value })}
 				/>
 				{error.invalid_fields && error.invalid_fields["first_name"] && <Alert>{error.invalid_fields["first_name"].message}</Alert>}
 			</Field>
@@ -92,7 +92,7 @@ const RegisterPage = () => {
 				<Input
 					type="text" name="last_name" placeholder="Last name"
 					value={form.last_name || ""}
-					onValueChange={(value) => setForm({...form, last_name: value})}
+					onValueChange={(value) => setForm({ ...form, last_name: value })}
 				/>
 				{error.invalid_fields && error.invalid_fields["last_name"] && <Alert>{error.invalid_fields["last_name"].message}</Alert>}
 			</Field>
@@ -100,7 +100,7 @@ const RegisterPage = () => {
 				<Input
 					type="text" name="middle_name" placeholder="Middle name"
 					value={form.middle_name || ""}
-					onValueChange={(value) => setForm({...form, middle_name: value})}
+					onValueChange={(value) => setForm({ ...form, middle_name: value })}
 				/>
 				{error.invalid_fields && error.invalid_fields["middle_name"] && <Alert>{error.invalid_fields["middle_name"].message}</Alert>}
 			</Field>

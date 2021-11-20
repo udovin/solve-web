@@ -1,9 +1,9 @@
-import React, {useContext, useEffect, useState} from "react";
-import {Redirect} from "react-router";
-import {AuthContext} from "../AuthContext";
+import React, { useContext, useEffect, useState } from "react";
+import { Redirect } from "react-router";
+import { AuthContext } from "../AuthContext";
 
 const LogoutPage = () => {
-	const {status, setStatus} = useContext(AuthContext);
+	const { status, setStatus } = useContext(AuthContext);
 	const [success, setSuccess] = useState<boolean>();
 	useEffect(() => {
 		if (status) {
@@ -20,7 +20,7 @@ const LogoutPage = () => {
 		}
 	}, [status, setStatus]);
 	if (!(status && status.user) || success) {
-		return <Redirect to={"/"}/>;
+		return <Redirect to={"/"} />;
 	}
 	return <>Loading...</>;
 };

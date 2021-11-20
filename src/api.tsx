@@ -7,7 +7,7 @@ export type ErrorField = {
 export type ErrorResponse = {
 	message: string;
 	missing_roles?: string[];
-	invalid_fields?: {[key: string]: ErrorField};
+	invalid_fields?: { [key: string]: ErrorField };
 };
 
 export type User = {
@@ -95,6 +95,8 @@ export type Report = {
 };
 
 export type Solution = {
+	id: number;
+	// deprecated.
 	ID: number;
 	ProblemID: number;
 	ContestID?: number;
@@ -217,7 +219,7 @@ const parseResp = (promise: Promise<Response>) => {
 export const loginUser = (form: LoginForm) => {
 	return parseResp(fetch("/api/v0/login", {
 		method: "POST",
-		headers: {...HEADERS, ...POST_JSON_HEADERS},
+		headers: { ...HEADERS, ...POST_JSON_HEADERS },
 		body: JSON.stringify(form)
 	}));
 };
@@ -225,7 +227,7 @@ export const loginUser = (form: LoginForm) => {
 export const registerUser = (form: RegisterForm) => {
 	return parseResp(fetch("/api/v0/register", {
 		method: "POST",
-		headers: {...HEADERS, ...POST_JSON_HEADERS},
+		headers: { ...HEADERS, ...POST_JSON_HEADERS },
 		body: JSON.stringify(form),
 	}));
 };
@@ -246,7 +248,7 @@ export type UpdateUserForm = {
 export const updateUser = (userID: UserID, form: UpdateUserForm) => {
 	return parseResp(fetch(`/api/v0/users/${userID}`, {
 		method: "PATCH",
-		headers: {...HEADERS, ...POST_JSON_HEADERS},
+		headers: { ...HEADERS, ...POST_JSON_HEADERS },
 		body: JSON.stringify(form),
 	}));
 };
@@ -279,7 +281,7 @@ export type UpdatePasswordForm = {
 export const updateUserPassword = (userID: UserID, form: UpdatePasswordForm) => {
 	return parseResp(fetch(`/api/v0/users/${userID}/password`, {
 		method: "POST",
-		headers: {...HEADERS, ...POST_JSON_HEADERS},
+		headers: { ...HEADERS, ...POST_JSON_HEADERS },
 		body: JSON.stringify(form),
 	}));
 };
@@ -298,7 +300,7 @@ export type CreateContestForm = {
 export const createContest = (form: CreateContestForm) => {
 	return parseResp(fetch(`/api/v0/contests`, {
 		method: "POST",
-		headers: {...HEADERS, ...POST_JSON_HEADERS},
+		headers: { ...HEADERS, ...POST_JSON_HEADERS },
 		body: JSON.stringify(form),
 	}));
 };
@@ -310,7 +312,7 @@ export type UpdateContestForm = {
 export const updateContest = (id: number, form: UpdateContestForm) => {
 	return parseResp(fetch(`/api/v0/contests/${id}`, {
 		method: "PATCH",
-		headers: {...HEADERS, ...POST_JSON_HEADERS},
+		headers: { ...HEADERS, ...POST_JSON_HEADERS },
 		body: JSON.stringify(form),
 	}));
 };
@@ -344,7 +346,7 @@ export type CreateContestProblemForm = {
 export const createContestProblem = (contestID: number, form: CreateContestProblemForm) => {
 	return parseResp(fetch(`/api/v0/contests/${contestID}/problems`, {
 		method: "POST",
-		headers: {...HEADERS, ...POST_JSON_HEADERS},
+		headers: { ...HEADERS, ...POST_JSON_HEADERS },
 		body: JSON.stringify(form),
 	}));
 };
@@ -371,7 +373,7 @@ export type CreateContestParticipantForm = {
 export const createContestParticipant = (contestID: number, form: CreateContestParticipantForm) => {
 	return parseResp(fetch(`/api/v0/contests/${contestID}/participants`, {
 		method: "POST",
-		headers: {...HEADERS, ...POST_JSON_HEADERS},
+		headers: { ...HEADERS, ...POST_JSON_HEADERS },
 		body: JSON.stringify(form),
 	}));
 };
@@ -404,4 +406,23 @@ export const createProblem = (form: CreateProblemForm) => {
 		headers: HEADERS,
 		body: formData,
 	}));
+};
+
+export type SubmitContestSolution = {
+	file: File;
+};
+
+export const submitContestSolution = (
+	contestID: number, problemCode: string, form: SubmitContestSolution,
+) => {
+	const formData = new FormData();
+	formData.append("file", form.file, form.file.name);
+	return parseResp(fetch(
+		`/api/v0/contests/${contestID}/problems/${problemCode}/submit`,
+		{
+			method: "POST",
+			headers: HEADERS,
+			body: formData,
+		},
+	));
 };

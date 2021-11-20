@@ -1,5 +1,5 @@
-import React, {FC, useEffect, useState} from "react";
-import {statusUser, Status} from "./api";
+import React, { FC, useEffect, useState } from "react";
+import { statusUser, Status } from "./api";
 
 type Auth = {
 	status?: Status;
@@ -7,7 +7,7 @@ type Auth = {
 };
 
 const AuthContext = React.createContext<Auth>({
-	setStatus(): void {}
+	setStatus(): void { }
 });
 
 const AuthProvider: FC = props => {
@@ -17,9 +17,9 @@ const AuthProvider: FC = props => {
 			.then(result => setStatus(result))
 			.catch(error => setStatus(undefined))
 	}, []);
-	return <AuthContext.Provider value={{status, setStatus}}>
+	return <AuthContext.Provider value={{ status, setStatus }}>
 		{props.children}
 	</AuthContext.Provider>;
 };
 
-export {AuthContext, AuthProvider};
+export { AuthContext, AuthProvider };

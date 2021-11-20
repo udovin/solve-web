@@ -1,7 +1,7 @@
-import React, {useContext, useEffect, useState} from "react";
-import {RouteComponentProps} from "react-router";
-import {AuthContext} from "../AuthContext";
-import {getDefense, getShortVerdict, Solution} from "../api";
+import React, { useContext, useEffect, useState } from "react";
+import { RouteComponentProps } from "react-router";
+import { AuthContext } from "../AuthContext";
+import { getDefense, getShortVerdict, Solution } from "../api";
 import Page from "../components/Page";
 import Block from "../ui/Block";
 import Input from "../ui/Input";
@@ -13,10 +13,10 @@ type SolutionPageParams = {
 	SolutionID: string;
 }
 
-const SolutionPage = ({match}: RouteComponentProps<SolutionPageParams>) => {
-	const {SolutionID} = match.params;
+const SolutionPage = ({ match }: RouteComponentProps<SolutionPageParams>) => {
+	const { SolutionID } = match.params;
 	const [solution, setSolution] = useState<Solution>();
-	const {status} = useContext(AuthContext);
+	const { status } = useContext(AuthContext);
 	useEffect(() => {
 		fetch("/api/v0/solutions/" + SolutionID)
 			.then(result => result.json())
@@ -24,7 +24,7 @@ const SolutionPage = ({match}: RouteComponentProps<SolutionPageParams>) => {
 	}, [SolutionID]);
 	const updateVerdict = (event: any) => {
 		event.preventDefault();
-		const {verdict} = event.target;
+		const { verdict } = event.target;
 		fetch("/api/v0/solutions/" + SolutionID + "/report", {
 			method: "POST",
 			headers: {
@@ -38,7 +38,7 @@ const SolutionPage = ({match}: RouteComponentProps<SolutionPageParams>) => {
 	};
 	const updatePoints = (event: any) => {
 		event.preventDefault();
-		const {points} = event.target;
+		const { points } = event.target;
 		fetch("/api/v0/solutions/" + SolutionID + "/report", {
 			method: "POST",
 			headers: {
@@ -60,20 +60,20 @@ const SolutionPage = ({match}: RouteComponentProps<SolutionPageParams>) => {
 		return <>Loading...</>;
 	}
 	let isSuper = Boolean(status);
-	const {Report} = solution;
+	const { Report } = solution;
 	return <Page title={"Solution #" + solution.ID}>
 		<Block title={"Solution #" + solution.ID} className="b-solutions">
 			<table className="ui-table">
 				<thead>
-				<tr>
-					<th className="created">Created</th>
-					<th className="participant">Participant</th>
-					<th className="problem">Problem</th>
-					<th className="verdict">Verdict</th>
-				</tr>
+					<tr>
+						<th className="created">Created</th>
+						<th className="participant">Participant</th>
+						<th className="problem">Problem</th>
+						<th className="verdict">Verdict</th>
+					</tr>
 				</thead>
 				<tbody>
-				<SolutionRow showID={false} solution={solution}/>
+					<SolutionRow showID={false} solution={solution} />
 				</tbody>
 			</table>
 		</Block>
@@ -90,7 +90,7 @@ const SolutionPage = ({match}: RouteComponentProps<SolutionPageParams>) => {
 				<Button type="submit">@</Button>
 			</form>
 			<form onSubmit={updatePoints}>
-				<Input type="number" name="points"/>
+				<Input type="number" name="points" />
 				<Button type="submit">@</Button>
 			</form>
 		</Block>}
@@ -103,10 +103,10 @@ const SolutionPage = ({match}: RouteComponentProps<SolutionPageParams>) => {
 		{Report && <Block title="Tests">
 			<table className="ui-table">
 				<thead>
-				<tr>
-					<th>Stderr</th>
-					<th>Verdict</th>
-				</tr>
+					<tr>
+						<th>Stderr</th>
+						<th>Verdict</th>
+					</tr>
 				</thead>
 				<tbody>{Report.Data.Tests && Report.Data.Tests.map((test, index) => <tr key={index}>
 					<td>{test.CheckLogs.Stderr}</td>

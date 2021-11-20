@@ -1,22 +1,22 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Page from "../components/Page";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
 import FormBlock from "../components/FormBlock";
-import {Problem} from "../api";
-import {Redirect, RouteComponentProps} from "react-router";
+import { Problem } from "../api";
+import { Redirect, RouteComponentProps } from "react-router";
 import Field from "../ui/Field";
 
 type UpdateProblemPageParams = {
 	ProblemID: string;
 }
 
-const UpdateProblemPage = ({match}: RouteComponentProps<UpdateProblemPageParams>) => {
-	const {ProblemID} = match.params;
+const UpdateProblemPage = ({ match }: RouteComponentProps<UpdateProblemPageParams>) => {
+	const { ProblemID } = match.params;
 	const [problem, setProblem] = useState<Problem>();
 	const onSubmit = (event: any) => {
 		event.preventDefault();
-		const {title, file} = event.target;
+		const { title, file } = event.target;
 		const form = new FormData();
 		form.append("ID", ProblemID);
 		form.append("Title", title.value);
@@ -30,17 +30,17 @@ const UpdateProblemPage = ({match}: RouteComponentProps<UpdateProblemPageParams>
 			.catch(error => console.log(error));
 	};
 	if (problem) {
-		return <Redirect to={"/problems/" + problem.id}/>
+		return <Redirect to={"/problems/" + problem.id} />
 	}
 	return <Page title="Update problem">
 		<FormBlock onSubmit={onSubmit} title="Update problem" footer={
 			<Button type="submit" color="primary">Update</Button>
 		}>
 			<Field title="Title:">
-				<Input type="text" name="title" placeholder="Title" required autoFocus/>
+				<Input type="text" name="title" placeholder="Title" required autoFocus />
 			</Field>
 			<Field title="Package:">
-				<Input type="file" name="file" placeholder="Package" required/>
+				<Input type="file" name="file" placeholder="Package" required />
 			</Field>
 		</FormBlock>
 	</Page>;

@@ -1,5 +1,5 @@
-import React, {FC, useContext, useEffect, useState} from "react";
-import {RouteComponentProps} from "react-router";
+import React, { FC, useContext, useEffect, useState } from "react";
+import { RouteComponentProps } from "react-router";
 import Page from "../../components/Page";
 import {
 	ErrorResponse,
@@ -16,13 +16,13 @@ import {
 import Block from "../../ui/Block";
 import FormBlock from "../../components/FormBlock";
 import Input from "../../ui/Input";
-import Button from "../../ui/Button";	
+import Button from "../../ui/Button";
 import Field from "../../ui/Field";
 import Alert from "../../ui/Alert";
-import {AuthContext} from "../../AuthContext";
+import { AuthContext } from "../../AuthContext";
 import Sidebar from "../../components/Sidebar";
 import Time from "../../ui/Time";
-import {UserPageParams} from "../UserPage";
+import { UserPageParams } from "../UserPage";
 import "./index.scss";
 
 type EditUserBlockProps = {
@@ -31,8 +31,8 @@ type EditUserBlockProps = {
 };
 
 const EditUserBlock: FC<EditUserBlockProps> = props => {
-	const {user, onUpdateUser} = props;
-	const [form, setForm] = useState<{[key: string]: string}>({});
+	const { user, onUpdateUser } = props;
+	const [form, setForm] = useState<{ [key: string]: string }>({});
 	const [error, setError] = useState<ErrorResponse>();
 	const onSubmit = (event: any) => {
 		event.preventDefault();
@@ -60,7 +60,7 @@ const EditUserBlock: FC<EditUserBlockProps> = props => {
 			<Input
 				type="text" name="first_name" placeholder="First name"
 				value={form.first_name ?? user.first_name}
-				onValueChange={(value) => setForm({...form, first_name: value})}
+				onValueChange={(value) => setForm({ ...form, first_name: value })}
 			/>
 			{error && error.invalid_fields && error.invalid_fields["first_name"] && <Alert>{error.invalid_fields["first_name"].message}</Alert>}
 		</Field>
@@ -68,7 +68,7 @@ const EditUserBlock: FC<EditUserBlockProps> = props => {
 			<Input
 				type="text" name="last_name" placeholder="Last name"
 				value={form.last_name ?? user.last_name}
-				onValueChange={(value) => setForm({...form, last_name: value})}
+				onValueChange={(value) => setForm({ ...form, last_name: value })}
 			/>
 			{error && error.invalid_fields && error.invalid_fields["last_name"] && <Alert>{error.invalid_fields["last_name"].message}</Alert>}
 		</Field>
@@ -76,7 +76,7 @@ const EditUserBlock: FC<EditUserBlockProps> = props => {
 			<Input
 				type="text" name="middle_name" placeholder="Middle name"
 				value={form.middle_name ?? user.middle_name}
-				onValueChange={(value) => setForm({...form, middle_name: value})}
+				onValueChange={(value) => setForm({ ...form, middle_name: value })}
 			/>
 			{error && error.invalid_fields && error.invalid_fields["middle_name"] && <Alert>{error.invalid_fields["middle_name"].message}</Alert>}
 		</Field>
@@ -88,9 +88,9 @@ type ChangePasswordBlockProps = {
 };
 
 const ChangePasswordBlock: FC<ChangePasswordBlockProps> = props => {
-	const {userID} = props;
+	const { userID } = props;
 	const [error, setError] = useState<ErrorResponse>();
-	const [form, setForm] = useState<{[key: string]: string}>({});
+	const [form, setForm] = useState<{ [key: string]: string }>({});
 	const equalPasswords = form.password === form.password_repeat;
 	const onSubmit = (event: any) => {
 		event.preventDefault();
@@ -115,7 +115,7 @@ const ChangePasswordBlock: FC<ChangePasswordBlockProps> = props => {
 			<Input
 				type="password" name="old_password" placeholder="Old password"
 				value={form.old_password}
-				onValueChange={(value) => setForm({...form, old_password: value})}
+				onValueChange={(value) => setForm({ ...form, old_password: value })}
 				required
 			/>
 			{error && error.invalid_fields && error.invalid_fields["old_password"] && <Alert>{error.invalid_fields["old_password"].message}</Alert>}
@@ -124,7 +124,7 @@ const ChangePasswordBlock: FC<ChangePasswordBlockProps> = props => {
 			<Input
 				type="password" name="password" placeholder="New password"
 				value={form.password}
-				onValueChange={(value) => setForm({...form, password: value})}
+				onValueChange={(value) => setForm({ ...form, password: value })}
 				required
 			/>
 			{error && error.invalid_fields && error.invalid_fields["password"] && <Alert>{error.invalid_fields["password"].message}</Alert>}
@@ -133,7 +133,7 @@ const ChangePasswordBlock: FC<ChangePasswordBlockProps> = props => {
 			<Input
 				type="password" name="password_repeat" placeholder="Repeat new password"
 				value={form.password_repeat}
-				onValueChange={(value) => setForm({...form, password_repeat: value})}
+				onValueChange={(value) => setForm({ ...form, password_repeat: value })}
 				required
 			/>
 			{form.password && !equalPasswords && <Alert>Passwords does not match</Alert>}
@@ -146,11 +146,11 @@ type CurrentSessionsBlockProps = {
 };
 
 const CurrentSessionsBlock: FC<CurrentSessionsBlockProps> = props => {
-	const {userID} = props;
-	const {status} = useContext(AuthContext);
+	const { userID } = props;
+	const { status } = useContext(AuthContext);
 	const [error, setError] = useState<ErrorResponse>();
 	const [sessions, setSessions] = useState<Sessions>();
-	const [deletedSessions, setDeletedSessions] = useState<{[key: number]: boolean}>();
+	const [deletedSessions, setDeletedSessions] = useState<{ [key: number]: boolean }>();
 	useEffect(() => {
 		observeUserSessions(userID)
 			.then(sessions => {
@@ -163,45 +163,45 @@ const CurrentSessionsBlock: FC<CurrentSessionsBlockProps> = props => {
 	const onDeleteSession = (session: Session) => {
 		deleteSession(session.id)
 			.then((session: Session) => {
-				setDeletedSessions({...deletedSessions, [session.id]: true});
+				setDeletedSessions({ ...deletedSessions, [session.id]: true });
 			})
 			.catch(console.log);
 	};
-	return <Block title="Current sessions" className="b-current-sessions">{error ? 
-		<Alert>{error.message}</Alert> : 
+	return <Block title="Current sessions" className="b-current-sessions">{error ?
+		<Alert>{error.message}</Alert> :
 		<table className="ui-table">
 			<thead>
-			<tr>
-				<th className="id">#</th>
-				<th className="created">Created</th>
-				<th className="expires">Expires</th>
-				<th className="actions">Actions</th>
-			</tr>
+				<tr>
+					<th className="id">#</th>
+					<th className="created">Created</th>
+					<th className="expires">Expires</th>
+					<th className="actions">Actions</th>
+				</tr>
 			</thead>
 			<tbody>
-			{sessions && sessions.sessions && sessions.sessions.map((session: Session, key: number) => {
-				const {id, create_time, expire_time} = session;
-				const current = status?.session.id === id;
-				const deleted = !!deletedSessions?.[session.id];
-				return <tr key={key} className={`session ${current ? "success" : (deleted ? "deleted" : "")}`}>
-					<td className="id">{id}</td>
-					<td className="created"><Time value={create_time}/></td>
-					<td className="expires"><Time value={expire_time}/></td>
-					<td className="actions">
-						{!current && <Button
-							disabled={deleted}
-							onClick={() => onDeleteSession(session)}
-						>Close</Button>}
-					</td>
-				</tr>;
-			})}
+				{sessions && sessions.sessions && sessions.sessions.map((session: Session, key: number) => {
+					const { id, create_time, expire_time } = session;
+					const current = status?.session.id === id;
+					const deleted = !!deletedSessions?.[session.id];
+					return <tr key={key} className={`session ${current ? "success" : (deleted ? "deleted" : "")}`}>
+						<td className="id">{id}</td>
+						<td className="created"><Time value={create_time} /></td>
+						<td className="expires"><Time value={expire_time} /></td>
+						<td className="actions">
+							{!current && <Button
+								disabled={deleted}
+								onClick={() => onDeleteSession(session)}
+							>Close</Button>}
+						</td>
+					</tr>;
+				})}
 			</tbody>
 		</table>
 	}</Block>;
 };
 
-const EditUserPage = ({match}: RouteComponentProps<UserPageParams>) => {
-	const {user_id} = match.params;
+const EditUserPage = ({ match }: RouteComponentProps<UserPageParams>) => {
+	const { user_id } = match.params;
 	const [user, setUser] = useState<User>();
 	const [error, setError] = useState<ErrorResponse>();
 	useEffect(() => {
@@ -213,18 +213,18 @@ const EditUserPage = ({match}: RouteComponentProps<UserPageParams>) => {
 			.catch(setError);
 	}, [user_id]);
 	if (error) {
-		return <Page title="Error" sidebar={<Sidebar/>}>
+		return <Page title="Error" sidebar={<Sidebar />}>
 			{error.message && <Alert>{error.message}</Alert>}
 		</Page>;
 	}
 	if (!user) {
-		return <Page title="Edit user" sidebar={<Sidebar/>}>Loading...</Page>;
+		return <Page title="Edit user" sidebar={<Sidebar />}>Loading...</Page>;
 	}
-	const {id, login} = user;
-	return <Page title={`Edit user: ${login}`} sidebar={<Sidebar/>}>
-		<EditUserBlock user={user} onUpdateUser={setUser}/>
-		<ChangePasswordBlock userID={id}/>
-		<CurrentSessionsBlock userID={id}/>
+	const { id, login } = user;
+	return <Page title={`Edit user: ${login}`} sidebar={<Sidebar />}>
+		<EditUserBlock user={user} onUpdateUser={setUser} />
+		<ChangePasswordBlock userID={id} />
+		<CurrentSessionsBlock userID={id} />
 	</Page>;
 };
 
