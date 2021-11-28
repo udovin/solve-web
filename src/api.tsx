@@ -131,6 +131,22 @@ export type ContestParticipants = {
 	participants?: ContestParticipant[];
 };
 
+export type SolutionReport = {
+	verdict: string;
+	points?: number;
+};
+
+export type ContestSolution = {
+	id: number;
+	report?: SolutionReport;
+	participant?: ContestParticipant;
+	problem?: ContestProblem;
+};
+
+export type ContestSolutions = {
+	solutions?: ContestSolution[];
+};
+
 export const RUNNING: number = -1;
 export const QUEUED: number = 0;
 export const ACCEPTED: number = 1;
@@ -425,4 +441,11 @@ export const submitContestSolution = (
 			body: formData,
 		},
 	));
+};
+
+export const observeContestSolutions = (id: number) => {
+	return parseResp(fetch(`/api/v0/contests/${id}/solutions`, {
+		method: "GET",
+		headers: HEADERS,
+	}));
 };

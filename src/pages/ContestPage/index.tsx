@@ -8,6 +8,8 @@ import {
 	ContestParticipants,
 	ContestProblem,
 	ContestProblems,
+	ContestSolution,
+	ContestSolutions,
 	createContestParticipant,
 	createContestProblem,
 	deleteContest,
@@ -16,6 +18,7 @@ import {
 	ErrorResponse,
 	observeContestParticipants,
 	observeContestProblems,
+	observeContestSolutions,
 	Solution,
 	submitContestSolution,
 	updateContest,
@@ -85,17 +88,55 @@ const ContestProblemsBlock: FC<ContestBlockParams> = props => {
 
 const ContestSolutionsBlock: FC<ContestBlockParams> = props => {
 	const { contest } = props;
-	const [solutions, setSolutions] = useState<Solution[]>();
+	const [error, setError] = useState<ErrorResponse>();
+	const [solutions, setSolutions] = useState<ContestSolutions>();
 	useEffect(() => {
-		fetch("/api/v0/contests/" + contest.id + "/solutions")
-			.then(result => result.json())
-			.then(result => setSolutions(result || []));
+		observeContestSolutions(contest.id)
+			.then(result => setSolutions(result || []))
+			.catch(setError);
 	}, [contest.id]);
 	if (!solutions) {
-		return <>Loading...</>;
+		return <Block title="Solutions" className="b-contest-solutions">
+			{error ? <Alert>{error.message}</Alert> : "Loading..."}
+		</Block>;
 	}
-	return <></>;
-	// return <SolutionsBlock title="Solutions" solutions={solutions}/>;
+	let contestSolutions: ContestSolution[] = solutions.solutions ?? [];
+	return <Block title="Solutions" className="b-contest-solutions">{error ?
+		<Alert>{error.message}</Alert> :
+		<table className="ui-table">
+			<thead>
+				<tr>
+					<th className="id">#</th>
+					<th className="participant">Participant</th>
+					<th className="problem">Problem</th>
+					<th className="verdict">Verdict</th>
+					<th className="points">Points</th>
+				</tr>
+			</thead>
+			<tbody>
+				{contestSolutions.map((solution: ContestSolution, key: number) => {
+					const { id, report, participant, problem } = solution;
+					return <tr key={key} className="problem">
+						<td className="id">
+							<Link to={`/contests/${contest.id}/solutions/${id}`}>{id}</Link>
+						</td>
+						<td className="participant">
+							{participant && participant.user ? participant.user.login : <>&mdash;</>}
+						</td>
+						<td className="problem">
+							{problem ? <Link to={`/contests/${contest.id}/problems/${problem.code}`}>{`${problem.code}. ${problem.title}`}</Link> : <>&mdash;</>}
+						</td>
+						<td className="verdict">
+							{report ? report.verdict : "unknown"}
+						</td>
+						<td className="points">
+							{(report && report.points) || <>&mdash;</>}
+						</td>
+					</tr>;
+				})}
+			</tbody>
+		</table>
+	}</Block>;
 };
 
 const CreateContestProblemBlock = ({ match }: RouteComponentProps<ContestPageParams>) => {
@@ -531,8 +572,7 @@ const ContestPage = ({ match }: RouteComponentProps<ContestPageParams>) => {
 			<Route exact path="/contests/:contest_id/solutions">
 				{() => {
 					setCurrentTab("solutions");
-					return <></>;
-					// return <ContestSolutionsBlock contest={contest}/>;
+					return <ContestSolutionsBlock contest={contest} />;
 				}}
 			</Route>
 			<Route exact path="/contests/:contest_id/manage">
