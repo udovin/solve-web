@@ -127,7 +127,7 @@ const ContestSolutionsBlock: FC<ContestBlockParams> = props => {
 							{problem ? <Link to={`/contests/${contest.id}/problems/${problem.code}`}>{`${problem.code}. ${problem.title}`}</Link> : <>&mdash;</>}
 						</td>
 						<td className="verdict">
-							{report ? report.verdict : "unknown"}
+							{report ? report.verdict : "running"}
 						</td>
 						<td className="points">
 							{(report && report.points) || <>&mdash;</>}
@@ -158,7 +158,7 @@ const CreateContestProblemBlock = ({ match }: RouteComponentProps<ContestPagePar
 			.then(() => setSuccess(true));
 	};
 	if (success) {
-		return <Redirect to={"/contests/" + contest_id} />
+		return <Redirect to={`/contests/${contest_id}`} />
 	}
 	return <FormBlock onSubmit={onSubmit} title="Add contest problem" footer={
 		<Button type="submit" color="primary">Create</Button>
@@ -195,7 +195,7 @@ const ContestProblemSideBlock = ({ match }: RouteComponentProps<ContestProblemPa
 			.catch(setError);
 	};
 	if (newSolution) {
-		return <Redirect to={`/solutions/${newSolution.id}`} />
+		return <Redirect to={`/contests/${contest_id}/solutions/${newSolution.id}`} />
 	}
 	const errorMessage = error && error.message;
 	const invalidFields = (error && error.invalid_fields) || {};
@@ -211,29 +211,6 @@ const ContestProblemSideBlock = ({ match }: RouteComponentProps<ContestProblemPa
 			{invalidFields["file"] && <Alert>{invalidFields["file"].message}</Alert>}
 		</Field>
 	</FormBlock>;
-	// 	const [problem, setProblem] = useState<ContestProblem>();
-	// 	const [compilers, setCompilers] = useState<Compiler[]>();
-	// 	const [solution, setSolution] = useState<Solution>();
-	// 	useEffect(() => {
-	// 		fetch("/api/v0/compilers")
-	// 			.then(result => result.json())
-	// 			.then(result => setCompilers(result))
-	// 	}, []);
-	// 	useEffect(() => {
-	// 		fetch("/api/v0/contests/" + contest_id + "/problems/" + problem_code)
-	// 			.then(result => result.json())
-	// 			.then(result => setProblem(result));
-	// 	}, [contest_id, problem_code]);
-	// 	if (solution) {
-	// 		return <Redirect to={"/solutions/" + solution.ID} push={true}/>;
-	// 	}
-	// 	if (!problem) {
-	// 		return <>Loading...</>;
-	// 	}
-	// 	return <>
-	// 		<SubmitSolutionSideBlock onSubmit={onSubmit} compilers={compilers}/>
-	// 		{problem.Solutions && <SolutionsSideBlock solutions={problem.Solutions}/>}
-	// 	</>;
 };
 
 const ContestProblemBlock = ({ match }: RouteComponentProps<ContestProblemPageParams>) => {
