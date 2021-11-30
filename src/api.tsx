@@ -131,9 +131,15 @@ export type ContestParticipants = {
 	participants?: ContestParticipant[];
 };
 
+export type TestReport = {
+	verdict: string;
+	check_log?: string;
+};
+
 export type SolutionReport = {
 	verdict: string;
 	points?: number;
+	tests?: TestReport[];
 };
 
 export type ContestSolution = {
@@ -445,6 +451,13 @@ export const submitContestSolution = (
 
 export const observeContestSolutions = (id: number) => {
 	return parseResp(fetch(`/api/v0/contests/${id}/solutions`, {
+		method: "GET",
+		headers: HEADERS,
+	}));
+};
+
+export const observeContestSolution = (id: number, solutionID: number) => {
+	return parseResp(fetch(`/api/v0/contests/${id}/solutions/${solutionID}`, {
 		method: "GET",
 		headers: HEADERS,
 	}));

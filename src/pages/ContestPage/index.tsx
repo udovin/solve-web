@@ -18,9 +18,11 @@ import {
 	ErrorResponse,
 	observeContestParticipants,
 	observeContestProblems,
+	observeContestSolution,
 	observeContestSolutions,
 	Solution,
 	submitContestSolution,
+	TestReport,
 	updateContest,
 } from "../../api";
 import Block, { BlockProps } from "../../ui/Block";
@@ -137,6 +139,85 @@ const ContestSolutionsBlock: FC<ContestBlockParams> = props => {
 			</tbody>
 		</table>
 	}</Block>;
+};
+
+type ContestSolutionBlockProps = {
+	contest: Contest;
+	solutionID: number;
+};
+
+const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
+	const { contest, solutionID } = props;
+	const [error, setError] = useState<ErrorResponse>();
+	const [solution, setSolution] = useState<ContestSolution>();
+	useEffect(() => {
+		observeContestSolution(contest.id, solutionID)
+			.then(setSolution)
+			.catch(setError);
+	}, [contest.id, solutionID]);
+	if (!solution) {
+		return <Block title="Solution" className="b-contest-solution">
+			{error ? <Alert>{error.message}</Alert> : "Loading..."}
+		</Block>;
+	}
+	const { id, report, participant, problem } = solution;
+	return <>
+		<Block title="Solution" className="b-contest-solution">{error ?
+			<Alert>{error.message}</Alert> :
+			<table className="ui-table">
+				<thead>
+					<tr>
+						<th className="id">#</th>
+						<th className="participant">Participant</th>
+						<th className="problem">Problem</th>
+						<th className="verdict">Verdict</th>
+						<th className="points">Points</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr className="problem">
+						<td className="id">
+							<Link to={`/contests/${contest.id}/solutions/${id}`}>{id}</Link>
+						</td>
+						<td className="participant">
+							{participant && participant.user ? participant.user.login : <>&mdash;</>}
+						</td>
+						<td className="problem">
+							{problem ? <Link to={`/contests/${contest.id}/problems/${problem.code}`}>{`${problem.code}. ${problem.title}`}</Link> : <>&mdash;</>}
+						</td>
+						<td className="verdict">
+							{report ? report.verdict : "running"}
+						</td>
+						<td className="points">
+							{(report && report.points) || <>&mdash;</>}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		}</Block>
+		{report && <Block title="Tests" className="b-contest-solution">
+			<table className="ui-table">
+				<thead>
+					<tr>
+						<th className="id">#</th>
+						<th className="verdict">Verdict</th>
+						<th className="check-log">Check log</th>
+					</tr>
+				</thead>
+				<tbody>{report.tests?.map((test: TestReport, key: number) => {
+					return <tr className="problem">
+						<td className="id">{key + 1}</td>
+						<td className="verdict">
+							{test ? test.verdict : "running"}
+						</td>
+						<td className="check-log">
+							{(test && test.check_log) || <>&mdash;</>}
+						</td>
+					</tr>;
+				})}</tbody>
+			</table>
+		</Block>}
+	</>;
 };
 
 const CreateContestProblemBlock = ({ match }: RouteComponentProps<ContestPageParams>) => {
@@ -550,6 +631,12 @@ const ContestPage = ({ match }: RouteComponentProps<ContestPageParams>) => {
 				{() => {
 					setCurrentTab("solutions");
 					return <ContestSolutionsBlock contest={contest} />;
+				}}
+			</Route>
+			<Route exact path="/contests/:contest_id/solutions/:solution_id">
+				{({ match }) => {
+					setCurrentTab("solution");
+					return <ContestSolutionBlock contest={contest} solutionID={Number(match?.params.solution_id)} />;
 				}}
 			</Route>
 			<Route exact path="/contests/:contest_id/manage">
