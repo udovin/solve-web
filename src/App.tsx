@@ -19,7 +19,7 @@ import UserPage from "./pages/UserPage";
 import EditUserPage from "./pages/EditUserPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import SolutionsPage from "./pages/SolutionsPage";
-import SolutionPage from "./pages/SolutionPage_";
+import SolutionPage from "./pages/SolutionPage";
 
 const App: FC = () => {
 	return (
