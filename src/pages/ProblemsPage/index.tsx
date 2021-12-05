@@ -51,9 +51,6 @@ const ProblemsPage: FC = () => {
 			{error.message && <Alert>{error.message}</Alert>}
 		</Page>;
 	}
-	if (!problems) {
-		return <Page title="Problems" sidebar={<Sidebar />}>Loading...</Page>;
-	}
 	return <Page title="Problems" sidebar={<Sidebar />}>
 		{status?.roles.includes("create_problem") && <p>
 			<Link to={"/problems/create"}><Button>Create</Button></Link>

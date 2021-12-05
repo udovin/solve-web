@@ -18,6 +18,8 @@ import LogoutPage from "./pages/LogoutPage";
 import UserPage from "./pages/UserPage";
 import EditUserPage from "./pages/EditUserPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import SolutionsPage from "./pages/SolutionsPage";
+import SolutionPage from "./pages/SolutionPage_";
 
 const App: FC = () => {
 	return (
@@ -31,6 +33,8 @@ const App: FC = () => {
 					<Route path="/contests/:contest_id" component={ContestPage} />
 					<Route exact path="/problems" component={ProblemsPage} />
 					<Route exact path="/problems/create" component={CreateProblemPage} />
+					<Route exact path="/solutions" component={SolutionsPage} />
+					<Route exact path="/solutions/:solution_id" component={SolutionPage} />
 					<Route exact path="/compilers/create" component={CreateCompilerPage} />
 					<Route exact path="/login" component={LoginPage} />
 					<Route exact path="/logout" component={LogoutPage} />

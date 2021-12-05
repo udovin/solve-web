@@ -96,6 +96,9 @@ export type Report = {
 
 export type Solution = {
 	id: number;
+	report?: SolutionReport;
+	user?: User;
+	problem?: Problem;
 	// deprecated.
 	ID: number;
 	ProblemID: number;
@@ -348,6 +351,13 @@ export const deleteContest = (id: number) => {
 
 export const observeSolutions = () => {
 	return parseResp(fetch(`/api/v0/solutions`, {
+		method: "GET",
+		headers: HEADERS,
+	}));
+};
+
+export const observeSolution = (id: number) => {
+	return parseResp(fetch(`/api/v0/solutions/${id}`, {
 		method: "GET",
 		headers: HEADERS,
 	}));

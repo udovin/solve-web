@@ -1,0 +1,16 @@
+.b-solutions {
+	.ui-block-content {
+        padding: 0;
+        overflow-x: auto;
+    }
+    .ui-table {
+        border: none;
+        .id {
+            text-align: right;
+            width: 1%;
+        }
+        .author, .problem, .verdict, .points {
+            text-align: center;
+        }
+    }
+}
