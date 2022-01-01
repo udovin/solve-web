@@ -337,10 +337,11 @@ const ContestTabs: FC<ContestTabsProps> = props => {
 
 export type EditContestBlockProps = {
 	contest: Contest;
+	onUpdateContest?(contest: Contest): void;
 };
 
 const EditContestBlock: FC<EditContestBlockProps> = props => {
-	const { contest } = props;
+	const { contest, onUpdateContest } = props;
 	const [form, setForm] = useState<{ [key: string]: string }>({});
 	const [error, setError] = useState<ErrorResponse>();
 	const onSubmit = (event: any) => {
@@ -349,6 +350,7 @@ const EditContestBlock: FC<EditContestBlockProps> = props => {
 			.then(contest => {
 				setForm({});
 				setError(undefined);
+				onUpdateContest && onUpdateContest(contest);
 			})
 			.catch(setError);
 	};
@@ -643,7 +645,7 @@ const ContestPage = ({ match }: RouteComponentProps<ContestPageParams>) => {
 				{() => {
 					setCurrentTab("manage");
 					return <>
-						{permissions && permissions.includes("update_contest") && <EditContestBlock contest={contest} />}
+						{permissions && permissions.includes("update_contest") && <EditContestBlock contest={contest} onUpdateContest={setContest} />}
 						{permissions && (permissions.includes("observe_contest_problems")) && <EditContestProblemsBlock contest={contest} />}
 						{permissions && (permissions.includes("observe_contest_participants")) && <EditContestParticipantsBlock contest={contest} />}
 						{permissions && permissions.includes("delete_contest") && <DeleteContestBlock contest={contest} />}

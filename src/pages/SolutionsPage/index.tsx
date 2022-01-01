@@ -32,7 +32,7 @@ const SolutionsBlock: FC<SolutionsBlockProps> = props => {
 							<Link to={`/solutions/${id}`}>{id}</Link>
 						</td>
 						<td className="author">
-							{user ? user.login : <>&mdash;</>}
+							{user ? <Link to={`/users/${user.login}`}>{user.login}</Link> : <>&mdash;</>}
 						</td>
 						<td className="problem">
 							{problem ? <Link to={`/problems/${problem.id}`}>{problem.title}</Link> : <>&mdash;</>}
