@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router";
 import Page from "../../components/Page";
 import {
@@ -21,7 +21,7 @@ import Field from "../../ui/Field";
 import Alert from "../../ui/Alert";
 import { AuthContext } from "../../AuthContext";
 import Sidebar from "../../components/Sidebar";
-import Time from "../../ui/Time";
+import DateTime from "../../ui/DateTime";
 import { UserPageParams } from "../UserPage";
 import "./index.scss";
 
@@ -185,8 +185,8 @@ const CurrentSessionsBlock: FC<CurrentSessionsBlockProps> = props => {
 					const deleted = !!deletedSessions?.[session.id];
 					return <tr key={key} className={`session ${current ? "success" : (deleted ? "deleted" : "")}`}>
 						<td className="id">{id}</td>
-						<td className="created"><Time value={create_time} /></td>
-						<td className="expires"><Time value={expire_time} /></td>
+						<td className="created"><DateTime value={create_time} /></td>
+						<td className="expires"><DateTime value={expire_time} /></td>
 						<td className="actions">
 							{!current && <Button
 								disabled={deleted}

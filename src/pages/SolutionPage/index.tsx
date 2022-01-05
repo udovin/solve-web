@@ -5,6 +5,8 @@ import Page from "../../components/Page";
 import Sidebar from "../../components/Sidebar";
 import Alert from "../../ui/Alert";
 import Block, { BlockProps } from "../../ui/Block";
+import DateTime from "../../ui/DateTime";
+import UserLink from "../../ui/UserLink";
 import "./index.scss";
 
 export type SolutionBlockProps = BlockProps & {
@@ -13,12 +15,13 @@ export type SolutionBlockProps = BlockProps & {
 
 const SolutionBlock: FC<SolutionBlockProps> = props => {
 	const { solution, ...rest } = props;
-	const { id, report, user, problem } = solution;
+	const { id, report, user, problem, create_time } = solution;
 	return <Block className="b-solution" title="Solutions" {...rest}>
 		<table className="ui-table">
 			<thead>
 				<tr>
 					<th className="id">#</th>
+					<th className="date">Date</th>
 					<th className="author">Author</th>
 					<th className="problem">Problem</th>
 					<th className="verdict">Verdict</th>
@@ -30,8 +33,11 @@ const SolutionBlock: FC<SolutionBlockProps> = props => {
 					<td className="id">
 						<Link to={`/solutions/${id}`}>{id}</Link>
 					</td>
+					<td className="date">
+						<DateTime value={create_time} />
+					</td>
 					<td className="author">
-						{user ? user.login : <>&mdash;</>}
+						{user ? <UserLink user={user} /> : <>&mdash;</>}
 					</td>
 					<td className="problem">
 						{problem ? <Link to={`/problems/${problem.id}`}>{problem.title}</Link> : <>&mdash;</>}

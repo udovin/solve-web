@@ -31,6 +31,8 @@ import Field from "../../ui/Field";
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
 import Alert from "../../ui/Alert";
+import UserLink from "../../ui/UserLink";
+import DateTime from "../../ui/DateTime";
 import "./index.scss";
 
 type ContestPageParams = {
@@ -109,6 +111,7 @@ const ContestSolutionsBlock: FC<ContestBlockParams> = props => {
 			<thead>
 				<tr>
 					<th className="id">#</th>
+					<th className="date">Date</th>
 					<th className="participant">Participant</th>
 					<th className="problem">Problem</th>
 					<th className="verdict">Verdict</th>
@@ -117,13 +120,16 @@ const ContestSolutionsBlock: FC<ContestBlockParams> = props => {
 			</thead>
 			<tbody>
 				{contestSolutions.map((solution: ContestSolution, key: number) => {
-					const { id, report, participant, problem } = solution;
+					const { id, report, participant, problem, create_time } = solution;
 					return <tr key={key} className="problem">
 						<td className="id">
 							<Link to={`/contests/${contest.id}/solutions/${id}`}>{id}</Link>
 						</td>
+						<td className="date">
+							<DateTime value={create_time} />
+						</td>
 						<td className="participant">
-							{participant && participant.user ? participant.user.login : <>&mdash;</>}
+							{participant && participant.user ? <UserLink user={participant.user} /> : <>&mdash;</>}
 						</td>
 						<td className="problem">
 							{problem ? <Link to={`/contests/${contest.id}/problems/${problem.code}`}>{`${problem.code}. ${problem.title}`}</Link> : <>&mdash;</>}
@@ -160,7 +166,7 @@ const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
 			{error ? <Alert>{error.message}</Alert> : "Loading..."}
 		</Block>;
 	}
-	const { id, report, participant, problem } = solution;
+	const { id, report, participant, problem, create_time } = solution;
 	return <>
 		<Block title="Solution" className="b-contest-solution">{error ?
 			<Alert>{error.message}</Alert> :
@@ -168,6 +174,7 @@ const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
 				<thead>
 					<tr>
 						<th className="id">#</th>
+						<th className="date">Date</th>
 						<th className="participant">Participant</th>
 						<th className="problem">Problem</th>
 						<th className="verdict">Verdict</th>
@@ -179,8 +186,11 @@ const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
 						<td className="id">
 							<Link to={`/contests/${contest.id}/solutions/${id}`}>{id}</Link>
 						</td>
+						<td className="date">
+							<DateTime value={create_time} />
+						</td>
 						<td className="participant">
-							{participant && participant.user ? participant.user.login : <>&mdash;</>}
+							{participant && participant.user ? <UserLink user={participant.user} /> : <>&mdash;</>}
 						</td>
 						<td className="problem">
 							{problem ? <Link to={`/contests/${contest.id}/problems/${problem.code}`}>{`${problem.code}. ${problem.title}`}</Link> : <>&mdash;</>}
@@ -595,7 +605,7 @@ const EditContestParticipantsBlock: FC<EditContestParticipantsBlockProps> = prop
 					};
 					return <tr key={key} className="participant">
 						<td className="id">{id}</td>
-						<td className="login">{user?.login}</td>
+						<td className="login">{user ? <UserLink user={user} /> : <>&mdash;</>}</td>
 						<td className="actions">{canDeleteParticipant && <Button onClick={deleteParticipant}>Delete</Button>}</td>
 					</tr>;
 				})}

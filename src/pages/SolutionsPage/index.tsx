@@ -5,6 +5,8 @@ import Page from "../../components/Page";
 import Sidebar from "../../components/Sidebar";
 import Alert from "../../ui/Alert";
 import Block, { BlockProps } from "../../ui/Block";
+import DateTime from "../../ui/DateTime";
+import UserLink from "../../ui/UserLink";
 import "./index.scss";
 
 export type SolutionsBlockProps = BlockProps & {
@@ -18,6 +20,7 @@ const SolutionsBlock: FC<SolutionsBlockProps> = props => {
 			<thead>
 				<tr>
 					<th className="id">#</th>
+					<th className="date">Date</th>
 					<th className="author">Author</th>
 					<th className="problem">Problem</th>
 					<th className="verdict">Verdict</th>
@@ -26,13 +29,16 @@ const SolutionsBlock: FC<SolutionsBlockProps> = props => {
 			</thead>
 			<tbody>
 				{solutions.map((solution: Solution, key: number) => {
-					const { id, report, user, problem } = solution;
+					const { id, report, user, problem, create_time } = solution;
 					return <tr key={key} className="problem">
 						<td className="id">
 							<Link to={`/solutions/${id}`}>{id}</Link>
 						</td>
+						<td className="date">
+							<DateTime value={create_time} />
+						</td>
 						<td className="author">
-							{user ? <Link to={`/users/${user.login}`}>{user.login}</Link> : <>&mdash;</>}
+							{user ? <UserLink user={user} /> : <>&mdash;</>}
 						</td>
 						<td className="problem">
 							{problem ? <Link to={`/problems/${problem.id}`}>{problem.title}</Link> : <>&mdash;</>}

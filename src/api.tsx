@@ -99,6 +99,7 @@ export type Solution = {
 	report?: SolutionReport;
 	user?: User;
 	problem?: Problem;
+	create_time: number;
 	// deprecated.
 	ID: number;
 	ProblemID: number;
@@ -150,6 +151,7 @@ export type ContestSolution = {
 	report?: SolutionReport;
 	participant?: ContestParticipant;
 	problem?: ContestProblem;
+	create_time: number;
 };
 
 export type ContestSolutions = {
