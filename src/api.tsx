@@ -32,7 +32,7 @@ export type Sessions = {
 export type Status = {
 	session: Session;
 	user: User;
-	roles: string[];
+	permissions: string[];
 };
 
 export type Problem = {

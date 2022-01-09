@@ -52,7 +52,7 @@ const ProblemsPage: FC = () => {
 		</Page>;
 	}
 	return <Page title="Problems" sidebar={<Sidebar />}>
-		{status?.roles.includes("create_problem") && <p>
+		{status?.permissions.includes("create_problem") && <p>
 			<Link to={"/problems/create"}><Button>Create</Button></Link>
 		</p>}
 		{problems ?
