@@ -19,7 +19,7 @@ const CreateProblemPage: FC = () => {
 		setError(undefined);
 		file && createProblem({
 			title: form.title,
-			package: file,
+			file: file,
 		})
 			.then(setNewProblem)
 			.catch(setError);

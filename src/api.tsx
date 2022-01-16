@@ -428,13 +428,13 @@ export const observeProblems = () => {
 
 export type CreateProblemForm = {
 	title: string;
-	package: File;
+	file: File;
 };
 
 export const createProblem = (form: CreateProblemForm) => {
 	const formData = new FormData();
 	formData.append("title", form.title);
-	formData.append("package", form.package, form.package.name);
+	formData.append("file", form.file, form.file.name);
 	return parseResp(fetch(`/api/v0/problems`, {
 		method: "POST",
 		headers: HEADERS,
