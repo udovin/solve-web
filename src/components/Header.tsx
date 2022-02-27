@@ -14,16 +14,16 @@ const Header: FC<RouteComponentProps> = props => {
 	};
 	const { status } = useContext(AuthContext);
 	const accountLinks = <>
-		{status && status.user && <li>
+		{status?.user && <li>
 			Hello, <Link to={`/users/${status.user.login}`}>{status.user.login}</Link>!
 		</li>}
-		{(!status || (!status.session && status.permissions.includes("login"))) && <li>
+		{(!status || (!status.session && status.permissions?.includes("login"))) && <li>
 			<Link to="/login">Login</Link>
 		</li>}
-		{(!status || (!status.session && status.permissions.includes("register"))) && <li>
+		{(!status || (!status.session && status.permissions?.includes("register"))) && <li>
 			<Link to="/register">Register</Link>
 		</li>}
-		{status && status.session && status.permissions.includes("logout") && <li>
+		{status?.session && status.permissions?.includes("logout") && <li>
 			<Link to="/logout">Logout</Link>
 		</li>}
 	</>;
@@ -44,13 +44,13 @@ const Header: FC<RouteComponentProps> = props => {
 				<li className={getActiveClass("/")}>
 					<Link to="/">Index</Link>
 				</li>
-				{status && status.permissions.includes("observe_contests") && <li className={getActiveClass("/contests")}>
+				{status?.permissions?.includes("observe_contests") && <li className={getActiveClass("/contests")}>
 					<Link to="/contests">Contests</Link>
 				</li>}
-				{status && status.permissions.includes("observe_problems") && <li className={getActiveClass("/problems")}>
+				{status?.permissions?.includes("observe_problems") && <li className={getActiveClass("/problems")}>
 					<Link to="/problems">Problems</Link>
 				</li>}
-				{status && status.permissions.includes("observe_solutions") && <li className={getActiveClass("/solutions")}>
+				{status?.permissions?.includes("observe_solutions") && <li className={getActiveClass("/solutions")}>
 					<Link to="/solutions">Solutions</Link>
 				</li>}
 			</ul>

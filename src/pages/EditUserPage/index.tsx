@@ -181,7 +181,7 @@ const CurrentSessionsBlock: FC<CurrentSessionsBlockProps> = props => {
 			<tbody>
 				{sessions && sessions.sessions && sessions.sessions.map((session: Session, key: number) => {
 					const { id, create_time, expire_time } = session;
-					const current = status?.session.id === id;
+					const current = status?.session?.id === id;
 					const deleted = !!deletedSessions?.[session.id];
 					return <tr key={key} className={`session ${current ? "success" : (deleted ? "deleted" : "")}`}>
 						<td className="id">{id}</td>
