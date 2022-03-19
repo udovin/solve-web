@@ -56,7 +56,7 @@ const ContestsPage: FC = () => {
 		return <Page title="Contests" sidebar={<Sidebar />}>Loading...</Page>;
 	}
 	return <Page title="Contests" sidebar={<Sidebar />}>
-		{status?.permissions.includes("create_contest") && <p>
+		{status?.permissions?.includes("create_contest") && <p>
 			<Link to={"/contests/create"}><Button>Create</Button></Link>
 		</p>}
 		{contests ?

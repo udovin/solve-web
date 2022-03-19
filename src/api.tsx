@@ -30,9 +30,9 @@ export type Sessions = {
 };
 
 export type Status = {
-	session: Session;
-	user: User;
-	permissions: string[];
+	session?: Session;
+	user?: User;
+	permissions?: string[];
 };
 
 export type Problem = {
