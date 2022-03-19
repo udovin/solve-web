@@ -7,7 +7,7 @@ import FormBlock from "../components/FormBlock";
 import Field from "../ui/Field";
 import Alert from "../ui/Alert";
 import { ErrorResponse, registerUser } from "../api";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../ui/Sidebar";
 
 const RegisterPage = () => {
 	const [success, setSuccess] = useState<boolean>();

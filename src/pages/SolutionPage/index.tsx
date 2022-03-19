@@ -2,11 +2,12 @@ import { FC, useEffect, useState } from "react";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { ErrorResponse, observeSolution, Solution, SolutionReport, TestReport } from "../../api";
 import Page from "../../components/Page";
-import Sidebar from "../../components/Sidebar";
+import Sidebar from "../../ui/Sidebar";
 import Alert from "../../ui/Alert";
 import Block, { BlockProps } from "../../ui/Block";
 import DateTime from "../../ui/DateTime";
 import UserLink from "../../ui/UserLink";
+
 import "./index.scss";
 
 export type SolutionBlockProps = BlockProps & {

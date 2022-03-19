@@ -8,7 +8,7 @@ import { AuthContext } from "../AuthContext";
 import Field from "../ui/Field";
 import { ErrorResponse, statusUser, loginUser } from "../api";
 import Alert from "../ui/Alert";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../ui/Sidebar";
 
 const LoginPage = () => {
 	const { status, setStatus } = useContext(AuthContext);

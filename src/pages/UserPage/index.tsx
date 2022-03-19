@@ -3,7 +3,7 @@ import { RouteComponentProps } from "react-router";
 import Page from "../../components/Page";
 import { ErrorResponse, observeUser, User } from "../../api";
 import Block from "../../ui/Block";
-import Sidebar from "../../components/Sidebar";
+import Sidebar from "../../ui/Sidebar";
 import Field from "../../ui/Field";
 import Alert from "../../ui/Alert";
 

@@ -105,22 +105,17 @@ h5 {
 	padding: 0;
 	border-bottom: 1px solid #dddddd;
 	list-style: none;
-
 	@include clear-fix;
-
 	&:last-child {
 		margin-bottom: 0;
 	}
-	
 	> li {
 		display: block;
 		float: left;
 		margin: 0 4px 0 0;
-
 		&:last-child {
 			margin-right: 0;
 		}
-
 		> a {
 			display: block;
 			padding: 0 10px;
@@ -130,26 +125,11 @@ h5 {
 			border-bottom: 0;
 			border-radius: 4px 4px 0 0;
 			background-color: #ffffff;
-			transition: border-color 150ms ease-out,
-			background-color 150ms ease-out;
-			-moz-transition: border-color 150ms ease-out,
-			background-color 150ms ease-out;
-			-o-transition: border-color 150ms ease-out,
-			background-color 150ms ease-out;
-			-webkit-transition: border-color 150ms ease-out,
-			background-color 150ms ease-out;
-
+			@include transition(border-color 150ms ease-out, background-color 150ms ease-out);
 			&:hover {
 				background-color: #eeeeee;
-				transition: border-color 150ms ease-in,
-				background-color 150ms ease-in;
-				-moz-transition: border-color 150ms ease-in,
-				background-color 150ms ease-in;
-				-o-transition: border-color 150ms ease-in,
-				background-color 150ms ease-in;
-				-webkit-transition: border-color 150ms ease-in,
-				background-color 150ms ease-in;
 				text-decoration: none;
+				@include transition(border-color 150ms ease-in, background-color 150ms ease-in);
 			}
 		}
 
@@ -756,79 +736,4 @@ h5 {
 //.ui-countdown > .seconds {
 //	float: left;
 //	text-align: center;
-//}
-//
-///*
-// * Icons
-// */
-//.ui-icon {
-//	display: inline-block;
-//	width: 24px;
-//	height: 24px;
-//	background: url('/web/src/images/images/icons.svg') no-repeat;
-//	background-size: 600% 600%;
-//}
-//
-//.ui-icon.danger {
-//	background-image: url('/web/src/images/images/icons-red.svg');
-//}
-//
-//.ui-icon.i-account {
-//	background-position: 0 0;
-//}
-//
-//.ui-icon.i-group {
-//	background-position: 20% 0;
-//}
-//
-//.ui-icon.i-home {
-//	background-position: 40% 0;
-//}
-//
-//.ui-icon.i-backward {
-//	background-position: 0 20%;
-//}
-//
-//.ui-icon.i-forward {
-//	background-position: 20% 20%;
-//}
-//
-//.ui-icon.i-list {
-//	background-position: 40% 20%;
-//}
-//
-//.ui-icon.i-upward {
-//	background-position: 0 40%;
-//}
-//
-//.ui-icon.i-downward {
-//	background-position: 20% 40%;
-//}
-//
-//.ui-icon.i-reload {
-//	background-position: 40% 40%;
-//}
-//
-//.ui-icon.i-edit {
-//	background-position: 0 60%;
-//}
-//
-//.ui-icon.i-delete {
-//	background-position: 20% 60%;
-//}
-//
-//.ui-icon.i-settings {
-//	background-position: 0 80%;
-//}
-//
-//.ui-icon.i-document {
-//	background-position: 20% 80%;
-//}
-//
-//.ui-icon.i-library {
-//	background-position: 0 100%;
-//}
-//
-//.ui-icon.i-keyboard {
-//	background-position: 20% 100%;
 //}

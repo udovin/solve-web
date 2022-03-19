@@ -1,0 +1,35 @@
+@import "../../mixins.scss";
+
+.b-sidebar {
+	.ui-block-content {
+        padding: 0;
+        ul {
+            margin: 0;
+            padding: 10px 0;
+            list-style: none;
+            li {
+                display: block;
+                a {
+                    display: block;
+                    padding: 4px 10px;
+                    @include transition(background-color 150ms ease-out);
+                    &:hover {
+                        background-color: #efefef;
+                        text-decoration: none;
+                        @include transition(background-color 150ms ease-in);
+                    }
+                    .ui-icon {
+                        display: block;
+                        float: left;
+                    }
+                    .label {
+                        display: block;
+                        margin-left: 28px;
+                        line-height: 24px;
+                        min-height: 24px;
+                    }
+                }
+            }
+        }
+    }
+}

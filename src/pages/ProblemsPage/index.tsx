@@ -5,8 +5,9 @@ import { Problems, ErrorResponse, Problem, observeProblems } from "../../api";
 import Alert from "../../ui/Alert";
 import Button from "../../ui/Button";
 import Page from "../../components/Page";
-import Sidebar from "../../components/Sidebar";
+import Sidebar from "../../ui/Sidebar";
 import Block, { BlockProps } from "../../ui/Block";
+
 import "./index.scss";
 
 export type ProblemsBlockProps = BlockProps & {

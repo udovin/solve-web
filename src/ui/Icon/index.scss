@@ -1,0 +1,55 @@
+.ui-icon {
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	background: url('../../images/icons.svg') no-repeat;
+	background-size: 600% 600%;
+    &.danger {
+        background-image: url('../../images/icons-red.svg');
+    }
+    &.i-account {
+        background-position: 0 0;
+    }
+    &.i-group {
+        background-position: 20% 0;
+    }
+    &.i-home {
+        background-position: 40% 0;
+    }
+    &.i-backward {
+        background-position: 0 20%;
+    }
+    &.i-forward {
+        background-position: 20% 20%;
+    }
+    &.i-list {
+        background-position: 40% 20%;
+    }
+    &.i-upward {
+        background-position: 0 40%;
+    }
+    &.i-downward {
+        background-position: 20% 40%;
+    }
+    &.i-reload {
+        background-position: 40% 40%;
+    }
+    &.i-edit {
+        background-position: 0 60%;
+    }
+    &.i-delete {
+        background-position: 20% 60%;
+    }
+    &.i-settings {
+        background-position: 0 80%;
+    }
+    &.i-document {
+        background-position: 20% 80%;
+    }
+    &.i-library {
+        background-position: 0 100%;
+    }
+    &.i-keyboard {
+        background-position: 20% 100%;
+    }
+}

@@ -20,9 +20,10 @@ import Button from "../../ui/Button";
 import Field from "../../ui/Field";
 import Alert from "../../ui/Alert";
 import { AuthContext } from "../../AuthContext";
-import Sidebar from "../../components/Sidebar";
+import Sidebar from "../../ui/Sidebar";
 import DateTime from "../../ui/DateTime";
 import { UserPageParams } from "../UserPage";
+
 import "./index.scss";
 
 type EditUserBlockProps = {
