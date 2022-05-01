@@ -547,6 +547,7 @@ const EditContestParticipantsBlock: FC<EditContestParticipantsBlockProps> = prop
 		createContestParticipant(contest.id, {
 			user_id: Number(form.user_id ?? 0),
 			user_login: form.user_id,
+			kind: form.kind ?? "regular",
 		})
 			.then(participant => {
 				setParticipants({ ...participants, participants: [...(participants?.participants ?? []), participant] });
@@ -574,6 +575,11 @@ const EditContestParticipantsBlock: FC<EditContestParticipantsBlockProps> = prop
 				onValueChange={value => setForm({ ...form, user_id: value })}
 				placeholder="User ID"
 				required />
+			<select name="kind" value={form.kind || "regular"} onChange={e => setForm({ ...form, kind: e.target.value })}>
+				<option value={"regular"}>Regular</option>
+				<option value={"upsolving"}>Upsolving</option>
+				<option value={"manager"}>Manager</option>
+			</select>
 			<Button type="submit">Create</Button>
 		</form>}
 	>
@@ -583,12 +589,13 @@ const EditContestParticipantsBlock: FC<EditContestParticipantsBlockProps> = prop
 				<tr>
 					<th className="id">#</th>
 					<th className="login">Login</th>
+					<th className="kind">Kind</th>
 					<th className="actions">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
 				{contestParticipants.map((participant: ContestParticipant, key: number) => {
-					const { id, user } = participant;
+					const { id, user, kind } = participant;
 					const deleteParticipant = () => {
 						deleteContestParticipant(contest.id, id)
 							.then(participant => {
@@ -606,6 +613,7 @@ const EditContestParticipantsBlock: FC<EditContestParticipantsBlockProps> = prop
 					return <tr key={key} className="participant">
 						<td className="id">{id}</td>
 						<td className="login">{user ? <UserLink user={user} /> : <>&mdash;</>}</td>
+						<td className="kind">{kind}</td>
 						<td className="actions">{canDeleteParticipant && <Button onClick={deleteParticipant}>Delete</Button>}</td>
 					</tr>;
 				})}

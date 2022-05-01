@@ -129,6 +129,7 @@ export type ContestProblems = {
 export type ContestParticipant = {
 	id: number;
 	user?: User;
+	kind: string;
 };
 
 export type ContestParticipants = {
@@ -402,6 +403,7 @@ export const observeContestParticipants = (id: number) => {
 export type CreateContestParticipantForm = {
 	user_id: number;
 	user_login: string;
+	kind: string;
 };
 
 export const createContestParticipant = (contestID: number, form: CreateContestParticipantForm) => {

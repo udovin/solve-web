@@ -7,10 +7,12 @@ body {
 	background: $dark-background-color;
 	font-family: Helvetica, Arial, sans-serif;
 	font-size: 14px;
+
 	// Fix bug with animations.
 	&.preload * {
 		@include transition(none !important);
 	}
+
 	// Add support of layers.
 	.ui-layer {
 		position: fixed;
@@ -19,6 +21,7 @@ body {
 		left: 0;
 		right: 0;
 		overflow-y: auto;
+
 		&.shade {
 			background-color: rgba(0, 0, 0, 0.1);
 		}
@@ -29,6 +32,7 @@ body {
 a {
 	color: #0085ba;
 	text-decoration: none;
+
 	&:hover {
 		text-decoration: underline;
 		cursor: pointer;
@@ -38,15 +42,21 @@ a {
 // Paragraph style.
 p {
 	margin: 0 0 10px 0;
+
 	&:last-child {
 		margin-bottom: 0;
 	}
 }
 
 // Headings style.
-h1, h2, h3, h4, h5 {
+h1,
+h2,
+h3,
+h4,
+h5 {
 	margin: 0 0 10px 0;
 	font-weight: normal;
+
 	&:last-child {
 		margin-bottom: 0;
 	}
@@ -79,23 +89,23 @@ h5 {
 	border-spacing: 0;
 	background-color: #ffffff;
 
-	> thead > tr > th,
-	> tbody > tr > td,
-	> tfoot > tr > td {
+	>thead>tr>th,
+	>tbody>tr>td,
+	>tfoot>tr>td {
 		padding: 8px 10px;
 		border-top: 1px solid #dddddd;
 		border-right: 1px solid #dddddd;
 	}
 
-	> thead > tr > th:last-child,
-	> tbody > tr > td:last-child,
-	> tfoot > tr > td:last-child {
+	>thead>tr>th:last-child,
+	>tbody>tr>td:last-child,
+	>tfoot>tr>td:last-child {
 		border-right: none;
 	}
 
-	> thead:first-child > tr:first-child > th,
-	> tbody:first-child > tr:first-child > td,
-	> tfoot:first-child > tr:first-child > td {
+	>thead:first-child>tr:first-child>th,
+	>tbody:first-child>tr:first-child>td,
+	>tfoot:first-child>tr:first-child>td {
 		border-top: none;
 	}
 }
@@ -106,17 +116,21 @@ h5 {
 	border-bottom: 1px solid #dddddd;
 	list-style: none;
 	@include clear-fix;
+
 	&:last-child {
 		margin-bottom: 0;
 	}
-	> li {
+
+	>li {
 		display: block;
 		float: left;
 		margin: 0 4px 0 0;
+
 		&:last-child {
 			margin-right: 0;
 		}
-		> a {
+
+		>a {
 			display: block;
 			padding: 0 10px;
 			height: 32px;
@@ -126,6 +140,7 @@ h5 {
 			border-radius: 4px 4px 0 0;
 			background-color: #ffffff;
 			@include transition(border-color 150ms ease-out, background-color 150ms ease-out);
+
 			&:hover {
 				background-color: #eeeeee;
 				text-decoration: none;
@@ -133,7 +148,7 @@ h5 {
 			}
 		}
 
-		&.active > a {
+		&.active>a {
 			border-color: #0073aa;
 			background-color: #0085ba;
 			color: #ffffff;

@@ -1,38 +1,43 @@
 @import "../../mixins.scss";
 
 .b-contest-tabs .ui-block-content {
-	padding-bottom: 0;
+    padding-bottom: 0;
 }
 
 .b-contest-tabs .ui-block-content .ui-tabs {
-	border-bottom: 0;
+    border-bottom: 0;
 }
 
 .b-contest-edit {
-	.ui-block-footer {
-		@include clear-fix;
-		.ui-button {
-			display: block;
-			float: left;
-			margin-right: 8px;
-		}
-	}
+    .ui-block-footer {
+        @include clear-fix;
+
+        .ui-button {
+            display: block;
+            float: left;
+            margin-right: 8px;
+        }
+    }
 }
 
 .b-contest-problems {
-	.ui-block-content {
+    .ui-block-content {
         padding: 0;
         overflow-x: auto;
     }
+
     .ui-table {
         border: none;
+
         .code {
             text-align: right;
             width: 1%;
         }
+
         .title {
             text-align: left;
         }
+
         .actions {
             text-align: left;
         }
@@ -40,55 +45,77 @@
 }
 
 .b-contest-solutions {
-	.ui-block-content {
+    .ui-block-content {
         padding: 0;
         overflow-x: auto;
     }
+
     .ui-table {
         border: none;
+
         .id {
             text-align: right;
             width: 1%;
         }
-        .participant, .problem, .verdict, .points {
+
+        .participant,
+        .problem,
+        .verdict,
+        .points {
             text-align: center;
         }
     }
 }
 
 .b-contest-solution {
-	.ui-block-content {
+    .ui-block-content {
         padding: 0;
         overflow-x: auto;
     }
+
     .ui-table {
         border: none;
+
         .id {
             text-align: right;
             width: 1%;
         }
-        .participant, .problem, .verdict, .points {
+
+        .participant,
+        .problem,
+        .verdict,
+        .points {
             text-align: center;
         }
     }
 }
 
 .b-contest-participants {
-	.ui-block-content {
+    .ui-block-content {
         padding: 0;
         overflow-x: auto;
     }
-	.ui-table {
+
+    .ui-table {
         border: none;
+
         .id {
             text-align: right;
             width: 1%;
         }
+
         .login {
             text-align: left;
         }
+
+        .kind {
+            width: 70px;
+            text-align: center;
+        }
+
         .actions {
             text-align: left;
+            width: 60px;
         }
     }
 }
