@@ -52,9 +52,6 @@ const ContestsPage: FC = () => {
 			{error.message && <Alert>{error.message}</Alert>}
 		</Page>;
 	}
-	if (!contests) {
-		return <Page title="Contests" sidebar={<Sidebar />}>Loading...</Page>;
-	}
 	return <Page title="Contests" sidebar={<Sidebar />}>
 		{status?.permissions?.includes("create_contest") && <p>
 			<Link to={"/contests/create"}><Button>Create</Button></Link>
