@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . /app
 
-RUN npm run build && npm run build-ssr
+RUN npm run build && npm run build-server
 
 EXPOSE 8080
 
