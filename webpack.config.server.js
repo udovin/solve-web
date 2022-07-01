@@ -25,7 +25,9 @@ module.exports = {
         test: /\.tsx?$/,
         loader: 'ts-loader',
         options: {
-          configFile: "tsconfig.server.json",
+          compilerOptions: {
+            "noEmit": false
+          }
         },
       },
       {

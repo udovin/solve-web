@@ -11,6 +11,9 @@ const app = express();
 
 app.use(express.static("./build"));
 
+const indexFile = path.resolve("./build/index.html");
+const indexData = fs.readFileSync(indexFile, "utf8");
+
 app.get("/*", (req: any, res: any) => {
 	const context = {};
 	const app = ReactDOMServer.renderToString(
@@ -20,17 +23,10 @@ app.get("/*", (req: any, res: any) => {
 			</StaticRouter>
 		</React.StrictMode>
 	);
-	const indexFile = path.resolve("./build/index.html");
-	fs.readFile(indexFile, "utf8", (err, data) => {
-		if (err) {
-			console.error("Something went wrong:", err);
-			return res.status(500).send("Oops, better luck next time!");
-		}
-		return res.send(data.replace(
-			`<div id="root"></div>`,
-			`<div id="root">${app}</div>`
-		));
-	});
+	res.send(indexData.replace(
+		`<div id="root"></div>`,
+		`<div id="root">${app}</div>`
+	));
 });
 
 app.listen(PORT, () => {
