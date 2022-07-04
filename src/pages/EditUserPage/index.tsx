@@ -1,5 +1,4 @@
 import { FC, useContext, useEffect, useState } from "react";
-import { RouteComponentProps } from "react-router";
 import Page from "../../components/Page";
 import {
 	ErrorResponse,
@@ -22,7 +21,7 @@ import Alert from "../../ui/Alert";
 import { AuthContext } from "../../AuthContext";
 import Sidebar from "../../ui/Sidebar";
 import DateTime from "../../ui/DateTime";
-import { UserPageParams } from "../UserPage";
+import { useParams } from "react-router-dom";
 
 import "./index.scss";
 
@@ -201,12 +200,13 @@ const CurrentSessionsBlock: FC<CurrentSessionsBlockProps> = props => {
 	}</Block>;
 };
 
-const EditUserPage = ({ match }: RouteComponentProps<UserPageParams>) => {
-	const { user_id } = match.params;
+const EditUserPage: FC = () => {
+	const params = useParams();
+	const { user_id } = params;
 	const [user, setUser] = useState<User>();
 	const [error, setError] = useState<ErrorResponse>();
 	useEffect(() => {
-		observeUser(user_id)
+		observeUser(String(user_id))
 			.then(user => {
 				setUser(user);
 				setError(undefined);

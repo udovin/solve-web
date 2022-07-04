@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { Link, RouteComponentProps } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { ErrorResponse, observeSolution, Solution, SolutionReport, TestReport } from "../../api";
 import Page from "../../components/Page";
 import Sidebar from "../../ui/Sidebar";
@@ -89,8 +89,9 @@ type SolutionPageParams = {
 	solution_id: string;
 }
 
-const SolutionPage = ({ match }: RouteComponentProps<SolutionPageParams>) => {
-	const { solution_id } = match.params;
+const SolutionPage: FC = () => {
+	const params = useParams();
+	const { solution_id } = params;
 	const [solution, setSolution] = useState<Solution>();
 	const [error, setError] = useState<ErrorResponse>();
 	useEffect(() => {

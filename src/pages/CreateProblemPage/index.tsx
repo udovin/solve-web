@@ -1,5 +1,5 @@
 import { FC, useState, FormEvent, ChangeEvent } from "react";
-import { Redirect } from "react-router";
+import { Navigate } from "react-router-dom";
 import Page from "../../components/Page";
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
@@ -25,7 +25,7 @@ const CreateProblemPage: FC = () => {
 			.catch(setError);
 	};
 	if (newProblem) {
-		return <Redirect to={"/problems/" + newProblem.id} />
+		return <Navigate to={"/problems/" + newProblem.id} />
 	}
 	const errorMessage = error && error.message;
 	const invalidFields = (error && error.invalid_fields) || {};

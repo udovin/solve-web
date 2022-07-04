@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Redirect } from "react-router";
+import { Navigate } from "react-router-dom";
 import Page from "../components/Page";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
@@ -30,7 +30,7 @@ const RegisterPage = () => {
 			.catch(error => setError(error));
 	};
 	if (success) {
-		return <Redirect to={"/login"} />
+		return <Navigate to={"/login"} />
 	}
 	const equalPasswords = form.password === form.password_repeat;
 	return <Page title="Register" sidebar={<Sidebar />}>

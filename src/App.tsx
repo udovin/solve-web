@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import "./App.scss";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -26,24 +26,24 @@ const App: FC = () => {
 		<div id="layout">
 			<AuthProvider>
 				<Header />
-				<Switch>
-					<Route exact path="/" component={IndexPage} />
-					<Route exact path="/contests" component={ContestsPage} />
-					<Route exact path="/contests/create" component={CreateContestPage} />
-					<Route path="/contests/:contest_id" component={ContestPage} />
-					<Route exact path="/problems" component={ProblemsPage} />
-					<Route exact path="/problems/create" component={CreateProblemPage} />
-					<Route exact path="/solutions" component={SolutionsPage} />
-					<Route exact path="/solutions/:solution_id" component={SolutionPage} />
-					<Route exact path="/compilers/create" component={CreateCompilerPage} />
-					<Route exact path="/login" component={LoginPage} />
-					<Route exact path="/logout" component={LogoutPage} />
-					<Route exact path="/register" component={RegisterPage} />
-					<Route exact path="/users/:user_id" component={UserPage} />
-					<Route exact path="/users/:user_id/edit" component={EditUserPage} />
-					<Route exact path="/language" component={LanguagePage} />
-					<Route component={NotFoundPage} />
-				</Switch>
+				<Routes>
+					<Route path="/" element={<IndexPage />} />
+					<Route path="/contests" element={<ContestsPage />} />
+					<Route path="/contests/create" element={<CreateContestPage />} />
+					<Route path="/contests/:contest_id" element={<ContestPage />} />
+					<Route path="/problems" element={<ProblemsPage />} />
+					<Route path="/problems/create" element={<CreateProblemPage />} />
+					<Route path="/solutions" element={<SolutionsPage />} />
+					<Route path="/solutions/:solution_id" element={<SolutionPage />} />
+					<Route path="/compilers/create" element={<CreateCompilerPage />} />
+					<Route path="/login" element={<LoginPage />} />
+					<Route path="/logout" element={<LogoutPage />} />
+					<Route path="/register" element={<RegisterPage />} />
+					<Route path="/users/:user_id" element={<UserPage />} />
+					<Route path="/users/:user_id/edit" element={<EditUserPage />} />
+					<Route path="/language" element={<LanguagePage />} />
+					<Route element={<NotFoundPage />} />
+				</Routes>
 				<Footer />
 			</AuthProvider>
 		</div>
