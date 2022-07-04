@@ -1,22 +1,23 @@
-import { useEffect, useState } from "react";
-import { RouteComponentProps } from "react-router";
+import { FC, useEffect, useState } from "react";
 import Page from "../../components/Page";
 import { ErrorResponse, observeUser, User } from "../../api";
 import Block from "../../ui/Block";
 import Sidebar from "../../ui/Sidebar";
 import Field from "../../ui/Field";
 import Alert from "../../ui/Alert";
+import { useParams } from "react-router-dom";
 
 export type UserPageParams = {
 	user_id: string;
 }
 
-const UserPage = ({ match }: RouteComponentProps<UserPageParams>) => {
-	const { user_id } = match.params;
+const UserPage: FC = () => {
+	const params = useParams();
+	const { user_id } = params;
 	const [user, setUser] = useState<User>();
 	const [error, setError] = useState<ErrorResponse>();
 	useEffect(() => {
-		observeUser(user_id)
+		observeUser(String(user_id))
 			.then(user => {
 				setError(undefined);
 				setUser(user);

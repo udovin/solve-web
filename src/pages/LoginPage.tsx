@@ -3,7 +3,7 @@ import Page from "../components/Page";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
 import FormBlock from "../components/FormBlock";
-import { Redirect } from "react-router";
+import { Navigate } from "react-router-dom";
 import { AuthContext } from "../AuthContext";
 import Field from "../ui/Field";
 import { ErrorResponse, statusUser, loginUser } from "../api";
@@ -28,7 +28,7 @@ const LoginPage = () => {
 			.catch(error => setError(error));
 	};
 	if (status && status.user) {
-		return <Redirect to={"/"} />
+		return <Navigate to={"/"} />
 	}
 	return <Page title="Login" sidebar={<Sidebar />}>
 		<FormBlock onSubmit={onSubmit} title="Login" footer={

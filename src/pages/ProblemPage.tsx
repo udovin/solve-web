@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Page from "../components/Page";
-import { RouteComponentProps } from "react-router";
 import { Problem } from "../api";
 import Block from "../ui/Block";
+import { useParams } from "react-router-dom";
 
 type ProblemPageParams = {
 	ProblemID: string;
 }
 
-const ProblemPage = ({ match }: RouteComponentProps<ProblemPageParams>) => {
-	const { ProblemID } = match.params;
+const ProblemPage: FC = () => {
+	const params = useParams();
+	const { ProblemID } = params;
 	const [problem, setProblem] = useState<Problem>();
 	useEffect(() => {
 		fetch("/api/v0/problems/" + ProblemID)

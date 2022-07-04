@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Redirect } from "react-router";
+import { Navigate } from "react-router-dom";
 import { AuthContext } from "../AuthContext";
 
 const LogoutPage = () => {
@@ -20,7 +20,7 @@ const LogoutPage = () => {
 		}
 	}, [status, setStatus]);
 	if (!(status && status.user) || success) {
-		return <Redirect to={"/"} />;
+		return <Navigate to={"/"} />;
 	}
 	return <>Loading...</>;
 };

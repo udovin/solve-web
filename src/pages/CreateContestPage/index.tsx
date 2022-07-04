@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { Redirect } from "react-router";
+import { Navigate } from "react-router-dom";
 import Page from "../../components/Page";
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
@@ -22,7 +22,7 @@ const CreateContestPage: FC = () => {
 			.catch(setError);
 	};
 	if (newContest) {
-		return <Redirect to={"/contests/" + newContest.id} />
+		return <Navigate to={"/contests/" + newContest.id} />
 	}
 	return <Page title="Create contest">
 		<FormBlock onSubmit={onSubmit} title="Create contest" footer={

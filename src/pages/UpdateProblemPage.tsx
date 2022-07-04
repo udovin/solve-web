@@ -1,24 +1,25 @@
-import React, { useState } from "react";
+import { FC, useState } from "react";
 import Page from "../components/Page";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
 import FormBlock from "../components/FormBlock";
 import { Problem } from "../api";
-import { Redirect, RouteComponentProps } from "react-router";
+import { Navigate, useParams } from "react-router-dom";
 import Field from "../ui/Field";
 
 type UpdateProblemPageParams = {
 	ProblemID: string;
 }
 
-const UpdateProblemPage = ({ match }: RouteComponentProps<UpdateProblemPageParams>) => {
-	const { ProblemID } = match.params;
+const UpdateProblemPage: FC = () => {
+	const params = useParams();
+	const { ProblemID } = params;
 	const [problem, setProblem] = useState<Problem>();
 	const onSubmit = (event: any) => {
 		event.preventDefault();
 		const { title, file } = event.target;
 		const form = new FormData();
-		form.append("ID", ProblemID);
+		form.append("ID", String(ProblemID));
 		form.append("Title", title.value);
 		form.append("File", file.files[0]);
 		fetch("/api/v0/problems/" + ProblemID, {
@@ -30,7 +31,7 @@ const UpdateProblemPage = ({ match }: RouteComponentProps<UpdateProblemPageParam
 			.catch(error => console.log(error));
 	};
 	if (problem) {
-		return <Redirect to={"/problems/" + problem.id} />
+		return <Navigate to={"/problems/" + problem.id} />
 	}
 	return <Page title="Update problem">
 		<FormBlock onSubmit={onSubmit} title="Update problem" footer={
