@@ -1,12 +1,13 @@
-import React, {FC, ReactNode} from "react";
+import React, { FC, ReactNode } from "react";
 
 export type PageProps = {
 	title: string;
 	sidebar?: ReactNode;
+	children?: ReactNode;
 };
 
 const Page: FC<PageProps> = props => {
-	const {title, sidebar, children} = props;
+	const { title, sidebar, children } = props;
 	if (typeof window !== "undefined") {
 		document.title = title;
 	}

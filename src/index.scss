@@ -110,52 +110,6 @@ h5 {
 	}
 }
 
-.ui-tabs {
-	margin: 0 0 10px 0;
-	padding: 0;
-	border-bottom: 1px solid #dddddd;
-	list-style: none;
-	@include clear-fix;
-
-	&:last-child {
-		margin-bottom: 0;
-	}
-
-	>li {
-		display: block;
-		float: left;
-		margin: 0 4px 0 0;
-
-		&:last-child {
-			margin-right: 0;
-		}
-
-		>a {
-			display: block;
-			padding: 0 10px;
-			height: 32px;
-			line-height: 32px;
-			border: 1px solid #ffffff;
-			border-bottom: 0;
-			border-radius: 4px 4px 0 0;
-			background-color: #ffffff;
-			@include transition(border-color 150ms ease-out, background-color 150ms ease-out);
-
-			&:hover {
-				background-color: #eeeeee;
-				text-decoration: none;
-				@include transition(border-color 150ms ease-in, background-color 150ms ease-in);
-			}
-		}
-
-		&.active>a {
-			border-color: #0073aa;
-			background-color: #0085ba;
-			color: #ffffff;
-		}
-	}
-}
-
 //
 ///*
 // * Selects style
