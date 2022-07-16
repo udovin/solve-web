@@ -27,10 +27,10 @@ const App: FC = () => {
 			<AuthProvider>
 				<Header />
 				<Routes>
-					<Route path="/" element={<IndexPage />} />
+					<Route index element={<IndexPage />} />
 					<Route path="/contests" element={<ContestsPage />} />
 					<Route path="/contests/create" element={<CreateContestPage />} />
-					<Route path="/contests/:contest_id" element={<ContestPage />} />
+					<Route path="/contests/:contest_id/*" element={<ContestPage />} />
 					<Route path="/problems" element={<ProblemsPage />} />
 					<Route path="/problems/create" element={<CreateProblemPage />} />
 					<Route path="/solutions" element={<SolutionsPage />} />
@@ -42,7 +42,7 @@ const App: FC = () => {
 					<Route path="/users/:user_id" element={<UserPage />} />
 					<Route path="/users/:user_id/edit" element={<EditUserPage />} />
 					<Route path="/language" element={<LanguagePage />} />
-					<Route element={<NotFoundPage />} />
+					<Route path="*" element={<NotFoundPage />} />
 				</Routes>
 				<Footer />
 			</AuthProvider>

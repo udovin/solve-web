@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, ReactNode, useEffect, useState } from "react";
 import { statusUser, Status } from "./api";
 
 type Auth = {
@@ -10,7 +10,7 @@ const AuthContext = React.createContext<Auth>({
 	setStatus(): void { }
 });
 
-const AuthProvider: FC = props => {
+const AuthProvider: FC<{ children?: ReactNode }> = props => {
 	const [status, setStatus] = useState<Status>();
 	useEffect(() => {
 		statusUser()
