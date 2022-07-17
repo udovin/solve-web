@@ -1,11 +1,11 @@
 import React from "react";
-import Alert, {AlertKind} from "./index";
+import Alert, { AlertKind } from "./index";
 
-const config = {title: "Alert"};
+export default {
+	title: "Alert",
+};
 
-export default config;
-
-export const common = () => <>
+export const Index = () => <>
 	<Alert>Default</Alert>
 	<Alert kind={AlertKind.DANGER}>Danger</Alert>
 	<Alert kind={AlertKind.INFO}>Info</Alert>

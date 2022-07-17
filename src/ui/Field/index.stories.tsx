@@ -3,12 +3,12 @@ import Field from "./index";
 import "../../index.scss";
 import Input from "../Input";
 
-const config = {title: "Field"};
+export default {
+	title: "Field",
+};
 
-export default config;
-
-export const common = () => <>
+export const Index = () => <>
 	<Field title="Title" description="Description">
-		<Input defaultValue="Input"/>
+		<Input defaultValue="Input" />
 	</Field>
 </>;

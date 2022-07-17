@@ -23,5 +23,5 @@ const Template: Story = args => <TabsGroup>
 	<TabContent tab="tab3" setCurrent={args.tab === "tab3"}>Tab content 3</TabContent>
 </TabsGroup>;
 
-export const Primary = Template.bind({});
-Primary.args = { tab: "tab1" };
+export const Index = Template.bind({});
+Index.args = { tab: "tab1" };
