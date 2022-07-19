@@ -345,7 +345,7 @@ const ContestTabs: FC<ContestTabsProps> = props => {
 				<Link to={`/contests/${contest.id}/manage`}>Manage</Link>
 			</Tab>}
 		</Tabs>
-	</Block >;
+	</Block>;
 };
 
 export type EditContestBlockProps = {
@@ -634,14 +634,14 @@ type ContestTabProps = {
 const ContestProblemsTab: FC<ContestTabProps> = props => {
 	const { contest } = props;
 	return <TabContent tab="problems" setCurrent>
-		<ContestProblemsBlock contest={contest} />;
+		<ContestProblemsBlock contest={contest} />
 	</TabContent>;
 };
 
 const ContestSolutionsTab: FC<ContestTabProps> = props => {
 	const { contest } = props;
 	return <TabContent tab="solutions" setCurrent>
-		<ContestSolutionsBlock contest={contest} />;
+		<ContestSolutionsBlock contest={contest} />
 	</TabContent>;
 };
 
@@ -692,7 +692,7 @@ const ContestPage: FC = () => {
 				<Route index element={<ContestProblemsTab contest={contest} />} />
 				<Route path="/solutions" element={<ContestSolutionsTab contest={contest} />} />
 				<Route path="/solutions/:solution_id" element={<ContestSolutionTab contest={contest} />} />
-				<Route path="/problems/:problem_code" element={<ContestProblemTab contest={contest} />} />\
+				<Route path="/problems/:problem_code" element={<ContestProblemTab contest={contest} />} />
 				<Route path="/manage" element={<ContestManageTab contest={contest} setContest={setContest} />} />
 			</Routes>
 		</TabsGroup>
