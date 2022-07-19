@@ -21,7 +21,9 @@ import Alert from "../../ui/Alert";
 import { AuthContext } from "../../AuthContext";
 import Sidebar from "../../ui/Sidebar";
 import DateTime from "../../ui/DateTime";
-import { useParams } from "react-router-dom";
+import { Route, Routes, useParams } from "react-router-dom";
+import { Tab, TabContent, Tabs, TabsGroup } from "../../ui/Tabs";
+import { Link } from "react-router-dom";
 
 import "./index.scss";
 
@@ -223,9 +225,23 @@ const EditUserPage: FC = () => {
 	}
 	const { id, login } = user;
 	return <Page title={`Edit user: ${login}`} sidebar={<Sidebar />}>
-		<EditUserBlock user={user} onUpdateUser={setUser} />
-		<ChangePasswordBlock userID={id} />
-		<CurrentSessionsBlock userID={id} />
+		<TabsGroup>
+			<Block className="b-contest-tabs">
+				<Tabs>
+					<Tab tab="profile"><Link to={`/users/${login}/edit`}>Profile</Link></Tab>
+					<Tab tab="security"><Link to={`/users/${login}/edit/security`}>Security</Link></Tab>
+				</Tabs>
+			</Block>
+			<Routes>
+				<Route index element={<TabContent tab="profile" setCurrent>
+					<EditUserBlock user={user} onUpdateUser={setUser} />
+				</TabContent>} />
+				<Route path="/security" element={<TabContent tab="security" setCurrent>
+					<ChangePasswordBlock userID={id} />
+					<CurrentSessionsBlock userID={id} />
+				</TabContent>} />
+			</Routes>
+		</TabsGroup>
 	</Page>;
 };
 

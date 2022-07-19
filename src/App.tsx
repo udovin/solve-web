@@ -40,7 +40,7 @@ const App: FC = () => {
 					<Route path="/logout" element={<LogoutPage />} />
 					<Route path="/register" element={<RegisterPage />} />
 					<Route path="/users/:user_id" element={<UserPage />} />
-					<Route path="/users/:user_id/edit" element={<EditUserPage />} />
+					<Route path="/users/:user_id/edit/*" element={<EditUserPage />} />
 					<Route path="/language" element={<LanguagePage />} />
 					<Route path="*" element={<NotFoundPage />} />
 				</Routes>
