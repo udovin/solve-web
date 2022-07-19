@@ -36,7 +36,7 @@ const Content: FC<TabContext & { tab: string, children?: ReactNode }> = props =>
     const { currentTab, setCurrentTab, tab, children } = props;
     useEffect(() => {
         setCurrentTab && setCurrentTab(tab);
-    }, []);
+    }, [tab, setCurrentTab]);
     return <>{tab === currentTab && children}</>;
 };
 
