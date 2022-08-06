@@ -36,10 +36,6 @@ import DateTime from "../../ui/DateTime";
 import { Tab, TabContent, Tabs, TabsGroup } from "../../ui/Tabs";
 import "./index.scss";
 
-type ContestPageParams = {
-	contest_id: string;
-}
-
 type ContestBlockParams = {
 	contest: Contest;
 };
@@ -231,44 +227,6 @@ const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
 	</>;
 };
 
-const CreateContestProblemBlock: FC = () => {
-	const params = useParams();
-	const { contest_id } = params;
-	const [success, setSuccess] = useState<boolean>();
-	const onSubmit = (event: any) => {
-		event.preventDefault();
-		const { problemID, code } = event.target;
-		fetch("/api/v0/contests/" + contest_id + "/problems", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json; charset=UTF-8",
-			},
-			body: JSON.stringify({
-				ProblemID: Number(problemID.value),
-				Code: code.value,
-			})
-		})
-			.then(() => setSuccess(true));
-	};
-	if (success) {
-		return <Navigate to={`/contests/${contest_id}`} />
-	}
-	return <FormBlock onSubmit={onSubmit} title="Add contest problem" footer={
-		<Button type="submit" color="primary">Create</Button>
-	}>
-		<Field title="Problem ID:">
-			<Input type="number" name="problemID" placeholder="ID" required />
-		</Field>
-		<Field title="Code:">
-			<Input type="text" name="code" placeholder="Code" required />
-		</Field>
-	</FormBlock>;
-};
-
-type ContestProblemPageParams = ContestPageParams & {
-	problem_code: string;
-}
-
 const ContestProblemSideBlock: FC = () => {
 	const params = useParams();
 	const { contest_id, problem_code } = params;
@@ -353,13 +311,21 @@ export type EditContestBlockProps = {
 	onUpdateContest?(contest: Contest): void;
 };
 
+const toNumber = (n?: string) => {
+	return n === undefined ? undefined : Number(n);
+};
+
 const EditContestBlock: FC<EditContestBlockProps> = props => {
 	const { contest, onUpdateContest } = props;
 	const [form, setForm] = useState<{ [key: string]: string }>({});
 	const [error, setError] = useState<ErrorResponse>();
 	const onSubmit = (event: any) => {
 		event.preventDefault();
-		updateContest(contest.id, form)
+		updateContest(contest.id, {
+			title: form.title,
+			begin_time: toNumber(form.begin_time),
+			duration: toNumber(form.duration),
+		})
 			.then(contest => {
 				setForm({});
 				setError(undefined);
@@ -386,6 +352,20 @@ const EditContestBlock: FC<EditContestBlockProps> = props => {
 				onValueChange={value => setForm({ ...form, title: value })}
 				required />
 			{error && error.invalid_fields && error.invalid_fields["title"] && <Alert>{error.invalid_fields["title"].message}</Alert>}
+		</Field>
+		<Field title="Begin time:">
+			<Input
+				type="number" name="begin_time" placeholder="Begin time"
+				value={form.begin_time ?? (contest.begin_time ? String(contest.begin_time) : "")}
+				onValueChange={value => setForm({ ...form, begin_time: value })} />
+			{error && error.invalid_fields && error.invalid_fields["begin_time"] && <Alert>{error.invalid_fields["begin_time"].message}</Alert>}
+		</Field>
+		<Field title="Duration:">
+			<Input
+				type="number" name="duration" placeholder="Duration"
+				value={form.duration ?? (contest.duration ? String(contest.duration) : "")}
+				onValueChange={value => setForm({ ...form, duration: value })} />
+			{error && error.invalid_fields && error.invalid_fields["duration"] && <Alert>{error.invalid_fields["duration"].message}</Alert>}
 		</Field>
 	</FormBlock>;
 };
@@ -682,7 +662,7 @@ const ContestPage: FC = () => {
 	if (!contest) {
 		return <>Loading...</>;
 	}
-	const { title, permissions } = contest;
+	const { title } = contest;
 	return <Page title={`Contest: ${title}`} sidebar={<Routes>
 		<Route path="/problems/:problem_code" element={<ContestProblemSideBlock />} />
 	</Routes>}>

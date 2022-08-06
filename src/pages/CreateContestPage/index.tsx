@@ -8,6 +8,10 @@ import { Contest, ErrorResponse, createContest } from "../../api";
 import Field from "../../ui/Field";
 import Alert from "../../ui/Alert";
 
+const toNumber = (n?: string) => {
+	return n === undefined ? undefined : Number(n);
+};
+
 const CreateContestPage: FC = () => {
 	const [newContest, setNewContest] = useState<Contest>();
 	const [error, setError] = useState<ErrorResponse>();
@@ -17,6 +21,8 @@ const CreateContestPage: FC = () => {
 		setError(undefined);
 		createContest({
 			title: form.title,
+			begin_time: toNumber(form.begin_time),
+			duration: toNumber(form.duration),
 		})
 			.then(setNewContest)
 			.catch(setError);
@@ -36,6 +42,20 @@ const CreateContestPage: FC = () => {
 					onValueChange={value => setForm({ ...form, title: value })}
 					required autoFocus />
 				{error && error.invalid_fields && error.invalid_fields["title"] && <Alert>{error.invalid_fields["title"].message}</Alert>}
+			</Field>
+			<Field title="Begin time:">
+				<Input
+					type="number" name="begin_time" placeholder="Begin time"
+					value={form.begin_time || ""}
+					onValueChange={value => setForm({ ...form, begin_time: value })} />
+				{error && error.invalid_fields && error.invalid_fields["begin_time"] && <Alert>{error.invalid_fields["begin_time"].message}</Alert>}
+			</Field>
+			<Field title="Duration:">
+				<Input
+					type="number" name="duration" placeholder="Duration"
+					value={form.duration || ""}
+					onValueChange={value => setForm({ ...form, duration: value })} />
+				{error && error.invalid_fields && error.invalid_fields["duration"] && <Alert>{error.invalid_fields["duration"].message}</Alert>}
 			</Field>
 		</FormBlock>
 	</Page>;

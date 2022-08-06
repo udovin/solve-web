@@ -9,7 +9,7 @@ import { StaticRouter } from "react-router-dom/server";
 const PORT = process.env.PORT || 8080;
 const app = express();
 
-app.use(express.static("./build"));
+app.use(express.static("./build", { index: false }));
 
 const indexFile = path.resolve("./build/index.html");
 const indexData = fs.readFileSync(indexFile, "utf8");

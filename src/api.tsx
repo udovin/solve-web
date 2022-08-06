@@ -47,6 +47,8 @@ export type Problems = {
 export type Contest = {
 	id: number;
 	title: string;
+	begin_time?: number;
+	duration?: number;
 	permissions?: string[];
 };
 
@@ -323,6 +325,8 @@ export const observeContests = () => {
 
 export type CreateContestForm = {
 	title: string;
+	begin_time?: number;
+	duration?: number;
 };
 
 export const createContest = (form: CreateContestForm) => {
@@ -335,6 +339,8 @@ export const createContest = (form: CreateContestForm) => {
 
 export type UpdateContestForm = {
 	title?: string;
+	begin_time?: number;
+	duration?: number;
 };
 
 export const updateContest = (id: number, form: UpdateContestForm) => {
