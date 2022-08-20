@@ -7,6 +7,7 @@ import FormBlock from "../../components/FormBlock";
 import { Contest, ErrorResponse, createContest } from "../../api";
 import Field from "../../ui/Field";
 import Alert from "../../ui/Alert";
+import DurationInput from "../../ui/DurationInput";
 
 const toNumber = (n?: string) => {
 	return n === undefined ? undefined : Number(n);
@@ -51,10 +52,9 @@ const CreateContestPage: FC = () => {
 				{error && error.invalid_fields && error.invalid_fields["begin_time"] && <Alert>{error.invalid_fields["begin_time"].message}</Alert>}
 			</Field>
 			<Field title="Duration:">
-				<Input
-					type="number" name="duration" placeholder="Duration"
-					value={form.duration || ""}
-					onValueChange={value => setForm({ ...form, duration: value })} />
+				<DurationInput
+					value={Number(form.duration || "18000")}
+					onValueChange={value => setForm({ ...form, duration: String(value) })} />
 				{error && error.invalid_fields && error.invalid_fields["duration"] && <Alert>{error.invalid_fields["duration"].message}</Alert>}
 			</Field>
 		</FormBlock>

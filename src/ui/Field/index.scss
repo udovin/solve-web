@@ -3,33 +3,47 @@
 .ui-field {
 	display: block;
 	margin: 0 0 10px 0;
+
 	&:last-child {
 		margin-bottom: 0;
 	}
+
 	.label {
 		display: inline-block;
 		padding: 0 0 4px 0;
 		color: $light-text-color;
 	}
+
 	.text {
 		display: inline-block;
 		padding: 4px 0 0 0;
+
 		&.danger {
 			color: #a94442;
 		}
 	}
-	.ui-input, .ui-textarea, .ui-select {
+
+	.ui-input,
+	.ui-textarea,
+	.ui-select,
+	.ui-duration-input {
 		display: block;
 		width: 100%;
 	}
+
 	.ui-alert {
-	    margin: 4px 0 0 0;
-	    border: none;
-		&.success, &.info, &.warning, &.danger {
-	    	background: none;
+		margin: 4px 0 0 0;
+		border: none;
+
+		&.success,
+		&.info,
+		&.warning,
+		&.danger {
+			background: none;
 		}
-	    .ui-alert-content {
-	        padding: 0;
-	    }
+
+		.ui-alert-content {
+			padding: 0;
+		}
 	}
 }

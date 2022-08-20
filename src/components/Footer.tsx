@@ -1,5 +1,5 @@
-import React, {FC} from "react";
-import {Link} from "react-router-dom";
+import { FC } from "react";
+import { Link } from "react-router-dom";
 
 const Footer: FC = () => {
 	return <footer id="footer">
@@ -14,7 +14,7 @@ const Footer: FC = () => {
 			</div>
 		</div>
 		<div id="footer-copy">
-			<a href="//github.com/udovin">Ivan Udovin</a> &copy; 2019
+			<a href="//github.com/udovin">Ivan Udovin</a> &copy; 2019-2022
 		</div>
 	</footer>;
 };

@@ -35,6 +35,7 @@ import UserLink from "../../ui/UserLink";
 import DateTime from "../../ui/DateTime";
 import { Tab, TabContent, Tabs, TabsGroup } from "../../ui/Tabs";
 import "./index.scss";
+import DurationInput from "../../ui/DurationInput";
 
 type ContestBlockParams = {
 	contest: Contest;
@@ -361,10 +362,9 @@ const EditContestBlock: FC<EditContestBlockProps> = props => {
 			{error && error.invalid_fields && error.invalid_fields["begin_time"] && <Alert>{error.invalid_fields["begin_time"].message}</Alert>}
 		</Field>
 		<Field title="Duration:">
-			<Input
-				type="number" name="duration" placeholder="Duration"
-				value={form.duration ?? (contest.duration ? String(contest.duration) : "")}
-				onValueChange={value => setForm({ ...form, duration: value })} />
+			<DurationInput
+				value={Number(form.duration ?? (contest.duration ? String(contest.duration) : ""))}
+				onValueChange={value => setForm({ ...form, duration: String(value) })} />
 			{error && error.invalid_fields && error.invalid_fields["duration"] && <Alert>{error.invalid_fields["duration"].message}</Alert>}
 		</Field>
 	</FormBlock>;

@@ -1,4 +1,4 @@
-import React, {FC, InputHTMLAttributes} from "react";
+import { FC, InputHTMLAttributes } from "react";
 import "./index.scss";
 
 export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
@@ -7,7 +7,7 @@ export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
 };
 
 const Input: FC<InputProps> = props => {
-	const {value, onValueChange, onChange, className, ...rest} = props;
+	const { value, onValueChange, onChange, className, ...rest } = props;
 	return <input
 		className={`ui-input ${className ?? ""}`}
 		value={value || ""}
