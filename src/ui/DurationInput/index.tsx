@@ -1,4 +1,4 @@
-import { FC, InputHTMLAttributes } from "react";
+import { FC } from "react";
 import Input from "../Input";
 import "./index.scss";
 
@@ -25,7 +25,7 @@ const DurationInput: FC<DurationInputProps> = props => {
         />
         <Input
             className="hours"
-            value={String(Math.trunc((value || 0) / 3600) % 60)}
+            value={String(Math.trunc((value || 0) / 3600) % 24)}
             onValueChange={(newValue) => onValueChange && onValueChange(replace(value || 0, 3600, 24, Number(newValue)))}
         />
         <Input

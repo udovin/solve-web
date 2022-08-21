@@ -1,5 +1,4 @@
-import React from "react";
-import Alert, { AlertKind } from "./index";
+import Alert, { AlertKind } from ".";
 
 export default {
 	title: "Alert",

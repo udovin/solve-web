@@ -1,4 +1,4 @@
-import React, {BaseHTMLAttributes, FC, ReactNode} from "react";
+import { BaseHTMLAttributes, FC, ReactNode } from "react";
 import "./index.scss";
 
 export type BlockProps = BaseHTMLAttributes<HTMLDivElement> & {
@@ -8,7 +8,7 @@ export type BlockProps = BaseHTMLAttributes<HTMLDivElement> & {
 };
 
 const Block: FC<BlockProps> = props => {
-	let {title, header, footer, children, className, ...rest} = props;
+	let { title, header, footer, children, className, ...rest } = props;
 	if (title) {
 		header = <span className="title">{title}</span>;
 	}

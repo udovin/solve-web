@@ -1,5 +1,5 @@
-import React, { FC, useState } from "react";
-import Input, { InputProps } from "./index";
+import { FC, useState } from "react";
+import Input, { InputProps } from ".";
 
 export default {
 	title: "Input",

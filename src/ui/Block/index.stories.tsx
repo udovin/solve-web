@@ -1,6 +1,4 @@
-import React from "react";
-import Block from "./index";
-import "../../index.scss";
+import Block from ".";
 
 export default {
 	title: "Block",

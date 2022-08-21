@@ -1,6 +1,5 @@
 import { Tab, TabContent, Tabs, TabsGroup } from ".";
 import { Story } from "@storybook/react";
-import "../../index.scss";
 
 export default {
 	title: "Tabs",

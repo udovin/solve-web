@@ -1,10 +1,4 @@
-import React, { Children, ReactNode, useEffect, useState } from "react";
-import { BaseHTMLAttributes, FC, useContext } from "react";
-import Block from "../Block";
-// import { Link } from "react-router-dom";
-// import Block from "../Block";
-// import { AuthContext } from "../../AuthContext";
-// import Icon from "../Icon";
+import React, { FC, ReactNode, useEffect, useState } from "react";
 import "./index.scss";
 
 type TabContext = {

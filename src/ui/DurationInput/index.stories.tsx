@@ -12,6 +12,6 @@ const TestInput: FC<DurationInputProps> = props => {
 };
 
 export const Index = () => <>
-	<p><TestInput value={123} /></p>
-	<p><TestInput value={456} disabled /></p>
+	<p><TestInput value={1 * 86400 + 2 * 3600 + 3 * 60 + 4} /></p>
+	<p><TestInput value={4 * 86400 + 3 * 3600 + 2 * 60 + 1} disabled /></p>
 </>;

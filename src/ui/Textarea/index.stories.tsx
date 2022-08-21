@@ -1,5 +1,5 @@
-import React, { FC, useState } from "react";
-import Textarea, { TextareaProps } from "./index";
+import { FC, useState } from "react";
+import Textarea, { TextareaProps } from ".";
 
 export default {
 	title: "Textarea",

@@ -1,6 +1,4 @@
-import React from "react";
-import Field from "./index";
-import "../../index.scss";
+import Field from ".";
 import Input from "../Input";
 
 export default {
