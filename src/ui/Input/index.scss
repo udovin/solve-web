@@ -12,20 +12,21 @@
 	font-family: inherit;
 	font-size: inherit;
 	color: $text-color;
-	@include transition(border-color 150ms ease-out);
+	z-index: 0;
+	@include transition(border-color 150ms ease-out, z-index 150ms ease-out);
 
 	&:hover {
 		border-color: $dark-border-color;
-		z-index: 100;
-		@include transition(border-color 150ms ease-in);
+		z-index: 10;
+		@include transition(border-color 150ms ease-in, z-index 150ms ease-in);
 	}
 
 	&:active,
 	&:focus {
 		border-color: #0085ba;
 		outline: none;
-		z-index: 200;
-		@include transition(border-color 150ms ease-in);
+		z-index: 20;
+		@include transition(border-color 150ms ease-in, z-index 150ms ease-in);
 	}
 
 	&:disabled {
