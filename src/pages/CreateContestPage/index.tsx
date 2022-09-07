@@ -53,7 +53,7 @@ const CreateContestPage: FC = () => {
 			</Field>
 			<Field title="Duration:">
 				<DurationInput
-					value={Number(form.duration || "18000")}
+					value={Number(form.duration || "0")}
 					onValueChange={value => setForm({ ...form, duration: String(value) })} />
 				{error && error.invalid_fields && error.invalid_fields["duration"] && <Alert>{error.invalid_fields["duration"].message}</Alert>}
 			</Field>

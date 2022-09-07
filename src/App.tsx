@@ -1,6 +1,5 @@
 import { FC } from "react";
 import { Routes, Route } from "react-router-dom";
-import "./App.scss";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import LoginPage from "./pages/LoginPage";
@@ -20,6 +19,8 @@ import EditUserPage from "./pages/EditUserPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import SolutionsPage from "./pages/SolutionsPage";
 import SolutionPage from "./pages/SolutionPage";
+
+import "./App.scss";
 
 const App: FC = () => {
 	return (

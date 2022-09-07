@@ -17,7 +17,7 @@ const replace = (value: number, shift: number, max: number, newValue: number) =>
 const DurationInput: FC<DurationInputProps> = props => {
     const { value, onValueChange } = props;
     return <span className="ui-duration-input">
-        <input type="number" value={String(value || 0)} className="hidden" />
+        <input type="number" value={String(value || 0)} onChange={() => { }} className="hidden" />
         <Input
             className="days"
             value={String(Math.trunc((value || 0) / 86400))}

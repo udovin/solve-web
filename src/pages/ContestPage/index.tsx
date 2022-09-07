@@ -159,6 +159,18 @@ const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
 			.then(setSolution)
 			.catch(setError);
 	}, [contest.id, solutionID]);
+	useEffect(() => {
+		if (!solution || (solution.report?.verdict !== "queued" && solution.report?.verdict !== "running")) {
+			return;
+		}
+		const updateSolution = () => {
+			observeContestSolution(contest.id, solution.id)
+				.then(setSolution)
+				.catch(setError);
+		};
+		const interval = setInterval(updateSolution, 2000);
+		return () => clearInterval(interval);
+	}, [contest.id, solution]);
 	if (!solution) {
 		return <Block title="Solution" className="b-contest-solution">
 			{error ? <Alert>{error.message}</Alert> : "Loading..."}
@@ -166,8 +178,8 @@ const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
 	}
 	const { id, report, participant, problem, create_time } = solution;
 	return <>
-		<Block title={`Solution #${id}`} className="b-contest-solution">{error ?
-			<Alert>{error.message}</Alert> :
+		<Block title={`Solution #${id}`} className="b-contest-solution">
+			{error && <Alert>{error.message}</Alert>}
 			<table className="ui-table">
 				<thead>
 					<tr>
@@ -202,7 +214,7 @@ const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
 					</tr>
 				</tbody>
 			</table>
-		}</Block>
+		</Block>
 		{report && <Block title="Tests" className="b-contest-solution">
 			<table className="ui-table">
 				<thead>

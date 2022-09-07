@@ -85,10 +85,6 @@ const SolutionReportBlock: FC<SolutionReportBlockProps> = props => {
 	</Block>;
 };
 
-type SolutionPageParams = {
-	solution_id: string;
-}
-
 const SolutionPage: FC = () => {
 	const params = useParams();
 	const { solution_id } = params;
