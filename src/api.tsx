@@ -57,9 +57,13 @@ export type Contests = {
 };
 
 export type Compiler = {
-	ID: number;
-	Name: string;
-	CreateTime: number;
+	id: number;
+	name: string;
+	config: number;
+};
+
+export type Compilers = {
+	compilers?: Compiler[];
 };
 
 type ReportDataLogs = {
@@ -434,6 +438,13 @@ export const observeProblems = () => {
 	}));
 };
 
+export const observeCompilers = () => {
+	return parseResp(fetch(`/api/v0/compilers`, {
+		method: "GET",
+		headers: HEADERS,
+	}));
+};
+
 export type CreateProblemForm = {
 	title: string;
 	file: File;
@@ -451,6 +462,7 @@ export const createProblem = (form: CreateProblemForm) => {
 };
 
 export type SubmitContestSolution = {
+	compiler_id: number;
 	file: File;
 };
 
@@ -458,6 +470,7 @@ export const submitContestSolution = (
 	contestID: number, problemCode: string, form: SubmitContestSolution,
 ) => {
 	const formData = new FormData();
+	formData.append("compiler_id", String(form.compiler_id));
 	formData.append("file", form.file, form.file.name);
 	return parseResp(fetch(
 		`/api/v0/contests/${contestID}/problems/${problemCode}/submit`,

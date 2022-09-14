@@ -3,6 +3,7 @@ import { Navigate, Route, Routes, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Page from "../../components/Page";
 import {
+	Compilers,
 	Contest,
 	ContestParticipant,
 	ContestParticipants,
@@ -16,6 +17,7 @@ import {
 	deleteContestParticipant,
 	deleteContestProblem,
 	ErrorResponse,
+	observeCompilers,
 	observeContestParticipants,
 	observeContestProblems,
 	observeContestSolution,
@@ -245,11 +247,14 @@ const ContestProblemSideBlock: FC = () => {
 	const { contest_id, problem_code } = params;
 	const [newSolution, setNewSolution] = useState<Solution>();
 	const [file, setFile] = useState<File>();
+	const [compiler, setCompiler] = useState<number>();
 	const [error, setError] = useState<ErrorResponse>();
+	const [compilers, setCompilers] = useState<Compilers>();
 	const onSubmit = (event: any) => {
 		event.preventDefault();
 		setError(undefined);
-		file && submitContestSolution(Number(contest_id), String(problem_code), {
+		file && compiler && submitContestSolution(Number(contest_id), String(problem_code), {
+			compiler_id: compiler,
 			file: file,
 		})
 			.then(solution => {
@@ -259,6 +264,11 @@ const ContestProblemSideBlock: FC = () => {
 			})
 			.catch(setError);
 	};
+	useEffect(() => {
+		observeCompilers()
+			.then(setCompilers)
+			.catch(setError)
+	}, []);
 	if (newSolution) {
 		return <Navigate to={`/contests/${contest_id}/solutions/${newSolution.id}`} />
 	}
@@ -268,6 +278,18 @@ const ContestProblemSideBlock: FC = () => {
 		<Button color="primary">Submit</Button>
 	}>
 		{errorMessage && <Alert>{errorMessage}</Alert>}
+		<Field title="Compiler:">
+			<select
+				name="compiler_id"
+				value={String(compiler || compilers?.compilers?.at(0)?.id)}
+				onChange={(e: ChangeEvent<HTMLSelectElement>) => setCompiler(Number(e.target.value))}
+				required>
+				{compilers?.compilers?.map((compiler, index) =>
+					<option value={compiler.id} key={index}>{compiler.name}</option>
+				)}
+			</select>
+			{invalidFields["compiler_id"] && <Alert>{invalidFields["compiler_id"].message}</Alert>}
+		</Field>
 		<Field title="Solution file:">
 			<input
 				type="file" name="file"
@@ -275,7 +297,7 @@ const ContestProblemSideBlock: FC = () => {
 				required />
 			{invalidFields["file"] && <Alert>{invalidFields["file"].message}</Alert>}
 		</Field>
-	</FormBlock>;
+	</FormBlock >;
 };
 
 const ContestProblemBlock: FC = () => {
