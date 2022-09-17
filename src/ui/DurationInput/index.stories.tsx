@@ -7,7 +7,7 @@ export default {
 
 const TestInput: FC<DurationInputProps> = props => {
 	const { value, ...rest } = props;
-	const [newValue, setNewValue] = useState<number>(value || 0);
+	const [newValue, setNewValue] = useState(value);
 	return <DurationInput value={newValue} onValueChange={setNewValue} {...rest} />
 };
 

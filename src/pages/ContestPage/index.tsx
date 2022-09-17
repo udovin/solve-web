@@ -375,7 +375,7 @@ const EditContestBlock: FC<EditContestBlockProps> = props => {
 		</Field>
 		<Field title="Duration:">
 			<DurationInput
-				value={Number(form.duration ?? (contest.duration ? String(contest.duration) : ""))}
+				value={toNumber(form.duration) ?? contest.duration}
 				onValueChange={value => setForm({ ...form, duration: String(value) })} />
 			{error && error.invalid_fields && error.invalid_fields["duration"] && <Alert>{error.invalid_fields["duration"].message}</Alert>}
 		</Field>

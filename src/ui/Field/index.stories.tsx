@@ -7,6 +7,6 @@ export default {
 
 export const Index = () => <>
 	<Field title="Title" description="Description">
-		<Input defaultValue="Input" />
+		<Input value="Input" />
 	</Field>
 </>;
