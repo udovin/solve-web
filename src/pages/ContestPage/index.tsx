@@ -36,8 +36,10 @@ import Alert from "../../ui/Alert";
 import UserLink from "../../ui/UserLink";
 import DateTime from "../../ui/DateTime";
 import { Tab, TabContent, Tabs, TabsGroup } from "../../ui/Tabs";
-import "./index.scss";
 import DurationInput from "../../ui/DurationInput";
+import Checkbox from "../../ui/Checkbox";
+
+import "./index.scss";
 
 type ContestBlockParams = {
 	contest: Contest;
@@ -350,6 +352,10 @@ const toNumber = (n?: string) => {
 	return n === undefined ? undefined : Number(n);
 };
 
+const toBoolean = (n?: string) => {
+	return n === undefined ? undefined : n === "true";
+};
+
 const EditContestBlock: FC<EditContestBlockProps> = props => {
 	const { contest, onUpdateContest } = props;
 	const [form, setForm] = useState<{ [key: string]: string }>({});
@@ -360,6 +366,8 @@ const EditContestBlock: FC<EditContestBlockProps> = props => {
 			title: form.title,
 			begin_time: toNumber(form.begin_time),
 			duration: toNumber(form.duration),
+			enable_registration: toBoolean(form.enable_registration),
+			enable_upsolving: toBoolean(form.enable_upsolving),
 		})
 			.then(contest => {
 				setForm({});
@@ -400,6 +408,18 @@ const EditContestBlock: FC<EditContestBlockProps> = props => {
 				value={toNumber(form.duration) ?? contest.duration}
 				onValueChange={value => setForm({ ...form, duration: String(value) })} />
 			{error && error.invalid_fields && error.invalid_fields["duration"] && <Alert>{error.invalid_fields["duration"].message}</Alert>}
+		</Field>
+		<Field name="enable_registration" errorResponse={error}>
+			<Checkbox
+				value={toBoolean(form.enable_registration) ?? contest.enable_registration ?? false}
+				onValueChange={value => setForm({ ...form, enable_registration: value ? "true" : "false" })} />
+			<span className="label">Enable registration</span>
+		</Field>
+		<Field name="enable_upsolving" errorResponse={error}>
+			<Checkbox
+				value={toBoolean(form.enable_upsolving) ?? contest.enable_upsolving ?? false}
+				onValueChange={value => setForm({ ...form, enable_upsolving: value ? "true" : "false" })} />
+			<span className="label">Enable upsolving</span>
 		</Field>
 	</FormBlock>;
 };

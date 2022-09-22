@@ -20,7 +20,7 @@ const Input: FC<InputProps> = props => {
 	return <input
 		className={`ui-input ${className ?? ""}`}
 		value={value || ""}
-		onChange={onValueChange ? (e) => onValueChange(e.target.value) : undefined}
+		onChange={onValueChange ? e => onValueChange(e.target.value) : undefined}
 		{...rest}
 	/>
 };

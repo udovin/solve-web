@@ -50,6 +50,8 @@ export type Contest = {
 	begin_time?: number;
 	duration?: number;
 	permissions?: string[];
+	enable_upsolving?: boolean;
+	enable_registration?: boolean;
 };
 
 export type Contests = {
@@ -331,6 +333,8 @@ export type CreateContestForm = {
 	title: string;
 	begin_time?: number;
 	duration?: number;
+	enable_registration?: boolean;
+	enable_upsolving?: boolean;
 };
 
 export const createContest = (form: CreateContestForm) => {
@@ -345,6 +349,8 @@ export type UpdateContestForm = {
 	title?: string;
 	begin_time?: number;
 	duration?: number;
+	enable_registration?: boolean;
+	enable_upsolving?: boolean;
 };
 
 export const updateContest = (id: number, form: UpdateContestForm) => {

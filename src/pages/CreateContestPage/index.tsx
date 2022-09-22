@@ -8,9 +8,14 @@ import { Contest, ErrorResponse, createContest } from "../../api";
 import Field from "../../ui/Field";
 import Alert from "../../ui/Alert";
 import DurationInput from "../../ui/DurationInput";
+import Checkbox from "../../ui/Checkbox";
 
 const toNumber = (n?: string) => {
 	return n === undefined ? undefined : Number(n);
+};
+
+const toBoolean = (n?: string) => {
+	return n === undefined ? undefined : n === "true";
 };
 
 const CreateContestPage: FC = () => {
@@ -24,6 +29,8 @@ const CreateContestPage: FC = () => {
 			title: form.title,
 			begin_time: toNumber(form.begin_time),
 			duration: toNumber(form.duration),
+			enable_registration: toBoolean(form.enable_registration),
+			enable_upsolving: toBoolean(form.enable_upsolving),
 		})
 			.then(setNewContest)
 			.catch(setError);
@@ -56,6 +63,18 @@ const CreateContestPage: FC = () => {
 					value={Number(form.duration || "0")}
 					onValueChange={value => setForm({ ...form, duration: String(value) })} />
 				{error && error.invalid_fields && error.invalid_fields["duration"] && <Alert>{error.invalid_fields["duration"].message}</Alert>}
+			</Field>
+			<Field name="enable_registration" errorResponse={error}>
+				<Checkbox
+					value={toBoolean(form.enable_registration) ?? false}
+					onValueChange={value => setForm({ ...form, enable_registration: value ? "true" : "false" })} />
+				<span className="label">Enable registration</span>
+			</Field>
+			<Field name="enable_upsolving" errorResponse={error}>
+				<Checkbox
+					value={toBoolean(form.enable_upsolving) ?? false}
+					onValueChange={value => setForm({ ...form, enable_upsolving: value ? "true" : "false" })} />
+				<span className="label">Enable upsolving</span>
 			</Field>
 		</FormBlock>
 	</Page>;

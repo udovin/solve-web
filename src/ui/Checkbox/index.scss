@@ -1,0 +1,52 @@
+@import "../../mixins.scss";
+
+.ui-checkbox {
+    display: inline-block;
+    margin: 0;
+	padding: 0;
+	width: 20px;
+	height: 20px;
+	border: 1px solid #dddddd;
+	border-radius: 4px;
+	background-color: #ffffff;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+    @include transition(border-color 150ms ease-out, background-color 150ms ease-out);
+
+    -webkit-appearance: none;
+    appearance: none;
+
+    &:hover {
+        border-color: #bbbbbb;
+        cursor: pointer;
+        @include transition(border-color 150ms ease-in, background-color 150ms ease-in);
+    }
+
+    &:active,
+	&:focus {
+        border-color: #0073aa;
+        outline: none;
+        @include transition(border-color 150ms ease-in, background-color 150ms ease-in);
+    }
+
+    &:checked {
+        border-color: #0073aa;
+        background-color: #0085ba;
+        background-image: url('../../images/icons-white.svg');
+        background-repeat: no-repeat;
+        background-size: 600% 600%;
+        background-position: 40% 80%;
+        @include transition(border-color 150ms ease-in, background-color 150ms ease-in);
+    }
+
+    &:disabled {
+		border-color: $border-color;
+		background-color: $dark-background-color;
+		color: #666666;
+		cursor: default;
+
+        &:checked {
+            background-image: url('../../images/icons.svg');
+        }
+	}
+}

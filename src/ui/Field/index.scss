@@ -31,6 +31,19 @@
 		width: 100%;
 	}
 
+	.ui-checkbox {
+		float: left;
+		display: block;
+	}
+
+	.ui-checkbox + .label {
+		display: block;
+		margin-left: 26px;
+		padding: 0px;
+		line-height: 20px;
+		color: #000000;
+	}
+
 	.ui-alert {
 		margin: 4px 0 0 0;
 		border: none;
