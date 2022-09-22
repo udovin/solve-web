@@ -12,13 +12,14 @@
 		display: inline-block;
 		position: relative;
 		margin-left: -1px;
-		width: 60px;
+		width: 40px;
 		text-align: center;
 
 		&.days {
 			border-top-right-radius: 0;
 			border-bottom-right-radius: 0;
 			margin-left: 0;
+			width: 60px;
 		}
 
 		&.hours,

@@ -75,21 +75,21 @@ const DurationInput: FC<DurationInputProps> = props => {
             value={hours}
             onValueChange={hoursChange}
             disabled={disabled}
-            placeholder="Hours"
+            placeholder="hh"
         />
         <NumberInput
             className="minutes"
             value={minutes}
             onValueChange={minutesChange}
             disabled={disabled}
-            placeholder="Min"
+            placeholder="mm"
         />
         <NumberInput
             className="seconds"
             value={seconds}
             onValueChange={secondsChange}
             disabled={disabled}
-            placeholder="Sec"
+            placeholder="ss"
         />
     </span>
 };
