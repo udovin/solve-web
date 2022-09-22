@@ -42,24 +42,39 @@ const DurationInput: FC<DurationInputProps> = props => {
     };
     const hoursChange = (value?: number) => {
         if (onValueChange) {
-            value = value !== undefined ? value % 24 : undefined;
             setHours(value);
             onValueChange((((days || 0) * 24 + (value || 0)) * 60 + (minutes || 0)) * 60 + (seconds || 0));
         }
     };
     const minutesChange = (value?: number) => {
         if (onValueChange) {
-            value = value !== undefined ? value % 60 : undefined;
             setMinutes(value);
             onValueChange((((days || 0) * 24 + (hours || 0)) * 60 + (value || 0)) * 60 + (seconds || 0));
         }
     };
     const secondsChange = (value?: number) => {
         if (onValueChange) {
-            value = value !== undefined ? value % 60 : undefined;
             setSeconds(value);
             onValueChange((((days || 0) * 24 + (hours || 0)) * 60 + (minutes || 0)) * 60 + (value || 0));
         }
+    };
+    const formatDays = (value: string) => {
+        if (value === "0") {
+            return "";
+        }
+        return value;
+    };
+    const formatPart = (value: string) => {
+        if (value === "" || value === "0") {
+            return "";
+        }
+        while (value.length < 2) {
+            value = "0" + value;
+        }
+        while (value.length > 2 && value[0] === "0") {
+            value = value.substring(1);
+        }
+        return value;
     };
     return <span className="ui-duration-input">
         <input type="number" value={String(value || 0)} onChange={() => { }} className="hidden" />
@@ -69,6 +84,8 @@ const DurationInput: FC<DurationInputProps> = props => {
             onValueChange={daysChange}
             disabled={disabled}
             placeholder="Days"
+
+            formatNumber={formatDays}
         />
         <NumberInput
             className="hours"
@@ -76,6 +93,7 @@ const DurationInput: FC<DurationInputProps> = props => {
             onValueChange={hoursChange}
             disabled={disabled}
             placeholder="hh"
+            formatNumber={formatPart}
         />
         <NumberInput
             className="minutes"
@@ -83,6 +101,7 @@ const DurationInput: FC<DurationInputProps> = props => {
             onValueChange={minutesChange}
             disabled={disabled}
             placeholder="mm"
+            formatNumber={formatPart}
         />
         <NumberInput
             className="seconds"
@@ -90,6 +109,7 @@ const DurationInput: FC<DurationInputProps> = props => {
             onValueChange={secondsChange}
             disabled={disabled}
             placeholder="ss"
+            formatNumber={formatPart}
         />
     </span>
 };
