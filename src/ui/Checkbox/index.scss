@@ -9,12 +9,12 @@
 	border: 1px solid #dddddd;
 	border-radius: 4px;
 	background-color: #ffffff;
-	box-sizing: border-box;
-	-webkit-box-sizing: border-box;
+    box-shadow: 0 0;
+	@include box-sizing(border-box);
     @include transition(border-color 150ms ease-out, background-color 150ms ease-out);
 
-    -webkit-appearance: none;
     appearance: none;
+    -webkit-appearance: none;
 
     &:hover {
         border-color: #bbbbbb;
@@ -25,6 +25,7 @@
     &:active,
 	&:focus {
         border-color: #0073aa;
+		box-shadow: 0 0 2px #0085ba;
         outline: none;
         @include transition(border-color 150ms ease-in, background-color 150ms ease-in);
     }
@@ -42,6 +43,7 @@
     &:disabled {
 		border-color: $border-color;
 		background-color: $dark-background-color;
+        box-shadow: 0 0;
 		color: #666666;
 		cursor: default;
 

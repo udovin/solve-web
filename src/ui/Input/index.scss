@@ -9,6 +9,7 @@
 	border: 1px solid $border-color;
 	border-radius: 4px;
 	background-color: $background-color;
+	box-shadow: 0 0;
 	font-family: inherit;
 	font-size: inherit;
 	color: $text-color;
@@ -24,6 +25,7 @@
 	&:active,
 	&:focus {
 		border-color: #0085ba;
+		box-shadow: 0 0 2px #0085ba;
 		outline: none;
 		z-index: 20;
 		@include transition(border-color 150ms ease-in, z-index 150ms ease-in);
@@ -32,6 +34,7 @@
 	&:disabled {
 		border-color: $border-color;
 		background-color: $dark-background-color;
+		box-shadow: 0 0;
 		color: #666666;
 		cursor: default;
 	}

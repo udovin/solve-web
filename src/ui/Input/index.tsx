@@ -21,6 +21,7 @@ const Input: FC<InputProps> = props => {
 		className={`ui-input ${className ?? ""}`}
 		value={value || ""}
 		onChange={onValueChange ? e => onValueChange(e.target.value) : undefined}
+		readOnly={!onValueChange}
 		{...rest}
 	/>
 };

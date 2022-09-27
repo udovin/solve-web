@@ -12,7 +12,6 @@ export type CheckboxProps = {
 
 const Checkbox: FC<CheckboxProps> = props => {
 	const { value, onValueChange, className, ...rest } = props;
-	console.log(value);
 	return <input
 		className={`ui-checkbox ${className ?? ""}`}
 		type="checkbox"

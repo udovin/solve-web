@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import NumberInput from "../NumberInput";
 
 import "./index.scss";
@@ -9,6 +9,25 @@ export type DurationInputProps = {
     onValueChange?(value?: number): void;
 };
 
+const formatDays = (value: string) => {
+    if (value === "0") {
+        return "";
+    }
+    return value;
+};
+const formatPart = (value: string) => {
+    if (value === "" || value === "0") {
+        return "";
+    }
+    while (value.length < 2) {
+        value = "0" + value;
+    }
+    while (value.length > 2 && value[0] === "0") {
+        value = value.substring(1);
+    }
+    return value;
+};
+
 const DurationInput: FC<DurationInputProps> = props => {
     const { value, onValueChange, disabled } = props;
     const [days, setDays] = useState(value ? Math.trunc(value / 86400) : undefined);
@@ -16,7 +35,6 @@ const DurationInput: FC<DurationInputProps> = props => {
     const [minutes, setMinutes] = useState(value ? Math.trunc(value / 60) % 60 : undefined);
     const [seconds, setSeconds] = useState(value ? value % 60 : undefined);
     useEffect(() => {
-        console.log(value);
         const newDays = value ? Math.trunc(value / 86400) : 0;
         const newHours = value ? Math.trunc(value / 3600) % 24 : 0;
         const newMinutes = value ? Math.trunc(value / 60) % 60 : 0;
@@ -58,24 +76,6 @@ const DurationInput: FC<DurationInputProps> = props => {
             onValueChange((((days || 0) * 24 + (hours || 0)) * 60 + (minutes || 0)) * 60 + (value || 0));
         }
     };
-    const formatDays = (value: string) => {
-        if (value === "0") {
-            return "";
-        }
-        return value;
-    };
-    const formatPart = (value: string) => {
-        if (value === "" || value === "0") {
-            return "";
-        }
-        while (value.length < 2) {
-            value = "0" + value;
-        }
-        while (value.length > 2 && value[0] === "0") {
-            value = value.substring(1);
-        }
-        return value;
-    };
     return <span className="ui-duration-input">
         <input type="number" value={String(value || 0)} onChange={() => { }} className="hidden" />
         <NumberInput
@@ -84,7 +84,6 @@ const DurationInput: FC<DurationInputProps> = props => {
             onValueChange={daysChange}
             disabled={disabled}
             placeholder="Days"
-
             formatNumber={formatDays}
         />
         <NumberInput
