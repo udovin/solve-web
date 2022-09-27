@@ -38,6 +38,7 @@ import DateTime from "../../ui/DateTime";
 import { Tab, TabContent, Tabs, TabsGroup } from "../../ui/Tabs";
 import DurationInput from "../../ui/DurationInput";
 import Checkbox from "../../ui/Checkbox";
+import Select from "../../ui/Select";
 
 import "./index.scss";
 
@@ -612,11 +613,16 @@ const EditContestParticipantsBlock: FC<EditContestParticipantsBlockProps> = prop
 				onValueChange={value => setForm({ ...form, user_id: value })}
 				placeholder="User ID"
 				required />
-			<select name="kind" value={form.kind || "regular"} onChange={e => setForm({ ...form, kind: e.target.value })}>
-				<option value={"regular"}>Regular</option>
-				<option value={"upsolving"}>Upsolving</option>
-				<option value={"manager"}>Manager</option>
-			</select>
+			<Select
+				name="kind"
+				value={form.kind || "regular"}
+				options={{
+					"regular": "Regular",
+					"upsolving": "Upsolving",
+					"manager": "Manager",
+				}}
+				onValueChange={value => setForm({ ...form, kind: value })}
+			/>
 			<Button type="submit">Create</Button>
 		</form>}
 	>

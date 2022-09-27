@@ -32,7 +32,9 @@ const Select: FC<SelectProps> = (props: SelectProps) => {
 		return () => document.removeEventListener("click", resetFocus);
 	}, [updating, setUpdating, focused, setFocused]);
 	return <span className={`ui-select${focused ? " focused" : ""}${disabled ? " disabled" : ""} ${className ?? ""}`} onClickCapture={!disabled ? toggleFocus : undefined}>
-		<button><span className="arrow"></span>{value && (options[value] === undefined ? value : options[value])}</button>
+		<button type="button">
+			<span className="arrow"></span>{value && (options[value] === undefined ? value : options[value])}
+		</button>
 		<span className="options-wrap">
 			<span className="options">
 				{Object.entries(options).map(([key, option], index) => {
