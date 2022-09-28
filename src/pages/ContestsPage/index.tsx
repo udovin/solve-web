@@ -7,6 +7,7 @@ import Button from "../../ui/Button";
 import Page from "../../components/Page";
 import Sidebar from "../../ui/Sidebar";
 import Block, { BlockProps } from "../../ui/Block";
+import DateTime from "../../ui/DateTime";
 
 import "./index.scss";
 
@@ -21,14 +22,26 @@ const ContestsBlock: FC<ContestsBlockProps> = props => {
 			<thead>
 				<tr>
 					<th className="title">Title</th>
+					<th className="duration">Duration</th>
+					<th className="start">Start</th>
+					<th className="actions">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
 				{contests && contests.map((contest, index) => {
-					const { id, title } = contest;
+					const { id, title, begin_time, duration, permissions } = contest;
 					return <tr key={index} className="contest">
 						<td className="title">
 							<Link to={`/contests/${id}`}>{title}</Link>
+						</td>
+						<td className="duration">
+							{duration ? duration : <>&mdash;</>}
+						</td>
+						<td className="start">
+							{begin_time ? <DateTime value={begin_time} /> : <>&mdash;</>}
+						</td>
+						<td className="actions">
+							{permissions?.includes("register_contest") && <Link to={`/contests/${id}/register`}>Register &raquo;</Link>}
 						</td>
 					</tr>;
 				})}

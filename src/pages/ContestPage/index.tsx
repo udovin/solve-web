@@ -117,13 +117,14 @@ const ContestSolutionsBlock: FC<ContestBlockParams> = props => {
 					<th className="date">Date</th>
 					<th className="participant">Participant</th>
 					<th className="problem">Problem</th>
+					<th className="compiler">Compiler</th>
 					<th className="verdict">Verdict</th>
 					<th className="points">Points</th>
 				</tr>
 			</thead>
 			<tbody>
 				{contestSolutions.map((solution: ContestSolution, key: number) => {
-					const { id, report, participant, problem, create_time } = solution;
+					const { id, report, participant, problem, compiler, create_time } = solution;
 					return <tr key={key} className="problem">
 						<td className="id">
 							<Link to={`/contests/${contest.id}/solutions/${id}`}>{id}</Link>
@@ -132,10 +133,15 @@ const ContestSolutionsBlock: FC<ContestBlockParams> = props => {
 							<DateTime value={create_time} />
 						</td>
 						<td className="participant">
-							{participant && participant.user ? <UserLink user={participant.user} /> : <>&mdash;</>}
+							{participant && <>
+								<span className="kind">{participant.kind}: </span>{participant.user ? <UserLink user={participant.user} /> : <>&mdash;</>}
+							</>}
 						</td>
 						<td className="problem">
 							{problem ? <Link to={`/contests/${contest.id}/problems/${problem.code}`}>{`${problem.code}. ${problem.title}`}</Link> : <>&mdash;</>}
+						</td>
+						<td className="compiler">
+							{compiler ? compiler.name : <>&mdash;</>}
 						</td>
 						<td className="verdict">
 							{report ? report.verdict : "running"}

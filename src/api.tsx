@@ -160,6 +160,7 @@ export type ContestSolution = {
 	report?: SolutionReport;
 	participant?: ContestParticipant;
 	problem?: ContestProblem;
+	compiler?: Compiler;
 	create_time: number;
 };
 

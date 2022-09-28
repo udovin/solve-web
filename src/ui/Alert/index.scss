@@ -4,31 +4,37 @@
 	display: block;
 	margin: 0 0 10px 0;
 	border: 1px solid $border-color;
-    border-radius: 4px;
+	border-radius: 4px;
+
 	&:last-child {
 		margin-bottom: 0;
 	}
+
 	&.success {
-    	background-color: #dff0d8;
-    	border-color: #c6e3bb;
-    	color: #3c763d;
-    }
-    &.info {
-    	background-color: #d9edf7;
-    	border-color: #bcdff1;
-    	color: #31708f;
-    }
-    &.warning {
-    	background-color: #fcf8e3;
-    	border-color: #ede3b4;
-    	color: #8a6d3b;
-    }
-    &.danger {
-    	background-color: #f2dede;
-        border-color: #ebcccc;
-        color: #a94442;
-    }
+		background-color: #dff0d8;
+		border-color: #c6e3bb;
+		color: #3c763d;
+	}
+
+	&.info {
+		background-color: #d9edf7;
+		border-color: #bcdff1;
+		color: #31708f;
+	}
+
+	&.warning {
+		background-color: #fcf8e3;
+		border-color: #ede3b4;
+		color: #8a6d3b;
+	}
+
+	&.danger {
+		background-color: #f2dede;
+		border-color: #ebcccc;
+		color: #a94442;
+	}
+
 	.ui-alert-content {
-    	padding: 10px;
-    }
+		padding: 10px;
+	}
 }

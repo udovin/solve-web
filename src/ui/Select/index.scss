@@ -7,7 +7,7 @@
 	position: relative;
 	z-index: 0;
 
-	> button {
+	>button {
 		display: inline-block;
 		position: relative;
 		@include box-sizing(border-box);
@@ -23,9 +23,7 @@
 		color: $text-color;
 		text-align: left;
 		z-index: 0;
-		@include transition(
-			border-color 150ms ease-out, background-color 150ms ease-out
-		);
+		@include transition(border-color 150ms ease-out, background-color 150ms ease-out);
 
 		&:focus {
 			outline: none;
@@ -34,12 +32,10 @@
 		&:hover {
 			border-color: $dark-border-color;
 			cursor: pointer;
-			@include transition(
-				border-color 150ms ease-in, background-color 150ms ease-in
-			);
+			@include transition(border-color 150ms ease-in, background-color 150ms ease-in);
 		}
-		
-		> .arrow {
+
+		>.arrow {
 			display: block;
 			position: absolute;
 			width: 20px;
@@ -47,25 +43,25 @@
 			top: 5px;
 			right: 5px;
 			background-image: url('../../images/icons.svg');
-        	background-repeat: no-repeat;
-        	background-size: 600% 600%;
-        	background-position: 40% 60%;
+			background-repeat: no-repeat;
+			background-size: 600% 600%;
+			background-position: 40% 60%;
 			transform: rotate(0deg);
 			@include transition(transform 150ms ease-out);
 		}
 	}
 
-	> .options-wrap {
+	>.options-wrap {
 		display: none;
 
-		> .options {
+		>.options {
 			display: block;
 			margin-top: -1px;
 			border: 1px solid $border-color;
 			border-radius: 0 0 4px 4px;
 			background-color: $background-color;
 
-			> .option {
+			>.option {
 				display: block;
 				padding: 4px 10px;
 				@include box-sizing(border-box);
@@ -89,19 +85,19 @@
 	&.focused {
 		z-index: 20;
 
-		> button {
+		>button {
 			border-color: $dark-border-color;
 			background-color: #eeeeee;
 			border-radius: 4px 4px 0 0;
 			z-index: 10;
 
-			> .arrow {
+			>.arrow {
 				transform: rotate(180deg);
 				@include transition(transform 150ms ease-in);
 			}
 		}
 
-		> .options-wrap {
+		>.options-wrap {
 			display: block;
 			position: absolute;
 			left: 0;
@@ -111,9 +107,9 @@
 	}
 
 	&.disabled {
-		> button {
-			border-color: $border-color !important;
-			background-color: $dark-background-color !important;
+		>button {
+			border-color: $border-color  !important;
+			background-color: $dark-background-color  !important;
 			color: #666666 !important;
 			cursor: default;
 		}

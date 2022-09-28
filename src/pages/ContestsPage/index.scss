@@ -3,11 +3,22 @@
         padding: 0;
         overflow-x: auto;
     }
-  
+
     .ui-table {
         border: none;
 
         .title {
+            text-align: left;
+        }
+
+        .duration,
+        .start {
+            width: 20%;
+            text-align: center;
+        }
+
+        .actions {
+            width: 20%;
             text-align: left;
         }
     }

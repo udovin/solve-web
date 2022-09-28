@@ -58,11 +58,19 @@
             width: 1%;
         }
 
-        .participant,
         .problem,
         .verdict,
-        .points {
+        .points,
+        .compiler {
             text-align: center;
+        }
+
+        .participant {
+            text-align: center;
+
+            .kind {
+                color: #666666;
+            }
         }
     }
 }

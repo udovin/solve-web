@@ -15,16 +15,19 @@
 	color: $text-color;
 	resize: none;
 	@include transition(border-color 150ms ease-out);
+
 	&:hover {
 		border-color: $dark-border-color;
 		@include transition(border-color 150ms ease-in);
 	}
+
 	&:focus {
 		border-color: #0085ba;
 		box-shadow: 0 0 2px #0085ba;
 		outline: none;
 		@include transition(border-color 150ms ease-in);
 	}
+
 	&:disabled {
 		border-color: $border-color;
 		background-color: $dark-background-color;

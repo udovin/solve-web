@@ -3,14 +3,14 @@
 .ui-checkbox {
     display: inline-block;
     margin: 0;
-	padding: 0;
-	width: 20px;
-	height: 20px;
-	border: 1px solid #dddddd;
-	border-radius: 4px;
-	background-color: #ffffff;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    background-color: #ffffff;
     box-shadow: 0 0;
-	@include box-sizing(border-box);
+    @include box-sizing(border-box);
     @include transition(border-color 150ms ease-out, background-color 150ms ease-out);
 
     appearance: none;
@@ -23,9 +23,9 @@
     }
 
     &:active,
-	&:focus {
+    &:focus {
         border-color: #0073aa;
-		box-shadow: 0 0 2px #0085ba;
+        box-shadow: 0 0 2px #0085ba;
         outline: none;
         @include transition(border-color 150ms ease-in, background-color 150ms ease-in);
     }
@@ -41,14 +41,14 @@
     }
 
     &:disabled {
-		border-color: $border-color;
-		background-color: $dark-background-color;
+        border-color: $border-color;
+        background-color: $dark-background-color;
         box-shadow: 0 0;
-		color: #666666;
-		cursor: default;
+        color: #666666;
+        cursor: default;
 
         &:checked {
             background-image: url('../../images/icons.svg');
         }
-	}
+    }
 }
