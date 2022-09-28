@@ -257,7 +257,7 @@ const ContestProblemSideBlock: FC = () => {
 		event.preventDefault();
 		setError(undefined);
 		file && compiler && submitContestSolution(Number(contest_id), String(problem_code), {
-			compiler_id: compiler,
+			compiler_id: compiler ?? compilers?.compilers?.at(0)?.id,
 			file: file,
 		})
 			.then(solution => {
@@ -281,17 +281,15 @@ const ContestProblemSideBlock: FC = () => {
 		<Button color="primary">Submit</Button>
 	}>
 		{errorMessage && <Alert>{errorMessage}</Alert>}
-		<Field title="Compiler:">
-			<select
+		<Field title="Compiler:" name="compiler_id" errorResponse={error}>
+			<Select
 				name="compiler_id"
-				value={String(compiler || compilers?.compilers?.at(0)?.id)}
-				onChange={(e: ChangeEvent<HTMLSelectElement>) => setCompiler(Number(e.target.value))}
-				required>
-				{compilers?.compilers?.map((compiler, index) =>
-					<option value={compiler.id} key={index}>{compiler.name}</option>
-				)}
-			</select>
-			{invalidFields["compiler_id"] && <Alert>{invalidFields["compiler_id"].message}</Alert>}
+				value={String(compiler ?? compilers?.compilers?.at(0)?.id ?? "loading")}
+				onValueChange={value => setCompiler(Number(value))}
+				options={compilers?.compilers?.reduce((options, compiler) => {
+					return { ...options, [compiler.id]: compiler.name };
+				}, {}) ?? {}}
+			/>
 		</Field>
 		<Field title="Solution file:">
 			<input

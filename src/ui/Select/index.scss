@@ -59,11 +59,19 @@
 
 		> .options {
 			display: block;
+			margin-top: -1px;
+			border: 1px solid $border-color;
+			border-radius: 0 0 4px 4px;
+			background-color: $background-color;
 
 			> .option {
 				display: block;
 				padding: 4px 10px;
+				@include box-sizing(border-box);
 				line-height: 24px;
+				width: 100%;
+				border: none;
+				background: $background-color;
 
 				&:hover {
 					background-color: #efefef;
@@ -94,13 +102,6 @@
 			left: 0;
 			min-width: 100%;
 			z-index: 0;
-
-			> .options {
-				margin-top: -1px;
-				border: 1px solid $border-color;
-				border-radius: 0 0 4px 4px;
-				background-color: $background-color;
-			}
 		}
 	}
 

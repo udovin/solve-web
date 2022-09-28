@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useContext, useEffect, useState } from "react";
+import { FC, ReactNode, useEffect, useState } from "react";
 
 import "./index.scss";
 
@@ -38,7 +38,7 @@ const Select: FC<SelectProps> = (props: SelectProps) => {
 		<span className="options-wrap">
 			<span className="options">
 				{Object.entries(options).map(([key, option], index) => {
-					return <span className={`option ${key === value ? "selected" : ""}`} key={index} onClick={e => onValueChange && onValueChange(key)}>{option}</span>;
+					return <button type="button" className={`option ${key === value ? "selected" : ""}`} key={index} onClick={() => onValueChange && onValueChange(key)}>{option}</button>;
 				})}
 			</span>
 		</span>
