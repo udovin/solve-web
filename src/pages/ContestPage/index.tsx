@@ -253,11 +253,12 @@ const ContestProblemSideBlock: FC = () => {
 	const [compiler, setCompiler] = useState<number>();
 	const [error, setError] = useState<ErrorResponse>();
 	const [compilers, setCompilers] = useState<Compilers>();
+	const selectedCompiler = compiler ?? compilers?.compilers?.at(0)?.id;
 	const onSubmit = (event: any) => {
 		event.preventDefault();
 		setError(undefined);
-		file && compiler && submitContestSolution(Number(contest_id), String(problem_code), {
-			compiler_id: compiler ?? compilers?.compilers?.at(0)?.id,
+		file && selectedCompiler && submitContestSolution(Number(contest_id), String(problem_code), {
+			compiler_id: selectedCompiler,
 			file: file,
 		})
 			.then(solution => {
@@ -284,7 +285,7 @@ const ContestProblemSideBlock: FC = () => {
 		<Field title="Compiler:" name="compiler_id" errorResponse={error}>
 			<Select
 				name="compiler_id"
-				value={String(compiler ?? compilers?.compilers?.at(0)?.id ?? "loading")}
+				value={String(selectedCompiler ?? "Loading...")}
 				onValueChange={value => setCompiler(Number(value))}
 				options={compilers?.compilers?.reduce((options, compiler) => {
 					return { ...options, [compiler.id]: compiler.name };

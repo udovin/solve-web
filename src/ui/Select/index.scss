@@ -21,6 +21,7 @@
 		font-family: inherit;
 		font-size: inherit;
 		color: $text-color;
+		text-align: left;
 		z-index: 0;
 		@include transition(
 			border-color 150ms ease-out, background-color 150ms ease-out
@@ -72,6 +73,10 @@
 				width: 100%;
 				border: none;
 				background: $background-color;
+				font-family: inherit;
+				font-size: inherit;
+				color: $text-color;
+				text-align: left;
 
 				&:hover {
 					background-color: #efefef;
