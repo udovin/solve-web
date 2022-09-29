@@ -44,7 +44,8 @@
     }
 }
 
-.b-contest-solutions {
+.b-contest-solutions,
+.b-contest-solution {
     .ui-block-content {
         padding: 0;
         overflow-x: auto;
@@ -75,26 +76,17 @@
     }
 }
 
-.b-contest-solution {
+.b-contest-solution-content {
     .ui-block-content {
         padding: 0;
         overflow-x: auto;
     }
 
-    .ui-table {
-        border: none;
-
-        .id {
-            text-align: right;
-            width: 1%;
-        }
-
-        .participant,
-        .problem,
-        .verdict,
-        .points {
-            text-align: center;
-        }
+    .ui-code {
+        display: block;
+        margin: 0;
+        background-color: #fff !important;
+        padding: 10px !important;
     }
 }
 

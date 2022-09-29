@@ -1,6 +1,7 @@
 import { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
 import { Navigate, Route, Routes, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+import SyntaxHighlighter from "react-syntax-highlighter";
 import Page from "../../components/Page";
 import {
 	Compilers,
@@ -187,7 +188,7 @@ const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
 			{error ? <Alert>{error.message}</Alert> : "Loading..."}
 		</Block>;
 	}
-	const { id, report, participant, problem, create_time } = solution;
+	const { id, report, content, participant, problem, compiler, create_time } = solution;
 	return <>
 		<Block title={`Solution #${id}`} className="b-contest-solution">
 			{error && <Alert>{error.message}</Alert>}
@@ -198,6 +199,7 @@ const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
 						<th className="date">Date</th>
 						<th className="participant">Participant</th>
 						<th className="problem">Problem</th>
+						<th className="compiler">Compiler</th>
 						<th className="verdict">Verdict</th>
 						<th className="points">Points</th>
 					</tr>
@@ -211,10 +213,15 @@ const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
 							<DateTime value={create_time} />
 						</td>
 						<td className="participant">
-							{participant && participant.user ? <UserLink user={participant.user} /> : <>&mdash;</>}
+							{participant && <>
+								<span className="kind">{participant.kind}: </span>{participant.user ? <UserLink user={participant.user} /> : <>&mdash;</>}
+							</>}
 						</td>
 						<td className="problem">
 							{problem ? <Link to={`/contests/${contest.id}/problems/${problem.code}`}>{`${problem.code}. ${problem.title}`}</Link> : <>&mdash;</>}
+						</td>
+						<td className="compiler">
+							{compiler ? compiler.name : <>&mdash;</>}
 						</td>
 						<td className="verdict">
 							{report ? report.verdict : "running"}
@@ -226,6 +233,14 @@ const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
 				</tbody>
 			</table>
 		</Block>
+		{content && <Block title="Content" className="b-contest-solution-content">
+			<SyntaxHighlighter
+				className="ui-code"
+				children={content}
+				language={compiler?.config?.extensions?.at(0)}
+				showLineNumbers
+			/>
+		</Block>}
 		{report && <Block title="Tests" className="b-contest-solution">
 			<table className="ui-table">
 				<thead>

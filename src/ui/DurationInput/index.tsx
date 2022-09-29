@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import NumberInput from "../NumberInput";
 
 import "./index.scss";

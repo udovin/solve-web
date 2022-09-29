@@ -61,7 +61,7 @@ export type Contests = {
 export type Compiler = {
 	id: number;
 	name: string;
-	config: number;
+	config: any;
 };
 
 export type Compilers = {
@@ -104,6 +104,7 @@ export type Report = {
 
 export type Solution = {
 	id: number;
+	content?: string;
 	report?: SolutionReport;
 	user?: User;
 	problem?: Problem;
@@ -157,6 +158,7 @@ export type SolutionReport = {
 
 export type ContestSolution = {
 	id: number;
+	content?: string;
 	report?: SolutionReport;
 	participant?: ContestParticipant;
 	problem?: ContestProblem;
