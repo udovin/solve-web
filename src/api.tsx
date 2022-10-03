@@ -58,10 +58,14 @@ export type Contests = {
 	contests?: Contest[];
 };
 
+export type CompilerConfig = {
+	extensions?: string[];
+};
+
 export type Compiler = {
 	id: number;
 	name: string;
-	config: any;
+	config?: CompilerConfig;
 };
 
 export type Compilers = {

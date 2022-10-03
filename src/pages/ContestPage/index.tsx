@@ -1,7 +1,6 @@
 import { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
 import { Navigate, Route, Routes, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
-import SyntaxHighlighter from "react-syntax-highlighter";
 import Page from "../../components/Page";
 import {
 	Compilers,
@@ -40,6 +39,7 @@ import { Tab, TabContent, Tabs, TabsGroup } from "../../ui/Tabs";
 import DurationInput from "../../ui/DurationInput";
 import Checkbox from "../../ui/Checkbox";
 import Select from "../../ui/Select";
+import Code from "../../ui/Code";
 
 import "./index.scss";
 
@@ -234,12 +234,7 @@ const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
 			</table>
 		</Block>
 		{content && <Block title="Content" className="b-contest-solution-content">
-			<SyntaxHighlighter
-				className="ui-code"
-				children={content}
-				language={compiler?.config?.extensions?.at(0)}
-				showLineNumbers
-			/>
+			<Code content={content} language={compiler?.config?.extensions?.at(0)} />
 		</Block>}
 		{report && <Block title="Tests" className="b-contest-solution">
 			<table className="ui-table">
@@ -275,6 +270,8 @@ const ContestProblemSideBlock: FC = () => {
 	const [error, setError] = useState<ErrorResponse>();
 	const [compilers, setCompilers] = useState<Compilers>();
 	const selectedCompiler = compiler ?? compilers?.compilers?.at(0)?.id;
+	const compilerInfo = compilers?.compilers?.find(compiler => compiler.id === selectedCompiler);
+	const extensions = compilerInfo?.config?.extensions?.map(ext => `.${ext}`).join(",");
 	const onSubmit = (event: any) => {
 		event.preventDefault();
 		setError(undefined);
@@ -316,6 +313,7 @@ const ContestProblemSideBlock: FC = () => {
 		<Field title="Solution file:">
 			<input
 				type="file" name="file"
+				accept={extensions}
 				onChange={(e: ChangeEvent<HTMLInputElement>) => setFile(e.target.files?.[0])}
 				required />
 			{invalidFields["file"] && <Alert>{invalidFields["file"].message}</Alert>}
