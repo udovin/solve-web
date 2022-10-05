@@ -13,7 +13,7 @@ export type CheckboxProps = {
 const Checkbox: FC<CheckboxProps> = props => {
 	const { value, onValueChange, className, ...rest } = props;
 	return <input
-		className={`ui-checkbox ${className ?? ""}`}
+		className={`ui-checkbox ${className ?? ""}`.trimEnd()}
 		type="checkbox"
 		checked={value}
 		onChange={onValueChange ? e => onValueChange(e.target.checked) : undefined}

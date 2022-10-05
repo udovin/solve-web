@@ -18,7 +18,7 @@ export type InputProps = {
 const Input: FC<InputProps> = props => {
 	const { value, onValueChange, className, ...rest } = props;
 	return <input
-		className={`ui-input ${className ?? ""}`}
+		className={`ui-input ${className ?? ""}`.trimEnd()}
 		value={value || ""}
 		onChange={onValueChange ? e => onValueChange(e.target.value) : undefined}
 		readOnly={!onValueChange}

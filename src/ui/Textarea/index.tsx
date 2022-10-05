@@ -1,4 +1,5 @@
 import { FC, TextareaHTMLAttributes, useEffect, useRef } from "react";
+
 import "./index.scss";
 
 export type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
@@ -26,7 +27,7 @@ const Textarea: FC<TextareaProps> = props => {
 	useEffect(updateSize, [value]);
 	return <textarea
 		ref={textRef}
-		className={`ui-textarea ${className ?? ""}`}
+		className={`ui-textarea ${className ?? ""}`.trimEnd()}
 		value={value || ""}
 		onChange={onValueChange ? (e) => onValueChange(e.target.value) : onChange}
 		{...rest}

@@ -5,6 +5,7 @@ import { ErrorResponse } from "../../api";
 import "./index.scss";
 
 export type FieldProps = {
+	className?: string;
 	name?: string;
 	title?: string;
 	description?: string | ReactNode;
@@ -13,10 +14,10 @@ export type FieldProps = {
 };
 
 const Field: FC<FieldProps> = props => {
-	const { name, title, description, children, errorResponse, ...rest } = props;
+	const { className, name, title, description, children, errorResponse, ...rest } = props;
 	const invalidFields = errorResponse?.invalid_fields;
 	const invalidField = name && invalidFields ? invalidFields[name] : undefined;
-	return <div className="ui-field" {...rest}>
+	return <div className={`ui-field ${className ?? ""}`.trimEnd()} {...rest}>
 		<label>
 			{title && <span className="label">{title}</span>}
 			{children}

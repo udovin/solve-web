@@ -12,7 +12,7 @@ const Block: FC<BlockProps> = props => {
 	if (title) {
 		header = <span className="title">{title}</span>;
 	}
-	return <div className={`ui-block-wrap ${className ?? ""}`} {...rest}>
+	return <div className={`ui-block-wrap ${className ?? ""}`.trimEnd()} {...rest}>
 		<div className="ui-block">
 			{header && <div className="ui-block-header">{header}</div>}
 			<div className="ui-block-content">{children}</div>
