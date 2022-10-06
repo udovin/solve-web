@@ -346,15 +346,25 @@ type ContestTabsProps = BlockProps & {
 const ContestTabs: FC<ContestTabsProps> = props => {
 	const { contest } = props;
 	const { permissions } = contest;
-	const canManage = permissions && (permissions.includes("update_contest") || permissions.includes("delete_contest"));
+	const canRegister = permissions?.includes("register_contest");
+	const canObserveProblems = permissions?.includes("observe_contest_problems");
+	const canObserveSolutions = permissions?.includes("observe_contest_solutions");
+	const canObserveParticipants = permissions?.includes("observe_contest_participants");
+	const canManage = permissions?.includes("update_contest") || permissions?.includes("delete_contest");
 	return <Block className="b-contest-tabs">
 		<Tabs>
-			<Tab tab="problems">
+			{canObserveProblems && <Tab tab="problems">
 				<Link to={`/contests/${contest.id}`}>Problems</Link>
-			</Tab>
-			<Tab tab="solutions">
+			</Tab>}
+			{canObserveSolutions && <Tab tab="solutions">
 				<Link to={`/contests/${contest.id}/solutions`}>Solutions</Link>
-			</Tab>
+			</Tab>}
+			{canObserveParticipants && <Tab tab="participants">
+				<Link to={`/contests/${contest.id}/participants`}>Participants</Link>
+			</Tab>}
+			{canRegister && <Tab tab="register">
+				<Link to={`/contests/${contest.id}/register`}>Register</Link>
+			</Tab>}
 			{canManage && <Tab tab="manage">
 				<Link to={`/contests/${contest.id}/manage`}>Manage</Link>
 			</Tab>}
@@ -612,8 +622,8 @@ const EditContestParticipantsBlock: FC<EditContestParticipantsBlockProps> = prop
 			})
 			.catch(setError);
 	};
-	const canCreateParticipant = contest.permissions && contest.permissions.includes("create_contest_participant");
-	const canDeleteParticipant = contest.permissions && contest.permissions.includes("delete_contest_participant");
+	const canCreateParticipant = contest.permissions?.includes("create_contest_participant");
+	const canDeleteParticipant = contest.permissions?.includes("delete_contest_participant");
 	if (!participants) {
 		return <Block title="Participants" className="b-contest-participants">
 			{error ? <Alert>{error.message}</Alert> : "Loading..."}
@@ -748,7 +758,9 @@ const ContestPage: FC = () => {
 			<ContestTabs contest={contest} />
 			<Routes>
 				<Route index element={<ContestProblemsTab contest={contest} />} />
+				<Route path="/problems" element={<ContestProblemsTab contest={contest} />} />
 				<Route path="/solutions" element={<ContestSolutionsTab contest={contest} />} />
+				<Route path="/register" element={<ContestSolutionsTab contest={contest} />} />
 				<Route path="/solutions/:solution_id" element={<ContestSolutionTab contest={contest} />} />
 				<Route path="/problems/:problem_code" element={<ContestProblemTab contest={contest} />} />
 				<Route path="/manage" element={<ContestManageTab contest={contest} setContest={setContest} />} />
