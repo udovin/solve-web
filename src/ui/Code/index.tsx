@@ -18,7 +18,13 @@ const Code: FC<CodeProps> = props => {
         style={{ hljs: {} }}
         customStyle={{}}
         lineNumberContainerStyle={{}}
-        lineNumberStyle={{}}
+        lineNumberStyle={{
+            display: undefined,
+            minWidth: undefined,
+            paddingRight: undefined,
+            textAlign: undefined,
+            userSelect: undefined
+        }}
         codeTagProps={{
             className: `language-${language}`,
             style: {}
