@@ -35,9 +35,19 @@ export type Status = {
 	permissions?: string[];
 };
 
+export type ProblemStatement = {
+	locale: string;
+	title: string;
+	legend: string;
+	input: string;
+	output: string;
+	notes: string;
+};
+
 export type Problem = {
 	id: number;
 	title: string;
+	statement?: ProblemStatement;
 };
 
 export type Problems = {
@@ -241,7 +251,18 @@ export type RegisterForm = {
 };
 
 const HEADERS = {
-	"Solve-Web-Version": "0.1.0",
+	"X-Solve-Web-Version": "0.1.0",
+};
+
+let fetchActuality = Date.now();
+
+export const forceSyncFetch = () => {
+	fetchActuality = Date.now() + 1000;
+};
+
+const getHeaders = () => {
+	let headers = { ...HEADERS, "X-Solve-Sync": (Date.now() < fetchActuality ? "1" : "0") };
+	return headers;
 };
 
 const POST_JSON_HEADERS = {
@@ -260,6 +281,7 @@ const parseResp = (promise: Promise<Response>) => {
 };
 
 export const loginUser = (form: LoginForm) => {
+	forceSyncFetch();
 	return parseResp(fetch("/api/v0/login", {
 		method: "POST",
 		headers: { ...HEADERS, ...POST_JSON_HEADERS },
@@ -306,7 +328,7 @@ export const observeUserSessions = (userID: UserID) => {
 export const statusUser = () => {
 	return parseResp(fetch("/api/v0/status", {
 		method: "GET",
-		headers: HEADERS,
+		headers: getHeaders(),
 	}));
 };
 
@@ -485,6 +507,7 @@ export const submitContestSolution = (
 	const formData = new FormData();
 	formData.append("compiler_id", String(form.compiler_id));
 	formData.append("file", form.file, form.file.name);
+	forceSyncFetch();
 	return parseResp(fetch(
 		`/api/v0/contests/${contestID}/problems/${problemCode}/submit`,
 		{
@@ -498,13 +521,13 @@ export const submitContestSolution = (
 export const observeContestSolutions = (id: number) => {
 	return parseResp(fetch(`/api/v0/contests/${id}/solutions`, {
 		method: "GET",
-		headers: HEADERS,
+		headers: getHeaders(),
 	}));
 };
 
 export const observeContestSolution = (id: number, solutionID: number) => {
 	return parseResp(fetch(`/api/v0/contests/${id}/solutions/${solutionID}`, {
 		method: "GET",
-		headers: HEADERS,
+		headers: getHeaders(),
 	}));
 };
