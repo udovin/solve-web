@@ -26,8 +26,7 @@ import Select from "../../ui/Select";
 import { ContestProblemsBlock } from "./problems";
 import { ContestSolutionsBlock, ContestSolutionBlock } from "./solutions";
 import { ContestParticipantsBlock } from "./participants";
-import Latex from "react-latex-next";
-import "katex/dist/katex.min.css";
+import Latex from "../../ui/Latex";
 
 import "./index.scss";
 
@@ -103,15 +102,15 @@ const ContestProblemBlock: FC = () => {
 	if (!problem) {
 		return <>Loading...</>;
 	}
-	return <Block title={problem.title}>
-		<Latex>{problem.statement?.legend}</Latex>
+	return <Block title={problem.title} className="b-problem-statement">
+		<Latex className={"section legend"} content={problem.statement?.legend} />
 		<h3>Input</h3>
-		<Latex>{problem.statement?.input}</Latex>
+		<Latex className={"section input"} content={problem.statement?.input} />
 		<h3>Output</h3>
-		<Latex>{problem.statement?.output}</Latex>
+		<Latex className={"section output"} content={problem.statement?.output} />
 		<h3>Samples</h3>
 		<h3>Notes</h3>
-		<Latex>{problem.statement?.notes}</Latex>
+		<Latex className={"section notes"} content={problem.statement?.notes} />
 	</Block>;
 };
 
