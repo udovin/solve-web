@@ -44,7 +44,7 @@ const Latex: FC<LatexProps> = props => {
         }
     }, [renderedRef, html]);
     return <div
-        className={className}
+        className={`ui-latex ${className ?? ""}`}
         ref={renderedRef}
         dangerouslySetInnerHTML={{ __html: html }}
     />;

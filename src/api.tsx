@@ -351,10 +351,17 @@ export const updateUserPassword = (userID: UserID, form: UpdatePasswordForm) => 
 	}));
 };
 
+export const observeContest = (id: number) => {
+	return parseResp(fetch(`/api/v0/contests/${id}`, {
+		method: "GET",
+		headers: getHeaders(),
+	}));
+};
+
 export const observeContests = () => {
 	return parseResp(fetch(`/api/v0/contests`, {
 		method: "GET",
-		headers: HEADERS,
+		headers: getHeaders(),
 	}));
 };
 
@@ -367,6 +374,7 @@ export type CreateContestForm = {
 };
 
 export const createContest = (form: CreateContestForm) => {
+	forceSyncFetch();
 	return parseResp(fetch(`/api/v0/contests`, {
 		method: "POST",
 		headers: { ...HEADERS, ...POST_JSON_HEADERS },

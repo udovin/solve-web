@@ -1,1 +1,15 @@
 @import "katex/dist/katex.min.css";
+
+.ui-latex {
+    .lstlisting {
+        padding: 10px;
+        background-color: #eeeeee;
+        border-radius: 4px;
+        font-family: monospace;
+        overflow: auto;
+    }
+
+    .texttt {
+        font-family: monospace;
+    }
+}

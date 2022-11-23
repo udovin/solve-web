@@ -9,6 +9,7 @@ import {
 	deleteContest,
 	ErrorResponse,
 	observeCompilers,
+	observeContest,
 	Solution,
 	submitContestSolution,
 	updateContest,
@@ -104,13 +105,21 @@ const ContestProblemBlock: FC = () => {
 	}
 	return <Block title={problem.title} className="b-problem-statement">
 		<Latex className={"section legend"} content={problem.statement?.legend} />
-		<h3>Input</h3>
-		<Latex className={"section input"} content={problem.statement?.input} />
-		<h3>Output</h3>
-		<Latex className={"section output"} content={problem.statement?.output} />
-		<h3>Samples</h3>
-		<h3>Notes</h3>
-		<Latex className={"section notes"} content={problem.statement?.notes} />
+		{problem.statement?.input && <>
+			<h3>Input</h3>
+			<Latex className={"section input"} content={problem.statement?.input} />
+		</>}
+		{problem.statement?.output && <>
+			<h3>Output</h3>
+			<Latex className={"section output"} content={problem.statement?.output} />
+		</>}
+		{<>
+			<h3>Samples</h3>
+		</>}
+		{problem.statement?.notes && <>
+			<h3>Notes</h3>
+			<Latex className={"section notes"} content={problem.statement?.notes} />
+		</>}
 	</Block>;
 };
 
@@ -323,9 +332,8 @@ const ContestPage: FC = () => {
 	const { contest_id } = params;
 	const [contest, setContest] = useState<Contest>();
 	useEffect(() => {
-		fetch("/api/v0/contests/" + contest_id)
-			.then(result => result.json())
-			.then(result => setContest(result));
+		observeContest(Number(contest_id))
+			.then(contest => setContest(contest));
 	}, [contest_id]);
 	if (!contest) {
 		return <>Loading...</>;
