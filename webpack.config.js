@@ -1,21 +1,20 @@
-const nodeExternals = require("webpack-node-externals");
 const path = require("path");
 
 module.exports = {
-  name: 'server',
+  name: "server",
   entry: {
-    server: path.resolve(__dirname, 'server/server.tsx'),
+    server: path.resolve(__dirname, "server/server.tsx"),
   },
   mode: 'production',
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: '[name].js',
+    path: path.resolve(__dirname, "dist"),
+    filename: "[name].js",
   },
   resolve: {
-    extensions: ['.ts', '.tsx'],
+    extensions: [".ts", ".tsx", ".js"],
   },
-  externals: [nodeExternals()],
-  target: 'node',
+  externals: [],
+  target: "node",
   node: {
     __dirname: false,
   },
@@ -23,12 +22,19 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        loader: 'ts-loader',
-        options: {
-          compilerOptions: {
-            "noEmit": false
+        use: [
+          {
+            loader: "babel-loader"
+          },
+          {
+            loader: "ts-loader",
+            options: {
+              compilerOptions: {
+                noEmit: false
+              }
+            }
           }
-        },
+        ]
       },
       {
         test: /\.(sa|sc)ss$/,
@@ -46,7 +52,7 @@ module.exports = {
       },
       {
         test: /\.svg$/,
-        loader: 'url-loader',
+        loader: "url-loader",
         options: {
           limit: 8192,
         }

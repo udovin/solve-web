@@ -34,7 +34,7 @@
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
     "server": "node dist/server.js",
-    "build-server": "webpack --config webpack.config.server.js"
+    "build-server": "webpack"
   },
   "proxy": "http://localhost:4242",
   "eslintConfig": {
@@ -66,11 +66,10 @@
     "@storybook/react": "^6.5.10",
     "@types/katex": "^0.14.0",
     "@types/react-syntax-highlighter": "^15.5.5",
-    "postcss-loader": "^7.0.1",
     "postcss": "^8.4.16",
+    "postcss-loader": "^7.0.1",
     "ts-loader": "^9.3.1",
-    "webpack-cli": "^4.10.0",
-    "webpack-node-externals": "^3.0.0",
-    "webpack": "^5.74.0"
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
   }
 }
