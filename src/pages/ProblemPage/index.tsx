@@ -35,11 +35,11 @@ export const ProblemBlock: FC<ProblemBlockProps> = props => {
 	</Block>;
 };
 
-type ManageProblemSidebarProps = {
+type ManageProblemSideBlockProps = {
 	problem: Problem;
 };
 
-const ManageProblemSidebar: FC<ManageProblemSidebarProps> = props => {
+const ManageProblemSideBlock: FC<ManageProblemSideBlockProps> = props => {
 	const { problem } = props;
 	return <Block className="b-sidebar" title="Manage problem">
 		<ul>
@@ -69,7 +69,7 @@ const ProblemPage: FC = () => {
 	}
 	const canUpdate = problem?.permissions?.includes("update_problem");
 	return <Page title="Problem" sidebar={<>
-		{problem && canUpdate && <ManageProblemSidebar problem={problem as Problem} />}
+		{problem && canUpdate && <ManageProblemSideBlock problem={problem as Problem} />}
 		<Sidebar />
 	</>}>
 		{problem ?

@@ -310,6 +310,15 @@ const ContestManageTab: FC<ContestTabProps> = props => {
 	</TabContent>;
 };
 
+type ContestSideBlockProps = {
+	contest: Contest;
+};
+
+const ContestSideBlock: FC<ContestSideBlockProps> = props => {
+	const { contest } = props;
+	return <Block>{contest.title}</Block>;
+};
+
 const ContestPage: FC = () => {
 	const params = useParams();
 	const { contest_id } = params;
@@ -323,9 +332,12 @@ const ContestPage: FC = () => {
 	}
 	const { title, permissions } = contest;
 	const canManageContest = permissions?.includes("update_contest") || permissions?.includes("delete_contest");
-	return <Page title={`Contest: ${title}`} sidebar={<Routes>
-		<Route path="/problems/:problem_code" element={<ContestProblemSideBlock />} />
-	</Routes>}>
+	return <Page title={`Contest: ${title}`} sidebar={<>
+		<ContestSideBlock contest={contest} />
+		<Routes>
+			<Route path="/problems/:problem_code" element={<ContestProblemSideBlock />} />
+		</Routes>
+	</>}>
 		<TabsGroup>
 			<ContestTabs contest={contest} />
 			<Routes>
