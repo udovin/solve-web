@@ -27,7 +27,7 @@ import Select from "../../ui/Select";
 import { ContestProblemsBlock } from "./problems";
 import { ContestSolutionsBlock, ContestSolutionBlock } from "./solutions";
 import { ContestParticipantsBlock } from "./participants";
-import Latex from "../../ui/Latex";
+import { ProblemBlock } from "../ProblemPage";
 
 import "./index.scss";
 
@@ -103,24 +103,7 @@ const ContestProblemBlock: FC = () => {
 	if (!problem) {
 		return <>Loading...</>;
 	}
-	return <Block title={problem.title} className="b-problem-statement">
-		<Latex className={"section legend"} content={problem.statement?.legend} />
-		{problem.statement?.input && <>
-			<h3>Input</h3>
-			<Latex className={"section input"} content={problem.statement?.input} />
-		</>}
-		{problem.statement?.output && <>
-			<h3>Output</h3>
-			<Latex className={"section output"} content={problem.statement?.output} />
-		</>}
-		{<>
-			<h3>Samples</h3>
-		</>}
-		{problem.statement?.notes && <>
-			<h3>Notes</h3>
-			<Latex className={"section notes"} content={problem.statement?.notes} />
-		</>}
-	</Block>;
+	return <ProblemBlock problem={problem} />;
 };
 
 type ContestTabsProps = BlockProps & {

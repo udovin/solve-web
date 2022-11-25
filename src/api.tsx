@@ -48,6 +48,7 @@ export type Problem = {
 	id: number;
 	title: string;
 	statement?: ProblemStatement;
+	permissions?: string[];
 };
 
 export type Problems = {
@@ -250,10 +251,6 @@ export type RegisterForm = {
 	middle_name?: string;
 };
 
-const HEADERS = {
-	"X-Solve-Web-Version": "0.1.0",
-};
-
 let fetchActuality = Date.now();
 
 export const forceSyncFetch = () => {
@@ -261,7 +258,10 @@ export const forceSyncFetch = () => {
 };
 
 const getHeaders = () => {
-	let headers = { ...HEADERS, "X-Solve-Sync": (Date.now() < fetchActuality ? "1" : "0") };
+	let headers = {
+		"X-Solve-Web-Version": "0.1.0",
+		"X-Solve-Sync": (Date.now() < fetchActuality ? "1" : "0"),
+	};
 	return headers;
 };
 
@@ -284,7 +284,7 @@ export const loginUser = (form: LoginForm) => {
 	forceSyncFetch();
 	return parseResp(fetch("/api/v0/login", {
 		method: "POST",
-		headers: { ...HEADERS, ...POST_JSON_HEADERS },
+		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
 		body: JSON.stringify(form)
 	}));
 };
@@ -292,7 +292,7 @@ export const loginUser = (form: LoginForm) => {
 export const registerUser = (form: RegisterForm) => {
 	return parseResp(fetch("/api/v0/register", {
 		method: "POST",
-		headers: { ...HEADERS, ...POST_JSON_HEADERS },
+		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
 		body: JSON.stringify(form),
 	}));
 };
@@ -300,7 +300,7 @@ export const registerUser = (form: RegisterForm) => {
 export const observeUser = (userID: UserID) => {
 	return parseResp(fetch(`/api/v0/users/${userID}`, {
 		method: "GET",
-		headers: HEADERS,
+		headers: getHeaders(),
 	}));
 };
 
@@ -313,7 +313,7 @@ export type UpdateUserForm = {
 export const updateUser = (userID: UserID, form: UpdateUserForm) => {
 	return parseResp(fetch(`/api/v0/users/${userID}`, {
 		method: "PATCH",
-		headers: { ...HEADERS, ...POST_JSON_HEADERS },
+		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
 		body: JSON.stringify(form),
 	}));
 };
@@ -321,7 +321,7 @@ export const updateUser = (userID: UserID, form: UpdateUserForm) => {
 export const observeUserSessions = (userID: UserID) => {
 	return parseResp(fetch(`/api/v0/users/${userID}/sessions`, {
 		method: "GET",
-		headers: HEADERS,
+		headers: getHeaders(),
 	}));
 };
 
@@ -346,7 +346,7 @@ export type UpdatePasswordForm = {
 export const updateUserPassword = (userID: UserID, form: UpdatePasswordForm) => {
 	return parseResp(fetch(`/api/v0/users/${userID}/password`, {
 		method: "POST",
-		headers: { ...HEADERS, ...POST_JSON_HEADERS },
+		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
 		body: JSON.stringify(form),
 	}));
 };
@@ -377,7 +377,7 @@ export const createContest = (form: CreateContestForm) => {
 	forceSyncFetch();
 	return parseResp(fetch(`/api/v0/contests`, {
 		method: "POST",
-		headers: { ...HEADERS, ...POST_JSON_HEADERS },
+		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
 		body: JSON.stringify(form),
 	}));
 };
@@ -393,7 +393,7 @@ export type UpdateContestForm = {
 export const updateContest = (id: number, form: UpdateContestForm) => {
 	return parseResp(fetch(`/api/v0/contests/${id}`, {
 		method: "PATCH",
-		headers: { ...HEADERS, ...POST_JSON_HEADERS },
+		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
 		body: JSON.stringify(form),
 	}));
 };
@@ -401,28 +401,28 @@ export const updateContest = (id: number, form: UpdateContestForm) => {
 export const deleteContest = (id: number) => {
 	return parseResp(fetch(`/api/v0/contests/${id}`, {
 		method: "DELETE",
-		headers: HEADERS,
+		headers: getHeaders(),
 	}));
 };
 
 export const observeSolutions = () => {
 	return parseResp(fetch(`/api/v0/solutions`, {
 		method: "GET",
-		headers: HEADERS,
+		headers: getHeaders(),
 	}));
 };
 
 export const observeSolution = (id: number) => {
 	return parseResp(fetch(`/api/v0/solutions/${id}`, {
 		method: "GET",
-		headers: HEADERS,
+		headers: getHeaders(),
 	}));
 };
 
 export const observeContestProblems = (id: number) => {
 	return parseResp(fetch(`/api/v0/contests/${id}/problems`, {
 		method: "GET",
-		headers: HEADERS,
+		headers: getHeaders(),
 	}));
 };
 
@@ -434,7 +434,7 @@ export type CreateContestProblemForm = {
 export const createContestProblem = (contestID: number, form: CreateContestProblemForm) => {
 	return parseResp(fetch(`/api/v0/contests/${contestID}/problems`, {
 		method: "POST",
-		headers: { ...HEADERS, ...POST_JSON_HEADERS },
+		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
 		body: JSON.stringify(form),
 	}));
 };
@@ -442,14 +442,14 @@ export const createContestProblem = (contestID: number, form: CreateContestProbl
 export const deleteContestProblem = (contestID: number, code: string) => {
 	return parseResp(fetch(`/api/v0/contests/${contestID}/problems/${code}`, {
 		method: "DELETE",
-		headers: HEADERS,
+		headers: getHeaders(),
 	}));
 };
 
 export const observeContestParticipants = (id: number) => {
 	return parseResp(fetch(`/api/v0/contests/${id}/participants`, {
 		method: "GET",
-		headers: HEADERS,
+		headers: getHeaders(),
 	}));
 };
 
@@ -462,7 +462,7 @@ export type CreateContestParticipantForm = {
 export const createContestParticipant = (contestID: number, form: CreateContestParticipantForm) => {
 	return parseResp(fetch(`/api/v0/contests/${contestID}/participants`, {
 		method: "POST",
-		headers: { ...HEADERS, ...POST_JSON_HEADERS },
+		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
 		body: JSON.stringify(form),
 	}));
 };
@@ -470,21 +470,28 @@ export const createContestParticipant = (contestID: number, form: CreateContestP
 export const deleteContestParticipant = (contestID: number, participantID: number) => {
 	return parseResp(fetch(`/api/v0/contests/${contestID}/participants/${participantID}`, {
 		method: "DELETE",
-		headers: HEADERS,
+		headers: getHeaders(),
 	}));
 };
 
 export const observeProblems = () => {
 	return parseResp(fetch(`/api/v0/problems`, {
 		method: "GET",
-		headers: HEADERS,
+		headers: getHeaders(),
+	}));
+};
+
+export const observeProblem = (id: number) => {
+	return parseResp(fetch(`/api/v0/problems/${id}`, {
+		method: "GET",
+		headers: getHeaders(),
 	}));
 };
 
 export const observeCompilers = () => {
 	return parseResp(fetch(`/api/v0/compilers`, {
 		method: "GET",
-		headers: HEADERS,
+		headers: getHeaders(),
 	}));
 };
 
@@ -499,7 +506,7 @@ export const createProblem = (form: CreateProblemForm) => {
 	formData.append("file", form.file, form.file.name);
 	return parseResp(fetch(`/api/v0/problems`, {
 		method: "POST",
-		headers: HEADERS,
+		headers: getHeaders(),
 		body: formData,
 	}));
 };
@@ -520,7 +527,7 @@ export const submitContestSolution = (
 		`/api/v0/contests/${contestID}/problems/${problemCode}/submit`,
 		{
 			method: "POST",
-			headers: HEADERS,
+			headers: getHeaders(),
 			body: formData,
 		},
 	));
