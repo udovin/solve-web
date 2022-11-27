@@ -14,23 +14,24 @@ type ProblemBlockProps = {
 
 export const ProblemBlock: FC<ProblemBlockProps> = props => {
 	const { problem } = props;
+	const { statement } = problem;
 	const contestProblem = problem as ContestProblem;
-	return <Block title={`${contestProblem.code ? `${contestProblem.code}. ` : ""}${problem.title}`} className="b-problem-statement">
-		<Latex className={"section legend"} content={problem.statement?.legend} />
-		{problem.statement?.input && <>
+	return <Block title={`${contestProblem.code ? `${contestProblem.code}. ` : ""}${statement?.title ?? problem.title}`} className="b-problem-statement">
+		<Latex className={"section legend"} content={statement?.legend} />
+		{statement?.input && <>
 			<h3>Input</h3>
-			<Latex className={"section input"} content={problem.statement?.input} />
+			<Latex className={"section input"} content={statement?.input} />
 		</>}
-		{problem.statement?.output && <>
+		{statement?.output && <>
 			<h3>Output</h3>
-			<Latex className={"section output"} content={problem.statement?.output} />
+			<Latex className={"section output"} content={statement?.output} />
 		</>}
 		{<>
 			<h3>Samples</h3>
 		</>}
-		{problem.statement?.notes && <>
+		{statement?.notes && <>
 			<h3>Notes</h3>
-			<Latex className={"section notes"} content={problem.statement?.notes} />
+			<Latex className={"section notes"} content={statement?.notes} />
 		</>}
 	</Block>;
 };

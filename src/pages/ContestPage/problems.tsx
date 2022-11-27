@@ -75,7 +75,7 @@ export const ContestProblemsBlock: FC<ContestProblemsBlockParams> = props => {
             </thead>
             <tbody>
                 {contestProblems.map((problem: ContestProblem, key: number) => {
-                    const { code, title } = problem;
+                    const { code, title, statement } = problem;
                     const deleteProblem = () => {
                         deleteContestProblem(contest.id, code)
                             .then(problem => {
@@ -95,7 +95,7 @@ export const ContestProblemsBlock: FC<ContestProblemsBlockParams> = props => {
                             <Link to={`/contests/${contest.id}/problems/${code}`}>{code}</Link>
                         </td>
                         <td className="title">
-                            <Link to={`/contests/${contest.id}/problems/${code}`}>{title}</Link>
+                            <Link to={`/contests/${contest.id}/problems/${code}`}>{statement?.title ?? title}</Link>
                         </td>
                         <td className="actions">{canDeleteProblem && <Button onClick={deleteProblem}>Delete</Button>}</td>
                     </tr>;

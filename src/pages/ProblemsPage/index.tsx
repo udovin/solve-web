@@ -25,10 +25,10 @@ const ProblemsBlock: FC<ProblemsBlockProps> = props => {
 			</thead>
 			<tbody>
 				{problems && problems.map((problem, index) => {
-					const { id, title } = problem;
+					const { id, title, statement } = problem;
 					return <tr key={index} className="problem">
 						<td className="title">
-							<Link to={`/problems/${id}`}>{title}</Link>
+							<Link to={`/problems/${id}`}>{statement?.title ?? title}</Link>
 						</td>
 					</tr>;
 				})}

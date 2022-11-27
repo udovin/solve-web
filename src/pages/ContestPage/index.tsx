@@ -78,6 +78,7 @@ const ContestProblemSideBlock: FC = () => {
 				options={compilers?.compilers?.reduce((options, compiler) => {
 					return { ...options, [compiler.id]: compiler.name };
 				}, {}) ?? {}}
+				disabled={!compilers?.compilers}
 			/>
 		</Field>
 		<Field title="Solution file:">
