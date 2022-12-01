@@ -48,6 +48,10 @@ type ContestSolutionsBlockProps = {
     contest: Contest;
 };
 
+const needUpdateSolution = (solution: ContestSolution) => {
+    return solution.report?.verdict === "queued" || solution.report?.verdict === "running";
+};
+
 export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
     const { contest } = props;
     const [error, setError] = useState<ErrorResponse>();
@@ -57,6 +61,22 @@ export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
             .then(result => setSolutions(result || []))
             .catch(setError);
     }, [contest.id]);
+    useEffect(() => {
+        if (!solutions) {
+            return;
+        }
+        let needUpdate = false;
+        solutions.solutions?.forEach(solution => {
+            needUpdate = needUpdate || needUpdateSolution(solution);
+        });
+        const updateSolutions = () => {
+            observeContestSolutions(contest.id)
+                .then(result => setSolutions(result || []))
+                .catch(setError);
+        };
+        const interval = setInterval(updateSolutions, 2000);
+        return () => clearInterval(interval);
+    }, [contest.id, solutions]);
     if (!solutions) {
         return <Block title="Solutions" className="b-contest-solutions">
             {error ? <Alert>{error.message}</Alert> : "Loading..."}
@@ -101,7 +121,7 @@ export const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
             .catch(setError);
     }, [contest.id, solutionID]);
     useEffect(() => {
-        if (!solution || (solution.report?.verdict !== "queued" && solution.report?.verdict !== "running")) {
+        if (!solution || !needUpdateSolution(solution)) {
             return;
         }
         const updateSolution = () => {

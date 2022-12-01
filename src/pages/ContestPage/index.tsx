@@ -62,7 +62,7 @@ const ContestProblemSideBlock: FC = () => {
 			.catch(setError)
 	}, []);
 	if (newSolution) {
-		return <Navigate to={`/contests/${contest_id}/solutions/${newSolution.id}`} />
+		return <Navigate to={`/contests/${contest_id}/solutions`} />
 	}
 	const errorMessage = error && error.message;
 	const invalidFields = (error && error.invalid_fields) || {};
