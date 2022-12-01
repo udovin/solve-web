@@ -6,6 +6,7 @@ import Block from "../../ui/Block";
 import Code from "../../ui/Code";
 import DateTime from "../../ui/DateTime";
 import UserLink from "../../ui/UserLink";
+import Verdict from "../../ui/Verdict";
 
 type ContestSolutionRowProps = {
     contest: Contest;
@@ -35,7 +36,7 @@ const ContestSolutionRow: FC<ContestSolutionRowProps> = props => {
             {compiler ? compiler.name : <>&mdash;</>}
         </td>
         <td className="verdict">
-            {report ? report.verdict : "running"}
+            <Verdict report={report} />
         </td>
         <td className="points">
             {(report && report.points) || <>&mdash;</>}

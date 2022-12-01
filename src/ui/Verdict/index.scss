@@ -1,0 +1,29 @@
+.ui-verdict {
+    &.failed {
+        color: #000000;
+        font-style: italic;
+    }
+
+    &.queued,
+    &.running {
+        color: #666666;
+    }
+
+    &.accepted {
+        color: #3c763d;
+    }
+
+    &.ce,
+    &.rejected,
+    &.wa,
+    &.pe {
+        color: #a94442;
+    }
+
+    &.tle,
+    &.mle,
+    &.re,
+    &.pa {
+        color: #31708f;
+    }
+}

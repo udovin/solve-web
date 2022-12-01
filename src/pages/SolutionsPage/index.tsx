@@ -7,6 +7,7 @@ import Alert from "../../ui/Alert";
 import Block, { BlockProps } from "../../ui/Block";
 import DateTime from "../../ui/DateTime";
 import UserLink from "../../ui/UserLink";
+import Verdict from "../../ui/Verdict";
 
 import "./index.scss";
 
@@ -46,7 +47,7 @@ const SolutionsBlock: FC<SolutionsBlockProps> = props => {
 							{problem ? <Link to={`/problems/${problem.id}`}>{statement?.title ?? problem.title}</Link> : <>&mdash;</>}
 						</td>
 						<td className="verdict">
-							{report ? report.verdict : "running"}
+							<Verdict report={report} />
 						</td>
 						<td className="points">
 							{(report && report.points) || <>&mdash;</>}
