@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Contest, ContestSolution, ContestSolutions, ErrorResponse, observeContestSolution, observeContestSolutions, TestReport } from "../../api";
+import { Contest, ContestProblem, ContestSolution, ContestSolutions, ErrorResponse, observeContestSolution, observeContestSolutions, TestReport } from "../../api";
 import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
 import Code from "../../ui/Code";
@@ -15,6 +15,7 @@ type ContestSolutionRowProps = {
 const ContestSolutionRow: FC<ContestSolutionRowProps> = props => {
     const { solution, contest } = props;
     const { id, create_time, compiler, participant, problem, report } = solution;
+    const { statement } = problem as ContestProblem;
     return <tr className="problem">
         <td className="id">
             <Link to={`/contests/${contest.id}/solutions/${id}`}>{id}</Link>
@@ -28,7 +29,7 @@ const ContestSolutionRow: FC<ContestSolutionRowProps> = props => {
             </>}
         </td>
         <td className="problem">
-            {problem ? <Link to={`/contests/${contest.id}/problems/${problem.code}`}>{`${problem.code}. ${problem.title}`}</Link> : <>&mdash;</>}
+            {problem ? <Link to={`/contests/${contest.id}/problems/${problem.code}`}>{`${problem.code}. ${statement?.title ?? problem.title}`}</Link> : <>&mdash;</>}
         </td>
         <td className="compiler">
             {compiler ? compiler.name : <>&mdash;</>}

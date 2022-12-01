@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ErrorResponse, observeSolutions, Solution, Solutions } from "../../api";
+import { ErrorResponse, observeSolutions, Problem, Solution, Solutions } from "../../api";
 import Page from "../../components/Page";
 import Sidebar from "../../ui/Sidebar";
 import Alert from "../../ui/Alert";
@@ -31,6 +31,7 @@ const SolutionsBlock: FC<SolutionsBlockProps> = props => {
 			<tbody>
 				{solutions.map((solution: Solution, key: number) => {
 					const { id, report, user, problem, create_time } = solution;
+					const { statement } = problem as Problem;
 					return <tr key={key} className="problem">
 						<td className="id">
 							<Link to={`/solutions/${id}`}>{id}</Link>
@@ -42,7 +43,7 @@ const SolutionsBlock: FC<SolutionsBlockProps> = props => {
 							{user ? <UserLink user={user} /> : <>&mdash;</>}
 						</td>
 						<td className="problem">
-							{problem ? <Link to={`/problems/${problem.id}`}>{problem.title}</Link> : <>&mdash;</>}
+							{problem ? <Link to={`/problems/${problem.id}`}>{statement?.title ?? problem.title}</Link> : <>&mdash;</>}
 						</td>
 						<td className="verdict">
 							{report ? report.verdict : "running"}
