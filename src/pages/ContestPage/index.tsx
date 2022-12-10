@@ -158,6 +158,10 @@ const EditContestBlock: FC<EditContestBlockProps> = props => {
 	const { contest, onUpdateContest } = props;
 	const [form, setForm] = useState<{ [key: string]: string }>({});
 	const [error, setError] = useState<ErrorResponse>();
+	const onResetForm = () => {
+		setForm({});
+		setError(undefined);
+	};
 	const onSubmit = (event: any) => {
 		event.preventDefault();
 		updateContest(contest.id, {
@@ -168,15 +172,10 @@ const EditContestBlock: FC<EditContestBlockProps> = props => {
 			enable_upsolving: toBoolean(form.enable_upsolving),
 		})
 			.then(contest => {
-				setForm({});
-				setError(undefined);
+				onResetForm();
 				onUpdateContest && onUpdateContest(contest);
 			})
 			.catch(setError);
-	};
-	const onResetForm = () => {
-		setForm({});
-		setError(undefined);
 	};
 	return <FormBlock className="b-contest-edit" title="Edit contest" onSubmit={onSubmit} footer={<>
 		<Button

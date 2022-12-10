@@ -517,6 +517,33 @@ export const createProblem = (form: CreateProblemForm) => {
 	}));
 };
 
+export type UpdateProblemForm = {
+	title?: string;
+	file?: File;
+};
+
+export const updateProblem = (id: number, form: UpdateProblemForm) => {
+	const formData = new FormData();
+	if (form.title) {
+		formData.append("title", form.title);
+	}
+	if (form.file) {
+		formData.append("file", form.file, form.file.name);
+	}
+	return parseResp(fetch(`/api/v0/problems/${id}`, {
+		method: "PATCH",
+		headers: getHeaders(),
+		body: formData,
+	}));
+};
+
+export const rebuildProblem = (id: number) => {
+	return parseResp(fetch(`/api/v0/problems/${id}/rebuild`, {
+		method: "POST",
+		headers: getHeaders(),
+	}));
+};
+
 export type SubmitContestSolution = {
 	compiler_id: number;
 	file: File;

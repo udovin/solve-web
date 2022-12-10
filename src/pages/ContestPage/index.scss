@@ -122,10 +122,32 @@
 
 .b-problem-statement {
     .section {
-        margin-bottom: 10px;
+        margin-bottom: 20px;
 
         &:last-child {
             margin-bottom: 0;
+        }
+
+        &.samples {
+            table-layout: fixed;
+
+            .input,
+            .output {
+                text-align: left;
+                vertical-align: top;
+                width: 50%;
+            }
+
+            td.input,
+            td.output {
+                padding: 0;
+
+                >pre {
+                    margin: 0;
+                    padding: 10px;
+                    overflow-x: scroll;
+                }
+            }
         }
     }
 }

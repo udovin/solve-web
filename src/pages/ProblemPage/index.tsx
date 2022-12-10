@@ -28,7 +28,7 @@ export const ProblemBlock: FC<ProblemBlockProps> = props => {
 		</>}
 		{statement?.samples && <>
 			<h3>Samples</h3>
-			<table className="ui-table">
+			<table className="ui-table section samples">
 				<thead>
 					<tr>
 						<th className="input">Input data</th>
@@ -39,8 +39,8 @@ export const ProblemBlock: FC<ProblemBlockProps> = props => {
 					{statement.samples.map((sample: ProblemStatementSample, key: number) => {
 						const { input, output } = sample;
 						return <tr key={key}>
-							<td className="input">{input ?? ""}</td>
-							<td className="output">{output ?? ""}</td>
+							<td className="input"><pre>{input ?? ""}</pre></td>
+							<td className="output"><pre>{output ?? ""}</pre></td>
 						</tr>;
 					})}
 				</tbody>
@@ -57,13 +57,17 @@ type ManageProblemSideBlockProps = {
 	problem: Problem;
 };
 
-const ManageProblemSideBlock: FC<ManageProblemSideBlockProps> = props => {
+export const ManageProblemSideBlock: FC<ManageProblemSideBlockProps> = props => {
 	const { problem } = props;
 	return <Block className="b-sidebar" title="Manage problem">
 		<ul>
-			<li><Link to={`/problems/${problem.id}/manage`}>
+			<li><Link to={`/problems/${problem.id}`}>
+				<Icon kind="document" />
+				<span className="label">View problem</span>
+			</Link></li>
+			<li><Link to={`/problems/${problem.id}/edit`}>
 				<Icon kind="edit" />
-				<span className="label">Manage problem</span>
+				<span className="label">Edit problem</span>
 			</Link></li>
 		</ul>
 	</Block>;

@@ -20,6 +20,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import SolutionsPage from "./pages/SolutionsPage";
 import SolutionPage from "./pages/SolutionPage";
 import ProblemPage from "./pages/ProblemPage";
+import EditProblemPage from "./pages/EditProblemPage";
 
 import "./App.scss";
 
@@ -35,6 +36,7 @@ const App: FC = () => {
 					<Route path="/contests/:contest_id/*" element={<ContestPage />} />
 					<Route path="/problems" element={<ProblemsPage />} />
 					<Route path="/problems/:problem_id" element={<ProblemPage />} />
+					<Route path="/problems/:problem_id/edit" element={<EditProblemPage />} />
 					<Route path="/problems/create" element={<CreateProblemPage />} />
 					<Route path="/solutions" element={<SolutionsPage />} />
 					<Route path="/solutions/:solution_id" element={<SolutionPage />} />
