@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ContestProblem, ErrorResponse, observeProblem, Problem } from "../../api";
+import { ContestProblem, ErrorResponse, observeProblem, Problem, ProblemStatementSample } from "../../api";
 import Page from "../../components/Page";
 import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
@@ -26,8 +26,25 @@ export const ProblemBlock: FC<ProblemBlockProps> = props => {
 			<h3>Output</h3>
 			<Latex className={"section output"} content={statement?.output} />
 		</>}
-		{<>
+		{statement?.samples && <>
 			<h3>Samples</h3>
+			<table className="ui-table">
+				<thead>
+					<tr>
+						<th className="input">Input data</th>
+						<th className="output">Output data</th>
+					</tr>
+				</thead>
+				<tbody>
+					{statement.samples.map((sample: ProblemStatementSample, key: number) => {
+						const { input, output } = sample;
+						return <tr key={key}>
+							<td className="input">{input ?? ""}</td>
+							<td className="output">{output ?? ""}</td>
+						</tr>;
+					})}
+				</tbody>
+			</table>
 		</>}
 		{statement?.notes && <>
 			<h3>Notes</h3>

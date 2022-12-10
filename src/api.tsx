@@ -35,13 +35,19 @@ export type Status = {
 	permissions?: string[];
 };
 
+export type ProblemStatementSample = {
+	input?: string;
+	output?: string;
+};
+
 export type ProblemStatement = {
 	locale: string;
-	title: string;
-	legend: string;
-	input: string;
-	output: string;
-	notes: string;
+	title?: string;
+	legend?: string;
+	input?: string;
+	output?: string;
+	notes?: string;
+	samples?: ProblemStatementSample[];
 };
 
 export type Problem = {
