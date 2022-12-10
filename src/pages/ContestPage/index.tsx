@@ -67,7 +67,7 @@ const ContestProblemSideBlock: FC = () => {
 	const errorMessage = error && error.message;
 	const invalidFields = (error && error.invalid_fields) || {};
 	return <FormBlock onSubmit={onSubmit} title="Submit solution" footer={
-		<Button color="primary">Submit</Button>
+		<Button type="submit" color="primary">Submit</Button>
 	}>
 		{errorMessage && <Alert>{errorMessage}</Alert>}
 		<Field title="Compiler:" name="compiler_id" errorResponse={error}>

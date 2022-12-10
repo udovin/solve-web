@@ -10,6 +10,8 @@ import Input from "../../ui/Input";
 import Sidebar from "../../ui/Sidebar";
 import { ManageProblemSideBlock } from "../ProblemPage";
 
+import "./index.scss";
+
 type EditProblemBlockProps = {
 	problem: Problem;
 	onUpdateProblem?(problem: Problem): void;
@@ -49,7 +51,7 @@ const EditProblemBlock: FC<EditProblemBlockProps> = props => {
 			})
 			.catch(setError);
 	};
-	return <FormBlock className="b-manage-problem" onSubmit={onSubmit} title={`Edit: ${statement?.title ?? problem.title}`} footer={<>
+	return <FormBlock className="b-problem-edit" onSubmit={onSubmit} title={`Edit: ${statement?.title ?? problem.title}`} footer={<>
 		<Button type="submit" disabled={!Object.keys(form).length && !file}>Update</Button>
 		<Button disabled={rebuildDisabled} onClick={onRebuild}>Rebuild</Button>
 		{(!!Object.keys(form).length || file) && <Button type="reset" onClick={onResetForm}>Reset</Button>}

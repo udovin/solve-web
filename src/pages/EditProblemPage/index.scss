@@ -1,0 +1,13 @@
+@import "../../mixins.scss";
+
+.b-problem-edit {
+    .ui-block-footer {
+        @include clear-fix;
+
+        .ui-button {
+            display: block;
+            float: left;
+            margin-right: 8px;
+        }
+    }
+}
