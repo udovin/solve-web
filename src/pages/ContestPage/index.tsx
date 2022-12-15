@@ -104,7 +104,10 @@ const ContestProblemBlock: FC = () => {
 	if (!problem) {
 		return <>Loading...</>;
 	}
-	return <ProblemBlock problem={problem} />;
+	return <ProblemBlock
+		problem={problem}
+		imageBaseUrl={`/api/v0/contests/${contest_id}/problems/${problem_code}/resources/`}
+	/>;
 };
 
 type ContestTabsProps = BlockProps & {

@@ -10,21 +10,22 @@ import Sidebar from "../../ui/Sidebar";
 
 type ProblemBlockProps = {
 	problem: ContestProblem | Problem;
+	imageBaseUrl?: string;
 };
 
 export const ProblemBlock: FC<ProblemBlockProps> = props => {
-	const { problem } = props;
+	const { problem, imageBaseUrl } = props;
 	const { statement } = problem;
 	const contestProblem = problem as ContestProblem;
 	return <Block title={`${contestProblem.code ? `${contestProblem.code}. ` : ""}${statement?.title ?? problem.title}`} className="b-problem-statement">
-		<Latex className={"section legend"} content={statement?.legend} />
+		<Latex className={"section legend"} content={statement?.legend} imageBaseUrl={imageBaseUrl} />
 		{statement?.input && <>
 			<h3>Input</h3>
-			<Latex className={"section input"} content={statement?.input} />
+			<Latex className={"section input"} content={statement?.input} imageBaseUrl={imageBaseUrl} />
 		</>}
 		{statement?.output && <>
 			<h3>Output</h3>
-			<Latex className={"section output"} content={statement?.output} />
+			<Latex className={"section output"} content={statement?.output} imageBaseUrl={imageBaseUrl} />
 		</>}
 		{statement?.samples && <>
 			<h3>Samples</h3>
@@ -48,7 +49,7 @@ export const ProblemBlock: FC<ProblemBlockProps> = props => {
 		</>}
 		{statement?.notes && <>
 			<h3>Notes</h3>
-			<Latex className={"section notes"} content={statement?.notes} />
+			<Latex className={"section notes"} content={statement?.notes} imageBaseUrl={imageBaseUrl} />
 		</>}
 	</Block>;
 };
@@ -96,7 +97,7 @@ const ProblemPage: FC = () => {
 	</>}>
 		{problem ?
 			<>
-				<ProblemBlock problem={problem} />
+				<ProblemBlock problem={problem} imageBaseUrl={`/api/v0/problems/${problem.id}/resources/`} />
 			</> :
 			<>Loading...</>}
 	</Page>;
