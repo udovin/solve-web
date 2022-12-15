@@ -24,10 +24,11 @@ import { Tab, TabContent, Tabs, TabsGroup } from "../../ui/Tabs";
 import DurationInput from "../../ui/DurationInput";
 import Checkbox from "../../ui/Checkbox";
 import Select from "../../ui/Select";
+import { ProblemBlock } from "../ProblemPage";
 import { ContestProblemsBlock } from "./problems";
 import { ContestSolutionsBlock, ContestSolutionBlock } from "./solutions";
 import { ContestParticipantsBlock } from "./participants";
-import { ProblemBlock } from "../ProblemPage";
+import { ContestRegisterBlock } from "./register";
 
 import "./index.scss";
 
@@ -283,6 +284,13 @@ const ContestSolutionsTab: FC<ContestTabProps> = props => {
 	</TabContent>;
 };
 
+const ContestRegisterTab: FC<ContestTabProps> = props => {
+	const { contest } = props;
+	return <TabContent tab="register" setCurrent>
+		<ContestRegisterBlock contest={contest} />
+	</TabContent>;
+};
+
 const ContestParticipantsTab: FC<ContestTabProps> = props => {
 	const { contest } = props;
 	return <TabContent tab="participants" setCurrent>
@@ -348,7 +356,7 @@ const ContestPage: FC = () => {
 				<Route path="/problems" element={<ContestProblemsTab contest={contest} />} />
 				<Route path="/solutions" element={<ContestSolutionsTab contest={contest} />} />
 				{canManageContest && <Route path="/participants" element={<ContestParticipantsTab contest={contest} />} />}
-				<Route path="/register" element={<ContestSolutionsTab contest={contest} />} />
+				<Route path="/register" element={<ContestRegisterTab contest={contest} />} />
 				<Route path="/solutions/:solution_id" element={<ContestSolutionTab contest={contest} />} />
 				<Route path="/problems/:problem_code" element={<ContestProblemTab contest={contest} />} />
 				<Route path="/manage" element={<ContestManageTab contest={contest} setContest={setContest} />} />

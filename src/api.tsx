@@ -67,6 +67,7 @@ export type Contest = {
 	begin_time?: number;
 	duration?: number;
 	permissions?: string[];
+	effective_permissions?: string[];
 	enable_upsolving?: boolean;
 	enable_registration?: boolean;
 };
@@ -358,6 +359,13 @@ export const updateUserPassword = (userID: UserID, form: UpdatePasswordForm) => 
 export const observeContest = (id: number) => {
 	return parseResp(fetch(`/api/v0/contests/${id}`, {
 		method: "GET",
+		headers: getHeaders(),
+	}));
+};
+
+export const registerContest = (id: number) => {
+	return parseResp(fetch(`/api/v0/contests/${id}/register`, {
+		method: "POST",
 		headers: getHeaders(),
 	}));
 };
