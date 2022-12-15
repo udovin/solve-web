@@ -215,11 +215,11 @@
 
 /* Content only */
 #main.content {
-	> #sidebar-wrap {
+	>#sidebar-wrap {
 		display: none;
 	}
 
-	> #content-wrap {
+	>#content-wrap {
 		float: none;
 		width: 100%;
 	}

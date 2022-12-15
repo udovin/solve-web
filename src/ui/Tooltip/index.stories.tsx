@@ -6,5 +6,5 @@ export default {
 };
 
 export const Index = () => <>
-	<p><Tooltip>Simple tooltip</Tooltip></p>
+	<p><Tooltip content="Simple tooltip content">Simple tooltip</Tooltip></p>
 </>;
