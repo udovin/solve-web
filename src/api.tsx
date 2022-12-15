@@ -259,10 +259,6 @@ export type RegisterForm = {
 
 let fetchActuality = Date.now();
 
-export const forceSyncFetch = () => {
-	fetchActuality = Date.now() + 1000;
-};
-
 const getHeaders = () => {
 	let headers = {
 		"X-Solve-Web-Version": "0.1.0",
@@ -275,24 +271,26 @@ const POST_JSON_HEADERS = {
 	"Content-Type": "application/json; charset=UTF-8",
 };
 
-const parseResp = (promise: Promise<Response>) => {
+const parseResp = (promise: Promise<Response>, syncFetch: boolean = false) => {
 	return promise
 		.then(resp => Promise.all([resp, resp.json()]))
 		.then(([resp, json]) => {
 			if (!resp.ok) {
 				throw json;
 			}
+			if (syncFetch) {
+				fetchActuality = Date.now() + 1000;
+			}
 			return json;
 		});
 };
 
 export const loginUser = (form: LoginForm) => {
-	forceSyncFetch();
 	return parseResp(fetch("/api/v0/login", {
 		method: "POST",
 		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
 		body: JSON.stringify(form)
-	}));
+	}), true);
 };
 
 export const registerUser = (form: RegisterForm) => {
@@ -380,12 +378,11 @@ export type CreateContestForm = {
 };
 
 export const createContest = (form: CreateContestForm) => {
-	forceSyncFetch();
 	return parseResp(fetch(`/api/v0/contests`, {
 		method: "POST",
 		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
 		body: JSON.stringify(form),
-	}));
+	}), true);
 };
 
 export type UpdateContestForm = {
@@ -514,7 +511,7 @@ export const createProblem = (form: CreateProblemForm) => {
 		method: "POST",
 		headers: getHeaders(),
 		body: formData,
-	}));
+	}), true);
 };
 
 export type UpdateProblemForm = {
@@ -555,7 +552,6 @@ export const submitContestSolution = (
 	const formData = new FormData();
 	formData.append("compiler_id", String(form.compiler_id));
 	formData.append("file", form.file, form.file.name);
-	forceSyncFetch();
 	return parseResp(fetch(
 		`/api/v0/contests/${contestID}/problems/${problemCode}/submit`,
 		{
@@ -563,7 +559,7 @@ export const submitContestSolution = (
 			headers: getHeaders(),
 			body: formData,
 		},
-	));
+	), true);
 };
 
 export const observeContestSolutions = (id: number) => {
