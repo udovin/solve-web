@@ -67,7 +67,6 @@ export type Contest = {
 	begin_time?: number;
 	duration?: number;
 	permissions?: string[];
-	effective_permissions?: string[];
 	enable_upsolving?: boolean;
 	enable_registration?: boolean;
 };

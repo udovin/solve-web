@@ -29,7 +29,7 @@ const ContestsBlock: FC<ContestsBlockProps> = props => {
 			</thead>
 			<tbody>
 				{contests && contests.map((contest, index) => {
-					const { id, title, begin_time, duration, effective_permissions } = contest;
+					const { id, title, begin_time, duration, permissions } = contest;
 					return <tr key={index} className="contest">
 						<td className="title">
 							<Link to={`/contests/${id}`}>{title}</Link>
@@ -41,7 +41,7 @@ const ContestsBlock: FC<ContestsBlockProps> = props => {
 							{begin_time ? <DateTime value={begin_time} /> : <>&mdash;</>}
 						</td>
 						<td className="actions">
-							{effective_permissions?.includes("register_contest") && <Link to={`/contests/${id}/register`}>Register &raquo;</Link>}
+							{permissions?.includes("register_contest") && <Link to={`/contests/${id}/register`}>Register &raquo;</Link>}
 						</td>
 					</tr>;
 				})}
