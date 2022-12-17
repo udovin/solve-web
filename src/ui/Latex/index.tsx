@@ -1,4 +1,5 @@
 import { FC, useEffect, useRef } from "react";
+import { Macro } from "@unified-latex/unified-latex-types";
 import { unifiedLatexFromString } from "@unified-latex/unified-latex-util-parse";
 import { convertToHtml } from "@unified-latex/unified-latex-to-hast";
 import { htmlLike } from "@unified-latex/unified-latex-util-html-like";
@@ -22,34 +23,45 @@ const parser = unified().use(unifiedLatexFromString, {
     },
 });
 
+type Context = {
+    imageBaseUrl?: string;
+};
+
+const macros: Record<string, (node: Macro, context: Context) => any> = {
+    "def": () => null,
+    "includegraphics": (node: Macro, context: Context) => {
+        if (!node.args) {
+            return null;
+        }
+        const args = pgfkeysArgToObject(node.args[1]);
+        let style = '';
+        if (args["width"] && args["width"].length) {
+            style += `width:${printRaw(args["width"][0])};`;
+        }
+        if (args["height"] && args["height"].length) {
+            style += `height:${printRaw(args["height"][0])};`;
+        }
+        const imageName = printRaw(node.args[3].content);
+        const imageUrl = (context.imageBaseUrl ?? "") + imageName;
+        return htmlLike({ tag: "img", attributes: { src: imageUrl, style: style } });
+    },
+};
+
 const Latex: FC<LatexProps> = props => {
     const { className, content, imageBaseUrl } = props;
     const ast = parser.parse(content ?? "");
+    const context = {
+        imageBaseUrl: imageBaseUrl,
+    };
     replaceNode(ast, (node) => {
         if (node.type !== "macro") {
             return undefined;
         }
-        switch (node.content) {
-            case "def":
-                return null;
-            case "includegraphics":
-                if (!node.args) {
-                    return null;
-                }
-                const args = pgfkeysArgToObject(node.args[1]);
-                let style = '';
-                if (args["width"] && args["width"].length) {
-                    style += `width:${printRaw(args["width"][0])};`;
-                }
-                if (args["height"] && args["height"].length) {
-                    style += `height:${printRaw(args["height"][0])};`;
-                }
-                const imageName = printRaw(node.args[3].content);
-                const imageUrl = (imageBaseUrl ?? "") + imageName;
-                return htmlLike({ tag: "img", attributes: { src: imageUrl, style: style } });
-            default:
-                return undefined;
+        const macro = macros[node.content];
+        if (!macro) {
+            return undefined;
         }
+        return macro(node, context);
     });
     const html = convertToHtml(ast);
     const renderedRef = useRef<HTMLDivElement>(null);
