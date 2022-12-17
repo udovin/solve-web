@@ -76,6 +76,8 @@ export type Contests = {
 };
 
 export type CompilerConfig = {
+	language?: string;
+	compiler?: string;
 	extensions?: string[];
 };
 

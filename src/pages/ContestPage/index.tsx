@@ -77,7 +77,14 @@ const ContestProblemSideBlock: FC = () => {
 				value={String(selectedCompiler ?? "Loading...")}
 				onValueChange={value => setCompiler(Number(value))}
 				options={compilers?.compilers?.reduce((options, compiler) => {
-					return { ...options, [compiler.id]: compiler.name };
+					let name = compiler.name;
+					if (compiler.config?.language) {
+						name = compiler.config.language;
+						if (compiler.config.compiler) {
+							name += ` (${compiler.config.compiler})`;
+						}
+					}
+					return { ...options, [compiler.id]: name };
 				}, {}) ?? {}}
 				disabled={!compilers?.compilers}
 			/>

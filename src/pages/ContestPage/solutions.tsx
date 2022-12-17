@@ -17,6 +17,13 @@ const ContestSolutionRow: FC<ContestSolutionRowProps> = props => {
     const { solution, contest } = props;
     const { id, create_time, compiler, participant, problem, report } = solution;
     const { statement } = problem as ContestProblem;
+    let compilerName = compiler?.name;
+    if (compiler?.config?.language) {
+        compilerName = compiler.config.language;
+        if (compiler.config.compiler) {
+            compilerName += ` (${compiler.config.compiler})`;
+        }
+    }
     return <tr className="problem">
         <td className="id">
             <Link to={`/contests/${contest.id}/solutions/${id}`}>{id}</Link>
@@ -33,7 +40,7 @@ const ContestSolutionRow: FC<ContestSolutionRowProps> = props => {
             {problem ? <Link to={`/contests/${contest.id}/problems/${problem.code}`}>{`${problem.code}. ${statement?.title ?? problem.title}`}</Link> : <>&mdash;</>}
         </td>
         <td className="compiler">
-            {compiler ? compiler.name : <>&mdash;</>}
+            {compilerName ?? <>&mdash;</>}
         </td>
         <td className="verdict">
             <Verdict report={report} />
