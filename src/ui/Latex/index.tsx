@@ -4,6 +4,7 @@ import { convertToHtml } from "@unified-latex/unified-latex-to-hast";
 import { htmlLike } from "@unified-latex/unified-latex-util-html-like";
 import { replaceNode } from "@unified-latex/unified-latex-util-replace";
 import { printRaw } from "@unified-latex/unified-latex-util-print-raw";
+import { pgfkeysArgToObject } from "@unified-latex/unified-latex-util-pgfkeys";
 import { unified } from "unified";
 import katex from "katex";
 
@@ -32,9 +33,20 @@ const Latex: FC<LatexProps> = props => {
             case "def":
                 return null;
             case "includegraphics":
-                const imageName = (node.args && printRaw(node.args[3].content)) ?? "";
+                if (!node.args) {
+                    return null;
+                }
+                const args = pgfkeysArgToObject(node.args[1]);
+                let style = '';
+                if (args["width"] && args["width"].length) {
+                    style += `width:${printRaw(args["width"][0])};`;
+                }
+                if (args["height"] && args["height"].length) {
+                    style += `height:${printRaw(args["height"][0])};`;
+                }
+                const imageName = printRaw(node.args[3].content);
                 const imageUrl = (imageBaseUrl ?? "") + imageName;
-                return htmlLike({ tag: "img", attributes: { src: imageUrl } });
+                return htmlLike({ tag: "img", attributes: { src: imageUrl, style: style } });
             default:
                 return undefined;
         }
