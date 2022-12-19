@@ -76,6 +76,9 @@ export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
         solutions.solutions?.forEach(solution => {
             needUpdate = needUpdate || needUpdateSolution(solution);
         });
+        if (!needUpdate) {
+            return;
+        }
         const updateSolutions = () => {
             observeContestSolutions(contest.id)
                 .then(result => setSolutions(result || []))
