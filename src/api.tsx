@@ -40,6 +40,11 @@ export type ProblemStatementSample = {
 	output?: string;
 };
 
+export type ProblemConfig = {
+	time_limit?: number;
+	memory_limit?: number;
+};
+
 export type ProblemStatement = {
 	locale: string;
 	title?: string;
@@ -53,6 +58,7 @@ export type ProblemStatement = {
 export type Problem = {
 	id: number;
 	title: string;
+	config?: ProblemConfig;
 	statement?: ProblemStatement;
 	permissions?: string[];
 };

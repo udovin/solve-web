@@ -8,6 +8,8 @@ import Icon from "../../ui/Icon";
 import Latex from "../../ui/Latex";
 import Sidebar from "../../ui/Sidebar";
 
+import "./index.scss";
+
 type ProblemBlockProps = {
 	problem: ContestProblem | Problem;
 	imageBaseUrl?: string;
@@ -15,9 +17,29 @@ type ProblemBlockProps = {
 
 export const ProblemBlock: FC<ProblemBlockProps> = props => {
 	const { problem, imageBaseUrl } = props;
-	const { statement } = problem;
+	const { config, statement } = problem;
 	const contestProblem = problem as ContestProblem;
 	return <Block title={`${contestProblem.code ? `${contestProblem.code}. ` : ""}${statement?.title ?? problem.title}`} className="b-problem-statement">
+		{config && <table className="ui-table section limits">
+			<tbody>
+				{config.time_limit && <tr>
+					<td>Time limit:</td>
+					<td>{config.time_limit}</td>
+				</tr>}
+				{config.memory_limit && <tr>
+					<td>Memory limit:</td>
+					<td>{config.memory_limit}</td>
+				</tr>}
+				<tr>
+					<td>Input:</td>
+					<td><code>stdin</code></td>
+				</tr>
+				<tr>
+					<td>Output:</td>
+					<td><code>stdout</code></td>
+				</tr>
+			</tbody>
+		</table>}
 		<Latex className={"section legend"} content={statement?.legend} imageBaseUrl={imageBaseUrl} />
 		{statement?.input && <>
 			<h3>Input</h3>
