@@ -40,20 +40,21 @@ const ContestProblemSideBlock: FC = () => {
 	const [compiler, setCompiler] = useState<number>();
 	const [error, setError] = useState<ErrorResponse>();
 	const [compilers, setCompilers] = useState<Compilers>();
-	const selectedCompiler = compiler ?? compilers?.compilers?.at(0)?.id;
+	const selectedCompiler = compiler ?? toNumber(localStorage.getItem("last_compiler"));
 	const compilerInfo = compilers?.compilers?.find(compiler => compiler.id === selectedCompiler);
 	const extensions = compilerInfo?.config?.extensions?.map(ext => `.${ext}`).join(",");
 	const onSubmit = (event: any) => {
 		event.preventDefault();
 		setError(undefined);
-		file && selectedCompiler && submitContestSolution(Number(contest_id), String(problem_code), {
-			compiler_id: selectedCompiler,
+		file && compilerInfo && submitContestSolution(Number(contest_id), String(problem_code), {
+			compiler_id: compilerInfo.id,
 			file: file,
 		})
 			.then(solution => {
 				setNewSolution(solution);
 				setFile(undefined);
 				setError(undefined);
+				localStorage.setItem("last_compiler", String(compilerInfo.id));
 			})
 			.catch(setError);
 	};
@@ -74,7 +75,7 @@ const ContestProblemSideBlock: FC = () => {
 		<Field title="Compiler:" name="compiler_id" errorResponse={error}>
 			<Select
 				name="compiler_id"
-				value={String(selectedCompiler ?? "Loading...")}
+				value={String(compilerInfo?.id ?? "Select compiler")}
 				onValueChange={value => setCompiler(Number(value))}
 				options={compilers?.compilers?.reduce((options, compiler) => {
 					let name = compiler.name;
@@ -157,8 +158,8 @@ export type EditContestBlockProps = {
 	onUpdateContest?(contest: Contest): void;
 };
 
-const toNumber = (n?: string) => {
-	return n === undefined ? undefined : Number(n);
+const toNumber = (n?: string | null) => {
+	return (n === undefined || n === null) ? undefined : Number(n);
 };
 
 const toBoolean = (n?: string) => {
