@@ -4,6 +4,8 @@ import { ContestProblem, ErrorResponse, observeProblem, Problem, ProblemStatemen
 import Page from "../../components/Page";
 import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
+import ByteSize from "../../ui/ByteSize";
+import Duration from "../../ui/Duration";
 import Icon from "../../ui/Icon";
 import Latex from "../../ui/Latex";
 import Sidebar from "../../ui/Sidebar";
@@ -24,11 +26,11 @@ export const ProblemBlock: FC<ProblemBlockProps> = props => {
 			<tbody>
 				{config.time_limit && <tr>
 					<td>Time limit:</td>
-					<td>{config.time_limit}</td>
+					<td><Duration value={config.time_limit * 0.001} /></td>
 				</tr>}
 				{config.memory_limit && <tr>
 					<td>Memory limit:</td>
-					<td>{config.memory_limit}</td>
+					<td><ByteSize value={config.memory_limit} /></td>
 				</tr>}
 				<tr>
 					<td>Input:</td>

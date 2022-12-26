@@ -8,6 +8,7 @@ import Page from "../../components/Page";
 import Sidebar from "../../ui/Sidebar";
 import Block, { BlockProps } from "../../ui/Block";
 import DateTime from "../../ui/DateTime";
+import Duration from "../../ui/Duration";
 
 import "./index.scss";
 
@@ -35,7 +36,7 @@ const ContestsBlock: FC<ContestsBlockProps> = props => {
 							<Link to={`/contests/${id}`}>{title}</Link>
 						</td>
 						<td className="duration">
-							{duration ? duration : <>&mdash;</>}
+							{duration ? <Duration value={duration} /> : <>&mdash;</>}
 						</td>
 						<td className="start">
 							{begin_time ? <DateTime value={begin_time} /> : <>&mdash;</>}
