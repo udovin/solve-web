@@ -30,7 +30,9 @@ const ContestsBlock: FC<ContestsBlockProps> = props => {
 			</thead>
 			<tbody>
 				{contests && contests.map((contest, index) => {
-					const { id, title, begin_time, duration, permissions } = contest;
+					const { id, title, begin_time, duration, permissions, state } = contest;
+					const canObserve = permissions?.includes("observe_contest_problems");
+					const canRegister = !state?.participant && permissions?.includes("register_contest");
 					return <tr key={index} className="contest">
 						<td className="title">
 							<Link to={`/contests/${id}`}>{title}</Link>
@@ -42,7 +44,10 @@ const ContestsBlock: FC<ContestsBlockProps> = props => {
 							{begin_time ? <DateTime value={begin_time} /> : <>&mdash;</>}
 						</td>
 						<td className="actions">
-							{permissions?.includes("register_contest") && <Link to={`/contests/${id}/register`}>Register &raquo;</Link>}
+							{
+								(canRegister && <Link to={`/contests/${id}/register`}>Register &raquo;</Link>) ||
+								(canObserve && <Link to={`/contests/${id}`}>Enter &raquo;</Link>)
+							}
 						</td>
 					</tr>;
 				})}

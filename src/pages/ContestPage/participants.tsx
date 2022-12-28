@@ -47,7 +47,7 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
     }
     let contestParticipants: ContestParticipant[] = participants.participants ?? [];
     contestParticipants.sort((a, b: ContestParticipant) => {
-        return a.id - b.id;
+        return (a.id ?? 0) - (b.id ?? 0);
     });
     return <Block
         title="Participants" className="b-contest-participants"
@@ -83,6 +83,9 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
             <tbody>
                 {contestParticipants.map((participant: ContestParticipant, key: number) => {
                     const { id, user, kind } = participant;
+                    if (!id) {
+                        return;
+                    }
                     const deleteParticipant = () => {
                         deleteContestParticipant(contest.id, id)
                             .then(participant => {

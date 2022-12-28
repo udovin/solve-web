@@ -67,6 +67,11 @@ export type Problems = {
 	problems?: Problem[];
 };
 
+export type ContestState = {
+	stage: string;
+	participant?: ContestParticipant;
+};
+
 export type Contest = {
 	id: number;
 	title: string;
@@ -75,6 +80,7 @@ export type Contest = {
 	permissions?: string[];
 	enable_upsolving?: boolean;
 	enable_registration?: boolean;
+	state?: ContestState;
 };
 
 export type Contests = {
@@ -165,7 +171,7 @@ export type ContestProblems = {
 };
 
 export type ContestParticipant = {
-	id: number;
+	id?: number;
 	user?: User;
 	kind: string;
 };

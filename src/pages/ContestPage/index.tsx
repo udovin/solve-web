@@ -126,8 +126,8 @@ type ContestTabsProps = BlockProps & {
 
 const ContestTabs: FC<ContestTabsProps> = props => {
 	const { contest } = props;
-	const { permissions } = contest;
-	const canRegister = permissions?.includes("register_contest");
+	const { id, permissions, state } = contest;
+	const canRegister = !state?.participant && permissions?.includes("register_contest");
 	const canObserveProblems = permissions?.includes("observe_contest_problems");
 	const canObserveSolutions = permissions?.includes("observe_contest_solutions");
 	const canObserveParticipants = permissions?.includes("observe_contest_participants");
@@ -135,19 +135,19 @@ const ContestTabs: FC<ContestTabsProps> = props => {
 	return <Block className="b-contest-tabs">
 		<Tabs>
 			{canObserveProblems && <Tab tab="problems">
-				<Link to={`/contests/${contest.id}`}>Problems</Link>
+				<Link to={`/contests/${id}`}>Problems</Link>
 			</Tab>}
 			{canObserveSolutions && <Tab tab="solutions">
-				<Link to={`/contests/${contest.id}/solutions`}>Solutions</Link>
+				<Link to={`/contests/${id}/solutions`}>Solutions</Link>
 			</Tab>}
 			{canObserveParticipants && <Tab tab="participants">
-				<Link to={`/contests/${contest.id}/participants`}>Participants</Link>
+				<Link to={`/contests/${id}/participants`}>Participants</Link>
 			</Tab>}
 			{canRegister && <Tab tab="register">
-				<Link to={`/contests/${contest.id}/register`}>Register</Link>
+				<Link to={`/contests/${id}/register`}>Register</Link>
 			</Tab>}
 			{canManage && <Tab tab="manage">
-				<Link to={`/contests/${contest.id}/manage`}>Manage</Link>
+				<Link to={`/contests/${id}/manage`}>Manage</Link>
 			</Tab>}
 		</Tabs>
 	</Block>;
