@@ -199,6 +199,15 @@ export type ContestSolutions = {
 	solutions?: ContestSolution[];
 };
 
+export type Setting = {
+	key: string;
+	value: string;
+};
+
+export type Settings = {
+	settings?: Setting[];
+};
+
 export const RUNNING: number = -1;
 export const QUEUED: number = 0;
 export const ACCEPTED: number = 1;
@@ -287,7 +296,7 @@ const parseResp = (promise: Promise<Response>, syncFetch: boolean = false) => {
 				throw json;
 			}
 			if (syncFetch) {
-				fetchActuality = Date.now() + 1000;
+				fetchActuality = Date.now() + 3000;
 			}
 			return json;
 		});
@@ -586,6 +595,40 @@ export const observeContestSolutions = (id: number) => {
 
 export const observeContestSolution = (id: number, solutionID: number) => {
 	return parseResp(fetch(`/api/v0/contests/${id}/solutions/${solutionID}`, {
+		method: "GET",
+		headers: getHeaders(),
+	}));
+};
+
+export const observeSettings = () => {
+	return parseResp(fetch(`/api/v0/settings`, {
+		method: "GET",
+		headers: getHeaders(),
+	}));
+};
+
+export type CreateSettingForm = {
+	key: string;
+	value: string;
+};
+
+export const createSetting = (form: CreateSettingForm) => {
+	return parseResp(fetch(`/api/v0/settings`, {
+		method: "POST",
+		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
+		body: JSON.stringify(form),
+	}), true);
+};
+
+export const deleteSetting = (key: string) => {
+	return parseResp(fetch(`/api/v0/settings/${encodeURIComponent(key)}`, {
+		method: "DELETE",
+		headers: getHeaders(),
+	}), true);
+};
+
+export const observeRoles = () => {
+	return parseResp(fetch(`/api/v0/roles`, {
 		method: "GET",
 		headers: getHeaders(),
 	}));

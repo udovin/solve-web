@@ -1,11 +1,13 @@
 @import "../../mixins.scss";
 
-.b-contest-tabs .ui-block-content {
-    padding-bottom: 0;
-}
+.b-contest-tabs {
+    .ui-block-content {
+        padding-bottom: 0;
 
-.b-contest-tabs .ui-block-content .ui-tabs {
-    border-bottom: 0;
+        .ui-tabs {
+            border-bottom: 0;
+        }
+    }
 }
 
 .b-contest-edit {

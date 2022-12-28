@@ -23,6 +23,7 @@ import ProblemPage from "./pages/ProblemPage";
 import EditProblemPage from "./pages/EditProblemPage";
 
 import "./App.scss";
+import AdminPage from "./pages/AdminPage";
 
 const App: FC = () => {
 	return (
@@ -47,6 +48,7 @@ const App: FC = () => {
 					<Route path="/users/:user_id" element={<UserPage />} />
 					<Route path="/users/:user_id/edit/*" element={<EditUserPage />} />
 					<Route path="/language" element={<LanguagePage />} />
+					<Route path="/admin/*" element={<AdminPage />} />
 					<Route path="*" element={<NotFoundPage />} />
 				</Routes>
 				<Footer />
