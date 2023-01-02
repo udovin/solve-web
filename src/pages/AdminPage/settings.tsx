@@ -31,10 +31,9 @@ export const AdminSettingsBlock = () => {
             })
             .catch(setError);
     };
-    return <Block
-        title="Settings"
-        className="b-admin-settings"
-        footer={<form onSubmit={onCreate}>
+    return <Block title="Settings" className="b-admin-settings">
+        {error && <Alert>{error.message}</Alert>}
+        <form onSubmit={onCreate}>
             <Input name="key"
                 value={form.key || ""}
                 onValueChange={value => setForm({ ...form, key: value })}
@@ -46,9 +45,7 @@ export const AdminSettingsBlock = () => {
                 placeholder="Value"
                 required />
             <Button type="submit">Add</Button>
-        </form>}
-    >
-        {error && <Alert>{error.message}</Alert>}
+        </form>
         <table className="ui-table">
             <thead>
                 <tr>

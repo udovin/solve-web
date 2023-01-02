@@ -655,6 +655,18 @@ export const observeRoles = () => {
 	}));
 };
 
+export type CreateRoleForm = {
+	name: string;
+};
+
+export const createRole = (form: CreateRoleForm) => {
+	return parseResp(fetch(`/api/v0/roles`, {
+		method: "POST",
+		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
+		body: JSON.stringify(form),
+	}), true);
+};
+
 export const deleteRole = (id: number) => {
 	return parseResp(fetch(`/api/v0/roles/${id}`, {
 		method: "DELETE",
@@ -667,6 +679,13 @@ export const observeRoleRoles = (id: number) => {
 		method: "GET",
 		headers: getHeaders(),
 	}));
+};
+
+export const createRoleRole = (id: number, childID: number | string) => {
+	return parseResp(fetch(`/api/v0/roles/${id}/roles/${childID}`, {
+		method: "POST",
+		headers: getHeaders(),
+	}), true);
 };
 
 export const deleteRoleRole = (id: number, childID: number) => {
