@@ -23,17 +23,21 @@
 	}
 }
 
-// Default background color for all elements like block.
-$background-color: #ffffff;
-// Background color of body.
-$dark-background-color: #f1f1f1;
+$light-body-background-color: #f1f1f1;
+$light-background-color: #ffffff;
+$light-disabled-background-color: #f1f1f1;
+$light-background-primary-color: #0085ba;
+$light-hover-background-primary-color: #008ec2;
+$light-active-background-primary-color: #0073aa;
+$light-background-success-color: #2b8e42;
+$light-hover-background-success-color: #309648;
+$light-active-background-success-color: #1e7e34;
 
-// Default border color for all elements like block.
-$border-color: #dddddd;
-// Hover border color.
-$dark-border-color: #bbbbbb;
+$light-border-color: #dddddd;
+$light-hover-border-color: #bbbbbb;
+$light-active-border-color: #bbbbbb;
+$light-border-primary-color: #0073aa;
+$light-border-success-color: #1e7e34;
 
-// Default color of text.
-$text-color: #000000;
-
-$light-text-color: #666666;
+$light-text-color: #000000;
+$light-secondary-text-color: #666666;

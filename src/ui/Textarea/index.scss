@@ -6,18 +6,18 @@
 	padding: 8px 10px;
 	min-height: 52px;
 	max-height: 800px;
-	border: 1px solid $border-color;
+	border: 1px solid $light-border-color;
 	border-radius: 4px;
-	background-color: $background-color;
+	background-color: $light-background-color;
 	box-shadow: 0 0;
 	font-family: inherit;
 	font-size: inherit;
-	color: $text-color;
+	color: $light-text-color;
 	resize: none;
 	@include transition(border-color 150ms ease-out);
 
 	&:hover {
-		border-color: $dark-border-color;
+		border-color: $light-active-border-color;
 		@include transition(border-color 150ms ease-in);
 	}
 
@@ -29,8 +29,8 @@
 	}
 
 	&:disabled {
-		border-color: $border-color;
-		background-color: $dark-background-color;
+		border-color: $light-border-color;
+		background-color: $light-disabled-background-color;
 		box-shadow: 0 0;
 		color: #666666;
 		cursor: default;

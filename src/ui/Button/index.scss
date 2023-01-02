@@ -6,22 +6,22 @@
 	padding: 0 10px;
 	height: 32px;
 	line-height: 30px;
-	border: 1px solid $border-color;
+	border: 1px solid $light-border-color;
 	border-radius: 4px;
-	background-color: $background-color;
-	color: $text-color;
+	background-color: $light-background-color;
+	color: $light-text-color;
 	font-family: inherit;
 	font-size: inherit;
 	@include transition(border-color 150ms ease-out, background-color 150ms ease-out);
 
 	&:hover {
-		border-color: $dark-border-color;
+		border-color: $light-hover-border-color;
 		cursor: pointer;
 		@include transition(border-color 150ms ease-in, background-color 150ms ease-in);
 	}
 
 	&:active {
-		border-color: $dark-border-color;
+		border-color: $light-active-border-color;
 		background-color: #eeeeee;
 		cursor: pointer;
 		@include transition(border-color 150ms ease-in, background-color 150ms ease-in);
@@ -33,39 +33,39 @@
 
 	// Disabled buttons.
 	&:disabled {
-		border-color: $border-color  !important;
-		background-color: $dark-background-color  !important;
+		border-color: $light-border-color !important;
+		background-color: $light-disabled-background-color !important;
 		color: #666666 !important;
 		cursor: default;
 	}
 
 	// Primary buttons.
 	&.primary {
-		border-color: #0073aa;
-		background-color: #0085ba;
+		border-color: $light-border-primary-color;
+		background-color: $light-background-primary-color;
 		color: #ffffff;
 
 		&.primary:hover {
-			background-color: #008ec2;
+			background-color: $light-hover-background-primary-color;
 		}
 
 		&.primary:active {
-			background-color: #0073aa;
+			background-color: $light-active-background-primary-color;
 		}
 	}
 
 	// Success buttons.
 	&.success {
-		border-color: #1e7e34;
-		background-color: #2b8e42;
+		border-color: $light-border-success-color;
+		background-color: $light-background-success-color;
 		color: #ffffff;
 
 		&:hover {
-			background-color: #309648;
+			background-color: $light-hover-background-success-color;
 		}
 
 		&:active {
-			background-color: #1e7e34;
+			background-color: $light-active-background-success-color;
 		}
 	}
 

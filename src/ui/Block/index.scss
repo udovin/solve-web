@@ -9,23 +9,23 @@
 }
 
 .ui-block {
-	border: 1px solid $border-color;
+	border: 1px solid $light-border-color;
 	border-radius: 4px;
-	background-color: $background-color;
+	background-color: $light-background-color;
 
 	.ui-block-header {
 		padding: 10px;
-		border-bottom: 1px solid $border-color;
+		border-bottom: 1px solid $light-border-color;
 
 		>.title {
 			font-size: 15px;
-			color: $light-text-color;
+			color: $light-secondary-text-color;
 		}
 	}
 
 	.ui-block-content {
 		padding: 10px;
-		border-bottom: 1px solid $border-color;
+		border-bottom: 1px solid $light-border-color;
 	}
 
 	.ui-block-footer {

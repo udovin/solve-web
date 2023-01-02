@@ -25,17 +25,17 @@
 			height: 0;
 			border-width: 5px;
 			border-style: solid;
-			border-color: transparent transparent $dark-border-color transparent;
+			border-color: transparent transparent $light-active-border-color transparent;
 		}
 
 		>.ui-tooltip {
 			display: block;
 			position: relative;
 			left: -50%;
-			border: 1px solid $dark-border-color;
+			border: 1px solid $light-active-border-color;
 			border-radius: 4px;
-			background-color: $background-color;
-			box-shadow: 0 0 2px $dark-border-color;
+			background-color: $light-background-color;
+			box-shadow: 0 0 2px $light-active-border-color;
 
 			>.ui-tooltip-content {
 				display: block;
