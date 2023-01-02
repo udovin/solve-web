@@ -4,6 +4,7 @@ import { Contest, ContestProblem, ContestProblems, createContestProblem, deleteC
 import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
 import Button from "../../ui/Button";
+import IconButton from "../../ui/IconButton";
 import Input from "../../ui/Input";
 
 type ContestProblemsBlockParams = {
@@ -97,7 +98,7 @@ export const ContestProblemsBlock: FC<ContestProblemsBlockParams> = props => {
                         <td className="title">
                             <Link to={`/contests/${contest.id}/problems/${code}`}>{statement?.title ?? title}</Link>
                         </td>
-                        <td className="actions">{canDeleteProblem && <Button onClick={deleteProblem}>Delete</Button>}</td>
+                        <td className="actions">{canDeleteProblem && <IconButton kind="delete" onClick={deleteProblem} />}</td>
                     </tr>;
                 })}
             </tbody>

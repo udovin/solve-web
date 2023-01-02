@@ -3,6 +3,7 @@ import { createSetting, deleteSetting, ErrorResponse, observeSettings, Setting, 
 import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
 import Button from "../../ui/Button";
+import IconButton from "../../ui/IconButton";
 import Input from "../../ui/Input";
 
 export const AdminSettingsBlock = () => {
@@ -62,7 +63,7 @@ export const AdminSettingsBlock = () => {
                         deleteSetting(setting.id)
                             .then(setting => {
                                 const newSettings = [...(settings?.settings ?? [])];
-                                const pos = newSettings.findIndex(value => value.key === setting.key);
+                                const pos = newSettings.findIndex(value => value.id === setting.id);
                                 if (pos >= 0) {
                                     newSettings.splice(pos, 1);
                                 }
@@ -74,7 +75,7 @@ export const AdminSettingsBlock = () => {
                     return <tr key={key}>
                         <td className="key">{setting.key}</td>
                         <td className="value">{setting.value}</td>
-                        <td className="action">{<Button onClick={onDelete}>Delete</Button>}</td>
+                        <td className="action">{<IconButton kind="delete" onClick={onDelete} />}</td>
                     </tr>
                 })}
             </tbody>

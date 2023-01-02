@@ -3,6 +3,7 @@ import { Contest, ContestParticipant, ContestParticipants, createContestParticip
 import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
 import Button from "../../ui/Button";
+import IconButton from "../../ui/IconButton";
 import Input from "../../ui/Input";
 import Select from "../../ui/Select";
 import UserLink from "../../ui/UserLink";
@@ -104,7 +105,7 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
                         <td className="id">{id}</td>
                         <td className="login">{user ? <UserLink user={user} /> : <>&mdash;</>}</td>
                         <td className="kind">{kind}</td>
-                        <td className="actions">{canDeleteParticipant && <Button onClick={deleteParticipant}>Delete</Button>}</td>
+                        <td className="actions">{canDeleteParticipant && <IconButton kind="delete" onClick={deleteParticipant} />}</td>
                     </tr>;
                 })}
             </tbody>

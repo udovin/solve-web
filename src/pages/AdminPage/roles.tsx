@@ -1,8 +1,9 @@
 import { FC, useEffect, useState } from "react";
-import { ErrorResponse, observeRoleRoles, observeRoles, Role, RoleRoles, Roles } from "../../api";
+import { deleteRole, ErrorResponse, observeRoleRoles, observeRoles, Role, RoleRoles, Roles } from "../../api";
 import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
 import Button from "../../ui/Button";
+import IconButton from "../../ui/IconButton";
 
 export const AdminRolesBlock = () => {
     const [roles, setRoles] = useState<Roles>();
@@ -26,8 +27,21 @@ export const AdminRolesBlock = () => {
                 const onFocused = () => {
                     setFocused(role.id !== focused ? role.id : undefined);
                 };
+                const onDelete = () => {
+                    deleteRole(role.id)
+                        .then(role => {
+                            const newRoles = [...(roles?.roles ?? [])];
+                            const pos = newRoles.findIndex(value => value.id === role.id);
+                            if (pos >= 0) {
+                                newRoles.splice(pos, 1);
+                            }
+                            setRoles({ ...roles, roles: newRoles });
+                            setError(undefined);
+                        })
+                        .catch(setError);
+                };
                 return <li key={key}>
-                    <RoleItem role={role} focused={role.id === focused} onFocused={onFocused} />
+                    <RoleItem role={role} focused={role.id === focused} onFocused={onFocused} onDelete={onDelete} />
                 </li>
             })}
         </ul>
@@ -38,10 +52,11 @@ type RoleItemProps = {
     role: Role;
     focused: boolean;
     onFocused?(): void;
+    onDelete?(): void;
 };
 
 const RoleItem: FC<RoleItemProps> = props => {
-    const { role, focused, onFocused } = props;
+    const { role, focused, onFocused, onDelete } = props;
     const [roles, setRoles] = useState<RoleRoles>();
     useEffect(() => {
         if (!focused) {
@@ -52,9 +67,11 @@ const RoleItem: FC<RoleItemProps> = props => {
     }, [focused, onFocused]);
     return <>
         <Button onClick={onFocused}>{role.name}</Button>
+        {!role.built_in && <IconButton kind="delete" onClick={onDelete} />}
         {focused && <ul>
             {roles?.roles && roles.roles.map((child: Role, key: number) => {
-                return <li key={key}>{child.name}</li>;
+                const onDelete = () => { };
+                return <li key={key}>{child.name}<IconButton kind="delete" onClick={onDelete} /></li>;
             })}
         </ul>}
     </>;

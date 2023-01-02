@@ -218,6 +218,7 @@ export type Settings = {
 export type Role = {
 	id: number;
 	name: string;
+	built_in?: boolean;
 };
 
 export type Roles = {
@@ -652,6 +653,13 @@ export const observeRoles = () => {
 		method: "GET",
 		headers: getHeaders(),
 	}));
+};
+
+export const deleteRole = (id: number) => {
+	return parseResp(fetch(`/api/v0/roles/${id}`, {
+		method: "DELETE",
+		headers: getHeaders(),
+	}), true);
 };
 
 export const observeRoleRoles = (id: number) => {

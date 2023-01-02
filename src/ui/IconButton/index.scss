@@ -1,0 +1,26 @@
+@import "../../mixins.scss";
+
+.ui-icon-button {
+	display: inline-block;
+	@include box-sizing(border-box);
+	padding: 0;
+	border: 0;
+	background-color: transparent;
+	line-height: 0;
+
+	&:hover,
+	&:active {
+		cursor: pointer;
+
+		>.ui-icon {
+			opacity: 1;
+			@include transition(opacity 150ms ease-in);
+		}
+	}
+
+	>.ui-icon {
+		display: block;
+		opacity: 0.5;
+		@include transition(opacity 150ms ease-out);
+	}
+}
