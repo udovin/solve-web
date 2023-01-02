@@ -1,0 +1,25 @@
+@import "../../mixins.scss";
+
+.ui-accordion {
+    margin: 0 0 10px 0;
+    border: 1px solid $light-border-color;
+    border-radius: 4px;
+    background-color: $light-background-color;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    .ui-accordion-header {
+        padding: 10px;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .ui-accordion-content {
+        padding: 10px;
+        border-top: 1px solid $light-border-color;
+    }
+}
