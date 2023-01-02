@@ -206,12 +206,26 @@ export type ContestSolutions = {
 };
 
 export type Setting = {
+	id: number;
 	key: string;
 	value: string;
 };
 
 export type Settings = {
 	settings?: Setting[];
+};
+
+export type Role = {
+	id: number;
+	name: string;
+};
+
+export type Roles = {
+	roles?: Role[];
+};
+
+export type RoleRoles = {
+	roles?: Role[];
 };
 
 export const RUNNING: number = -1;
@@ -626,8 +640,8 @@ export const createSetting = (form: CreateSettingForm) => {
 	}), true);
 };
 
-export const deleteSetting = (key: string) => {
-	return parseResp(fetch(`/api/v0/settings/${encodeURIComponent(key)}`, {
+export const deleteSetting = (id: number) => {
+	return parseResp(fetch(`/api/v0/settings/${id}`, {
 		method: "DELETE",
 		headers: getHeaders(),
 	}), true);
@@ -635,6 +649,13 @@ export const deleteSetting = (key: string) => {
 
 export const observeRoles = () => {
 	return parseResp(fetch(`/api/v0/roles`, {
+		method: "GET",
+		headers: getHeaders(),
+	}));
+};
+
+export const observeRoleRoles = (id: number) => {
+	return parseResp(fetch(`/api/v0/roles/${id}/roles`, {
 		method: "GET",
 		headers: getHeaders(),
 	}));

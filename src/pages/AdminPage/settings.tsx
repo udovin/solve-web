@@ -15,7 +15,7 @@ export const AdminSettingsBlock = () => {
                 setSettings(settings);
                 setError(undefined);
             })
-            .catch(setError)
+            .catch(setError);
     }, []);
     const onCreate = (event: FormEvent) => {
         event.preventDefault();
@@ -59,7 +59,7 @@ export const AdminSettingsBlock = () => {
             <tbody>
                 {settings?.settings && settings.settings.map((setting: Setting, key: number) => {
                     const onDelete = () => {
-                        deleteSetting(setting.key)
+                        deleteSetting(setting.id)
                             .then(setting => {
                                 const newSettings = [...(settings?.settings ?? [])];
                                 const pos = newSettings.findIndex(value => value.key === setting.key);
