@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { deleteRole, ErrorResponse, observeRoleRoles, observeRoles, Role, RoleRoles, Roles } from "../../api";
+import { deleteRole, deleteRoleRole, ErrorResponse, observeRoleRoles, observeRoles, Role, RoleRoles, Roles } from "../../api";
 import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
 import Button from "../../ui/Button";
@@ -58,19 +58,38 @@ type RoleItemProps = {
 const RoleItem: FC<RoleItemProps> = props => {
     const { role, focused, onFocused, onDelete } = props;
     const [roles, setRoles] = useState<RoleRoles>();
+    const [error, setError] = useState<ErrorResponse>();
     useEffect(() => {
+        setError(undefined);
         if (!focused) {
             return;
         }
         observeRoleRoles(role.id)
-            .then(setRoles);
+            .then(roles => {
+                setRoles(roles);
+                setError(undefined);
+            })
+            .catch(setError);
     }, [focused, onFocused]);
     return <>
         <Button onClick={onFocused}>{role.name}</Button>
         {!role.built_in && <IconButton kind="delete" onClick={onDelete} />}
+        {error && <Alert>{error.message}</Alert>}
         {focused && <ul>
             {roles?.roles && roles.roles.map((child: Role, key: number) => {
-                const onDelete = () => { };
+                const onDelete = () => {
+                    deleteRoleRole(role.id, child.id)
+                        .then(role => {
+                            const newRoles = [...(roles?.roles ?? [])];
+                            const pos = newRoles.findIndex(value => value.id === role.id);
+                            if (pos >= 0) {
+                                newRoles.splice(pos, 1);
+                            }
+                            setRoles({ ...roles, roles: newRoles });
+                            setError(undefined);
+                        })
+                        .catch(setError);
+                };
                 return <li key={key}>{child.name}<IconButton kind="delete" onClick={onDelete} /></li>;
             })}
         </ul>}

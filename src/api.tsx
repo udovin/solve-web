@@ -668,3 +668,10 @@ export const observeRoleRoles = (id: number) => {
 		headers: getHeaders(),
 	}));
 };
+
+export const deleteRoleRole = (id: number, childID: number) => {
+	return parseResp(fetch(`/api/v0/roles/${id}/roles/${childID}`, {
+		method: "DELETE",
+		headers: getHeaders(),
+	}), true);
+};

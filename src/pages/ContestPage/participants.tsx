@@ -12,6 +12,12 @@ type ContestParticipantsBlockProps = {
     contest: Contest;
 };
 
+const KINDS: Record<string, string> = {
+    "regular": "Participant",
+    "upsolving": "Upsolving",
+    "manager": "Manager",
+};
+
 export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props => {
     const { contest } = props;
     const [error, setError] = useState<ErrorResponse>();
@@ -61,11 +67,7 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
             <Select
                 name="kind"
                 value={form.kind || "regular"}
-                options={{
-                    "regular": "Regular",
-                    "upsolving": "Upsolving",
-                    "manager": "Manager",
-                }}
+                options={KINDS}
                 onValueChange={value => setForm({ ...form, kind: value })}
             />
             <Button type="submit">Create</Button>
@@ -104,7 +106,7 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
                     return <tr key={key} className="participant">
                         <td className="id">{id}</td>
                         <td className="login">{user ? <UserLink user={user} /> : <>&mdash;</>}</td>
-                        <td className="kind">{kind}</td>
+                        <td className="kind">{KINDS[kind] ?? kind}</td>
                         <td className="actions">{canDeleteParticipant && <IconButton kind="delete" onClick={deleteParticipant} />}</td>
                     </tr>;
                 })}
