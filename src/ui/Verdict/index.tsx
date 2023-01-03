@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { SolutionReport } from "../../api";
+import Tooltip from "../Tooltip";
 
 import "./index.scss";
 
@@ -80,7 +81,7 @@ const Verdict: FC<VerdictProps> = props => {
     const { report } = props;
     const verdict = report?.verdict;
     const info = verdict ? VERDICTS[verdict] : VERDICTS["running"];
-    return <span className={`ui-verdict ${info?.code ?? "unknown"}`} title={info?.description ?? verdict}>{info?.title ?? verdict}</span>;
+    return <Tooltip className={`ui-verdict ${info?.code ?? "unknown"}`} content={info?.description ?? verdict}>{info?.title ?? verdict}</Tooltip>;
 };
 
 export default Verdict;

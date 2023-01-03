@@ -1,6 +1,7 @@
 import { FC, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { AuthContext } from "../AuthContext";
+import Tooltip from "../ui/Tooltip";
 
 const Header: FC = props => {
 	const location = useLocation();
@@ -56,7 +57,7 @@ const Header: FC = props => {
 				</li>}
 			</ul>
 		</nav>
-		<div id="header-version" title="Version">0.0.1</div>
+		<div id="header-version" title="Version"><Tooltip content="Version">0.0.1</Tooltip></div>
 	</header>;
 };
 

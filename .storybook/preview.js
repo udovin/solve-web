@@ -19,11 +19,13 @@ export const globalTypes = {
 
 const withThemeProvider = (Story, context) => {
 	const theme = context.globals.theme;
-	return (
-		<div className={`theme-${theme}`}>
-			<Story />
-		</div>
-	)
+	document.body.classList.forEach((name) => {
+		if (name.startsWith(`theme-`)) {
+			document.body.classList.remove(name);
+		}
+	})
+	document.body.classList.add(`theme-${theme}`);
+	return <Story />;
 }
 
 export const decorators = [withThemeProvider];
