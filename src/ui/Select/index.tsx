@@ -38,16 +38,24 @@ const Select: FC<SelectProps> = (props: SelectProps) => {
 		if (!ref.current) {
 			return;
 		}
+		const element = ref.current;
 		setStyle({
-			top: ref.current.getBoundingClientRect().top + window.scrollY + ref.current.scrollHeight,
-			left: ref.current?.getBoundingClientRect().left + window.scrollX,
-			minWidth: ref.current?.scrollWidth,
+			top: element.getBoundingClientRect().top + window.scrollY + element.scrollHeight,
+			left: element.getBoundingClientRect().left + window.scrollX,
+			minWidth: element.scrollWidth,
 		});
 	};
 	useEffect(() => {
+		if (!ref.current || !focused) {
+			return;
+		}
 		updateStyle();
 		window.addEventListener("resize", updateStyle);
-		return () => window.removeEventListener("resize", updateStyle);
+		window.addEventListener("scroll", updateStyle, true);
+		return () => {
+			window.removeEventListener("resize", updateStyle);
+			window.removeEventListener("scroll", updateStyle, true);
+		};
 	}, [ref, focused]);
 	return <span
 		className={`ui-select${focused ? " focused" : ""}${disabled ? " disabled" : ""} ${className ?? ""}`.trimEnd()}

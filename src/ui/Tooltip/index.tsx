@@ -21,16 +21,24 @@ const Tooltip: FC<TooltipProps> = (props: TooltipProps) => {
 		if (!ref.current) {
 			return;
 		}
+		const element = ref.current;
 		setStyle({
-			top: ref.current.getBoundingClientRect().top + window.scrollY + ref.current.clientHeight,
-			left: ref.current.getBoundingClientRect().left + window.scrollX + ref.current.clientWidth / 2,
-			minWidth: ref.current?.scrollWidth,
+			top: element.getBoundingClientRect().top + window.scrollY + element.clientHeight,
+			left: element.getBoundingClientRect().left + window.scrollX + element.clientWidth / 2,
+			minWidth: element.scrollWidth,
 		});
 	};
 	useEffect(() => {
+		if (!ref.current || !hover) {
+			return;
+		}
 		updateStyle();
 		window.addEventListener("resize", updateStyle);
-		return () => window.removeEventListener("resize", updateStyle);
+		window.addEventListener("scroll", updateStyle, true);
+		return () => {
+			window.removeEventListener("resize", updateStyle);
+			window.removeEventListener("scroll", updateStyle, true);
+		};
 	}, [ref, hover]);
 	return <span
 		id={id}
