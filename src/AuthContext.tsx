@@ -4,20 +4,23 @@ import { statusUser, Status } from "./api";
 type Auth = {
 	status?: Status;
 	setStatus(status?: Status): void;
+	updateStatus(): void;
 };
 
 const AuthContext = React.createContext<Auth>({
-	setStatus(): void { }
+	setStatus(): void { },
+	updateStatus(): void { },
 });
 
 const AuthProvider: FC<{ children?: ReactNode }> = props => {
 	const [status, setStatus] = useState<Status>();
-	useEffect(() => {
+	const updateStatus = () => {
 		statusUser()
 			.then(result => setStatus(result))
-			.catch(error => setStatus(undefined))
-	}, []);
-	return <AuthContext.Provider value={{ status, setStatus }}>
+			.catch(error => setStatus(undefined));
+	};
+	useEffect(updateStatus, []);
+	return <AuthContext.Provider value={{ status, setStatus, updateStatus }}>
 		{props.children}
 	</AuthContext.Provider>;
 };

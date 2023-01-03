@@ -6,14 +6,15 @@ import FormBlock from "../components/FormBlock";
 import { Navigate } from "react-router-dom";
 import { AuthContext } from "../AuthContext";
 import Field from "../ui/Field";
-import { ErrorResponse, statusUser, loginUser } from "../api";
+import { ErrorResponse, loginUser } from "../api";
 import Alert from "../ui/Alert";
 import Sidebar from "../ui/Sidebar";
 
 const LoginPage = () => {
-	const { status, setStatus } = useContext(AuthContext);
+	const { status, updateStatus } = useContext(AuthContext);
 	const [error, setError] = useState<ErrorResponse>({ message: "" });
 	const [form, setForm] = useState<{ [key: string]: string }>({});
+	const [success, setSuccess] = useState<boolean>();
 	const onSubmit = (event: any) => {
 		event.preventDefault();
 		loginUser({
@@ -21,13 +22,13 @@ const LoginPage = () => {
 			password: form.password,
 		})
 			.then(() => {
+				setSuccess(true);
+				updateStatus();
 				setError({ message: "" });
-				return statusUser();
 			})
-			.then(json => setStatus(json))
 			.catch(error => setError(error));
 	};
-	if (status && status.user) {
+	if (status?.user && success) {
 		return <Navigate to={"/"} />
 	}
 	return <Page title="Login" sidebar={<Sidebar />}>

@@ -3,22 +3,23 @@ import { Navigate } from "react-router-dom";
 import { AuthContext } from "../AuthContext";
 
 const LogoutPage = () => {
-	const { status, setStatus } = useContext(AuthContext);
+	const { status, updateStatus } = useContext(AuthContext);
 	const [success, setSuccess] = useState<boolean>();
 	useEffect(() => {
-		if (status) {
-			fetch("/api/v0/logout", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json; charset=UTF-8",
-				},
-			})
-				.then(() => {
-					setSuccess(true);
-					setStatus();
-				});
+		if (!status) {
+			return;
 		}
-	}, [status, setStatus]);
+		fetch("/api/v0/logout", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json; charset=UTF-8",
+			},
+		})
+			.then(() => {
+				setSuccess(true);
+				updateStatus();
+			});
+	}, [status, updateStatus]);
 	if (!(status && status.user) || success) {
 		return <Navigate to={"/"} />;
 	}
