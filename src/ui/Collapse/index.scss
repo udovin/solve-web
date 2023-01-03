@@ -1,0 +1,47 @@
+@import "../../mixins.scss";
+
+.ui-collapse {
+    margin: 0 0 10px 0;
+    border: 1px solid $light-border-color;
+    border-radius: 4px;
+    background-color: $light-background-color;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    .ui-collapse-header {
+        position: relative;
+        padding: 10px 10px 10px 34px;
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        >.arrow {
+            display: block;
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            left: 10px;
+            background-image: url('../../images/icons.svg');
+            background-repeat: no-repeat;
+            background-size: 600% 600%;
+            background-position: 40% 60%;
+            transform: rotate(0);
+            @include transition(transform 150ms ease-out);
+        }
+    }
+
+    &.expanded .ui-collapse-header {
+        >.arrow {
+            transform: rotate(-180deg);
+            @include transition(transform 150ms ease-in);
+        }
+    }
+
+    .ui-collapse-content {
+        padding: 10px;
+        border-top: 1px solid $light-border-color;
+    }
+}

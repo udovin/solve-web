@@ -1,6 +1,6 @@
 import { FC, FormEvent, useEffect, useState } from "react";
 import { createRole, createRoleRole, deleteRole, deleteRoleRole, ErrorResponse, observeRoleRoles, observeRoles, Role, RoleRoles, Roles } from "../../api";
-import { Accordion, AccordionContent, AccordionHeader } from "../../ui/Accordion";
+import { Collapse, CollapseContent, CollapseHeader } from "../../ui/Collapse";
 import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
 import Button from "../../ui/Button";
@@ -62,15 +62,15 @@ export const AdminRolesBlock = () => {
                     })
                     .catch(setError);
             };
-            return <Accordion expanded={focused === role.id} onChange={onFocused} key={key}>
-                <AccordionHeader>
+            return <Collapse expanded={focused === role.id} onChange={onFocused} key={key}>
+                <CollapseHeader>
                     {role.name}
                     {!role.built_in && <IconButton kind="delete" onClick={onDelete} />}
-                </AccordionHeader>
-                <AccordionContent>
+                </CollapseHeader>
+                <CollapseContent>
                     <RoleItem role={role} />
-                </AccordionContent>
-            </Accordion>;
+                </CollapseContent>
+            </Collapse>;
         })}
     </Block>;
 };
