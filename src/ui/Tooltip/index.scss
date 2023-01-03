@@ -9,6 +9,7 @@
 .ui-tooltip-block {
 	display: block;
 	position: absolute;
+	cursor: default;
 	z-index: 20;
 
 	>.ui-tooltip-arrow {
@@ -36,6 +37,7 @@
 			display: block;
 			padding: 8px 10px;
 			max-width: 400px;
+			text-align: center;
 		}
 	}
 }
