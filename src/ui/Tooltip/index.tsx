@@ -29,7 +29,7 @@ const Tooltip: FC<TooltipProps> = (props: TooltipProps) => {
 		});
 	};
 	useEffect(() => {
-		if (!ref.current || !hover) {
+		if (!ref.current) {
 			return;
 		}
 		updateStyle();

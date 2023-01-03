@@ -46,7 +46,7 @@ const Select: FC<SelectProps> = (props: SelectProps) => {
 		});
 	};
 	useEffect(() => {
-		if (!ref.current || !focused) {
+		if (!ref.current) {
 			return;
 		}
 		updateStyle();
