@@ -579,10 +579,15 @@ export const updateProblem = (id: number, form: UpdateProblemForm) => {
 	}));
 };
 
-export const rebuildProblem = (id: number) => {
+type RebuildProblemForm = {
+	compile?: boolean;
+};
+
+export const rebuildProblem = (id: number, form: RebuildProblemForm) => {
 	return parseResp(fetch(`/api/v0/problems/${id}/rebuild`, {
 		method: "POST",
-		headers: getHeaders(),
+		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
+		body: JSON.stringify(form),
 	}));
 };
 
