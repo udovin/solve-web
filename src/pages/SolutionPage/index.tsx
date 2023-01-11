@@ -10,6 +10,8 @@ import UserLink from "../../ui/UserLink";
 import Verdict from "../../ui/Verdict";
 
 import "./index.scss";
+import Duration from "../../ui/Duration";
+import ByteSize from "../../ui/ByteSize";
 
 export type SolutionBlockProps = BlockProps & {
 	solution: Solution;
@@ -60,7 +62,7 @@ export type SolutionReportBlockProps = BlockProps & {
 	report: SolutionReport;
 };
 
-const SolutionReportBlock: FC<SolutionReportBlockProps> = props => {
+export const SolutionReportBlock: FC<SolutionReportBlockProps> = props => {
 	const { report, ...rest } = props;
 	return <Block title="Tests" className="b-solution" {...rest}>
 		<table className="ui-table">
@@ -68,6 +70,8 @@ const SolutionReportBlock: FC<SolutionReportBlockProps> = props => {
 				<tr>
 					<th className="id">#</th>
 					<th className="verdict">Verdict</th>
+					<th className="time">Time</th>
+					<th className="memory">Memory</th>
 					<th className="check-log">Check log</th>
 				</tr>
 			</thead>
@@ -77,6 +81,8 @@ const SolutionReportBlock: FC<SolutionReportBlockProps> = props => {
 					<td className="verdict">
 						{test ? test.verdict : "running"}
 					</td>
+					<td className="time">{test.used_time && <Duration value={test.used_time * 0.001} />}</td>
+					<td className="memory">{test.used_memory && <ByteSize value={test.used_memory} />}</td>
 					<td className="check-log">
 						{(test && test.check_log) || <>&mdash;</>}
 					</td>

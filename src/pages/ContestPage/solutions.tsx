@@ -7,6 +7,7 @@ import Code from "../../ui/Code";
 import DateTime from "../../ui/DateTime";
 import UserLink from "../../ui/UserLink";
 import Verdict from "../../ui/Verdict";
+import { SolutionReportBlock } from "../SolutionPage";
 
 type ContestSolutionRowProps = {
     contest: Contest;
@@ -171,27 +172,6 @@ export const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
         {content && <Block title="Content" className="b-contest-solution-content">
             <Code content={content} language={compiler?.config?.extensions?.at(0)} />
         </Block>}
-        {report && <Block title="Tests" className="b-contest-solution-tests">
-            <table className="ui-table">
-                <thead>
-                    <tr>
-                        <th className="id">#</th>
-                        <th className="verdict">Verdict</th>
-                        <th className="check-log">Check log</th>
-                    </tr>
-                </thead>
-                <tbody>{report.tests?.map((test: TestReport, key: number) => {
-                    return <tr className="problem">
-                        <td className="id">{key + 1}</td>
-                        <td className="verdict">
-                            {test ? test.verdict : "running"}
-                        </td>
-                        <td className="check-log">
-                            {(test && test.check_log) || <>&mdash;</>}
-                        </td>
-                    </tr>;
-                })}</tbody>
-            </table>
-        </Block>}
+        {report && <SolutionReportBlock report={report} />}
     </>;
 };

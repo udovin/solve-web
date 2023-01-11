@@ -33,9 +33,11 @@ const Tooltip: FC<TooltipProps> = (props: TooltipProps) => {
 			return;
 		}
 		updateStyle();
+		const interval = setInterval(updateStyle, 100);
 		window.addEventListener("resize", updateStyle);
 		window.addEventListener("scroll", updateStyle, true);
 		return () => {
+			clearInterval(interval);
 			window.removeEventListener("resize", updateStyle);
 			window.removeEventListener("scroll", updateStyle, true);
 		};

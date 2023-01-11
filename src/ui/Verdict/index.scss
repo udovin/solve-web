@@ -1,3 +1,5 @@
+@import "../../mixins.scss";
+
 .ui-verdict {
     &.failed {
         color: #000000;
@@ -25,5 +27,22 @@
     &.re,
     &.pa {
         color: #31708f;
+    }
+}
+
+.ui-verdict-details {
+    .item {
+        display: block;
+        margin-bottom: 2px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .time,
+    .memory {
+        color: $light-secondary-text-color;
+        font-size: 12px;
     }
 }

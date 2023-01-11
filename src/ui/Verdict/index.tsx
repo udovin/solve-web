@@ -1,5 +1,7 @@
 import { FC } from "react";
 import { SolutionReport } from "../../api";
+import ByteSize from "../ByteSize";
+import Duration from "../Duration";
 import Tooltip from "../Tooltip";
 
 import "./index.scss";
@@ -80,8 +82,16 @@ const VERDICTS: Record<string, VerdictInfo | undefined> = {
 const Verdict: FC<VerdictProps> = props => {
     const { report } = props;
     const verdict = report?.verdict;
+    const used_time = report?.used_time;
+    const used_memory = report?.used_memory;
     const info = verdict ? VERDICTS[verdict] : VERDICTS["running"];
-    return <Tooltip className={`ui-verdict ${info?.code ?? "unknown"}`} content={info?.description ?? verdict}>{info?.title ?? verdict}</Tooltip>;
+    return <Tooltip className={`ui-verdict ${info?.code ?? "unknown"}`} content={<>
+        <div className="ui-verdict-details">
+            <span className="item description">{info?.description ?? verdict}</span>
+            {used_time && <span className="item time"><Duration value={used_time * 0.001} /></span>}
+            {used_memory && <span className="item memory"><ByteSize value={used_memory} /></span>}
+        </div>
+    </>}>{info?.title ?? verdict}</Tooltip >;
 };
 
 export default Verdict;

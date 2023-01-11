@@ -182,6 +182,8 @@ export type ContestParticipants = {
 
 export type TestReport = {
 	verdict: string;
+	used_time?: number;
+	used_memory?: number;
 	check_log?: string;
 };
 
@@ -189,6 +191,8 @@ export type SolutionReport = {
 	verdict: string;
 	points?: number;
 	tests?: TestReport[];
+	used_time?: number;
+	used_memory?: number;
 };
 
 export type ContestSolution = {
