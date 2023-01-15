@@ -12,6 +12,10 @@ const formatPart = (value: number) => {
 	return result;
 };
 
+const roundNumber = (value: number, places: number) => {
+	return Number(Math.round(Number(String(value) + "e+" + String(places))) + "e-" + String(places));
+};
+
 const Duration: FC<DurationProps> = props => {
 	const { value } = props;
 	const seconds = Math.trunc(value % 60);
@@ -26,7 +30,7 @@ const Duration: FC<DurationProps> = props => {
 	}
 	const milliseconds = Math.trunc((value - Math.trunc(value)) * 1000);
 	if (seconds) {
-		return <>{seconds + milliseconds / 1000} s</>
+		return <>{roundNumber(seconds + milliseconds / 1000, 3)} s</>
 	}
 	return <>{milliseconds} ms</>;
 };
