@@ -87,7 +87,7 @@ const Verdict: FC<VerdictProps> = props => {
     const info = verdict ? VERDICTS[verdict] : VERDICTS["running"];
     return <Tooltip className={`ui-verdict ${info?.code ?? "unknown"}`} content={<>
         <div className="ui-verdict-details">
-            <span className="item description">{info?.description ?? verdict}</span>
+            <span className={`item description ui-verdict ${info?.code ?? "unknown"}`}>{info?.description ?? verdict}</span>
             {used_time && <span className="item time"><Duration value={used_time * 0.001} /></span>}
             {used_memory && <span className="item memory"><ByteSize value={used_memory} /></span>}
         </div>

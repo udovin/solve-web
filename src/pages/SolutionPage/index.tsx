@@ -81,8 +81,8 @@ export const SolutionReportBlock: FC<SolutionReportBlockProps> = props => {
 					<td className="verdict">
 						{test ? test.verdict : "running"}
 					</td>
-					<td className="time">{test.used_time && <Duration value={test.used_time * 0.001} />}</td>
-					<td className="memory">{test.used_memory && <ByteSize value={test.used_memory} />}</td>
+					<td className="time">{<Duration value={(test.used_time ?? 0) * 0.001} />}</td>
+					<td className="memory">{<ByteSize value={test.used_memory ?? 0} />}</td>
 					<td className="check-log">
 						{(test && test.check_log) || <>&mdash;</>}
 					</td>
