@@ -193,6 +193,7 @@ export type SolutionReport = {
 	tests?: TestReport[];
 	used_time?: number;
 	used_memory?: number;
+	test_number?: number;
 };
 
 export type ContestSolution = {

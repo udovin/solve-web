@@ -7,7 +7,7 @@ import Alert from "../../ui/Alert";
 import Block, { BlockProps } from "../../ui/Block";
 import DateTime from "../../ui/DateTime";
 import UserLink from "../../ui/UserLink";
-import Verdict from "../../ui/Verdict";
+import Verdict, { TestVerdict } from "../../ui/Verdict";
 
 import "./index.scss";
 import Duration from "../../ui/Duration";
@@ -64,27 +64,25 @@ export type SolutionReportBlockProps = BlockProps & {
 
 export const SolutionReportBlock: FC<SolutionReportBlockProps> = props => {
 	const { report, ...rest } = props;
-	return <Block title="Tests" className="b-solution" {...rest}>
+	return <Block title="Tests" className="b-solution-report" {...rest}>
 		<table className="ui-table">
 			<thead>
 				<tr>
 					<th className="id">#</th>
-					<th className="verdict">Verdict</th>
 					<th className="time">Time</th>
 					<th className="memory">Memory</th>
+					<th className="verdict">Verdict</th>
 					<th className="check-log">Check log</th>
 				</tr>
 			</thead>
 			<tbody>{report && report.tests?.map((test: TestReport, key: number) => {
-				return <tr className="problem">
+				return <tr className="test">
 					<td className="id">{key + 1}</td>
-					<td className="verdict">
-						{test ? test.verdict : "running"}
-					</td>
 					<td className="time">{<Duration value={(test.used_time ?? 0) * 0.001} />}</td>
 					<td className="memory">{<ByteSize value={test.used_memory ?? 0} />}</td>
+					<td className="verdict"><TestVerdict report={test} /></td>
 					<td className="check-log">
-						{(test && test.check_log) || <>&mdash;</>}
+						{test.check_log ? <pre className="log">{test.check_log}</pre> : <>&mdash;</>}
 					</td>
 				</tr>;
 			})}</tbody>

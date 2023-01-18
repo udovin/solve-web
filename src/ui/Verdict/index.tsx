@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { SolutionReport } from "../../api";
+import { SolutionReport, TestReport } from "../../api";
 import ByteSize from "../ByteSize";
 import Duration from "../Duration";
 import Tooltip from "../Tooltip";
@@ -13,6 +13,7 @@ type VerdictProps = {
 type VerdictInfo = {
     code: string;
     title: string;
+    titleTest?: string;
     description: string;
 };
 
@@ -45,26 +46,31 @@ const VERDICTS: Record<string, VerdictInfo | undefined> = {
     "time_limit_exceeded": {
         code: "tle",
         title: "TLE",
+        titleTest: "TLE {}",
         description: "Time limit exceeded",
     },
     "memory_limit_exceeded": {
         code: "mle",
         title: "MLE",
+        titleTest: "MLE {}",
         description: "Memory limit exceeded",
     },
     "runtime_error": {
         code: "re",
         title: "RE",
+        titleTest: "RE {}",
         description: "Run-time error",
     },
     "wrong_answer": {
         code: "wa",
         title: "WA",
+        titleTest: "WA {}",
         description: "Wrong answer",
     },
     "presentation_error": {
         code: "pe",
         title: "PE",
+        titleTest: "PE {}",
         description: "Presentation error",
     },
     "partially_accepted": {
@@ -79,19 +85,43 @@ const VERDICTS: Record<string, VerdictInfo | undefined> = {
     },
 };
 
+const getTitle = (info?: VerdictInfo, testNumber?: number) => {
+    if (!info) {
+        return undefined;
+    }
+    if (testNumber && info.titleTest) {
+        return info.titleTest.replace("{}", String(testNumber));
+    }
+    return info.title;
+};
+
 const Verdict: FC<VerdictProps> = props => {
     const { report } = props;
     const verdict = report?.verdict;
     const used_time = report?.used_time;
     const used_memory = report?.used_memory;
+    const test_number = report?.test_number;
     const info = verdict ? VERDICTS[verdict] : VERDICTS["running"];
-    return <Tooltip className={`ui-verdict ${info?.code ?? "unknown"}`} content={<>
-        <div className="ui-verdict-details">
-            <span className={`item description ui-verdict ${info?.code ?? "unknown"}`}>{info?.description ?? verdict}</span>
-            {used_time && <span className="item time"><Duration value={used_time * 0.001} /></span>}
-            {used_memory && <span className="item memory"><ByteSize value={used_memory} /></span>}
-        </div>
-    </>}>{info?.title ?? verdict}</Tooltip >;
+    const title = getTitle(info, test_number) ?? verdict;
+    return <Tooltip className={`ui-verdict ${info?.code ?? "unknown"}`} content={<div className="ui-verdict-details">
+        <span className={`item description ui-verdict ${info?.code ?? "unknown"}`}>{info?.description ?? verdict}</span>
+        {test_number && <span className="item test">on test {test_number}</span>}
+        <span className="item time"><Duration value={(used_time ?? 0) * 0.001} /></span>
+        <span className="item memory"><ByteSize value={used_memory ?? 0} /></span>
+    </div>}>{title}</Tooltip >;
+};
+
+type TestVerdictProps = {
+    report?: TestReport;
+};
+
+export const TestVerdict: FC<TestVerdictProps> = props => {
+    const { report } = props;
+    const verdict = report?.verdict;
+    const info = verdict ? VERDICTS[verdict] : VERDICTS["running"];
+    return <Tooltip className={`ui-verdict ${info?.code ?? "unknown"}`} content={<div className="ui-verdict-details">
+        <span className={`item description ui-verdict ${info?.code ?? "unknown"}`}>{info?.description ?? verdict}</span>
+    </div>}>{info?.title ?? verdict}</Tooltip>;
 };
 
 export default Verdict;

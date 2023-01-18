@@ -13,6 +13,7 @@
 
     &.accepted {
         color: #3c763d;
+        font-weight: bold;
     }
 
     &.ce,
@@ -20,6 +21,7 @@
     &.wa,
     &.pe {
         color: #a94442;
+        font-weight: bold;
     }
 
     &.tle,
@@ -27,6 +29,7 @@
     &.re,
     &.pa {
         color: #31708f;
+        font-weight: bold;
     }
 }
 
@@ -38,6 +41,10 @@
         &:last-child {
             margin-bottom: 0;
         }
+    }
+
+    .test {
+        margin-top: -2px;
     }
 
     .time,
