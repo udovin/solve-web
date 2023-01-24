@@ -3,6 +3,7 @@ import { Navigate, Route, Routes, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Page from "../../components/Page";
 import {
+	BASE,
 	Compilers,
 	Contest,
 	ContestProblem,
@@ -115,7 +116,7 @@ const ContestProblemBlock: FC = () => {
 	}
 	return <ProblemBlock
 		problem={problem}
-		imageBaseUrl={`/api/v0/contests/${contest_id}/problems/${problem_code}/resources/`}
+		imageBaseUrl={`${BASE}/api/v0/contests/${contest_id}/problems/${problem_code}/resources/`}
 	/>;
 };
 

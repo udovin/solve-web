@@ -9,7 +9,7 @@ import "./index.scss";
 hydrateRoot(
 	document.getElementById("root")!,
 	<React.StrictMode>
-		<BrowserRouter>
+		<BrowserRouter basename={process.env.PUBLIC_URL}>
 			<App />
 		</BrowserRouter>
 	</React.StrictMode>

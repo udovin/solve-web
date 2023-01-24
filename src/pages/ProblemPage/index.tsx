@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ContestProblem, ErrorResponse, observeProblem, Problem, ProblemStatementSample } from "../../api";
+import { BASE, ContestProblem, ErrorResponse, observeProblem, Problem, ProblemStatementSample } from "../../api";
 import Page from "../../components/Page";
 import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
@@ -121,7 +121,7 @@ const ProblemPage: FC = () => {
 	</>}>
 		{problem ?
 			<>
-				<ProblemBlock problem={problem} imageBaseUrl={`/api/v0/problems/${problem.id}/resources/`} />
+				<ProblemBlock problem={problem} imageBaseUrl={`${BASE}/api/v0/problems/${problem.id}/resources/`} />
 			</> :
 			<>Loading...</>}
 	</Page>;
