@@ -121,3 +121,62 @@
         }
     }
 }
+
+.b-contest-standings {
+    .ui-block-content {
+        padding: 0;
+        overflow-x: auto;
+    }
+
+    .ui-table {
+        border: none;
+
+        .id {
+            text-align: right;
+            width: 1%;
+        }
+
+        .participant {
+            text-align: left;
+        }
+
+        .score,
+        .penalty {
+            width: 70px;
+            text-align: center;
+        }
+
+        .problem {
+            text-align: center;
+
+            .attempt {
+                display: block;
+            }
+
+            .time {
+                display: block;
+                color: #666666;
+                font-size: 9px;
+            }
+
+            &.accepted {
+                .attempt {
+                    color: #3c763d;
+                    font-weight: bold;
+                }
+            }
+
+            &.rejected {
+                .attempt {
+                    color: #a94442;
+                }
+            }
+
+            &.unknown {
+                .attempt {
+                    color: #666666;
+                }
+            }
+        }
+    }
+}

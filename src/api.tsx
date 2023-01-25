@@ -180,6 +180,29 @@ export type ContestParticipants = {
 	participants?: ContestParticipant[];
 };
 
+export type ContestStandingsColumn = {
+	code?: string;
+};
+
+export type ContestStandingsCell = {
+	column: number;
+	verdict?: string;
+	attempt?: number;
+	time?: number;
+};
+
+export type ContestStandingsRow = {
+	participant?: ContestParticipant;
+	score?: number;
+	penalty?: number;
+	cells?: ContestStandingsCell[];
+};
+
+export type ContestStandings = {
+	columns?: ContestStandingsColumn[];
+	rows?: ContestStandingsRow[];
+};
+
 export type TestReport = {
 	verdict: string;
 	used_time?: number;
@@ -503,6 +526,13 @@ export const deleteContestProblem = (contestID: number, code: string) => {
 
 export const observeContestParticipants = (id: number) => {
 	return parseResp(fetch(`${BASE}/api/v0/contests/${id}/participants`, {
+		method: "GET",
+		headers: getHeaders(),
+	}));
+};
+
+export const observeContestStandings = (id: number) => {
+	return parseResp(fetch(`${BASE}/api/v0/contests/${id}/standings`, {
 		method: "GET",
 		headers: getHeaders(),
 	}));
