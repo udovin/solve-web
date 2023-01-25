@@ -11,7 +11,7 @@ const Page: FC<PageProps> = props => {
 	if (typeof window !== "undefined") {
 		document.title = title;
 	}
-	return <main id="main">
+	return <main id="main" className={sidebar ? undefined : "content"}>
 		{sidebar && <div id="sidebar-wrap"><div id="sidebar">{sidebar}</div></div>}
 		<div id="content-wrap"><div id="content">{children}</div></div>
 	</main>;

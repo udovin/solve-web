@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useEffect, useState } from "react";
-import { Navigate, Route, Routes, useParams } from "react-router-dom";
+import { matchPath, Navigate, Route, Routes, useLocation, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Page from "../../components/Page";
 import {
@@ -30,6 +30,7 @@ import { ContestProblemsBlock } from "./problems";
 import { ContestSolutionsBlock, ContestSolutionBlock } from "./solutions";
 import { ContestParticipantsBlock } from "./participants";
 import { ContestRegisterBlock } from "./register";
+import { ContestStandingsBlock } from "./standings";
 
 import "./index.scss";
 
@@ -131,6 +132,7 @@ const ContestTabs: FC<ContestTabsProps> = props => {
 	const canRegister = !state?.participant && permissions?.includes("register_contest");
 	const canObserveProblems = permissions?.includes("observe_contest_problems");
 	const canObserveSolutions = permissions?.includes("observe_contest_solutions");
+	const canObserveStandings = permissions?.includes("observe_contest_standings");
 	const canObserveParticipants = permissions?.includes("observe_contest_participants");
 	const canManage = permissions?.includes("update_contest") || permissions?.includes("delete_contest");
 	return <Block className="b-contest-tabs">
@@ -140,6 +142,9 @@ const ContestTabs: FC<ContestTabsProps> = props => {
 			</Tab>}
 			{canObserveSolutions && <Tab tab="solutions">
 				<Link to={`/contests/${id}/solutions`}>Solutions</Link>
+			</Tab>}
+			{canObserveStandings && <Tab tab="standings">
+				<Link to={`/contests/${id}/standings`}>Standings</Link>
 			</Tab>}
 			{canObserveParticipants && <Tab tab="participants">
 				<Link to={`/contests/${id}/participants`}>Participants</Link>
@@ -293,6 +298,13 @@ const ContestSolutionsTab: FC<ContestTabProps> = props => {
 	</TabContent>;
 };
 
+const ContestStandingsTab: FC<ContestTabProps> = props => {
+	const { contest } = props;
+	return <TabContent tab="standings" setCurrent>
+		<ContestStandingsBlock contest={contest} />
+	</TabContent>;
+};
+
 const ContestRegisterTab: FC<ContestTabProps> = props => {
 	const { contest } = props;
 	return <TabContent tab="register" setCurrent>
@@ -341,6 +353,7 @@ const ContestSideBlock: FC<ContestSideBlockProps> = props => {
 
 const ContestPage: FC = () => {
 	const params = useParams();
+	const location = useLocation();
 	const { contest_id } = params;
 	const [contest, setContest] = useState<Contest>();
 	useEffect(() => {
@@ -352,18 +365,21 @@ const ContestPage: FC = () => {
 	}
 	const { title, permissions } = contest;
 	const canManageContest = permissions?.includes("update_contest") || permissions?.includes("delete_contest");
-	return <Page title={`Contest: ${title}`} sidebar={<>
-		<ContestSideBlock contest={contest} />
-		<Routes>
-			<Route path="/problems/:problem_code" element={<ContestProblemSideBlock />} />
-		</Routes>
-	</>}>
+	const isStandings = matchPath({ path: "/contests/:contest_id/standings" }, location.pathname);
+	return <Page title={`Contest: ${title}`} sidebar={isStandings ? undefined : <Routes>
+		<Route path="/problems/:problem_code" element={<>
+			<ContestSideBlock contest={contest} />
+			<ContestProblemSideBlock />
+		</>} />
+		<Route path="*" element={<ContestSideBlock contest={contest} />} />
+	</Routes>}>
 		<TabsGroup>
 			<ContestTabs contest={contest} />
 			<Routes>
 				<Route index element={<ContestProblemsTab contest={contest} />} />
 				<Route path="/problems" element={<ContestProblemsTab contest={contest} />} />
 				<Route path="/solutions" element={<ContestSolutionsTab contest={contest} />} />
+				<Route path="/standings" element={<ContestStandingsTab contest={contest} />} />
 				{canManageContest && <Route path="/participants" element={<ContestParticipantsTab contest={contest} />} />}
 				<Route path="/register" element={<ContestRegisterTab contest={contest} />} />
 				<Route path="/solutions/:solution_id" element={<ContestSolutionTab contest={contest} />} />

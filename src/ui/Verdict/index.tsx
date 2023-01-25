@@ -15,6 +15,7 @@ type VerdictInfo = {
     title: string;
     titleTest?: string;
     description: string;
+    disableUsage?: boolean;
 };
 
 const VERDICTS: Record<string, VerdictInfo | undefined> = {
@@ -22,11 +23,13 @@ const VERDICTS: Record<string, VerdictInfo | undefined> = {
         code: "queued",
         title: "Queued",
         description: "Queued",
+        disableUsage: true,
     },
     "running": {
         code: "running",
         title: "Running",
         description: "Running",
+        disableUsage: true,
     },
     "accepted": {
         code: "accepted",
@@ -42,6 +45,7 @@ const VERDICTS: Record<string, VerdictInfo | undefined> = {
         code: "ce",
         title: "CE",
         description: "Compilation error",
+        disableUsage: true,
     },
     "time_limit_exceeded": {
         code: "tle",
@@ -82,6 +86,7 @@ const VERDICTS: Record<string, VerdictInfo | undefined> = {
         code: "failed",
         title: "Failed",
         description: "Failed",
+        disableUsage: true,
     },
 };
 
@@ -103,11 +108,12 @@ const Verdict: FC<VerdictProps> = props => {
     const test_number = report?.test_number;
     const info = verdict ? VERDICTS[verdict] : VERDICTS["running"];
     const title = getTitle(info, test_number) ?? verdict;
+    const disableUsage = info?.disableUsage ?? false;
     return <Tooltip className={`ui-verdict ${info?.code ?? "unknown"}`} content={<div className="ui-verdict-details">
         <span className={`item description ui-verdict ${info?.code ?? "unknown"}`}>{info?.description ?? verdict}</span>
         {test_number && <span className="item test">on test {test_number}</span>}
-        <span className="item time"><Duration value={(used_time ?? 0) * 0.001} /></span>
-        <span className="item memory"><ByteSize value={used_memory ?? 0} /></span>
+        {!disableUsage && <span className="item time"><Duration value={(used_time ?? 0) * 0.001} /></span>}
+        {!disableUsage && <span className="item memory"><ByteSize value={used_memory ?? 0} /></span>}
     </div>}>{title}</Tooltip >;
 };
 
