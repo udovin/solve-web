@@ -1,4 +1,4 @@
-import { FC, lazy } from "react";
+import { FC } from "react";
 import { Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./AuthContext";
 import Header from "./components/Header";
@@ -18,13 +18,12 @@ import EditUserPage from "./pages/EditUserPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import SolutionsPage from "./pages/SolutionsPage";
 import EditProblemPage from "./pages/EditProblemPage";
+import ContestPage from "./pages/ContestPage";
+import ProblemPage from "./pages/ProblemPage";
+import SolutionPage from "./pages/SolutionPage";
+import AdminPage from "./pages/AdminPage";
 
 import "./App.scss";
-
-const ContestPage = lazy(() => import("./pages/ContestPage"));
-const ProblemPage = lazy(() => import("./pages/ProblemPage"));
-const SolutionPage = lazy(() => import("./pages/SolutionPage"));
-const AdminPage = lazy(() => import("./pages/AdminPage"));
 
 const App: FC = () => {
 	return (
