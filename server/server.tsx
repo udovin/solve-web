@@ -2,6 +2,7 @@ import path from "path";
 import fs from "fs";
 import React from "react";
 import express from "express";
+import compression from "compression";
 import ReactDOMServer from "react-dom/server";
 import App from "../src/App";
 import { StaticRouter } from "react-router-dom/server";
@@ -9,6 +10,7 @@ import { StaticRouter } from "react-router-dom/server";
 const PORT = process.env.PORT || 8080;
 const app = express();
 
+app.use(compression());
 app.use(express.static("./build", { index: false }));
 
 const indexFile = path.resolve("./build/index.html");
