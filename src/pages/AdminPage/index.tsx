@@ -1,13 +1,13 @@
 import { FC } from "react";
-import { Link, Route, Routes, useParams } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import Page from "../../components/Page";
 import Block from "../../ui/Block";
 import Sidebar from "../../ui/Sidebar";
 import { Tab, TabContent, Tabs, TabsGroup } from "../../ui/Tabs";
-
-import "./index.scss";
 import { AdminRolesBlock } from "./roles";
 import { AdminSettingsBlock } from "./settings";
+
+import "./index.scss";
 
 const AdminTabs: FC = () => {
     return <Block className="b-admin-tabs">

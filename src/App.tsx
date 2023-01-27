@@ -1,29 +1,30 @@
-import { FC } from "react";
+import { FC, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./AuthContext";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import IndexPage from "./pages/IndexPage";
 import LanguagePage from "./pages/LanguagePage";
-import { AuthProvider } from "./AuthContext";
 import CreateProblemPage from "./pages/CreateProblemPage";
 import ProblemsPage from "./pages/ProblemsPage";
 import ContestsPage from "./pages/ContestsPage";
 import CreateContestPage from "./pages/CreateContestPage";
-import ContestPage from "./pages/ContestPage";
 import CreateCompilerPage from "./pages/CreateCompilerPage";
 import LogoutPage from "./pages/LogoutPage";
 import UserPage from "./pages/UserPage";
 import EditUserPage from "./pages/EditUserPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import SolutionsPage from "./pages/SolutionsPage";
-import SolutionPage from "./pages/SolutionPage";
-import ProblemPage from "./pages/ProblemPage";
 import EditProblemPage from "./pages/EditProblemPage";
 
 import "./App.scss";
-import AdminPage from "./pages/AdminPage";
+
+const ContestPage = lazy(() => import("./pages/ContestPage"));
+const ProblemPage = lazy(() => import("./pages/ProblemPage"));
+const SolutionPage = lazy(() => import("./pages/SolutionPage"));
+const AdminPage = lazy(() => import("./pages/AdminPage"));
 
 const App: FC = () => {
 	return (

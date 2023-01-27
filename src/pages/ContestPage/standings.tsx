@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { Contest, ContestStandings, ContestStandingsCell, observeContestStandings } from "../../api";
 import Block from "../../ui/Block";
-import Duration from "../../ui/Duration";
 import UserLink from "../../ui/UserLink";
 
 type ContestStandingsBlockProps = {
@@ -83,7 +82,7 @@ export const ContestStandingsBlock: FC<ContestStandingsBlockProps> = props => {
                                     <span className="time">{<StandingsDuration value={cell.time ?? 0} />}</span>
                                 </td>;
                             }
-                            if (cell.verdict == "accepted") {
+                            if (cell.verdict === "accepted") {
                                 return <td className="problem accepted" key={index}>
                                     <span className="attempt">+{cell.attempt && cell.attempt > 1 ? cell.attempt - 1 : ""}</span>
                                     <span className="time">{<StandingsDuration value={cell.time ?? 0} />}</span>

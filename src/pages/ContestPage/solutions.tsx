@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Contest, ContestProblem, ContestSolution, ContestSolutions, ErrorResponse, observeContestSolution, observeContestSolutions, TestReport } from "../../api";
+import { Contest, ContestProblem, ContestSolution, ContestSolutions, ErrorResponse, observeContestSolution, observeContestSolutions } from "../../api";
 import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
 import Code from "../../ui/Code";

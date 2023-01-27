@@ -87,7 +87,7 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
                 {contestParticipants.map((participant: ContestParticipant, key: number) => {
                     const { id, user, kind } = participant;
                     if (!id) {
-                        return;
+                        return <></>;
                     }
                     const deleteParticipant = () => {
                         deleteContestParticipant(contest.id, id)
