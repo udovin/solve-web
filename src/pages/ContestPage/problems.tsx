@@ -38,6 +38,7 @@ export const ContestProblemsBlock: FC<ContestProblemsBlockParams> = props => {
             .catch(setError);
     };
     const canCreateProblem = contest.permissions?.includes("create_contest_problem");
+    const canUpdateProblem = contest.permissions?.includes("update_contest_problem");
     const canDeleteProblem = contest.permissions?.includes("delete_contest_problem");
     if (!problems) {
         return <Block title="Problems" className="b-contest-problems">
@@ -91,6 +92,9 @@ export const ContestProblemsBlock: FC<ContestProblemsBlockParams> = props => {
                             })
                             .catch(setError);
                     };
+                    const updateProblem = () => {
+
+                    };
                     return <tr key={key} className="problem">
                         <td className="code">
                             <Link to={`/contests/${contest.id}/problems/${code}`}>{code}</Link>
@@ -98,7 +102,10 @@ export const ContestProblemsBlock: FC<ContestProblemsBlockParams> = props => {
                         <td className="title">
                             <Link to={`/contests/${contest.id}/problems/${code}`}>{statement?.title ?? title}</Link>
                         </td>
-                        <td className="actions">{canDeleteProblem && <IconButton kind="delete" onClick={deleteProblem} />}</td>
+                        <td className="actions">
+                            {canUpdateProblem && <IconButton kind="edit" onClick={updateProblem} />}
+                            {canDeleteProblem && <IconButton kind="delete" onClick={deleteProblem} />}
+                        </td>
                     </tr>;
                 })}
             </tbody>
