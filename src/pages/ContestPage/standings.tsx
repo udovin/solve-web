@@ -70,7 +70,7 @@ export const ContestStandingsBlock: FC<ContestStandingsBlockProps> = props => {
                             </>}
                         </td>
                         <td className="score">{row.score ?? 0}</td>
-                        <td className="penalty">{row.penalty ?? 0}</td>
+                        <td className="penalty">{row.penalty ?? ""}</td>
                         {standings.columns?.map((column, index) => {
                             const cell = cellByColumn[index];
                             if (!cell) {
@@ -79,18 +79,18 @@ export const ContestStandingsBlock: FC<ContestStandingsBlockProps> = props => {
                             if (!cell.verdict) {
                                 return <td className="problem unknown" key={index}>
                                     <span className="attempt">?{cell.attempt ?? 1}</span>
-                                    <span className="time">{<StandingsDuration value={cell.time ?? 0} />}</span>
+                                    {cell.time && <span className="time">{<StandingsDuration value={cell.time} />}</span>}
                                 </td>;
                             }
                             if (cell.verdict === "accepted") {
                                 return <td className="problem accepted" key={index}>
                                     <span className="attempt">+{cell.attempt && cell.attempt > 1 ? cell.attempt - 1 : ""}</span>
-                                    <span className="time">{<StandingsDuration value={cell.time ?? 0} />}</span>
+                                    {cell.time && <span className="time">{<StandingsDuration value={cell.time} />}</span>}
                                 </td>;
                             }
                             return <td className="problem rejected" key={index}>
                                 <span className="attempt">&minus;{cell.attempt ?? 1}</span>
-                                <span className="time">{<StandingsDuration value={cell.time ?? 0} />}</span>
+                                {cell.time && <span className="time">{<StandingsDuration value={cell.time} />}</span>}
                             </td>;
                         })}
                     </tr>;
