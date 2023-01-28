@@ -182,6 +182,7 @@ export type ContestParticipants = {
 
 export type ContestStandingsColumn = {
 	code?: string;
+	points?: number;
 };
 
 export type ContestStandingsCell = {
@@ -507,6 +508,7 @@ export const observeContestProblems = (id: number) => {
 export type CreateContestProblemForm = {
 	code: string;
 	problem_id: number;
+	points?: number;
 };
 
 export const createContestProblem = (contestID: number, form: CreateContestProblemForm) => {

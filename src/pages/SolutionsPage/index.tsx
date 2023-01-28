@@ -26,7 +26,6 @@ const SolutionsBlock: FC<SolutionsBlockProps> = props => {
 					<th className="author">Author</th>
 					<th className="problem">Problem</th>
 					<th className="verdict">Verdict</th>
-					<th className="points">Points</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -48,9 +47,6 @@ const SolutionsBlock: FC<SolutionsBlockProps> = props => {
 						</td>
 						<td className="verdict">
 							<Verdict report={report} />
-						</td>
-						<td className="points">
-							{(report && report.points) || <>&mdash;</>}
 						</td>
 					</tr>;
 				})}

@@ -49,7 +49,10 @@ export const ContestStandingsBlock: FC<ContestStandingsBlockProps> = props => {
                     <th className="score">Score</th>
                     <th className="penalty">Penalty</th>
                     {standings.columns?.map((column, index) => {
-                        return <th className={"problem"} key={index}>{column.code}</th>;
+                        return <th className={"problem"} key={index}>
+                            <span className="code">{column.code}</span>
+                            {column.points && <span className="points">{column.points}</span>}
+                        </th>;
                     })}
                 </tr>
             </thead>

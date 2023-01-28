@@ -46,9 +46,6 @@ const ContestSolutionRow: FC<ContestSolutionRowProps> = props => {
         <td className="verdict">
             <Verdict report={report} />
         </td>
-        <td className="points">
-            {(report && report.points) || <>&mdash;</>}
-        </td>
     </tr>;
 };
 
@@ -105,7 +102,6 @@ export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
                     <th className="problem">Problem</th>
                     <th className="compiler">Compiler</th>
                     <th className="verdict">Verdict</th>
-                    <th className="points">Points</th>
                 </tr>
             </thead>
             <tbody>
@@ -161,7 +157,6 @@ export const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
                         <th className="problem">Problem</th>
                         <th className="compiler">Compiler</th>
                         <th className="verdict">Verdict</th>
-                        <th className="points">Points</th>
                     </tr>
                 </thead>
                 <tbody>

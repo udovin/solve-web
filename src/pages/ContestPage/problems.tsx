@@ -6,6 +6,7 @@ import Block from "../../ui/Block";
 import Button from "../../ui/Button";
 import IconButton from "../../ui/IconButton";
 import Input from "../../ui/Input";
+import NumberInput from "../../ui/NumberInput";
 
 type ContestProblemsBlockParams = {
     contest: Contest;
@@ -29,6 +30,7 @@ export const ContestProblemsBlock: FC<ContestProblemsBlockParams> = props => {
         createContestProblem(contest.id, {
             code: form.code ?? "",
             problem_id: Number(form.problem_id ?? 0),
+            points: form.points ? Number(form.points) : undefined,
         })
             .then(problem => {
                 setProblems({ ...problems, problems: [...(problems?.problems ?? []), problem] });
@@ -63,6 +65,10 @@ export const ContestProblemsBlock: FC<ContestProblemsBlockParams> = props => {
                 onValueChange={value => setForm({ ...form, problem_id: value })}
                 placeholder="Problem ID"
                 required />
+            <NumberInput name="points"
+                value={form.points ? Number(form.points) : undefined}
+                onValueChange={value => setForm({ ...form, points: String(value ?? "") })}
+                placeholder="Points" />
             <Button type="submit">Create</Button>
         </form>}
     >
