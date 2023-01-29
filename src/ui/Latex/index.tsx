@@ -41,6 +41,12 @@ const macros: Record<string, (node: Macro, context: Context) => any> = {
         if (args["height"] && args["height"].length) {
             style += `height:${printRaw(args["height"][0])};`;
         }
+        if (args["scale"] && args["scale"].length) {
+            const scale = parseFloat(printRaw(args["scale"][0]));
+            if (scale > 0) {
+                style += `width:${scale * 100}%;`;
+            }
+        }
         const imageName = printRaw(node.args[3].content);
         const imageUrl = (context.imageBaseUrl ?? "") + imageName;
         return htmlLike({ tag: "img", attributes: { src: imageUrl, style: style } });
