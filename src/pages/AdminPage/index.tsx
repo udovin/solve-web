@@ -8,6 +8,7 @@ import { AdminRolesBlock } from "./roles";
 import { AdminSettingsBlock } from "./settings";
 
 import "./index.scss";
+import { AdminInternalGroupsBlock } from "./internal_groups";
 
 const AdminTabs: FC = () => {
     return <Block className="b-admin-tabs">
@@ -17,6 +18,9 @@ const AdminTabs: FC = () => {
             </Tab>}
             {<Tab tab="roles">
                 <Link to={`/admin/roles`}>Roles</Link>
+            </Tab>}
+            {<Tab tab="internal-groups">
+                <Link to={`/admin/internal-groups`}>Internal groups</Link>
             </Tab>}
         </Tabs>
     </Block>;
@@ -34,6 +38,12 @@ const AdminRolesTab: FC = () => {
     </TabContent>;
 };
 
+const AdminInternalGroupsTab: FC = () => {
+    return <TabContent tab="internal-groups" setCurrent>
+        <AdminInternalGroupsBlock />
+    </TabContent>;
+};
+
 const AdminPage: FC = () => {
     return <Page title={`Admin`} sidebar={<Sidebar />}>
         <TabsGroup>
@@ -41,6 +51,7 @@ const AdminPage: FC = () => {
             <Routes>
                 <Route path="/settings" element={<AdminSettingsTab />} />
                 <Route path="/roles" element={<AdminRolesTab />} />
+                <Route path="/internal-groups" element={<AdminInternalGroupsTab />} />
             </Routes>
         </TabsGroup>
     </Page>;

@@ -51,7 +51,7 @@ export const AdminSettingsBlock = () => {
                 <tr>
                     <th className="key">Key</th>
                     <th className="value">Value</th>
-                    <th className="action">Action</th>
+                    <th className="actions">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -72,7 +72,7 @@ export const AdminSettingsBlock = () => {
                     return <tr key={key}>
                         <td className="key">{setting.key}</td>
                         <td className="value">{setting.value}</td>
-                        <td className="action">{<IconButton kind="delete" onClick={onDelete} />}</td>
+                        <td className="actions">{<IconButton kind="delete" onClick={onDelete} />}</td>
                     </tr>
                 })}
             </tbody>

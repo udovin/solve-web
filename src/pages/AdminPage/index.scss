@@ -25,7 +25,31 @@
 
 
         .actions {
-            width: 0%;
+            width: 1%;
+        }
+    }
+}
+
+.b-admin-internal-groups {
+    .ui-block-content {
+        padding: 0;
+        overflow-x: auto;
+    }
+
+    .ui-table {
+        border: none;
+
+        .id {
+            width: 1%;
+            text-align: right;
+        }
+
+        .title {
+            text-align: center;
+        }
+
+        .actions {
+            width: 1%;
         }
     }
 }

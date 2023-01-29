@@ -258,6 +258,15 @@ export type RoleRoles = {
 	roles?: Role[];
 };
 
+export type InternalGroup = {
+	id: number;
+	title: string;
+};
+
+export type InternalGroups = {
+	groups?: InternalGroup[];
+};
+
 export const RUNNING: number = -1;
 export const QUEUED: number = 0;
 export const ACCEPTED: number = 1;
@@ -734,6 +743,32 @@ export const createRoleRole = (id: number, childID: number | string) => {
 
 export const deleteRoleRole = (id: number, childID: number) => {
 	return parseResp(fetch(`${BASE}/api/v0/roles/${id}/roles/${childID}`, {
+		method: "DELETE",
+		headers: getHeaders(),
+	}), true);
+};
+
+export type CreateInternalGroupForm = {
+	title: string;
+};
+
+export const observeInternalGroups = () => {
+	return parseResp(fetch(`${BASE}/api/v0/internal-groups`, {
+		method: "GET",
+		headers: getHeaders(),
+	}), true);
+};
+
+export const createInternalGroup = (form: CreateInternalGroupForm) => {
+	return parseResp(fetch(`${BASE}/api/v0/internal-groups`, {
+		method: "POST",
+		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
+		body: JSON.stringify(form),
+	}), true);
+};
+
+export const deleteInternalGroup = (id: number) => {
+	return parseResp(fetch(`${BASE}/api/v0/internal-groups/${id}`, {
 		method: "DELETE",
 		headers: getHeaders(),
 	}), true);
