@@ -1,5 +1,5 @@
 import { FC, FormEvent, useEffect, useState } from "react";
-import { Contest, ContestParticipant, ContestParticipants, createContestParticipant, deleteContestParticipant, ErrorResponse, observeContestParticipants } from "../../api";
+import { Contest, ContestParticipant, ContestParticipants, createContestParticipant, CreateContestParticipantForm, deleteContestParticipant, ErrorResponse, observeContestParticipants } from "../../api";
 import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
 import Button from "../../ui/Button";
@@ -33,11 +33,17 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
     }, [contest.id]);
     const onSubmit = (event: FormEvent) => {
         event.preventDefault();
-        createContestParticipant(contest.id, {
+        let createForm: CreateContestParticipantForm = {
             user_id: Number(form.user_id ?? 0),
             user_login: form.user_id,
             kind: form.kind ?? "regular",
-        })
+        };
+        if (form.user_id && form.user_id.length > 0 && form.user_id[0] === '#') {
+            createForm.user_id = undefined;
+            createForm.user_login = undefined;
+            createForm.scope_user_id = Number((form.user_id ?? 0).substring(1));
+        }
+        createContestParticipant(contest.id, createForm)
             .then(participant => {
                 setParticipants({ ...participants, participants: [...(participants?.participants ?? []), participant] });
                 setForm({});

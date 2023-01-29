@@ -1,14 +1,16 @@
-import { FC } from "react";
-import { Link, Route, Routes } from "react-router-dom";
+import { FC, useEffect, useState } from "react";
+import { Link, Route, Routes, useParams } from "react-router-dom";
 import Page from "../../components/Page";
 import Block from "../../ui/Block";
 import Sidebar from "../../ui/Sidebar";
+import Alert from "../../ui/Alert";
 import { Tab, TabContent, Tabs, TabsGroup } from "../../ui/Tabs";
 import { AdminRolesBlock } from "./roles";
 import { AdminSettingsBlock } from "./settings";
+import { AdminScopeBlock, AdminScopesBlock } from "./scopes";
+import { ErrorResponse, observeScope, Scope } from "../../api";
 
 import "./index.scss";
-import { AdminInternalGroupsBlock } from "./internal_groups";
 
 const AdminTabs: FC = () => {
     return <Block className="b-admin-tabs">
@@ -19,8 +21,8 @@ const AdminTabs: FC = () => {
             {<Tab tab="roles">
                 <Link to={`/admin/roles`}>Roles</Link>
             </Tab>}
-            {<Tab tab="internal-groups">
-                <Link to={`/admin/internal-groups`}>Internal groups</Link>
+            {<Tab tab="scopes">
+                <Link to={`/admin/scopes`}>Scopes</Link>
             </Tab>}
         </Tabs>
     </Block>;
@@ -38,20 +40,39 @@ const AdminRolesTab: FC = () => {
     </TabContent>;
 };
 
-const AdminInternalGroupsTab: FC = () => {
-    return <TabContent tab="internal-groups" setCurrent>
-        <AdminInternalGroupsBlock />
+const AdminScopesTab: FC = () => {
+    return <TabContent tab="scopes" setCurrent>
+        <AdminScopesBlock />
+    </TabContent>;
+};
+
+const AdminScopeTab: FC = () => {
+    const { scope_id } = useParams();
+    const [scope, setScope] = useState<Scope>();
+    const [error, setError] = useState<ErrorResponse>();
+    useEffect(() => {
+        observeScope(Number(scope_id))
+            .then(scope => {
+                setScope(scope);
+                setError(undefined);
+            })
+            .catch(setError);
+    }, [scope_id])
+    return <TabContent tab="scopes" setCurrent>
+        {error && <Alert>{error.message}</Alert>}
+        {scope && <AdminScopeBlock scope={scope} />}
     </TabContent>;
 };
 
 const AdminPage: FC = () => {
-    return <Page title={`Admin`} sidebar={<Sidebar />}>
+    return <Page title="Admin" sidebar={<Sidebar />}>
         <TabsGroup>
             <AdminTabs />
             <Routes>
                 <Route path="/settings" element={<AdminSettingsTab />} />
                 <Route path="/roles" element={<AdminRolesTab />} />
-                <Route path="/internal-groups" element={<AdminInternalGroupsTab />} />
+                <Route path="/scopes/:scope_id" element={<AdminScopeTab />} />
+                <Route path="/scopes" element={<AdminScopesTab />} />
             </Routes>
         </TabsGroup>
     </Page>;

@@ -6,7 +6,7 @@ import FormBlock from "../components/FormBlock";
 import { Navigate } from "react-router-dom";
 import { AuthContext } from "../AuthContext";
 import Field from "../ui/Field";
-import { ErrorResponse, loginUser } from "../api";
+import { ErrorResponse, LoginForm, loginUser } from "../api";
 import Alert from "../ui/Alert";
 import Sidebar from "../ui/Sidebar";
 
@@ -17,10 +17,18 @@ const LoginPage = () => {
 	const [success, setSuccess] = useState<boolean>();
 	const onSubmit = (event: any) => {
 		event.preventDefault();
-		loginUser({
+		let loginForm: LoginForm = {
 			login: form.login,
 			password: form.password,
-		})
+		};
+		if (form.login.includes("/")) {
+			const parts = form.login.split("/", 2)
+			if (parts.length > 1) {
+				loginForm.scope_id = Number(parts[0]);
+				loginForm.login = parts[1];
+			}
+		}
+		loginUser(loginForm)
 			.then(() => {
 				setSuccess(true);
 				updateStatus();

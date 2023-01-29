@@ -258,13 +258,24 @@ export type RoleRoles = {
 	roles?: Role[];
 };
 
-export type InternalGroup = {
+export type Scope = {
 	id: number;
 	title: string;
 };
 
-export type InternalGroups = {
-	groups?: InternalGroup[];
+export type Scopes = {
+	scopes?: Scope[];
+};
+
+export type ScopeUser = {
+	id: number;
+	login: string;
+	title?: string;
+	password?: string;
+};
+
+export type ScopeUsers = {
+	users?: ScopeUser[];
 };
 
 export const RUNNING: number = -1;
@@ -320,6 +331,7 @@ export const getDefense = (verdict?: number) => {
 };
 
 export type LoginForm = {
+	scope_id?: number;
 	login: string;
 	password: string;
 };
@@ -550,8 +562,9 @@ export const observeContestStandings = (id: number) => {
 };
 
 export type CreateContestParticipantForm = {
-	user_id: number;
-	user_login: string;
+	user_id?: number;
+	user_login?: string;
+	scope_user_id?: number;
 	kind: string;
 };
 
@@ -748,27 +761,68 @@ export const deleteRoleRole = (id: number, childID: number) => {
 	}), true);
 };
 
-export type CreateInternalGroupForm = {
+export type CreateScopeForm = {
 	title: string;
 };
 
-export const observeInternalGroups = () => {
-	return parseResp(fetch(`${BASE}/api/v0/internal-groups`, {
+export const observeScopes = () => {
+	return parseResp(fetch(`${BASE}/api/v0/scopes`, {
 		method: "GET",
 		headers: getHeaders(),
-	}), true);
+	}));
 };
 
-export const createInternalGroup = (form: CreateInternalGroupForm) => {
-	return parseResp(fetch(`${BASE}/api/v0/internal-groups`, {
+export const observeScope = (id: number) => {
+	return parseResp(fetch(`${BASE}/api/v0/scopes/${id}`, {
+		method: "GET",
+		headers: getHeaders(),
+	}));
+};
+
+export const createScope = (form: CreateScopeForm) => {
+	return parseResp(fetch(`${BASE}/api/v0/scopes`, {
 		method: "POST",
 		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
 		body: JSON.stringify(form),
 	}), true);
 };
 
-export const deleteInternalGroup = (id: number) => {
-	return parseResp(fetch(`${BASE}/api/v0/internal-groups/${id}`, {
+export const deleteScope = (id: number) => {
+	return parseResp(fetch(`${BASE}/api/v0/scopes/${id}`, {
+		method: "DELETE",
+		headers: getHeaders(),
+	}), true);
+};
+
+export const observeScopeUsers = (scopeID: number) => {
+	return parseResp(fetch(`${BASE}/api/v0/scopes/${scopeID}/users`, {
+		method: "GET",
+		headers: getHeaders(),
+	}));
+};
+
+export const observeScopeUser = (scopeID: number, userID: number, password?: boolean) => {
+	return parseResp(fetch(`${BASE}/api/v0/scopes/${scopeID}/users/${userID}?password=${password ? "true" : "false"}`, {
+		method: "GET",
+		headers: getHeaders(),
+	}));
+};
+
+export type CreateScopeUserForm = {
+	login: string;
+	title?: string;
+};
+
+export const createScopeUser = (scopeID: number, form: CreateScopeUserForm) => {
+	return parseResp(fetch(`${BASE}/api/v0/scopes/${scopeID}/users`, {
+		method: "POST",
+		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
+		body: JSON.stringify(form),
+	}), true);
+};
+
+export const deleteScopeUser = (scopeID: number, userID: number) => {
+	return parseResp(fetch(`${BASE}/api/v0/scopes/${scopeID}/users/${userID}`, {
 		method: "DELETE",
 		headers: getHeaders(),
 	}), true);

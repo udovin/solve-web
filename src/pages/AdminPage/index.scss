@@ -30,7 +30,7 @@
     }
 }
 
-.b-admin-internal-groups {
+.b-admin-scopes {
     .ui-block-content {
         padding: 0;
         overflow-x: auto;
@@ -44,6 +44,32 @@
             text-align: right;
         }
 
+        .title {
+            text-align: center;
+        }
+
+        .actions {
+            width: 1%;
+        }
+    }
+}
+
+.b-admin-scope-users {
+    .ui-block-content {
+        padding: 0;
+        overflow-x: auto;
+    }
+
+    .ui-table {
+        border: none;
+
+        .id {
+            width: 1%;
+            text-align: right;
+        }
+
+        .login,
+        .password,
         .title {
             text-align: center;
         }
