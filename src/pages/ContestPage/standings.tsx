@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { Contest, ContestStandings, ContestStandingsCell, observeContestStandings } from "../../api";
 import Block from "../../ui/Block";
 import UserLink from "../../ui/UserLink";
+import { ParticipantLink } from "./participants";
 
 type ContestStandingsBlockProps = {
     contest: Contest;
@@ -68,9 +69,7 @@ export const ContestStandingsBlock: FC<ContestStandingsBlockProps> = props => {
                     return <tr>
                         <td className="index">{index + 1}</td>
                         <td className="participant">
-                            {participant && <>
-                                {participant.user ? <UserLink user={participant.user} /> : <>&mdash;</>}
-                            </>}
+                            {participant && <ParticipantLink participant={participant} />}
                         </td>
                         <td className="score">{row.score ?? 0}</td>
                         <td className="penalty">{row.penalty ?? ""}</td>

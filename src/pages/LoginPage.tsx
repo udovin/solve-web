@@ -36,7 +36,7 @@ const LoginPage = () => {
 			})
 			.catch(error => setError(error));
 	};
-	if (status?.user && success) {
+	if ((status?.user || status?.scope_user) && success) {
 		return <Navigate to={"/"} />
 	}
 	return <Page title="Login" sidebar={<Sidebar />}>

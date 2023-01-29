@@ -32,6 +32,7 @@ export type Sessions = {
 export type Status = {
 	session?: Session;
 	user?: User;
+	scope_user?: ScopeUser;
 	permissions?: string[];
 };
 
@@ -173,6 +174,7 @@ export type ContestProblems = {
 export type ContestParticipant = {
 	id?: number;
 	user?: User;
+	scope_user?: ScopeUser;
 	kind: string;
 };
 

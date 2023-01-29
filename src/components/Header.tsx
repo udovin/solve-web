@@ -19,6 +19,9 @@ const Header: FC = props => {
 		{status?.user && <li>
 			Hello, <Link to={`/users/${status.user.login}`}>{status.user.login}</Link>!
 		</li>}
+		{status?.scope_user && <li>
+			Hello, {status.scope_user.login}!
+		</li>}
 		{(!status || (!status.session && status.permissions?.includes("login"))) && <li>
 			<Link to="/login">Login</Link>
 		</li>}

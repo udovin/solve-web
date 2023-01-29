@@ -20,7 +20,7 @@ const LogoutPage = () => {
 				updateStatus();
 			});
 	}, [status, updateStatus]);
-	if (!(status && status.user) || success) {
+	if (!(status && (status.user || status.scope_user)) || success) {
 		return <Navigate to={"/"} />;
 	}
 	return <>Loading...</>;

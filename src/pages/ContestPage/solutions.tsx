@@ -8,6 +8,7 @@ import DateTime from "../../ui/DateTime";
 import UserLink from "../../ui/UserLink";
 import Verdict from "../../ui/Verdict";
 import { SolutionReportBlock } from "../SolutionPage";
+import { ParticipantLink } from "./participants";
 
 type ContestSolutionRowProps = {
     contest: Contest;
@@ -34,7 +35,7 @@ const ContestSolutionRow: FC<ContestSolutionRowProps> = props => {
         </td>
         <td className="participant">
             {participant && <>
-                <span className="kind">{participant.kind}: </span>{participant.user ? <UserLink user={participant.user} /> : <>&mdash;</>}
+                <span className="kind">{participant.kind}: </span><ParticipantLink participant={participant} />
             </>}
         </td>
         <td className="problem">

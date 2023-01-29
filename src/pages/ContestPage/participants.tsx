@@ -8,6 +8,22 @@ import Input from "../../ui/Input";
 import Select from "../../ui/Select";
 import UserLink from "../../ui/UserLink";
 
+type ParticipantLinkProps = {
+    participant: ContestParticipant;
+};
+
+export const ParticipantLink: FC<ParticipantLinkProps> = props => {
+    const { participant } = props;
+    const { user, scope_user } = participant;
+    if (user) {
+        return <UserLink user={user} />;
+    }
+    if (scope_user) {
+        return <>{scope_user.title ?? scope_user.login}</>;
+    }
+    return <>&mdash;</>;
+};
+
 type ContestParticipantsBlockProps = {
     contest: Contest;
 };
@@ -111,7 +127,7 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
                     };
                     return <tr key={key} className="participant">
                         <td className="id">{id}</td>
-                        <td className="login">{user ? <UserLink user={user} /> : <>&mdash;</>}</td>
+                        <td className="login"><ParticipantLink participant={participant} /></td>
                         <td className="kind">{KINDS[kind] ?? kind}</td>
                         <td className="actions">{canDeleteParticipant && <IconButton kind="delete" onClick={deleteParticipant} />}</td>
                     </tr>;
