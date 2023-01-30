@@ -31,6 +31,7 @@ import { ContestSolutionsBlock, ContestSolutionBlock } from "./solutions";
 import { ContestParticipantsBlock } from "./participants";
 import { ContestRegisterBlock } from "./register";
 import { ContestStandingsBlock } from "./standings";
+import Duration from "../../ui/Duration";
 
 import "./index.scss";
 
@@ -344,11 +345,49 @@ const ContestManageTab: FC<ContestTabProps> = props => {
 
 type ContestSideBlockProps = {
 	contest: Contest;
+	onUpdateContest(contest: Contest): void;
 };
 
 const ContestSideBlock: FC<ContestSideBlockProps> = props => {
-	const { contest } = props;
-	return <Block>{contest.title}</Block>;
+	const { contest, onUpdateContest } = props;
+	const { state } = contest;
+	const getNow = () => {
+		return Math.round((new Date()).getTime() / 1000);
+	};
+	const [now, setNow] = useState(getNow());
+	const beforeDuration = contest.begin_time && Math.max(contest.begin_time - now, 0);
+	const remainingDuration = contest.begin_time && contest.duration && Math.max(contest.begin_time + contest.duration - now, 0);
+	useEffect(() => {
+		if (!remainingDuration || remainingDuration <= 0) {
+			return;
+		}
+		const intervalID = setInterval(() => setNow(getNow()), 1000);
+		return () => clearInterval(intervalID);
+	}, [remainingDuration, setNow]);
+	useEffect(() => {
+		console.log(state);
+		console.log(beforeDuration);
+		console.log(remainingDuration);
+		if (state?.stage === "not_started" && beforeDuration !== undefined && beforeDuration <= 0) {
+			observeContest(contest.id).then(onUpdateContest);
+		} else if (state?.stage === "started" && remainingDuration !== undefined && remainingDuration <= 0) {
+			observeContest(contest.id).then(onUpdateContest);
+		}
+	}, [beforeDuration, remainingDuration, state, contest, onUpdateContest]);
+	return <Block className="b-contest-side">
+		<h3>{contest.title}</h3>
+		{state?.stage === "not_started" && <>
+			<div className="stage">Not started</div>
+			{!!beforeDuration && <div className="duration"><Duration value={beforeDuration} /></div>}
+		</>}
+		{state?.stage === "started" && <>
+			<div className="stage">Running</div>
+			{!!remainingDuration && <div className="duration"><Duration value={remainingDuration} /></div>}
+		</>}
+		{state?.stage === "finished" && <>
+			<div className="stage">Finished</div>
+		</>}
+	</Block>;
 };
 
 const ContestPage: FC = () => {
@@ -368,10 +407,10 @@ const ContestPage: FC = () => {
 	const isStandings = matchPath({ path: "/contests/:contest_id/standings" }, location.pathname);
 	return <Page title={`Contest: ${title}`} sidebar={isStandings ? undefined : <Routes>
 		<Route path="/problems/:problem_code" element={<>
-			<ContestSideBlock contest={contest} />
+			<ContestSideBlock contest={contest} onUpdateContest={setContest} />
 			<ContestProblemSideBlock />
 		</>} />
-		<Route path="*" element={<ContestSideBlock contest={contest} />} />
+		<Route path="*" element={<ContestSideBlock contest={contest} onUpdateContest={setContest} />} />
 	</Routes>}>
 		<TabsGroup>
 			<ContestTabs contest={contest} />

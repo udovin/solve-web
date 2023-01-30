@@ -10,6 +10,26 @@
     }
 }
 
+.b-contest-side {
+    h3 {
+        text-align: center;
+    }
+
+    .stage,
+    .duration {
+        text-align: center;
+        margin-top: 8px;
+    }
+
+    .stage {
+        color: #666666;
+    }
+
+    .duration {
+        font-size: 16px;
+    }
+}
+
 .b-contest-edit {
     .ui-block-footer {
         @include clear-fix;

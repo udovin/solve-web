@@ -107,7 +107,7 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
             </thead>
             <tbody>
                 {contestParticipants.map((participant: ContestParticipant, key: number) => {
-                    const { id, user, kind } = participant;
+                    const { id, kind } = participant;
                     if (!id) {
                         return <></>;
                     }

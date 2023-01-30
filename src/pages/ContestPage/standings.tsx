@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { Contest, ContestStandings, ContestStandingsCell, observeContestStandings } from "../../api";
 import Block from "../../ui/Block";
-import UserLink from "../../ui/UserLink";
 import { ParticipantLink } from "./participants";
 
 type ContestStandingsBlockProps = {

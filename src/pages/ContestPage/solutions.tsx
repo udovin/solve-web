@@ -5,7 +5,6 @@ import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
 import Code from "../../ui/Code";
 import DateTime from "../../ui/DateTime";
-import UserLink from "../../ui/UserLink";
 import Verdict from "../../ui/Verdict";
 import { SolutionReportBlock } from "../SolutionPage";
 import { ParticipantLink } from "./participants";
