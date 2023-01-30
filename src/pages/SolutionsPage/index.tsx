@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ErrorResponse, observeSolutions, Problem, Solution, Solutions } from "../../api";
+import { ErrorResponse, observeSolutions, Problem, ScopeUser, Solution, Solutions, User } from "../../api";
 import Page from "../../components/Page";
 import Sidebar from "../../ui/Sidebar";
 import Alert from "../../ui/Alert";
@@ -13,6 +13,27 @@ import "./index.scss";
 
 export type SolutionsBlockProps = BlockProps & {
 	solutions: Solution[];
+};
+
+interface Account {
+	user?: User;
+	scope_user?: ScopeUser;
+};
+
+type AccountLinkProps = {
+	account: Account;
+};
+
+export const AccountLink: FC<AccountLinkProps> = props => {
+	const { account } = props;
+	const { user, scope_user } = account;
+	if (user) {
+		return <UserLink user={user} />;
+	}
+	if (scope_user) {
+		return <>{scope_user.title ?? scope_user.login}</>;
+	}
+	return <>&mdash;</>;
 };
 
 const SolutionsBlock: FC<SolutionsBlockProps> = props => {
@@ -30,24 +51,16 @@ const SolutionsBlock: FC<SolutionsBlockProps> = props => {
 			</thead>
 			<tbody>
 				{solutions.map((solution: Solution, key: number) => {
-					const { id, report, user, problem, create_time } = solution;
+					const { id, report, problem, create_time } = solution;
 					const { statement } = problem as Problem;
 					return <tr key={key} className="problem">
-						<td className="id">
-							<Link to={`/solutions/${id}`}>{id}</Link>
-						</td>
-						<td className="date">
-							<DateTime value={create_time} />
-						</td>
-						<td className="author">
-							{user ? <UserLink user={user} /> : <>&mdash;</>}
-						</td>
+						<td className="id"><Link to={`/solutions/${id}`}>{id}</Link></td>
+						<td className="date"><DateTime value={create_time} /></td>
+						<td className="author"><AccountLink account={solution} /></td>
 						<td className="problem">
 							{problem ? <Link to={`/problems/${problem.id}`}>{statement?.title ?? problem.title}</Link> : <>&mdash;</>}
 						</td>
-						<td className="verdict">
-							<Verdict report={report} />
-						</td>
+						<td className="verdict"><Verdict report={report} /></td>
 					</tr>;
 				})}
 			</tbody>

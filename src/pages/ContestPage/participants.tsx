@@ -6,7 +6,7 @@ import Button from "../../ui/Button";
 import IconButton from "../../ui/IconButton";
 import Input from "../../ui/Input";
 import Select from "../../ui/Select";
-import UserLink from "../../ui/UserLink";
+import { AccountLink } from "../SolutionsPage";
 
 type ParticipantLinkProps = {
     participant: ContestParticipant;
@@ -14,14 +14,11 @@ type ParticipantLinkProps = {
 
 export const ParticipantLink: FC<ParticipantLinkProps> = props => {
     const { participant } = props;
-    const { user, scope_user } = participant;
-    if (user) {
-        return <UserLink user={user} />;
-    }
-    if (scope_user) {
-        return <>{scope_user.title ?? scope_user.login}</>;
-    }
-    return <>&mdash;</>;
+    const { kind } = participant;
+    return <>
+        {(!!participant.kind && participant.kind !== "regular") && <span className="kind">{KINDS[kind] ?? kind}: </span>}
+        <AccountLink account={participant} />
+    </>
 };
 
 type ContestParticipantsBlockProps = {
@@ -127,7 +124,7 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
                     };
                     return <tr key={key} className="participant">
                         <td className="id">{id}</td>
-                        <td className="login"><ParticipantLink participant={participant} /></td>
+                        <td className="login"><AccountLink account={participant} /></td>
                         <td className="kind">{KINDS[kind] ?? kind}</td>
                         <td className="actions">{canDeleteParticipant && <IconButton kind="delete" onClick={deleteParticipant} />}</td>
                     </tr>;

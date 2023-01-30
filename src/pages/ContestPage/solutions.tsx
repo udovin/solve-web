@@ -33,9 +33,7 @@ const ContestSolutionRow: FC<ContestSolutionRowProps> = props => {
             <DateTime value={create_time} />
         </td>
         <td className="participant">
-            {participant && <>
-                <span className="kind">{participant.kind}: </span><ParticipantLink participant={participant} />
-            </>}
+            {!!participant && <ParticipantLink participant={participant} />}
         </td>
         <td className="problem">
             {problem ? <Link to={`/contests/${contest.id}/problems/${problem.code}`}>{`${problem.code}. ${statement?.title ?? problem.title}`}</Link> : <>&mdash;</>}

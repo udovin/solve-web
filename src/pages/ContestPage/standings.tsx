@@ -66,9 +66,9 @@ export const ContestStandingsBlock: FC<ContestStandingsBlockProps> = props => {
                     }
                     const { participant } = row;
                     return <tr>
-                        <td className="index">{index + 1}</td>
+                        <td className="id">{index + 1}</td>
                         <td className="participant">
-                            {participant && <ParticipantLink participant={participant} />}
+                            {!!participant && <ParticipantLink participant={participant} />}
                         </td>
                         <td className="score">{row.score ?? 0}</td>
                         <td className="penalty">{row.penalty ?? ""}</td>
@@ -80,18 +80,18 @@ export const ContestStandingsBlock: FC<ContestStandingsBlockProps> = props => {
                             if (!cell.verdict) {
                                 return <td className="problem unknown" key={index}>
                                     <span className="attempt">?{cell.attempt ?? 1}</span>
-                                    {cell.time && <span className="time">{<StandingsDuration value={cell.time} />}</span>}
+                                    {!!cell.time && <span className="time">{<StandingsDuration value={cell.time} />}</span>}
                                 </td>;
                             }
                             if (cell.verdict === "accepted") {
                                 return <td className="problem accepted" key={index}>
                                     <span className="attempt">+{cell.attempt && cell.attempt > 1 ? cell.attempt - 1 : ""}</span>
-                                    {cell.time && <span className="time">{<StandingsDuration value={cell.time} />}</span>}
+                                    {!!cell.time && <span className="time">{<StandingsDuration value={cell.time} />}</span>}
                                 </td>;
                             }
                             return <td className="problem rejected" key={index}>
                                 <span className="attempt">&minus;{cell.attempt ?? 1}</span>
-                                {cell.time && <span className="time">{<StandingsDuration value={cell.time} />}</span>}
+                                {!!cell.time && <span className="time">{<StandingsDuration value={cell.time} />}</span>}
                             </td>;
                         })}
                     </tr>;

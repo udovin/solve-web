@@ -93,6 +93,7 @@
 
             .kind {
                 color: #666666;
+                font-size: 12px;
             }
         }
     }
@@ -158,11 +159,16 @@
 
         .participant {
             text-align: left;
+
+            .kind {
+                color: #666666;
+                font-size: 12px;
+            }
         }
 
         .score,
         .penalty {
-            width: 70px;
+            width: 60px;
             text-align: center;
         }
 
