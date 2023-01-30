@@ -31,7 +31,7 @@ const ContestSolutionRow: FC<ContestSolutionRowProps> = props => {
         rejudgeContestSolution(contest.id, solution.id)
             .then(solution => onUpdateSolution && onUpdateSolution(solution));
     };
-    const canUpdateSolution = contest.permissions?.includes("update_contest_solution") && report?.verdict !== "queued";
+    const canUpdateSolution = onUpdateSolution && contest.permissions?.includes("update_contest_solution") && report?.verdict !== "queued";
     return <tr className="problem">
         <td className="id">
             <Link to={`/contests/${contest.id}/solutions/${id}`}>{id}</Link>
@@ -112,20 +112,7 @@ export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
             </thead>
             <tbody>
                 {contestSolutions.map((solution: ContestSolution, key: number) => {
-                    const onUpdateSolution = (solution: ContestSolution) => {
-                        const newSolutions = [...(solutions?.solutions ?? [])];
-                        const pos = newSolutions.findIndex(value => value.id === solution.id);
-                        if (pos >= 0) {
-                            newSolutions[pos] = solution;
-                        }
-                        setSolutions({ ...solutions, solutions: newSolutions });
-                    };
-                    return <ContestSolutionRow
-                        contest={contest}
-                        solution={solution}
-                        onUpdateSolution={onUpdateSolution}
-                        key={key}
-                    />;
+                    return <ContestSolutionRow contest={contest} solution={solution} key={key} />;
                 })}
             </tbody>
         </table>
