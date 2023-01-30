@@ -689,6 +689,14 @@ export const observeContestSolution = (id: number, solutionID: number) => {
 	}));
 };
 
+export const rejudgeContestSolution = (id: number, solutionID: number) => {
+	return parseResp(fetch(`${BASE}/api/v0/contests/${id}/solutions/${solutionID}/rejudge`, {
+		method: "POST",
+		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
+		body: JSON.stringify({}),
+	}));
+};
+
 export const observeSettings = () => {
 	return parseResp(fetch(`${BASE}/api/v0/settings`, {
 		method: "GET",

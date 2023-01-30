@@ -1,10 +1,11 @@
 import { FC, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Contest, ContestProblem, ContestSolution, ContestSolutions, ErrorResponse, observeContestSolution, observeContestSolutions } from "../../api";
+import { Contest, ContestProblem, ContestSolution, ContestSolutions, ErrorResponse, observeContestSolution, observeContestSolutions, rejudgeContestSolution } from "../../api";
 import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
 import Code from "../../ui/Code";
 import DateTime from "../../ui/DateTime";
+import IconButton from "../../ui/IconButton";
 import Verdict from "../../ui/Verdict";
 import { SolutionReportBlock } from "../SolutionPage";
 import { ParticipantLink } from "./participants";
@@ -12,10 +13,11 @@ import { ParticipantLink } from "./participants";
 type ContestSolutionRowProps = {
     contest: Contest;
     solution: ContestSolution;
+    onUpdateSolution?(solution: ContestSolution): void;
 };
 
 const ContestSolutionRow: FC<ContestSolutionRowProps> = props => {
-    const { solution, contest } = props;
+    const { solution, onUpdateSolution, contest } = props;
     const { id, create_time, compiler, participant, problem, report } = solution;
     const { statement } = problem as ContestProblem;
     let compilerName = compiler?.name;
@@ -25,6 +27,11 @@ const ContestSolutionRow: FC<ContestSolutionRowProps> = props => {
             compilerName += ` (${compiler.config.compiler})`;
         }
     }
+    const rejudgeSolution = () => {
+        rejudgeContestSolution(contest.id, solution.id)
+            .then(solution => onUpdateSolution && onUpdateSolution(solution));
+    };
+    const canUpdateSolution = contest.permissions?.includes("update_contest_solution") && report?.verdict !== "queued";
     return <tr className="problem">
         <td className="id">
             <Link to={`/contests/${contest.id}/solutions/${id}`}>{id}</Link>
@@ -43,6 +50,7 @@ const ContestSolutionRow: FC<ContestSolutionRowProps> = props => {
         </td>
         <td className="verdict">
             <Verdict report={report} />
+            {canUpdateSolution && <IconButton kind={"reload"} onClick={rejudgeSolution} />}
         </td>
     </tr>;
 };
@@ -104,7 +112,20 @@ export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
             </thead>
             <tbody>
                 {contestSolutions.map((solution: ContestSolution, key: number) => {
-                    return <ContestSolutionRow contest={contest} solution={solution} key={key} />;
+                    const onUpdateSolution = (solution: ContestSolution) => {
+                        const newSolutions = [...(solutions?.solutions ?? [])];
+                        const pos = newSolutions.findIndex(value => value.id === solution.id);
+                        if (pos >= 0) {
+                            newSolutions[pos] = solution;
+                        }
+                        setSolutions({ ...solutions, solutions: newSolutions });
+                    };
+                    return <ContestSolutionRow
+                        contest={contest}
+                        solution={solution}
+                        onUpdateSolution={onUpdateSolution}
+                        key={key}
+                    />;
                 })}
             </tbody>
         </table>
@@ -158,7 +179,11 @@ export const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
                     </tr>
                 </thead>
                 <tbody>
-                    <ContestSolutionRow contest={contest} solution={solution} />
+                    <ContestSolutionRow
+                        contest={contest}
+                        solution={solution}
+                        onUpdateSolution={setSolution}
+                    />
                 </tbody>
             </table>
         </Block>

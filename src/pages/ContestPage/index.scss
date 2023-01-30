@@ -88,6 +88,17 @@
             text-align: center;
         }
 
+        .verdict {
+            .ui-icon-button {
+                margin-left: 4px;
+
+                .ui-icon {
+                    width: 18px;
+                    height: 18px;
+                }
+            }
+        }
+
         .participant {
             text-align: center;
 
