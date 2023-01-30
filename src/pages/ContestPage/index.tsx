@@ -365,9 +365,6 @@ const ContestSideBlock: FC<ContestSideBlockProps> = props => {
 		return () => clearInterval(intervalID);
 	}, [remainingDuration, setNow]);
 	useEffect(() => {
-		console.log(state);
-		console.log(beforeDuration);
-		console.log(remainingDuration);
 		if (state?.stage === "not_started" && beforeDuration !== undefined && beforeDuration <= 0) {
 			observeContest(contest.id).then(onUpdateContest);
 		} else if (state?.stage === "started" && remainingDuration !== undefined && remainingDuration <= 0) {
