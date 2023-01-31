@@ -427,7 +427,7 @@ const ContestPage: FC = () => {
 		<Route path="*" element={<ContestSideBlock contest={contest} />} />
 	</Routes>}>
 		<TabsGroup>
-			<ContestTabs contest={contest} />
+			{(isIndex && !canObserveProblems) ? <></> : <ContestTabs contest={contest} />}
 			<Routes>
 				<Route index element={<ContestProblemsTab contest={contest} />} />
 				<Route path="/problems" element={<ContestProblemsTab contest={contest} />} />
