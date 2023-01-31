@@ -390,27 +390,25 @@ const ContestPage: FC = () => {
 	const getNow = () => {
 		return Math.round((new Date()).getTime() / 1000);
 	};
-	const [now, setNow] = useState(getNow());
-	const beforeDuration = contest?.begin_time && Math.max(contest.begin_time - now, 0);
-	const remainingDuration = contest?.begin_time && contest.duration && Math.max(contest.begin_time + contest.duration - now, 0);
 	useEffect(() => {
 		observeContest(Number(contest_id))
 			.then(contest => setContest(contest));
 	}, [contest_id]);
 	useEffect(() => {
-		if (!remainingDuration || remainingDuration <= 0) {
+		if (!contest || contest.state?.stage === "finished") {
 			return;
 		}
-		const intervalID = setInterval(() => setNow(getNow()), 1000);
+		const intervalID = setInterval(() => {
+			const beforeDuration = contest?.begin_time && Math.max(contest.begin_time - getNow(), 0);
+			const remainingDuration = contest?.begin_time && contest.duration && Math.max(contest.begin_time + contest.duration - getNow(), 0);
+			if (contest?.state?.stage === "not_started" && beforeDuration !== undefined && beforeDuration <= 0) {
+				observeContest(contest.id).then(setContest);
+			} else if (contest?.state?.stage === "started" && remainingDuration !== undefined && remainingDuration <= 0) {
+				observeContest(contest.id).then(setContest);
+			}
+		}, 1000);
 		return () => clearInterval(intervalID);
-	}, [remainingDuration, setNow]);
-	useEffect(() => {
-		if (contest?.state?.stage === "not_started" && beforeDuration !== undefined && beforeDuration <= 0) {
-			observeContest(contest.id).then(setContest);
-		} else if (contest?.state?.stage === "started" && remainingDuration !== undefined && remainingDuration <= 0) {
-			observeContest(contest.id).then(setContest);
-		}
-	}, [beforeDuration, remainingDuration, contest, setContest]);
+	}, [contest, setContest]);
 	if (!contest) {
 		return <>Loading...</>;
 	}
