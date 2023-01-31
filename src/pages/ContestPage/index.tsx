@@ -293,8 +293,10 @@ type ContestTabProps = {
 
 const ContestProblemsTab: FC<ContestTabProps> = props => {
 	const { contest } = props;
+	const { permissions } = contest;
+	const canObserveProblems = permissions?.includes("observe_contest_problems");
 	return <TabContent tab="problems" setCurrent>
-		<ContestProblemsBlock contest={contest} />
+		{canObserveProblems ? <ContestProblemsBlock contest={contest} /> : <ContestSideBlock contest={contest} />}
 	</TabContent>;
 };
 
@@ -413,9 +415,11 @@ const ContestPage: FC = () => {
 		return <>Loading...</>;
 	}
 	const { title, permissions } = contest;
+	const canObserveProblems = permissions?.includes("observe_contest_problems");
 	const canManageContest = permissions?.includes("update_contest") || permissions?.includes("delete_contest");
+	const isIndex = matchPath({ path: "/contests/:contest_id" }, location.pathname);
 	const isStandings = matchPath({ path: "/contests/:contest_id/standings" }, location.pathname);
-	return <Page title={`Contest: ${title}`} sidebar={isStandings ? undefined : <Routes>
+	return <Page title={`Contest: ${title}`} sidebar={(isStandings || (isIndex && !canObserveProblems)) ? undefined : <Routes>
 		<Route path="/problems/:problem_code" element={<>
 			<ContestSideBlock contest={contest} />
 			<ContestProblemSideBlock contest={contest} />
