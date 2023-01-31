@@ -35,7 +35,12 @@ import Duration from "../../ui/Duration";
 
 import "./index.scss";
 
-const ContestProblemSideBlock: FC = () => {
+type ContestSideBlockProps = {
+	contest: Contest;
+};
+
+const ContestProblemSideBlock: FC<ContestSideBlockProps> = props => {
+	const { contest } = props;
 	const params = useParams();
 	const { contest_id, problem_code } = params;
 	const [newSolution, setNewSolution] = useState<Solution>();
@@ -46,6 +51,7 @@ const ContestProblemSideBlock: FC = () => {
 	const selectedCompiler = compiler ?? toNumber(localStorage.getItem("last_compiler"));
 	const compilerInfo = compilers?.compilers?.find(compiler => compiler.id === selectedCompiler);
 	const extensions = compilerInfo?.config?.extensions?.map(ext => `.${ext}`).join(",");
+	const canSubmitSolution = contest.permissions?.includes("submit_contest_solution");
 	const onSubmit = (event: any) => {
 		event.preventDefault();
 		setError(undefined);
@@ -72,7 +78,7 @@ const ContestProblemSideBlock: FC = () => {
 	const errorMessage = error && error.message;
 	const invalidFields = (error && error.invalid_fields) || {};
 	return <FormBlock onSubmit={onSubmit} title="Submit solution" footer={
-		<Button type="submit" color="primary">Submit</Button>
+		<Button type="submit" color="primary" disabled={!canSubmitSolution}>Submit</Button>
 	}>
 		{errorMessage && <Alert>{errorMessage}</Alert>}
 		<Field title="Compiler:" name="compiler_id" errorResponse={error}>
@@ -302,6 +308,7 @@ const ContestSolutionsTab: FC<ContestTabProps> = props => {
 const ContestStandingsTab: FC<ContestTabProps> = props => {
 	const { contest } = props;
 	return <TabContent tab="standings" setCurrent>
+		<ContestSideBlock contest={contest} />
 		<ContestStandingsBlock contest={contest} />
 	</TabContent>;
 };
@@ -343,13 +350,8 @@ const ContestManageTab: FC<ContestTabProps> = props => {
 	</TabContent>;
 };
 
-type ContestSideBlockProps = {
-	contest: Contest;
-	onUpdateContest(contest: Contest): void;
-};
-
 const ContestSideBlock: FC<ContestSideBlockProps> = props => {
-	const { contest, onUpdateContest } = props;
+	const { contest } = props;
 	const { state } = contest;
 	const getNow = () => {
 		return Math.round((new Date()).getTime() / 1000);
@@ -364,13 +366,6 @@ const ContestSideBlock: FC<ContestSideBlockProps> = props => {
 		const intervalID = setInterval(() => setNow(getNow()), 1000);
 		return () => clearInterval(intervalID);
 	}, [remainingDuration, setNow]);
-	useEffect(() => {
-		if (state?.stage === "not_started" && beforeDuration !== undefined && beforeDuration <= 0) {
-			observeContest(contest.id).then(onUpdateContest);
-		} else if (state?.stage === "started" && remainingDuration !== undefined && remainingDuration <= 0) {
-			observeContest(contest.id).then(onUpdateContest);
-		}
-	}, [beforeDuration, remainingDuration, state, contest, onUpdateContest]);
 	return <Block className="b-contest-side">
 		<h3>{contest.title}</h3>
 		{state?.stage === "not_started" && <>
@@ -392,10 +387,30 @@ const ContestPage: FC = () => {
 	const location = useLocation();
 	const { contest_id } = params;
 	const [contest, setContest] = useState<Contest>();
+	const getNow = () => {
+		return Math.round((new Date()).getTime() / 1000);
+	};
+	const [now, setNow] = useState(getNow());
+	const beforeDuration = contest?.begin_time && Math.max(contest.begin_time - now, 0);
+	const remainingDuration = contest?.begin_time && contest.duration && Math.max(contest.begin_time + contest.duration - now, 0);
 	useEffect(() => {
 		observeContest(Number(contest_id))
 			.then(contest => setContest(contest));
 	}, [contest_id]);
+	useEffect(() => {
+		if (!remainingDuration || remainingDuration <= 0) {
+			return;
+		}
+		const intervalID = setInterval(() => setNow(getNow()), 1000);
+		return () => clearInterval(intervalID);
+	}, [remainingDuration, setNow]);
+	useEffect(() => {
+		if (contest?.state?.stage === "not_started" && beforeDuration !== undefined && beforeDuration <= 0) {
+			observeContest(contest.id).then(setContest);
+		} else if (contest?.state?.stage === "started" && remainingDuration !== undefined && remainingDuration <= 0) {
+			observeContest(contest.id).then(setContest);
+		}
+	}, [beforeDuration, remainingDuration, contest, setContest]);
 	if (!contest) {
 		return <>Loading...</>;
 	}
@@ -404,10 +419,10 @@ const ContestPage: FC = () => {
 	const isStandings = matchPath({ path: "/contests/:contest_id/standings" }, location.pathname);
 	return <Page title={`Contest: ${title}`} sidebar={isStandings ? undefined : <Routes>
 		<Route path="/problems/:problem_code" element={<>
-			<ContestSideBlock contest={contest} onUpdateContest={setContest} />
-			<ContestProblemSideBlock />
+			<ContestSideBlock contest={contest} />
+			<ContestProblemSideBlock contest={contest} />
 		</>} />
-		<Route path="*" element={<ContestSideBlock contest={contest} onUpdateContest={setContest} />} />
+		<Route path="*" element={<ContestSideBlock contest={contest} />} />
 	</Routes>}>
 		<TabsGroup>
 			<ContestTabs contest={contest} />
