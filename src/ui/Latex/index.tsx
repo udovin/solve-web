@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef } from "react";
+import { FC, useCallback } from "react";
 import { Macro } from "@unified-latex/unified-latex-types";
 import { unifiedLatexFromString } from "@unified-latex/unified-latex-util-parse";
 import { convertToHtml } from "@unified-latex/unified-latex-to-hast";
@@ -70,38 +70,26 @@ const Latex: FC<LatexProps> = props => {
         return macro(node, context);
     });
     const html = convertToHtml(ast);
-    const renderedRef = useRef<HTMLDivElement>(null);
-    useEffect(() => {
-        if (renderedRef.current) {
-            for (const dm of Array.from(
-                renderedRef.current.querySelectorAll(".display-math")
-            )) {
-                if (dm.classList.contains("katex-rendered")) {
-                    continue;
-                }
-                dm.classList.add("katex-rendered");
-                katex.render(dm.textContent ?? "", dm as HTMLElement, {
-                    displayMode: true,
-                    throwOnError: false,
-                });
-            }
-            for (const im of Array.from(
-                renderedRef.current.querySelectorAll(".inline-math")
-            )) {
-                if (im.classList.contains("katex-rendered")) {
-                    continue;
-                }
-                im.classList.add("katex-rendered");
-                katex.render(im.textContent ?? "", im as HTMLElement, {
-                    displayMode: false,
-                    throwOnError: false,
-                });
-            }
+    const ref = useCallback((node: HTMLDivElement) => {
+        if (!node) {
+            return;
         }
-    }, [renderedRef, html]);
+        for (const dm of Array.from(node.querySelectorAll(".display-math"))) {
+            katex.render(dm.textContent ?? "", dm as HTMLElement, {
+                displayMode: true,
+                throwOnError: false,
+            });
+        }
+        for (const im of Array.from(node.querySelectorAll(".inline-math"))) {
+            katex.render(im.textContent ?? "", im as HTMLElement, {
+                displayMode: false,
+                throwOnError: false,
+            });
+        }
+    }, []);
     return <div
         className={`ui-latex ${className ?? ""}`}
-        ref={renderedRef}
+        ref={ref}
         dangerouslySetInnerHTML={{ __html: html }}
     />;
 };
