@@ -30,10 +30,25 @@
             td.output {
                 padding: 0;
 
-                >pre {
-                    margin: 0;
-                    padding: 8px 10px;
-                    overflow-x: auto;
+                >.copy-wrap {
+                    display: block;
+                    position: relative;
+
+                    >pre {
+                        margin: 0;
+                        padding: 8px 10px;
+                        overflow-x: auto;
+                    }
+
+                    .ui-icon-button {
+                        display: block;
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        padding: 2px;
+                        width: 20px;
+                        height: 20px;
+                    }
                 }
             }
         }

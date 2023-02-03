@@ -7,10 +7,46 @@ import Block from "../../ui/Block";
 import ByteSize from "../../ui/ByteSize";
 import Duration from "../../ui/Duration";
 import Icon from "../../ui/Icon";
+import IconButton from "../../ui/IconButton";
 import Latex from "../../ui/Latex";
 import Sidebar from "../../ui/Sidebar";
 
 import "./index.scss";
+
+type ProblemSamplesProps = {
+	samples: ProblemStatementSample[];
+};
+
+const ProblemSamlpes: FC<ProblemSamplesProps> = props => {
+	const { samples } = props;
+	return <table className="ui-table section samples">
+		<thead>
+			<tr>
+				<th className="input">Input data</th>
+				<th className="output">Output data</th>
+			</tr>
+		</thead>
+		<tbody>
+			{samples.map((sample: ProblemStatementSample, key: number) => {
+				const { input, output } = sample;
+				return <tr key={key}>
+					<td className="input">
+						<div className="copy-wrap">
+							<pre>{input ?? ""}</pre>
+							<IconButton kind="document" onClick={() => { navigator.clipboard.writeText(input ?? "") }} />
+						</div>
+					</td>
+					<td className="output">
+						<div className="copy-wrap">
+							<pre>{output ?? ""}</pre>
+							<IconButton kind="document" onClick={() => { navigator.clipboard.writeText(output ?? "") }} />
+						</div>
+					</td>
+				</tr>;
+			})}
+		</tbody>
+	</table>;
+};
 
 type ProblemBlockProps = {
 	problem: ContestProblem | Problem;
@@ -53,23 +89,7 @@ export const ProblemBlock: FC<ProblemBlockProps> = props => {
 		</>}
 		{statement?.samples && <>
 			<h3>Samples</h3>
-			<table className="ui-table section samples">
-				<thead>
-					<tr>
-						<th className="input">Input data</th>
-						<th className="output">Output data</th>
-					</tr>
-				</thead>
-				<tbody>
-					{statement.samples.map((sample: ProblemStatementSample, key: number) => {
-						const { input, output } = sample;
-						return <tr key={key}>
-							<td className="input"><pre>{input ?? ""}</pre></td>
-							<td className="output"><pre>{output ?? ""}</pre></td>
-						</tr>;
-					})}
-				</tbody>
-			</table>
+			<ProblemSamlpes samples={statement.samples} />
 		</>}
 		{statement?.notes && <>
 			<h3>Notes</h3>
