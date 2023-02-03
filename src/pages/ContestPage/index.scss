@@ -51,6 +51,10 @@
     .ui-table {
         border: none;
 
+        .problem.solved {
+            background-color: #e0f7e0;
+        }
+
         .code {
             text-align: right;
             width: 1%;

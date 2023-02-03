@@ -83,7 +83,7 @@ export const ContestProblemsBlock: FC<ContestProblemsBlockParams> = props => {
             </thead>
             <tbody>
                 {contestProblems.map((problem: ContestProblem, key: number) => {
-                    const { code, title, statement } = problem;
+                    const { code, title, statement, solved } = problem;
                     const deleteProblem = () => {
                         deleteContestProblem(contest.id, code)
                             .then(problem => {
@@ -101,7 +101,7 @@ export const ContestProblemsBlock: FC<ContestProblemsBlockParams> = props => {
                     const updateProblem = () => {
 
                     };
-                    return <tr key={key} className="problem">
+                    return <tr key={key} className={`problem${solved ? " solved" : ""}`}>
                         <td className="code">
                             <Link to={`/contests/${contest.id}/problems/${code}`}>{code}</Link>
                         </td>

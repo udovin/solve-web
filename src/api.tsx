@@ -165,6 +165,7 @@ export type Solutions = {
 export type ContestProblem = Problem & {
 	code: string;
 	contest_id: number;
+	solved?: boolean;
 };
 
 export type ContestProblems = {
