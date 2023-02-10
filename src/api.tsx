@@ -812,11 +812,24 @@ export const observeScopeUsers = (scopeID: number) => {
 	}));
 };
 
-export const observeScopeUser = (scopeID: number, userID: number, password?: boolean) => {
-	return parseResp(fetch(`${BASE}/api/v0/scopes/${scopeID}/users/${userID}?password=${password ? "true" : "false"}`, {
+export const observeScopeUser = (scopeID: number, userID: number) => {
+	return parseResp(fetch(`${BASE}/api/v0/scopes/${scopeID}/users/${userID}`, {
 		method: "GET",
 		headers: getHeaders(),
 	}));
+};
+
+export type UpdateScopeUserForm = {
+	generate_password?: boolean;
+	password?: string;
+};
+
+export const updateScopeUser = (scopeID: number, userID: number, form: UpdateScopeUserForm) => {
+	return parseResp(fetch(`${BASE}/api/v0/scopes/${scopeID}/users/${userID}`, {
+		method: "PATCH",
+		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
+		body: JSON.stringify(form),
+	}), true);
 };
 
 export type CreateScopeUserForm = {

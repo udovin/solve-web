@@ -1,6 +1,6 @@
 import { FC, FormEvent, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { createScope, createScopeUser, deleteScope, deleteScopeUser, ErrorResponse, observeScopes, observeScopeUser, observeScopeUsers, Scope, Scopes, ScopeUser, ScopeUsers } from "../../api";
+import { createScope, createScopeUser, deleteScope, deleteScopeUser, ErrorResponse, observeScopes, observeScopeUsers, Scope, Scopes, ScopeUser, ScopeUsers, updateScopeUser } from "../../api";
 import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
 import Button from "../../ui/Button";
@@ -144,8 +144,8 @@ export const AdminScopeBlock: FC<AdminScopeBlockProps> = props => {
                             })
                             .catch(setError);
                     };
-                    const onShowPassword = () => {
-                        observeScopeUser(scope.id, user.id, true)
+                    const onRegeneratePassword = () => {
+                        updateScopeUser(scope.id, user.id, { generate_password: true })
                             .then(user => {
                                 const newUsers = [...(users?.users ?? [])];
                                 const pos = newUsers.findIndex(value => value.id === user.id);
@@ -160,7 +160,7 @@ export const AdminScopeBlock: FC<AdminScopeBlockProps> = props => {
                     return <tr key={key}>
                         <td className="id">{user.id}</td>
                         <td className="login">{user.login}</td>
-                        <td className="password">{user.password ? user.password : <Button onClick={onShowPassword}>Show password</Button>}</td>
+                        <td className="password">{user.password ? user.password : <Button onClick={onRegeneratePassword} color="danger">Regenerate password</Button>}</td>
                         <td className="title">{user.title}</td>
                         <td className="actions">{<IconButton kind="delete" onClick={onDelete} />}</td>
                     </tr>
