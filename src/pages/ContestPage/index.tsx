@@ -1,6 +1,5 @@
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import { matchPath, Navigate, Route, Routes, useLocation, useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
 import Page from "../../components/Page";
 import {
 	BASE,
@@ -15,13 +14,13 @@ import {
 	submitContestSolution,
 	updateContest,
 } from "../../api";
-import Block, { BlockProps } from "../../ui/Block";
+import Block from "../../ui/Block";
 import FormBlock from "../../components/FormBlock";
 import Field from "../../ui/Field";
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
 import Alert from "../../ui/Alert";
-import { Tab, TabContent, Tabs, TabsGroup } from "../../ui/Tabs";
+import { TabContent, TabsGroup } from "../../ui/Tabs";
 import DurationInput from "../../ui/DurationInput";
 import Checkbox from "../../ui/Checkbox";
 import Select from "../../ui/Select";
@@ -32,6 +31,8 @@ import { ContestParticipantsBlock } from "./participants";
 import { ContestRegisterBlock } from "./register";
 import { ContestStandingsBlock } from "./standings";
 import Duration from "../../ui/Duration";
+import { ContestTabs } from "./tabs";
+import { ContestMessagesBlock } from "./messages";
 
 import "./index.scss";
 
@@ -126,44 +127,6 @@ const ContestProblemBlock: FC = () => {
 		problem={problem}
 		imageBaseUrl={`${BASE}/api/v0/contests/${contest_id}/problems/${problem_code}/resources/`}
 	/>;
-};
-
-type ContestTabsProps = BlockProps & {
-	contest: Contest;
-	currentTab?: string;
-};
-
-const ContestTabs: FC<ContestTabsProps> = props => {
-	const { contest } = props;
-	const { id, permissions, state } = contest;
-	const canRegister = !state?.participant && permissions?.includes("register_contest");
-	const canObserveProblems = permissions?.includes("observe_contest_problems");
-	const canObserveSolutions = permissions?.includes("observe_contest_solutions");
-	const canObserveStandings = permissions?.includes("observe_contest_standings");
-	const canObserveParticipants = permissions?.includes("observe_contest_participants");
-	const canManage = permissions?.includes("update_contest") || permissions?.includes("delete_contest");
-	return <Block className="b-contest-tabs">
-		<Tabs>
-			{canObserveProblems && <Tab tab="problems">
-				<Link to={`/contests/${id}`}>Problems</Link>
-			</Tab>}
-			{canObserveSolutions && <Tab tab="solutions">
-				<Link to={`/contests/${id}/solutions`}>Solutions</Link>
-			</Tab>}
-			{canObserveStandings && <Tab tab="standings">
-				<Link to={`/contests/${id}/standings`}>Standings</Link>
-			</Tab>}
-			{canObserveParticipants && <Tab tab="participants">
-				<Link to={`/contests/${id}/participants`}>Participants</Link>
-			</Tab>}
-			{canRegister && <Tab tab="register">
-				<Link to={`/contests/${id}/register`}>Register</Link>
-			</Tab>}
-			{canManage && <Tab tab="manage">
-				<Link to={`/contests/${id}/manage`}>Manage</Link>
-			</Tab>}
-		</Tabs>
-	</Block>;
 };
 
 export type EditContestBlockProps = {
@@ -315,6 +278,13 @@ const ContestStandingsTab: FC<ContestTabProps> = props => {
 	</TabContent>;
 };
 
+const ContestMessagesTab: FC<ContestTabProps> = props => {
+	const { contest } = props;
+	return <TabContent tab="messages" setCurrent>
+		<ContestMessagesBlock contest={contest} />
+	</TabContent>;
+};
+
 const ContestRegisterTab: FC<ContestTabProps> = props => {
 	const { contest } = props;
 	return <TabContent tab="register" setCurrent>
@@ -416,6 +386,7 @@ const ContestPage: FC = () => {
 	}
 	const { title, permissions } = contest;
 	const canObserveProblems = permissions?.includes("observe_contest_problems");
+	const canObserveParticipants = permissions?.includes("observe_contest_participants");
 	const canManageContest = permissions?.includes("update_contest") || permissions?.includes("delete_contest");
 	const isIndex = matchPath({ path: "/contests/:contest_id" }, location.pathname);
 	const isStandings = matchPath({ path: "/contests/:contest_id/standings" }, location.pathname);
@@ -430,14 +401,16 @@ const ContestPage: FC = () => {
 			{(isIndex && !canObserveProblems) ? <></> : <ContestTabs contest={contest} />}
 			<Routes>
 				<Route index element={<ContestProblemsTab contest={contest} />} />
-				<Route path="/problems" element={<ContestProblemsTab contest={contest} />} />
+				{canObserveProblems && <Route path="/problems" element={<ContestProblemsTab contest={contest} />} />}
 				<Route path="/solutions" element={<ContestSolutionsTab contest={contest} />} />
 				<Route path="/standings" element={<ContestStandingsTab contest={contest} />} />
-				{canManageContest && <Route path="/participants" element={<ContestParticipantsTab contest={contest} />} />}
+				<Route path="/messages" element={<ContestMessagesTab contest={contest} />} />
+				{canObserveParticipants && <Route path="/participants" element={<ContestParticipantsTab contest={contest} />} />}
 				<Route path="/register" element={<ContestRegisterTab contest={contest} />} />
 				<Route path="/solutions/:solution_id" element={<ContestSolutionTab contest={contest} />} />
 				<Route path="/problems/:problem_code" element={<ContestProblemTab contest={contest} />} />
-				<Route path="/manage" element={<ContestManageTab contest={contest} setContest={setContest} />} />
+				{canManageContest && <Route path="/manage" element={<ContestManageTab contest={contest} setContest={setContest} />} />}
+				<Route path="*" element={<Navigate to={`/contests/${contest_id}`} />} />
 			</Routes>
 		</TabsGroup>
 	</Page>;
