@@ -15,13 +15,13 @@ type ContestMessagesBlockProps = {
 
 export const ContestMessagesBlock: FC<ContestMessagesBlockProps> = props => {
     const { contest } = props;
-    const { id, permissions } = contest;
-    const canSubmitQuestion = permissions?.includes("submit_contest_question");
+    const { id, permissions, state } = contest;
+    const canSubmitQuestion = permissions?.includes("submit_contest_question") && state?.participant;
     return <Block title="Messages" className="b-contest-messages">
         {canSubmitQuestion && <Link to={`/contests/${id}/question`}>
             <Button>New question</Button>
         </Link>}
-    </Block >;
+    </Block>;
 };
 
 export const SubmitContestQuestionBlock: FC<ContestMessagesBlockProps> = props => {
@@ -48,7 +48,7 @@ export const SubmitContestQuestionBlock: FC<ContestMessagesBlockProps> = props =
     if (newMessage) {
         return <Navigate to={`/contests/${contest.id}/messages`} />;
     }
-    return <FormBlock className="b-contest-question" title="Ask question" onSubmit={onSubmit} footer={<>
+    return <FormBlock className="b-contest-question" title="New question" onSubmit={onSubmit} footer={<>
         <Button
             type="submit" color="primary" disabled={!title || !description}
         >Submit</Button>
