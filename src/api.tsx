@@ -851,3 +851,16 @@ export const deleteScopeUser = (scopeID: number, userID: number) => {
 		headers: getHeaders(),
 	}), true);
 };
+
+export type SubmitContestQuestion = {
+	title: string;
+	description: string;
+};
+
+export const submitContestQuestion = (contestID: number, form: SubmitContestQuestion) => {
+	return parseResp(fetch(`${BASE}/api/v0/contests/${contestID}/question`, {
+		method: "POST",
+		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
+		body: JSON.stringify(form),
+	}), true);
+};
