@@ -16,6 +16,7 @@ export const ContestTabs: FC<ContestTabsProps> = props => {
     const canObserveProblems = permissions?.includes("observe_contest_problems");
     const canObserveSolutions = permissions?.includes("observe_contest_solutions");
     const canObserveStandings = permissions?.includes("observe_contest_standings");
+    const canObserveMessages = permissions?.includes("observe_contest_messages");
     const canObserveParticipants = permissions?.includes("observe_contest_participants");
     const canManage = permissions?.includes("update_contest") || permissions?.includes("delete_contest");
     return <Block className="b-contest-tabs">
@@ -29,7 +30,7 @@ export const ContestTabs: FC<ContestTabsProps> = props => {
             {canObserveStandings && <Tab tab="standings">
                 <Link to={`/contests/${id}/standings`}>Standings</Link>
             </Tab>}
-            {canObserveStandings && <Tab tab="messages">
+            {canObserveMessages && <Tab tab="messages">
                 <Link to={`/contests/${id}/messages`}>Messages</Link>
             </Tab>}
             {canObserveParticipants && <Tab tab="participants">
