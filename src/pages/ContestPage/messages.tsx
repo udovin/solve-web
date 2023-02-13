@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
-import { Link } from "react-router-dom";
-import { Contest, ErrorResponse, submitContestQuestion } from "../../api";
+import { Link, Navigate } from "react-router-dom";
+import { Contest, ContestMessage, ErrorResponse, submitContestQuestion } from "../../api";
 import FormBlock from "../../components/FormBlock";
 import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
@@ -29,6 +29,7 @@ export const SubmitContestQuestionBlock: FC<ContestMessagesBlockProps> = props =
     const [error, setError] = useState<ErrorResponse>();
     const [title, setTitle] = useState<string>();
     const [description, setDescription] = useState<string>();
+    const [newMessage, setNewMessage] = useState<ContestMessage>();
     const onSubmit = (event: any) => {
         event.preventDefault();
         if (!title || !description) {
@@ -40,9 +41,13 @@ export const SubmitContestQuestionBlock: FC<ContestMessagesBlockProps> = props =
         })
             .then(message => {
                 setError(undefined);
+                setNewMessage(message);
             })
             .catch(setError);
     };
+    if (newMessage) {
+        return <Navigate to={`/contests/${contest.id}/messages`} />;
+    }
     return <FormBlock className="b-contest-question" title="Ask question" onSubmit={onSubmit} footer={<>
         <Button
             type="submit" color="primary" disabled={!title || !description}

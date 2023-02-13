@@ -237,6 +237,17 @@ export type ContestSolutions = {
 	solutions?: ContestSolution[];
 };
 
+export type ContestMessage = {
+	id: number;
+	parent_id?: number;
+	title?: string;
+	description?: string;
+};
+
+export type ContestMessages = {
+	messages?: ContestMessage[];
+};
+
 export type Setting = {
 	id: number;
 	key: string;
