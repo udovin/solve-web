@@ -198,6 +198,7 @@ export type ContestMessage = {
 	parent_id?: number;
 	title?: string;
 	description?: string;
+	kind: string;
 };
 
 export type ContestMessages = {
@@ -826,13 +827,27 @@ export const observeContestMessages = (contestID: number) => {
 	}));
 };
 
+export type CreateContestMessage = {
+	title?: string;
+	description: string;
+	parent_id?: number;
+};
+
+export const createContestMessage = (contestID: number, form: CreateContestMessage) => {
+	return parseResp<ContestMessage>(fetch(`${BASE}/api/v0/contests/${contestID}/messages`, {
+		method: "POST",
+		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
+		body: JSON.stringify(form),
+	}), true);
+};
+
 export type SubmitContestQuestion = {
 	title: string;
 	description: string;
 };
 
 export const submitContestQuestion = (contestID: number, form: SubmitContestQuestion) => {
-	return parseResp<ContestMessage>(fetch(`${BASE}/api/v0/contests/${contestID}/question`, {
+	return parseResp<ContestMessage>(fetch(`${BASE}/api/v0/contests/${contestID}/submit-question`, {
 		method: "POST",
 		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
 		body: JSON.stringify(form),

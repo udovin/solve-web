@@ -233,6 +233,10 @@
 .b-contest-messages {
     .controls {
         margin-bottom: 8px;
+
+        .ui-button {
+            margin-right: 8px;
+        }
     }
 
     .message-wrap {
@@ -256,6 +260,24 @@
             >.description {
                 display: block;
             }
+
+            >.answer {
+                display: block;
+                margin-top: 8px;
+            }
+        }
+
+        .new-message {
+            margin-top: 8px;
+            margin-left: 16px;
+            border: 1px solid $light-border-color;
+            border-radius: 4px;
+            padding: 8px;
+        }
+
+        .children {
+            margin-top: 8px;
+            margin-left: 16px;
         }
     }
 }

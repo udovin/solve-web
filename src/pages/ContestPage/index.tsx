@@ -32,7 +32,7 @@ import { ContestRegisterBlock } from "./register";
 import { ContestStandingsBlock } from "./standings";
 import Duration from "../../ui/Duration";
 import { ContestTabs } from "./tabs";
-import { ContestMessagesBlock, SubmitContestQuestionBlock } from "./messages";
+import { ContestMessagesBlock, CreateContestMessageBlock, SubmitContestQuestionBlock } from "./messages";
 
 import "./index.scss";
 
@@ -292,6 +292,13 @@ const ContestQuestionTab: FC<ContestTabProps> = props => {
 	</TabContent>;
 };
 
+const ContestCreateMessageTab: FC<ContestTabProps> = props => {
+	const { contest } = props;
+	return <TabContent tab="create-message" setCurrent>
+		<CreateContestMessageBlock contest={contest} />
+	</TabContent>;
+};
+
 const ContestRegisterTab: FC<ContestTabProps> = props => {
 	const { contest } = props;
 	return <TabContent tab="register" setCurrent>
@@ -395,6 +402,7 @@ const ContestPage: FC = () => {
 	const canObserveProblems = permissions?.includes("observe_contest_problems");
 	const canObserveMessages = permissions?.includes("observe_contest_messages");
 	const canSubmitQuestion = permissions?.includes("submit_contest_question");
+	const canCreateMessage = permissions?.includes("create_contest_message");
 	const canObserveParticipants = permissions?.includes("observe_contest_participants");
 	const canManageContest = permissions?.includes("update_contest") || permissions?.includes("delete_contest");
 	const isIndex = matchPath({ path: "/contests/:contest_id" }, location.pathname);
@@ -415,6 +423,7 @@ const ContestPage: FC = () => {
 				<Route path="/standings" element={<ContestStandingsTab contest={contest} />} />
 				{canObserveMessages && <Route path="/messages" element={<ContestMessagesTab contest={contest} />} />}
 				{canSubmitQuestion && <Route path="/question" element={<ContestQuestionTab contest={contest} />} />}
+				{canCreateMessage && <Route path="/messages/create" element={<ContestCreateMessageTab contest={contest} />} />}
 				{canObserveParticipants && <Route path="/participants" element={<ContestParticipantsTab contest={contest} />} />}
 				<Route path="/register" element={<ContestRegisterTab contest={contest} />} />
 				<Route path="/solutions/:solution_id" element={<ContestSolutionTab contest={contest} />} />
