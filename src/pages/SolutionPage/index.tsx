@@ -1,17 +1,18 @@
 import { FC, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ErrorResponse, observeSolution, Solution, SolutionReport, TestReport } from "../../api";
+import { ErrorResponse, observeSolution, Problem, Solution, SolutionReport, TestReport } from "../../api";
 import Page from "../../components/Page";
 import Sidebar from "../../ui/Sidebar";
 import Alert from "../../ui/Alert";
 import Block, { BlockProps } from "../../ui/Block";
 import DateTime from "../../ui/DateTime";
-import UserLink from "../../ui/UserLink";
 import Verdict, { TestVerdict } from "../../ui/Verdict";
-
-import "./index.scss";
 import Duration from "../../ui/Duration";
 import ByteSize from "../../ui/ByteSize";
+import { AccountLink } from "../SolutionsPage";
+
+import "./index.scss";
+import Code from "../../ui/Code";
 
 export type SolutionBlockProps = BlockProps & {
 	solution: Solution;
@@ -19,7 +20,15 @@ export type SolutionBlockProps = BlockProps & {
 
 const SolutionBlock: FC<SolutionBlockProps> = props => {
 	const { solution, ...rest } = props;
-	const { id, report, user, problem, create_time } = solution;
+	const { id, report, problem, compiler, create_time } = solution;
+	const { statement } = problem as Problem;
+	let compilerName = compiler?.name;
+	if (compiler?.config?.language) {
+		compilerName = compiler.config.language;
+		if (compiler.config.compiler) {
+			compilerName += ` (${compiler.config.compiler})`;
+		}
+	}
 	return <Block className="b-solution" title="Solutions" {...rest}>
 		<table className="ui-table">
 			<thead>
@@ -28,26 +37,20 @@ const SolutionBlock: FC<SolutionBlockProps> = props => {
 					<th className="date">Date</th>
 					<th className="author">Author</th>
 					<th className="problem">Problem</th>
+					<th className="compiler">Compiler</th>
 					<th className="verdict">Verdict</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr className="problem">
-					<td className="id">
-						<Link to={`/solutions/${id}`}>{id}</Link>
-					</td>
-					<td className="date">
-						<DateTime value={create_time} />
-					</td>
-					<td className="author">
-						{user ? <UserLink user={user} /> : <>&mdash;</>}
-					</td>
+					<td className="id"><Link to={`/solutions/${id}`}>{id}</Link></td>
+					<td className="date"><DateTime value={create_time} /></td>
+					<td className="author"><AccountLink account={solution} /></td>
 					<td className="problem">
-						{problem ? <Link to={`/problems/${problem.id}`}>{problem.title}</Link> : <>&mdash;</>}
+						{problem ? <Link to={`/problems/${problem.id}`}>{statement?.title ?? problem.title}</Link> : <>&mdash;</>}
 					</td>
-					<td className="verdict">
-						<Verdict report={report} />
-					</td>
+					<td className="compiler">{compilerName ?? <>&mdash;</>}</td>
+					<td className="verdict"><Verdict report={report} /></td>
 				</tr>
 			</tbody>
 		</table>
@@ -102,13 +105,18 @@ const SolutionPage: FC = () => {
 			{error.message && <Alert>{error.message}</Alert>}
 		</Page>;
 	}
+	if (!solution) {
+		return <Page title="Solution" sidebar={<Sidebar />}>
+			<>Loading...</>
+		</Page>;
+	}
+	const { content, compiler } = solution;
 	return <Page title="Solution" sidebar={<Sidebar />}>
-		{solution ?
-			<>
-				<SolutionBlock solution={solution} />
-				{solution.report && <SolutionReportBlock report={solution.report} />}
-			</> :
-			<>Loading...</>}
+		<SolutionBlock solution={solution} />
+		{content && <Block title="Content" className="b-contest-solution-content">
+			<Code content={content} language={compiler?.config?.extensions?.at(0)} />
+		</Block>}
+		{solution.report && <SolutionReportBlock report={solution.report} />}
 	</Page>;
 };
 

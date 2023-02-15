@@ -1,6 +1,6 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
-import { Contest, ContestMessage, ErrorResponse, submitContestQuestion } from "../../api";
+import { Contest, ContestMessage, ContestMessages, ErrorResponse, observeContestMessages, submitContestQuestion } from "../../api";
 import FormBlock from "../../components/FormBlock";
 import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
@@ -17,10 +17,39 @@ export const ContestMessagesBlock: FC<ContestMessagesBlockProps> = props => {
     const { contest } = props;
     const { id, permissions, state } = contest;
     const canSubmitQuestion = permissions?.includes("submit_contest_question") && state?.participant;
+    const [error, setError] = useState<ErrorResponse>();
+    const [messages, setMessages] = useState<ContestMessages>();
+    useEffect(() => {
+        observeContestMessages(contest.id)
+            .then(setMessages)
+            .catch(setError);
+    }, [contest]);
+    let byParent: Record<number, ContestMessage[]> = {};
+    messages?.messages?.forEach((message: ContestMessage) => {
+        if (!byParent[message.parent_id ?? 0]) {
+            byParent[message.parent_id ?? 0] = [];
+        }
+        byParent[message.parent_id ?? 0].push(message);
+    });
+    const buildMessages = (messages: ContestMessage[]) => {
+        return messages && messages.map((message: ContestMessage, index: number) => {
+            return <div className="message-wrap" key={index}>
+                <div className="message">
+                    {message.title && <span className="title">{message.title}</span>}
+                    {message.description && <span className="description">{message.description}</span>}
+                </div>
+                {byParent[message.id] && buildMessages(byParent[message.id])}
+            </div>;
+        });
+    };
     return <Block title="Messages" className="b-contest-messages">
-        {canSubmitQuestion && <Link to={`/contests/${id}/question`}>
-            <Button>New question</Button>
-        </Link>}
+        <div className="controls">
+            {canSubmitQuestion && <Link to={`/contests/${id}/question`}>
+                <Button>New question</Button>
+            </Link>}
+        </div>
+        {error && error.message && <Alert>{error.message}</Alert>}
+        {byParent[0] && buildMessages(byParent[0])}
     </Block>;
 };
 

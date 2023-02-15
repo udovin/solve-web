@@ -46,13 +46,21 @@ const SolutionsBlock: FC<SolutionsBlockProps> = props => {
 					<th className="date">Date</th>
 					<th className="author">Author</th>
 					<th className="problem">Problem</th>
+					<th className="compiler">Compiler</th>
 					<th className="verdict">Verdict</th>
 				</tr>
 			</thead>
 			<tbody>
 				{solutions.map((solution: Solution, key: number) => {
-					const { id, report, problem, create_time } = solution;
+					const { id, report, problem, compiler, create_time } = solution;
 					const { statement } = problem as Problem;
+					let compilerName = compiler?.name;
+					if (compiler?.config?.language) {
+						compilerName = compiler.config.language;
+						if (compiler.config.compiler) {
+							compilerName += ` (${compiler.config.compiler})`;
+						}
+					}
 					return <tr key={key} className="problem">
 						<td className="id"><Link to={`/solutions/${id}`}>{id}</Link></td>
 						<td className="date"><DateTime value={create_time} /></td>
@@ -60,6 +68,7 @@ const SolutionsBlock: FC<SolutionsBlockProps> = props => {
 						<td className="problem">
 							{problem ? <Link to={`/problems/${problem.id}`}>{statement?.title ?? problem.title}</Link> : <>&mdash;</>}
 						</td>
+						<td className="compiler">{compilerName ?? <>&mdash;</>}</td>
 						<td className="verdict"><Verdict report={report} /></td>
 					</tr>;
 				})}
