@@ -251,19 +251,29 @@
             border-radius: 4px;
             padding: 8px;
 
-            >.title {
-                display: block;
-                padding-bottom: 4px;
-                font-weight: bold;
-            }
-
-            >.description {
-                display: block;
-            }
-
+            >.title,
+            >.description,
+            >.participant,
             >.answer {
                 display: block;
                 margin-top: 8px;
+
+                &:first-child {
+                    margin-top: 0;
+                }
+            }
+
+            >.title {
+                font-weight: bold;
+            }
+
+            >.participant {
+                color: $light-secondary-text-color;
+                font-size: 12px;
+
+                >a {
+                    color: $light-secondary-text-color;
+                }
             }
         }
 

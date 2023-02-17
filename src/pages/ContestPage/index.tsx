@@ -12,7 +12,6 @@ import {
 	observeContest,
 	Solution,
 	submitContestSolution,
-	updateContest,
 } from "../../api";
 import Block from "../../ui/Block";
 import FormBlock from "../../components/FormBlock";
@@ -21,8 +20,6 @@ import Input from "../../ui/Input";
 import Button from "../../ui/Button";
 import Alert from "../../ui/Alert";
 import { TabContent, TabsGroup } from "../../ui/Tabs";
-import DurationInput from "../../ui/DurationInput";
-import Checkbox from "../../ui/Checkbox";
 import Select from "../../ui/Select";
 import { ProblemBlock } from "../ProblemPage";
 import { ContestProblemsBlock } from "./problems";
@@ -33,11 +30,16 @@ import { ContestStandingsBlock } from "./standings";
 import Duration from "../../ui/Duration";
 import { ContestTabs } from "./tabs";
 import { ContestMessagesBlock, CreateContestMessageBlock, SubmitContestQuestionBlock } from "./messages";
+import { EditContestBlock } from "./manage";
 
 import "./index.scss";
 
 type ContestSideBlockProps = {
 	contest: Contest;
+};
+
+const toNumber = (n?: string | null) => {
+	return (n === undefined || n === null) ? undefined : Number(n);
 };
 
 const ContestProblemSideBlock: FC<ContestSideBlockProps> = props => {
@@ -127,86 +129,6 @@ const ContestProblemBlock: FC = () => {
 		problem={problem}
 		imageBaseUrl={`${BASE}/api/v0/contests/${contest_id}/problems/${problem_code}/resources/`}
 	/>;
-};
-
-export type EditContestBlockProps = {
-	contest: Contest;
-	onUpdateContest?(contest: Contest): void;
-};
-
-const toNumber = (n?: string | null) => {
-	return (n === undefined || n === null) ? undefined : Number(n);
-};
-
-const toBoolean = (n?: string) => {
-	return n === undefined ? undefined : n === "true";
-};
-
-const EditContestBlock: FC<EditContestBlockProps> = props => {
-	const { contest, onUpdateContest } = props;
-	const [form, setForm] = useState<{ [key: string]: string }>({});
-	const [error, setError] = useState<ErrorResponse>();
-	const onResetForm = () => {
-		setForm({});
-		setError(undefined);
-	};
-	const onSubmit = (event: any) => {
-		event.preventDefault();
-		updateContest(contest.id, {
-			title: form.title,
-			begin_time: toNumber(form.begin_time),
-			duration: toNumber(form.duration),
-			enable_registration: toBoolean(form.enable_registration),
-			enable_upsolving: toBoolean(form.enable_upsolving),
-		})
-			.then(contest => {
-				onResetForm();
-				onUpdateContest && onUpdateContest(contest);
-			})
-			.catch(setError);
-	};
-	return <FormBlock className="b-contest-edit" title="Edit contest" onSubmit={onSubmit} footer={<>
-		<Button
-			type="submit" color="primary"
-			disabled={!Object.keys(form).length}
-		>Change</Button>
-		{!!Object.keys(form).length && <Button type="reset" onClick={onResetForm}>Reset</Button>}
-	</>}>
-		{error && error.message && <Alert>{error.message}</Alert>}
-		<Field title="Title:">
-			<Input
-				type="text" name="title" placeholder="Title"
-				value={form.title ?? contest.title}
-				onValueChange={value => setForm({ ...form, title: value })}
-				required />
-			{error && error.invalid_fields && error.invalid_fields["title"] && <Alert>{error.invalid_fields["title"].message}</Alert>}
-		</Field>
-		<Field title="Begin time:">
-			<Input
-				type="number" name="begin_time" placeholder="Begin time"
-				value={form.begin_time ?? (contest.begin_time ? String(contest.begin_time) : "")}
-				onValueChange={value => setForm({ ...form, begin_time: value })} />
-			{error && error.invalid_fields && error.invalid_fields["begin_time"] && <Alert>{error.invalid_fields["begin_time"].message}</Alert>}
-		</Field>
-		<Field title="Duration:">
-			<DurationInput
-				value={toNumber(form.duration) ?? contest.duration}
-				onValueChange={value => setForm({ ...form, duration: String(value) })} />
-			{error && error.invalid_fields && error.invalid_fields["duration"] && <Alert>{error.invalid_fields["duration"].message}</Alert>}
-		</Field>
-		<Field name="enable_registration" errorResponse={error}>
-			<Checkbox
-				value={toBoolean(form.enable_registration) ?? contest.enable_registration ?? false}
-				onValueChange={value => setForm({ ...form, enable_registration: value ? "true" : "false" })} />
-			<span className="label">Enable registration</span>
-		</Field>
-		<Field name="enable_upsolving" errorResponse={error}>
-			<Checkbox
-				value={toBoolean(form.enable_upsolving) ?? contest.enable_upsolving ?? false}
-				onValueChange={value => setForm({ ...form, enable_upsolving: value ? "true" : "false" })} />
-			<span className="label">Enable upsolving</span>
-		</Field>
-	</FormBlock>;
 };
 
 export type DeleteContestBlockProps = {

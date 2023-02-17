@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
-import { Contest, ContestMessage, ContestMessages, CreateContestMessage, createContestMessage, ErrorResponse, observeContestMessages, submitContestQuestion } from "../../api";
+import { Contest, ContestMessage, ContestMessages, createContestMessage, ErrorResponse, observeContestMessages, submitContestQuestion } from "../../api";
 import FormBlock from "../../components/FormBlock";
 import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
@@ -8,6 +8,7 @@ import Button from "../../ui/Button";
 import Field from "../../ui/Field";
 import Input from "../../ui/Input";
 import Textarea from "../../ui/Textarea";
+import { ParticipantLink } from "./participants";
 
 type MessageItemProps = {
     contest: Contest;
@@ -38,11 +39,12 @@ const MessageItem: FC<MessageItemProps> = props => {
             })
             .catch(setError);
     };
-    const canAnswer = canCreateMessage && !subMessages && message.kind == "question";
+    const canAnswer = canCreateMessage && !subMessages && message.kind === "question";
     return <div className="message-wrap">
         <div className="message">
             {message.title && <span className="title">{message.title}</span>}
             {message.description && <span className="description">{message.description}</span>}
+            {message.participant && <span className="participant"><ParticipantLink participant={message.participant} /></span>}
             {canAnswer && <span className="answer"><Button onClick={() => setShow(!show)}>Answer</Button></span>}
         </div>
         {show && <div className="new-message">

@@ -52,28 +52,34 @@ const DurationInput: FC<DurationInputProps> = props => {
             setSeconds(newSeconds);
         }
     }, [value, days, setDays, hours, setHours, minutes, setMinutes, seconds, setSeconds]);
+    const calcValue = (days?: number, hours?: number, minutes?: number, seconds?: number) => {
+        if (days === undefined && hours === undefined && minutes === undefined && seconds === undefined) {
+            return undefined;
+        }
+        return (((days ?? 0) * 24 + (hours ?? 0)) * 60 + (minutes ?? 0)) * 60 + (seconds ?? 0);
+    };
     const daysChange = (value?: number) => {
         if (onValueChange) {
             setDays(value);
-            onValueChange((((value ?? 0) * 24 + (hours ?? 0)) * 60 + (minutes ?? 0)) * 60 + (seconds ?? 0));
+            onValueChange(calcValue(value, hours, minutes, seconds));
         }
     };
     const hoursChange = (value?: number) => {
         if (onValueChange) {
             setHours(value);
-            onValueChange((((days || 0) * 24 + (value || 0)) * 60 + (minutes || 0)) * 60 + (seconds || 0));
+            onValueChange(calcValue(days, value, minutes, seconds));
         }
     };
     const minutesChange = (value?: number) => {
         if (onValueChange) {
             setMinutes(value);
-            onValueChange((((days || 0) * 24 + (hours || 0)) * 60 + (value || 0)) * 60 + (seconds || 0));
+            onValueChange(calcValue(days, hours, value, seconds));
         }
     };
     const secondsChange = (value?: number) => {
         if (onValueChange) {
             setSeconds(value);
-            onValueChange((((days || 0) * 24 + (hours || 0)) * 60 + (minutes || 0)) * 60 + (value || 0));
+            onValueChange(calcValue(days, hours, minutes, value));
         }
     };
     return <span className="ui-duration-input">

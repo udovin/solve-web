@@ -81,6 +81,8 @@ export type Contest = {
 	permissions?: string[];
 	enable_upsolving?: boolean;
 	enable_registration?: boolean;
+	freeze_begin_duration?: number;
+	freeze_end_time?: number;
 	state?: ContestState;
 };
 
@@ -199,6 +201,7 @@ export type ContestMessage = {
 	title?: string;
 	description?: string;
 	kind: string;
+	participant?: ContestParticipant;
 };
 
 export type ContestMessages = {
@@ -459,6 +462,8 @@ export type UpdateContestForm = {
 	duration?: number;
 	enable_registration?: boolean;
 	enable_upsolving?: boolean;
+	freeze_begin_duration?: number;
+	freeze_end_time?: number;
 };
 
 export const updateContest = (id: number, form: UpdateContestForm) => {
