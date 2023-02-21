@@ -58,6 +58,7 @@
         .code {
             text-align: right;
             width: 1%;
+            white-space: nowrap;
         }
 
         .title {
@@ -190,6 +191,7 @@
 
             .code {
                 display: block;
+                white-space: nowrap;
             }
 
             .points {
