@@ -84,6 +84,7 @@ export type Contest = {
 	freeze_begin_duration?: number;
 	freeze_end_time?: number;
 	state?: ContestState;
+	standings_kind?: string;
 };
 
 export type Contests = {
@@ -464,6 +465,7 @@ export type UpdateContestForm = {
 	enable_upsolving?: boolean;
 	freeze_begin_duration?: number;
 	freeze_end_time?: number;
+	standings_kind?: string;
 };
 
 export const updateContest = (id: number, form: UpdateContestForm) => {

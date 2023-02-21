@@ -7,6 +7,7 @@ import Checkbox from "../../ui/Checkbox";
 import DurationInput from "../../ui/DurationInput";
 import Field from "../../ui/Field";
 import Input from "../../ui/Input";
+import Select from "../../ui/Select";
 
 export type EditContestBlockProps = {
     contest: Contest;
@@ -15,7 +16,6 @@ export type EditContestBlockProps = {
 
 export const EditContestBlock: FC<EditContestBlockProps> = props => {
     const { contest, onUpdateContest } = props;
-    const [form, setForm] = useState<{ [key: string]: string }>({});
     const [title, setTitle] = useState(contest.title);
     const [beginTime, setBeginTime] = useState(contest.begin_time);
     const [duration, setDuration] = useState(contest.duration);
@@ -23,9 +23,9 @@ export const EditContestBlock: FC<EditContestBlockProps> = props => {
     const [enableUpsolving, setEnableUpsolving] = useState(contest.enable_upsolving);
     const [freezeBeginDuration, setFreezeBeginDuration] = useState(contest.freeze_begin_duration);
     const [freezeEndTime, setFreezeEndTime] = useState(contest.freeze_end_time);
+    const [standingsKind, setStandingsKind] = useState(contest.standings_kind);
     const [error, setError] = useState<ErrorResponse>();
     const onResetForm = () => {
-        setForm({});
         setTitle(contest.title);
         setBeginTime(contest.begin_time);
         setDuration(contest.duration);
@@ -33,6 +33,7 @@ export const EditContestBlock: FC<EditContestBlockProps> = props => {
         setEnableUpsolving(contest.enable_upsolving);
         setFreezeBeginDuration(contest.freeze_begin_duration);
         setFreezeEndTime(contest.freeze_end_time);
+        setStandingsKind(contest.standings_kind);
         setError(undefined);
     };
     const onSubmit = (event: any) => {
@@ -45,6 +46,7 @@ export const EditContestBlock: FC<EditContestBlockProps> = props => {
             enable_upsolving: enableUpsolving,
             freeze_begin_duration: freezeBeginDuration,
             freeze_end_time: freezeEndTime,
+            standings_kind: standingsKind,
         })
             .then(contest => {
                 onUpdateContest && onUpdateContest(contest);
@@ -58,7 +60,8 @@ export const EditContestBlock: FC<EditContestBlockProps> = props => {
         enableRegistration !== contest.enable_registration ||
         enableUpsolving !== contest.enable_upsolving ||
         freezeBeginDuration !== contest.freeze_begin_duration ||
-        freezeEndTime !== contest.freeze_end_time;
+        freezeEndTime !== contest.freeze_end_time ||
+        (standingsKind ?? "disabled") !== (contest.standings_kind ?? "disabled");
     return <FormBlock className="b-contest-edit" title="Edit contest" onSubmit={onSubmit} footer={<>
         <Button
             type="submit" color="primary"
@@ -96,6 +99,12 @@ export const EditContestBlock: FC<EditContestBlockProps> = props => {
                 value={enableUpsolving ?? false}
                 onValueChange={setEnableUpsolving} />
             <span className="label">Enable upsolving</span>
+        </Field>
+        <Field title="Standings" name="standings_kind" errorResponse={error}>
+            <Select
+                options={{ disabled: "Disabled", icpc: "ICPC", ioi: "IOI" }}
+                value={standingsKind ?? "disabled"}
+                onValueChange={setStandingsKind} />
         </Field>
         <Field title="Freeze since duration:" name="freeze_begin_duration" errorResponse={error}>
             <DurationInput
