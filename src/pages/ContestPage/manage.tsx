@@ -100,7 +100,7 @@ export const EditContestBlock: FC<EditContestBlockProps> = props => {
                 onValueChange={setEnableUpsolving} />
             <span className="label">Enable upsolving</span>
         </Field>
-        <Field title="Standings" name="standings_kind" errorResponse={error}>
+        <Field title="Standings:" name="standings_kind" errorResponse={error}>
             <Select
                 options={{ disabled: "Disabled", icpc: "ICPC", ioi: "IOI" }}
                 value={standingsKind ?? "disabled"}
