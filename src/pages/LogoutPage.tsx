@@ -1,5 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
+import { logoutUser } from "../api";
 import { AuthContext } from "../AuthContext";
 
 const LogoutPage = () => {
@@ -9,12 +10,7 @@ const LogoutPage = () => {
 		if (!status) {
 			return;
 		}
-		fetch("/api/v0/logout", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json; charset=UTF-8",
-			},
-		})
+		logoutUser()
 			.then(() => {
 				setSuccess(true);
 				updateStatus();

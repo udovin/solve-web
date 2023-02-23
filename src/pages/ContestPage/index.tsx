@@ -10,6 +10,7 @@ import {
 	ErrorResponse,
 	observeCompilers,
 	observeContest,
+	observeContestProblem,
 	Solution,
 	submitContestSolution,
 } from "../../api";
@@ -118,9 +119,8 @@ const ContestProblemBlock: FC = () => {
 	const { contest_id, problem_code } = params;
 	const [problem, setProblem] = useState<ContestProblem>();
 	useEffect(() => {
-		fetch(`/api/v0/contests/${contest_id}/problems/${problem_code}`)
-			.then(result => result.json())
-			.then(result => setProblem(result));
+		observeContestProblem(Number(contest_id), problem_code ?? "")
+			.then(setProblem);
 	}, [contest_id, problem_code]);
 	if (!problem) {
 		return <>Loading...</>;

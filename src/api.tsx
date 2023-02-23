@@ -358,6 +358,13 @@ export const loginUser = (form: LoginForm) => {
 	}), true);
 };
 
+export const logoutUser = () => {
+	return parseResp(fetch(`${BASE}/api/v0/logout`, {
+		method: "POST",
+		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
+	}), true);
+};
+
 export const registerUser = (form: RegisterForm) => {
 	return parseResp(fetch(`${BASE}/api/v0/register`, {
 		method: "POST",
@@ -498,7 +505,14 @@ export const observeSolution = (id: number) => {
 };
 
 export const observeContestProblems = (id: number) => {
-	return parseResp(fetch(`${BASE}/api/v0/contests/${id}/problems`, {
+	return parseResp<ContestProblems>(fetch(`${BASE}/api/v0/contests/${id}/problems`, {
+		method: "GET",
+		headers: getHeaders(),
+	}));
+};
+
+export const observeContestProblem = (id: number, code: string) => {
+	return parseResp<ContestProblem>(fetch(`${BASE}/api/v0/contests/${id}/problems/${code}`, {
 		method: "GET",
 		headers: getHeaders(),
 	}));
