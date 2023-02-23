@@ -56,12 +56,18 @@ export type ProblemStatement = {
 	samples?: ProblemStatementSample[];
 };
 
+export type ProblemTask = {
+	status?: string;
+	error?: string;
+};
+
 export type Problem = {
 	id: number;
 	title: string;
 	config?: ProblemConfig;
 	statement?: ProblemStatement;
 	permissions?: string[];
+	last_task?: ProblemTask;
 };
 
 export type Problems = {
@@ -359,10 +365,12 @@ export const loginUser = (form: LoginForm) => {
 };
 
 export const logoutUser = () => {
-	return parseResp(fetch(`${BASE}/api/v0/logout`, {
+	return fetch(`${BASE}/api/v0/logout`, {
 		method: "POST",
 		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
-	}), true);
+	}).then(() => {
+		fetchActuality = Date.now() + 3000;
+	});
 };
 
 export const registerUser = (form: RegisterForm) => {

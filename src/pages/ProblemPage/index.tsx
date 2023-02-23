@@ -1,10 +1,11 @@
 import { FC, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { BASE, ContestProblem, ErrorResponse, observeProblem, Problem, ProblemStatementSample } from "../../api";
+import { BASE, ContestProblem, ErrorResponse, observeProblem, Problem, ProblemStatementSample, ProblemTask } from "../../api";
 import Page from "../../components/Page";
-import Alert from "../../ui/Alert";
+import Alert, { AlertKind } from "../../ui/Alert";
 import Block from "../../ui/Block";
 import ByteSize from "../../ui/ByteSize";
+import { Collapse, CollapseContent, CollapseHeader } from "../../ui/Collapse";
 import Duration from "../../ui/Duration";
 import Icon from "../../ui/Icon";
 import IconButton from "../../ui/IconButton";
@@ -48,6 +49,31 @@ const ProblemSamlpes: FC<ProblemSamplesProps> = props => {
 	</table>;
 };
 
+type ProblemTaskNoticeProps = {
+	task?: ProblemTask;
+};
+
+const ProblemTaskNotice: FC<ProblemTaskNoticeProps> = props => {
+	const { task } = props;
+	const [show, setShow] = useState<boolean>(false);
+	if (!task) {
+		return <></>;
+	}
+	if (task.status === "queued" || task.status === "running") {
+		return <Alert kind={AlertKind.WARNING}>Building compiled problem package.</Alert>;
+	}
+	if (task.status === "failed") {
+		return <Alert kind={AlertKind.DANGER}>
+			<p>Unable to build compiled problem package.</p>
+			{!!task.error && <Collapse expanded={show} onChange={() => setShow(!show)}>
+				<CollapseHeader>Detailed error</CollapseHeader>
+				<CollapseContent><code>{task.error}</code></CollapseContent>
+			</Collapse>}
+		</Alert>;
+	}
+	return <></>;
+};
+
 type ProblemBlockProps = {
 	problem: ContestProblem | Problem;
 	imageBaseUrl?: string;
@@ -58,6 +84,7 @@ export const ProblemBlock: FC<ProblemBlockProps> = props => {
 	const { config, statement } = problem;
 	const contestProblem = problem as ContestProblem;
 	return <Block title={`${contestProblem.code ? `${contestProblem.code}. ` : ""}${statement?.title ?? problem.title}`} className="b-problem-statement">
+		<ProblemTaskNotice task={problem.last_task} />
 		{config && <table className="ui-table section limits">
 			<tbody>
 				{config.time_limit && <tr>
@@ -140,9 +167,7 @@ const ProblemPage: FC = () => {
 		<Sidebar />
 	</>}>
 		{problem ?
-			<>
-				<ProblemBlock problem={problem} imageBaseUrl={`${BASE}/api/v0/problems/${problem.id}/resources/`} />
-			</> :
+			<ProblemBlock problem={problem} imageBaseUrl={`${BASE}/api/v0/problems/${problem.id}/resources/`} /> :
 			<>Loading...</>}
 	</Page>;
 };

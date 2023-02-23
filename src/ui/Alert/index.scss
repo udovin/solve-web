@@ -32,9 +32,39 @@
 		background-color: #f2dede;
 		border-color: #ebcccc;
 		color: #a94442;
+
+		.ui-collapse {
+			>.ui-collapse-header {
+				>.arrow {
+					background-image: url('../../images/icons-red.svg');
+				}
+			}
+		}
 	}
 
 	.ui-alert-content {
 		padding: 10px;
+
+		.ui-collapse {
+			background-color: transparent;
+			border: none;
+
+			>.ui-collapse-header {
+				padding: 0 0 0 16px;
+				line-height: 16px;
+
+				>.arrow {
+					top: 0;
+					left: 0;
+					width: 16px;
+					height: 16px;
+				}
+			}
+
+			>.ui-collapse-content {
+				padding: 0;
+				border-top: none;
+			}
+		}
 	}
 }
