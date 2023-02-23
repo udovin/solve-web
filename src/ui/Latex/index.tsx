@@ -3,6 +3,7 @@ import { Macro } from "@unified-latex/unified-latex-types";
 import { unifiedLatexFromString } from "@unified-latex/unified-latex-util-parse";
 import { convertToHtml } from "@unified-latex/unified-latex-to-hast";
 import { htmlLike } from "@unified-latex/unified-latex-util-html-like";
+import { s } from "@unified-latex/unified-latex-builder";
 import { replaceNode } from "@unified-latex/unified-latex-util-replace";
 import { printRaw } from "@unified-latex/unified-latex-util-print-raw";
 import { pgfkeysArgToObject } from "@unified-latex/unified-latex-util-pgfkeys";
@@ -51,6 +52,12 @@ const macros: Record<string, (node: Macro, context: Context) => any> = {
         const imageUrl = (context.imageBaseUrl ?? "") + imageName;
         return htmlLike({ tag: "img", attributes: { src: imageUrl, style: style } });
     },
+    "^": (node: Macro) => {
+        if (node.escapeToken !== undefined) {
+            return node;
+        }
+        return s("^");
+    },
 };
 
 const Latex: FC<LatexProps> = props => {
@@ -59,7 +66,7 @@ const Latex: FC<LatexProps> = props => {
     const context = {
         imageBaseUrl: imageBaseUrl,
     };
-    replaceNode(ast, (node) => {
+    replaceNode(ast, node => {
         if (node.type !== "macro") {
             return undefined;
         }
