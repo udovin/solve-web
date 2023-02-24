@@ -1,0 +1,21 @@
+@import "../../mixins.scss";
+
+.ui-datetime-input {
+    display: inline-block;
+    position: relative;
+    z-index: 0;
+}
+
+.ui-datetime-input-calendar {
+    display: block;
+    position: absolute;
+    z-index: 20;
+
+    >.calendar {
+        display: block;
+        border: 1px solid $light-border-color;
+        border-radius: 4px;
+        background-color: $light-background-color;
+        overflow: hidden;
+    }
+}

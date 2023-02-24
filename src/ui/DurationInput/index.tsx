@@ -116,7 +116,7 @@ const DurationInput: FC<DurationInputProps> = props => {
             placeholder="ss"
             formatNumber={formatPart}
         />
-    </span>
+    </span>;
 };
 
 export default DurationInput;
