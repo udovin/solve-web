@@ -164,6 +164,7 @@ export type ContestStandingsRow = {
 	participant?: ContestParticipant;
 	score?: number;
 	penalty?: number;
+	place?: number;
 	cells?: ContestStandingsCell[];
 };
 

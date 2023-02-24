@@ -65,8 +65,8 @@ export const ContestStandingsBlock: FC<ContestStandingsBlockProps> = props => {
                         }
                     }
                     const { participant } = row;
-                    return <tr>
-                        <td className="id">{index + 1}</td>
+                    return <tr key={index}>
+                        <td className="id">{row.place ?? ""}</td>
                         <td className="participant">
                             {!!participant && <ParticipantLink participant={participant} />}
                         </td>
