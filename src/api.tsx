@@ -53,6 +53,7 @@ export type ProblemStatement = {
 	input?: string;
 	output?: string;
 	notes?: string;
+	scoring?: string;
 	samples?: ProblemStatementSample[];
 };
 

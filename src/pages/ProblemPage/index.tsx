@@ -114,6 +114,10 @@ export const ProblemBlock: FC<ProblemBlockProps> = props => {
 			<h3>Output</h3>
 			<Latex className={"section output"} content={statement?.output} imageBaseUrl={imageBaseUrl} />
 		</>}
+		{statement?.scoring && <>
+			<h3>Scoring</h3>
+			<Latex className={"section scoring"} content={statement?.scoring} imageBaseUrl={imageBaseUrl} />
+		</>}
 		{statement?.samples && <>
 			<h3>Samples</h3>
 			<ProblemSamlpes samples={statement.samples} />

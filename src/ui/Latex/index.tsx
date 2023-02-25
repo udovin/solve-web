@@ -65,7 +65,7 @@ const macros: Record<string, (node: Macro, info: VisitInfo, context: Context) =>
         }
         const nextToken = info.containingArray[info.index + 1];
         const content = printRaw(nextToken);
-        if (content != "{}") {
+        if (content !== "{}") {
             return undefined;
         }
         return s("^");
