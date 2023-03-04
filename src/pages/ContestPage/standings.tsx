@@ -1,6 +1,8 @@
 import { FC, useEffect, useState } from "react";
 import { Contest, ContestStandings, ContestStandingsCell, observeContestStandings } from "../../api";
 import Block from "../../ui/Block";
+import Checkbox from "../../ui/Checkbox";
+import Field from "../../ui/Field";
 import { ParticipantLink } from "./participants";
 
 type ContestStandingsBlockProps = {
@@ -33,14 +35,24 @@ const StandingsDuration: FC<StandingsDurationProps> = props => {
 export const ContestStandingsBlock: FC<ContestStandingsBlockProps> = props => {
     const { contest } = props;
     const [standings, setStandings] = useState<ContestStandings>();
+    const [ignoreFreeze, setIgnoreFreeze] = useState<boolean>();
     useEffect(() => {
-        observeContestStandings(contest.id)
+        observeContestStandings(contest.id, ignoreFreeze)
             .then(setStandings);
-    }, [contest.id]);
+    }, [contest.id, ignoreFreeze]);
     if (!standings) {
         return <>Loading...</>;
     }
-    return <Block title="Standings" className="b-contest-standings">
+    const canObserveFullStandings = contest.permissions?.includes("observe_contest_full_standings");
+    return <Block header={<>
+        <span className="title">Standings</span>
+        {canObserveFullStandings && <Field>
+            <Checkbox
+                value={ignoreFreeze ?? false}
+                onValueChange={setIgnoreFreeze} />
+            <span className="label">Show unfrozen</span>
+        </Field>}
+    </>} className="b-contest-standings">
         <table className="ui-table">
             <thead>
                 <tr>
@@ -52,6 +64,7 @@ export const ContestStandingsBlock: FC<ContestStandingsBlockProps> = props => {
                         return <th className={"problem"} key={index}>
                             <span className="code">{column.code}</span>
                             {column.points && <span className="points">{column.points}</span>}
+                            {<span className="solutions">{column.accepted_solutions ?? 0} &#8725; {column.total_solutions ?? 0}</span>}
                         </th>;
                     })}
                 </tr>

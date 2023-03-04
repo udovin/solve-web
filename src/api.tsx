@@ -152,6 +152,8 @@ export type ContestParticipants = {
 export type ContestStandingsColumn = {
 	code?: string;
 	points?: number;
+	total_solutions?: number;
+	accepted_solutions?: number;
 };
 
 export type ContestStandingsCell = {
@@ -556,8 +558,20 @@ export const observeContestParticipants = (id: number) => {
 	}));
 };
 
-export const observeContestStandings = (id: number) => {
-	return parseResp(fetch(`${BASE}/api/v0/contests/${id}/standings`, {
+const encodeQueryData = (query: Record<string, string>) => {
+	const result = [];
+	for (let key in query) {
+		result.push(encodeURIComponent(key) + '=' + encodeURIComponent(query[key]));
+	}
+	return result.join("&");
+};
+
+export const observeContestStandings = (id: number, ignoreFreeze?: boolean, onlyOfficial?: boolean) => {
+	const query = {
+		"ignore_freeze": ignoreFreeze ? "t" : "f",
+		"only_official": onlyOfficial ? "t" : "f",
+	};
+	return parseResp(fetch(`${BASE}/api/v0/contests/${id}/standings?${encodeQueryData(query)}`, {
 		method: "GET",
 		headers: getHeaders(),
 	}));

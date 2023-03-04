@@ -157,6 +157,13 @@
 }
 
 .b-contest-standings {
+    .ui-block-header {
+        .ui-field {
+            display: inline-block;
+            margin-left: 10px;
+        }
+    }
+
     .ui-block-content {
         padding: 0;
         overflow-x: auto;
@@ -194,10 +201,16 @@
                 white-space: nowrap;
             }
 
-            .points {
+            .points,
+            .solutions {
                 display: block;
                 font-weight: normal;
                 font-size: 9px;
+                white-space: nowrap;
+            }
+
+            .solutions {
+                color: #666666;
             }
 
             .attempt {
