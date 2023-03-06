@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { matchPath, Navigate, Route, Routes, useLocation, useParams } from "react-router-dom";
 import Page from "../../components/Page";
 import {
@@ -32,6 +32,7 @@ import Duration from "../../ui/Duration";
 import { ContestTabs } from "./tabs";
 import { ContestMessagesBlock, CreateContestMessageBlock, SubmitContestQuestionBlock } from "./messages";
 import { EditContestBlock } from "./manage";
+import FileInput from "../../ui/FileInput";
 
 import "./index.scss";
 
@@ -52,12 +53,17 @@ const ContestProblemSideBlock: FC<ContestSideBlockProps> = props => {
 	const [compiler, setCompiler] = useState<number>();
 	const [error, setError] = useState<ErrorResponse>();
 	const [compilers, setCompilers] = useState<Compilers>();
+	const [uploading, setUploading] = useState<boolean>(false);
 	const selectedCompiler = compiler ?? toNumber(localStorage.getItem("last_compiler"));
 	const compilerInfo = compilers?.compilers?.find(compiler => compiler.id === selectedCompiler);
 	const extensions = compilerInfo?.config?.extensions?.map(ext => `.${ext}`).join(",");
 	const canSubmitSolution = contest.permissions?.includes("submit_contest_solution");
 	const onSubmit = (event: any) => {
+		if (uploading) {
+			return;
+		}
 		event.preventDefault();
+		setUploading(true);
 		setError(undefined);
 		file && compilerInfo && submitContestSolution(Number(contest_id), String(problem_code), {
 			compiler_id: compilerInfo.id,
@@ -69,7 +75,8 @@ const ContestProblemSideBlock: FC<ContestSideBlockProps> = props => {
 				setError(undefined);
 				localStorage.setItem("last_compiler", String(compilerInfo.id));
 			})
-			.catch(setError);
+			.catch(setError)
+			.finally(() => setUploading(false));
 	};
 	useEffect(() => {
 		observeCompilers()
@@ -82,7 +89,7 @@ const ContestProblemSideBlock: FC<ContestSideBlockProps> = props => {
 	const errorMessage = error && error.message;
 	const invalidFields = (error && error.invalid_fields) || {};
 	return <FormBlock onSubmit={onSubmit} title="Submit solution" footer={
-		<Button type="submit" color="primary" disabled={!canSubmitSolution}>Submit</Button>
+		<Button type="submit" color="primary" disabled={!canSubmitSolution || uploading}>Submit</Button>
 	}>
 		{errorMessage && <Alert>{errorMessage}</Alert>}
 		<Field title="Compiler:" name="compiler_id" errorResponse={error}>
@@ -104,10 +111,11 @@ const ContestProblemSideBlock: FC<ContestSideBlockProps> = props => {
 			/>
 		</Field>
 		<Field title="Solution file:">
-			<input
-				type="file" name="file"
+			<FileInput
+				name="file"
 				accept={extensions}
-				onChange={(e: ChangeEvent<HTMLInputElement>) => setFile(e.target.files?.[0])}
+				file={file}
+				onFileChange={setFile}
 				required />
 			{invalidFields["file"] && <Alert>{invalidFields["file"].message}</Alert>}
 		</Field>
