@@ -14,6 +14,7 @@ export const ContestTabs: FC<ContestTabsProps> = props => {
     const { id, permissions, state } = contest;
     const canRegister = !state?.participant && permissions?.includes("register_contest");
     const canObserveProblems = permissions?.includes("observe_contest_problems");
+    const canSubmitSolution = permissions?.includes("submit_contest_solution");
     const canObserveSolutions = permissions?.includes("observe_contest_solutions");
     const canObserveStandings = permissions?.includes("observe_contest_standings");
     const canObserveMessages = permissions?.includes("observe_contest_messages");
@@ -26,6 +27,9 @@ export const ContestTabs: FC<ContestTabsProps> = props => {
             </Tab>}
             {canObserveSolutions && <Tab tab="solutions">
                 <Link to={`/contests/${id}/solutions`}>Solutions</Link>
+            </Tab>}
+            {canSubmitSolution && <Tab tab="submit">
+                <Link to={`/contests/${id}/submit`}>Submit</Link>
             </Tab>}
             {canObserveStandings && <Tab tab="standings">
                 <Link to={`/contests/${id}/standings`}>Standings</Link>

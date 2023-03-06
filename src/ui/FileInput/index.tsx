@@ -8,12 +8,13 @@ export type FileInputProps = {
     name?: string;
     accept?: string;
     required?: boolean;
+    disabled?: boolean;
     file?: File;
     onFileChange?(file?: File): void;
 };
 
 const FileInput: FC<FileInputProps> = props => {
-    const { name, accept, file, onFileChange, ...rest } = props;
+    const { name, accept, file, onFileChange, disabled, ...rest } = props;
     const ref = useRef<HTMLInputElement>(null);
     useEffect(() => {
         const element = ref.current;
@@ -32,9 +33,9 @@ const FileInput: FC<FileInputProps> = props => {
         element.click();
     };
     return <>
-        <Button className="ui-file-input" onClick={onClick}>
+        <Button className="ui-file-input" onClick={onClick} disabled={disabled}>
             <Icon kind="document" />
-            <span className="filename">{file ? <>{file.name}</> : <>Choose file</>}</span>
+            <span className="filename" title={file ? file.name : undefined}>{file ? <>{file.name}</> : <>Choose file</>}</span>
         </Button>
         <input
             type="file"
@@ -43,6 +44,7 @@ const FileInput: FC<FileInputProps> = props => {
             ref={ref}
             style={{ display: "none" }}
             onChange={(e: ChangeEvent<HTMLInputElement>) => onFileChange && onFileChange(e.target.files?.[0])}
+            disabled={disabled}
             {...rest} />
     </>;
 };

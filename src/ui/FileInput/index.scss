@@ -50,5 +50,7 @@
         margin-left: 28px;
         white-space: nowrap;
         text-align: left;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }

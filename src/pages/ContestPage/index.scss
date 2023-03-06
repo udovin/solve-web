@@ -30,6 +30,14 @@
     }
 }
 
+.b-contest-side-submit {
+    .ui-block-footer {
+        span {
+            padding-left: 8px;
+        }
+    }
+}
+
 .b-contest-edit {
     .ui-block-footer {
         @include clear-fix;

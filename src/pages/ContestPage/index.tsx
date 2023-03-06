@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { matchPath, Navigate, Route, Routes, useLocation, useParams } from "react-router-dom";
+import { Link, matchPath, Navigate, Route, Routes, useLocation, useParams } from "react-router-dom";
 import Page from "../../components/Page";
 import {
 	BASE,
@@ -24,7 +24,7 @@ import { TabContent, TabsGroup } from "../../ui/Tabs";
 import Select from "../../ui/Select";
 import { ProblemBlock } from "../ProblemPage";
 import { ContestProblemsBlock } from "./problems";
-import { ContestSolutionsBlock, ContestSolutionBlock } from "./solutions";
+import { ContestSolutionsBlock, ContestSolutionBlock, ContestSubmitSolutionBlock } from "./solutions";
 import { ContestParticipantsBlock } from "./participants";
 import { ContestRegisterBlock } from "./register";
 import { ContestStandingsBlock } from "./standings";
@@ -59,13 +59,13 @@ const ContestProblemSideBlock: FC<ContestSideBlockProps> = props => {
 	const extensions = compilerInfo?.config?.extensions?.map(ext => `.${ext}`).join(",");
 	const canSubmitSolution = contest.permissions?.includes("submit_contest_solution");
 	const onSubmit = (event: any) => {
-		if (uploading) {
+		event.preventDefault();
+		if (uploading || !file || !compilerInfo) {
 			return;
 		}
-		event.preventDefault();
 		setUploading(true);
 		setError(undefined);
-		file && compilerInfo && submitContestSolution(Number(contest_id), String(problem_code), {
+		submitContestSolution(Number(contest_id), String(problem_code), {
 			compiler_id: compilerInfo.id,
 			file: file,
 		})
@@ -87,10 +87,14 @@ const ContestProblemSideBlock: FC<ContestSideBlockProps> = props => {
 		return <Navigate to={`/contests/${contest_id}/solutions`} />
 	}
 	const errorMessage = error && error.message;
-	const invalidFields = (error && error.invalid_fields) || {};
-	return <FormBlock onSubmit={onSubmit} title="Submit solution" footer={
-		<Button type="submit" color="primary" disabled={!canSubmitSolution || uploading}>Submit</Button>
-	}>
+	return <FormBlock onSubmit={onSubmit} title="Submit solution" className="b-contest-side-submit" footer={<>
+		<Button
+			type="submit"
+			color="primary"
+			disabled={!canSubmitSolution || uploading || !file || !compilerInfo}
+		>Submit</Button>
+		<span>or <Link to={`/contests/${contest_id}/submit`}>paste source code</Link>.</span>
+	</>}>
 		{errorMessage && <Alert>{errorMessage}</Alert>}
 		<Field title="Compiler:" name="compiler_id" errorResponse={error}>
 			<Select
@@ -107,19 +111,19 @@ const ContestProblemSideBlock: FC<ContestSideBlockProps> = props => {
 					}
 					return { ...options, [compiler.id]: name };
 				}, {}) ?? {}}
-				disabled={!compilers?.compilers}
+				disabled={!canSubmitSolution || !compilers?.compilers}
 			/>
 		</Field>
-		<Field title="Solution file:">
+		<Field title="Solution file:" name="file" errorResponse={error}>
 			<FileInput
 				name="file"
 				accept={extensions}
 				file={file}
 				onFileChange={setFile}
+				disabled={!canSubmitSolution}
 				required />
-			{invalidFields["file"] && <Alert>{invalidFields["file"].message}</Alert>}
 		</Field>
-	</FormBlock >;
+	</FormBlock>;
 };
 
 const ContestProblemBlock: FC = () => {
@@ -190,6 +194,13 @@ const ContestProblemsTab: FC<ContestTabProps> = props => {
 	const canObserveProblems = permissions?.includes("observe_contest_problems");
 	return <TabContent tab="problems" setCurrent>
 		{canObserveProblems ? <ContestProblemsBlock contest={contest} /> : <ContestSideBlock contest={contest} />}
+	</TabContent>;
+};
+
+const ContestSubmitSolutionTab: FC<ContestTabProps> = props => {
+	const { contest } = props;
+	return <TabContent tab="submit" setCurrent>
+		<ContestSubmitSolutionBlock contest={contest} />
 	</TabContent>;
 };
 
@@ -331,6 +342,7 @@ const ContestPage: FC = () => {
 	const { title, permissions } = contest;
 	const canObserveProblems = permissions?.includes("observe_contest_problems");
 	const canObserveMessages = permissions?.includes("observe_contest_messages");
+	const canSubmitSolution = permissions?.includes("submit_contest_solution");
 	const canSubmitQuestion = permissions?.includes("submit_contest_question");
 	const canCreateMessage = permissions?.includes("create_contest_message");
 	const canObserveParticipants = permissions?.includes("observe_contest_participants");
@@ -350,6 +362,7 @@ const ContestPage: FC = () => {
 				<Route index element={<ContestProblemsTab contest={contest} />} />
 				{canObserveProblems && <Route path="/problems" element={<ContestProblemsTab contest={contest} />} />}
 				<Route path="/solutions" element={<ContestSolutionsTab contest={contest} />} />
+				{canSubmitSolution && <Route path="/submit" element={<ContestSubmitSolutionTab contest={contest} />} />}
 				<Route path="/standings" element={<ContestStandingsTab contest={contest} />} />
 				{canObserveMessages && <Route path="/messages" element={<ContestMessagesTab contest={contest} />} />}
 				{canSubmitQuestion && <Route path="/question" element={<ContestQuestionTab contest={contest} />} />}
