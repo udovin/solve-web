@@ -237,14 +237,13 @@ export const ContestSubmitSolutionBlock: FC<ContestSubmitSolutionBlockProps> = p
     }
     const errorMessage = error && error.message;
     console.log(compilerInfo?.config?.extensions?.at(0));
-    return <FormBlock onSubmit={onSubmit} title="Submit solution" className="b-contest-side-submit" footer={<>
+    return <FormBlock onSubmit={onSubmit} title="Submit solution" className="b-contest-side-submit" footer={
         <Button
             type="submit"
             color="primary"
             disabled={!canSubmitSolution || uploading || !file || !compilerInfo}
         >Submit</Button>
-        <span>or <Link to={`/contests/${contest.id}/submit`}>paste source code</Link>.</span>
-    </>}>
+    }>
         {errorMessage && <Alert>{errorMessage}</Alert>}
         <Field title="Problem:" name="problem_code" errorResponse={error}>
             <Select

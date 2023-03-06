@@ -125,6 +125,12 @@
         padding: 0;
         overflow-x: auto;
     }
+
+    .ui-code {
+        display: block;
+        border: none;
+        border-radius: 0 0 3px 3px;
+    }
 }
 
 .b-contest-participants {

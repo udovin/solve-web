@@ -19,6 +19,7 @@ export type CodeProps = {
 };
 
 const languages: Record<string, Extension | undefined> = {
+    "c": cpp(),
     "cpp": cpp(),
     "py": python(),
     "java": java(),
@@ -45,7 +46,7 @@ const Code: FC<CodeProps> = props => {
             [
                 lineNumbers(),
                 foldGutter(),
-                syntaxHighlighting(highlightStyle, { fallback: true }),
+                syntaxHighlighting(highlightStyle),
                 bracketMatching(),
             ],
         ];
