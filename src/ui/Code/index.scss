@@ -3,6 +3,10 @@
     border-radius: 4px;
     overflow: hidden;
 
+    .cm-gutter.cm-lineNumbers {
+        margin-left: 4px;
+    }
+
     .hl-comment {
         color: #008000;
     }

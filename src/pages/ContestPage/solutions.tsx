@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import { Compilers, Contest, ContestProblem, ContestProblems, ContestSolution, ContestSolutions, ErrorResponse, observeCompilers, observeContestProblems, observeContestSolution, observeContestSolutions, rejudgeContestSolution, Solution, submitContestSolution } from "../../api";
 import FormBlock from "../../components/FormBlock";
 import Alert from "../../ui/Alert";
@@ -180,7 +180,7 @@ export const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
             </table>
         </Block>
         {content && <Block title="Content" className="b-contest-solution-content">
-            <Code content={content} language={compiler?.config?.extensions?.at(0)} />
+            <Code value={content} language={compiler?.config?.extensions?.at(0)} readOnly={true} />
         </Block>}
         {report && <SolutionReportBlock report={report} />}
     </>;
@@ -192,9 +192,13 @@ type ContestSubmitSolutionBlockProps = {
 
 export const ContestSubmitSolutionBlock: FC<ContestSubmitSolutionBlockProps> = props => {
     const { contest } = props;
+    const { search } = useLocation();
+    const query = new URLSearchParams(search);
+    const queryProblem = query.get("problem") || undefined;
     const [newSolution, setNewSolution] = useState<Solution>();
-    const [problem, setProblem] = useState<string>();
+    const [problem, setProblem] = useState<string | undefined>(queryProblem);
     const [compiler, setCompiler] = useState<number>();
+    const [content, setContent] = useState<string>();
     const [file, setFile] = useState<File>();
     const [error, setError] = useState<ErrorResponse>();
     const [compilers, setCompilers] = useState<Compilers>();
@@ -206,17 +210,19 @@ export const ContestSubmitSolutionBlock: FC<ContestSubmitSolutionBlockProps> = p
     const canSubmitSolution = contest.permissions?.includes("submit_contest_solution");
     const onSubmit = (event: any) => {
         event.preventDefault();
-        if (uploading || !file || !compilerInfo) {
+        if (uploading || (!file && !content) || !compilerInfo || !problem) {
             return;
         }
         setUploading(true);
         setError(undefined);
-        submitContestSolution(Number(contest.id), String(contest.id), {
+        const fileResult = file ?? content ?? "";
+        submitContestSolution(Number(contest.id), problem, {
             compiler_id: compilerInfo.id,
-            file: file,
+            file: fileResult,
         })
             .then(solution => {
                 setNewSolution(solution);
+                setContent(undefined);
                 setFile(undefined);
                 setError(undefined);
                 localStorage.setItem("last_compiler", String(compilerInfo.id));
@@ -236,12 +242,11 @@ export const ContestSubmitSolutionBlock: FC<ContestSubmitSolutionBlockProps> = p
         return <Navigate to={`/contests/${contest.id}/solutions`} />
     }
     const errorMessage = error && error.message;
-    console.log(compilerInfo?.config?.extensions?.at(0));
-    return <FormBlock onSubmit={onSubmit} title="Submit solution" className="b-contest-side-submit" footer={
+    return <FormBlock onSubmit={onSubmit} title="Submit solution" className="b-contest-submit" footer={
         <Button
             type="submit"
             color="primary"
-            disabled={!canSubmitSolution || uploading || !file || !compilerInfo}
+            disabled={!canSubmitSolution || uploading || (!file && !content) || !problem || !compilerInfo}
         >Submit</Button>
     }>
         {errorMessage && <Alert>{errorMessage}</Alert>}
@@ -276,7 +281,11 @@ export const ContestSubmitSolutionBlock: FC<ContestSubmitSolutionBlockProps> = p
             />
         </Field>
         <Field title="Solution content:" name="content">
-            <Code editable={true} language={compilerInfo?.config?.extensions?.at(0)} />
+            <Code
+                editable={true}
+                language={compilerInfo?.config?.extensions?.at(0)}
+                value={content}
+                onValueChange={setContent} />
         </Field>
         <Field title="Solution file:" name="file" errorResponse={error}>
             <FileInput
@@ -284,8 +293,7 @@ export const ContestSubmitSolutionBlock: FC<ContestSubmitSolutionBlockProps> = p
                 accept={extensions}
                 file={file}
                 onFileChange={setFile}
-                disabled={!canSubmitSolution}
-                required />
+                disabled={!canSubmitSolution} />
         </Field>
     </FormBlock>;
 };

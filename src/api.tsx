@@ -670,7 +670,7 @@ export const rebuildProblem = (id: number, form: RebuildProblemForm) => {
 
 export type SubmitContestSolution = {
 	compiler_id: number;
-	file: File;
+	file: File | string;
 };
 
 export const submitContestSolution = (
@@ -678,7 +678,11 @@ export const submitContestSolution = (
 ) => {
 	const formData = new FormData();
 	formData.append("compiler_id", String(form.compiler_id));
-	formData.append("file", form.file, form.file.name);
+	if (form.file instanceof File) {
+		formData.append("file", form.file, form.file.name);
+	} else {
+		formData.append("content", form.file);
+	}
 	return parseResp(fetch(
 		`${BASE}/api/v0/contests/${contestID}/problems/${problemCode}/submit`,
 		{

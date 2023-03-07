@@ -30,6 +30,19 @@
     }
 }
 
+.b-contest-submit {
+    .ui-code {
+		.cm-scroller {
+			max-height: 620px;
+		}
+
+		.cm-content,
+		.cm-gutter {
+			min-height: 240px;
+		}
+    }
+}
+
 .b-contest-side-submit {
     .ui-block-footer {
         span {

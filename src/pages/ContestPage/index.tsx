@@ -93,7 +93,7 @@ const ContestProblemSideBlock: FC<ContestSideBlockProps> = props => {
 			color="primary"
 			disabled={!canSubmitSolution || uploading || !file || !compilerInfo}
 		>Submit</Button>
-		<span>or <Link to={`/contests/${contest_id}/submit`}>paste source code</Link>.</span>
+		<span>or <Link to={`/contests/${contest_id}/submit?problem=${problem_code}`}>paste source code</Link>.</span>
 	</>}>
 		{errorMessage && <Alert>{errorMessage}</Alert>}
 		<Field title="Compiler:" name="compiler_id" errorResponse={error}>

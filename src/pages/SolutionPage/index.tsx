@@ -74,9 +74,9 @@ export const SolutionReportBlock: FC<SolutionReportBlockProps> = props => {
 					<th className="check-log">Check log</th>
 				</tr>
 			</thead>
-			<tbody>{report && report.tests?.map((test: TestReport, key: number) => {
-				return <tr className="test">
-					<td className="id">{key + 1}</td>
+			<tbody>{report && report.tests?.map((test: TestReport, index: number) => {
+				return <tr className="test" key={index}>
+					<td className="id">{index + 1}</td>
 					<td className="time">{<Duration value={(test.used_time ?? 0) * 0.001} />}</td>
 					<td className="memory">{<ByteSize value={test.used_memory ?? 0} />}</td>
 					<td className="verdict"><TestVerdict report={test} /></td>
@@ -114,7 +114,7 @@ const SolutionPage: FC = () => {
 	return <Page title="Solution" sidebar={<Sidebar />}>
 		<SolutionBlock solution={solution} />
 		{content && <Block title="Content" className="b-contest-solution-content">
-			<Code content={content} language={compiler?.config?.extensions?.at(0)} />
+			<Code value={content} language={compiler?.config?.extensions?.at(0)} />
 		</Block>}
 		{solution.report && <SolutionReportBlock report={solution.report} />}
 	</Page>;
