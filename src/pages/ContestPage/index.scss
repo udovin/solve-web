@@ -32,14 +32,14 @@
 
 .b-contest-submit {
     .ui-code {
-		.cm-scroller {
-			max-height: 620px;
-		}
+        .cm-scroller {
+            max-height: 620px;
+        }
 
-		.cm-content,
-		.cm-gutter {
-			min-height: 240px;
-		}
+        .cm-content,
+        .cm-gutter {
+            min-height: 240px;
+        }
     }
 }
 
@@ -115,6 +115,10 @@
         }
 
         .verdict {
+            .ui-verdict-wrap {
+                vertical-align: middle;
+            }
+
             .ui-icon-button {
                 margin-left: 4px;
                 width: 18px;
