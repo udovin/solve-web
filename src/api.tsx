@@ -159,6 +159,7 @@ export type ContestStandingsColumn = {
 export type ContestStandingsCell = {
 	column: number;
 	verdict?: string;
+	points?: number;
 	attempt?: number;
 	time?: number;
 };
@@ -172,8 +173,10 @@ export type ContestStandingsRow = {
 };
 
 export type ContestStandings = {
+	kind: string;
 	columns?: ContestStandingsColumn[];
 	rows?: ContestStandingsRow[];
+	frozen?: boolean;
 };
 
 export type TestReport = {
