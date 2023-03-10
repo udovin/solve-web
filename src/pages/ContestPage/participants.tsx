@@ -29,6 +29,7 @@ const KINDS: Record<string, string> = {
     "regular": "Participant",
     "upsolving": "Upsolving",
     "manager": "Manager",
+    "observer": "Observer",
 };
 
 export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props => {

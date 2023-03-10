@@ -21,6 +21,7 @@ export const EditContestBlock: FC<EditContestBlockProps> = props => {
     const [duration, setDuration] = useState(contest.duration);
     const [enableRegistration, setEnableRegistration] = useState(contest.enable_registration);
     const [enableUpsolving, setEnableUpsolving] = useState(contest.enable_upsolving);
+    const [enableObserving, setEnableObserving] = useState(contest.enable_observing);
     const [freezeBeginDuration, setFreezeBeginDuration] = useState(contest.freeze_begin_duration);
     const [freezeEndTime, setFreezeEndTime] = useState(contest.freeze_end_time);
     const [standingsKind, setStandingsKind] = useState(contest.standings_kind);
@@ -31,6 +32,7 @@ export const EditContestBlock: FC<EditContestBlockProps> = props => {
         setDuration(contest.duration);
         setEnableRegistration(contest.enable_registration);
         setEnableUpsolving(contest.enable_upsolving);
+        setEnableObserving(contest.enable_observing);
         setFreezeBeginDuration(contest.freeze_begin_duration);
         setFreezeEndTime(contest.freeze_end_time);
         setStandingsKind(contest.standings_kind);
@@ -44,6 +46,7 @@ export const EditContestBlock: FC<EditContestBlockProps> = props => {
             duration: duration,
             enable_registration: enableRegistration,
             enable_upsolving: enableUpsolving,
+            enable_observing: enableObserving,
             freeze_begin_duration: freezeBeginDuration,
             freeze_end_time: freezeEndTime,
             standings_kind: standingsKind,
@@ -59,6 +62,7 @@ export const EditContestBlock: FC<EditContestBlockProps> = props => {
         duration !== contest.duration ||
         enableRegistration !== contest.enable_registration ||
         enableUpsolving !== contest.enable_upsolving ||
+        enableObserving !== contest.enable_observing ||
         freezeBeginDuration !== contest.freeze_begin_duration ||
         freezeEndTime !== contest.freeze_end_time ||
         (standingsKind ?? "disabled") !== (contest.standings_kind ?? "disabled");
@@ -88,17 +92,23 @@ export const EditContestBlock: FC<EditContestBlockProps> = props => {
                 value={duration}
                 onValueChange={setDuration} />
         </Field>
-        <Field name="enable_registration" errorResponse={error}>
+        <Field name="enable_registration" errorResponse={error} description="Enables self-registration of participants.">
             <Checkbox
                 value={enableRegistration ?? false}
                 onValueChange={setEnableRegistration} />
             <span className="label">Enable registration</span>
         </Field>
-        <Field name="enable_upsolving" errorResponse={error}>
+        <Field name="enable_upsolving" errorResponse={error} description="Enables upsolving after contest is finished.">
             <Checkbox
                 value={enableUpsolving ?? false}
                 onValueChange={setEnableUpsolving} />
             <span className="label">Enable upsolving</span>
+        </Field>
+        <Field name="enable_observing" errorResponse={error} description="Enables public access to contest standings.">
+            <Checkbox
+                value={enableObserving ?? false}
+                onValueChange={setEnableObserving} />
+            <span className="label">Enable observing</span>
         </Field>
         <Field title="Standings:" name="standings_kind" errorResponse={error}>
             <Select
