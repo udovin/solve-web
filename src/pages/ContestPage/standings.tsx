@@ -147,6 +147,12 @@ const IOIStandingsTable: FC<StandingsTableProps> = props => {
                                 {!!cell.time && <span className="time">{<StandingsDuration value={cell.time} />}</span>}
                             </td>;
                         }
+                        if (cell.verdict === "accepted") {
+                            return <td className="problem accepted" key={index}>
+                                <span className="attempt">{cell.points ?? 0}</span>
+                                {!!cell.time && <span className="time">{<StandingsDuration value={cell.time} />}</span>}
+                            </td>;
+                        }
                         return <td className="problem points" key={index}>
                             <span className="attempt">{cell.points ?? 0}</span>
                             {!!cell.time && <span className="time">{<StandingsDuration value={cell.time} />}</span>}

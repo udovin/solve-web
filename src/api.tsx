@@ -34,6 +34,7 @@ export type Status = {
 	user?: User;
 	scope_user?: ScopeUser;
 	permissions?: string[];
+	locale?: string;
 };
 
 export type ProblemStatementSample = {
@@ -333,13 +334,23 @@ export type RegisterForm = {
 	middle_name?: string;
 };
 
+let fetchLocale = localStorage.getItem("locale");
+
+export const setLocale = (locale: string) => {
+	localStorage.setItem("locale", locale);
+	fetchLocale = locale;
+};
+
 let fetchActuality = Date.now();
 
 const getHeaders = () => {
-	let headers = {
+	let headers: Record<string, string> = {
 		"X-Solve-Web-Version": "0.1.0",
 		"X-Solve-Sync": (Date.now() < fetchActuality ? "1" : "0"),
 	};
+	if (fetchLocale) {
+		headers["Accept-Language"] = fetchLocale;
+	}
 	return headers;
 };
 

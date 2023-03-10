@@ -1,7 +1,16 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../AuthContext";
+
+export const LOCALES: Record<string, string> = {
+	"en": "English",
+	"ru": "Русский",
+};
 
 const Footer: FC = () => {
+	const { status } = useContext(AuthContext);
+	const locale = status?.locale ?? "en";
+	const localeTitle = LOCALES[locale] ?? "English";
 	return <footer id="footer">
 		<div id="footer-nav">
 			<div className="wrap">
@@ -9,7 +18,7 @@ const Footer: FC = () => {
 					<li>
 						<a href="//github.com/udovin/solve">Repository</a>
 					</li>
-					<li>Language: <Link to="/language">English</Link></li>
+					<li>Language: <Link to="/language">{localeTitle}</Link></li>
 				</ul>
 			</div>
 		</div>
