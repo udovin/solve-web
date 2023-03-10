@@ -334,11 +334,8 @@ export type RegisterForm = {
 	middle_name?: string;
 };
 
-let fetchLocale = localStorage.getItem("locale");
-
 export const setLocale = (locale: string) => {
 	localStorage.setItem("locale", locale);
-	fetchLocale = locale;
 };
 
 let fetchActuality = Date.now();
@@ -348,8 +345,9 @@ const getHeaders = () => {
 		"X-Solve-Web-Version": "0.1.0",
 		"X-Solve-Sync": (Date.now() < fetchActuality ? "1" : "0"),
 	};
-	if (fetchLocale) {
-		headers["Accept-Language"] = fetchLocale;
+	const locale = localStorage.getItem("locale");
+	if (locale) {
+		headers["Accept-Language"] = locale;
 	}
 	return headers;
 };
