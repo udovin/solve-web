@@ -342,7 +342,7 @@ let fetchActuality = Date.now();
 
 const getHeaders = () => {
 	let headers: Record<string, string> = {
-		"X-Solve-Web-Version": "0.1.0",
+		"X-Solve-Web-Version": "0.0.1",
 		"X-Solve-Sync": (Date.now() < fetchActuality ? "1" : "0"),
 	};
 	const locale = localStorage.getItem("locale");
@@ -358,6 +358,12 @@ const POST_JSON_HEADERS = {
 
 export const BASE = process.env.PUBLIC_URL ?? "";
 
+let solveVersion: string | null = null;
+
+export const getSolveVersion = () => {
+	return solveVersion;
+};
+
 const parseResp = <T = any>(promise: Promise<Response>, syncFetch: boolean = false) => {
 	return promise
 		.then(resp => Promise.all([resp, resp.json()]))
@@ -368,6 +374,7 @@ const parseResp = <T = any>(promise: Promise<Response>, syncFetch: boolean = fal
 			if (syncFetch) {
 				fetchActuality = Date.now() + 3000;
 			}
+			solveVersion = resp.headers.get("X-Solve-Version");
 			return json;
 		});
 };
