@@ -13,25 +13,26 @@ type CollapseProps = {
     expanded?: boolean;
     onChange?(): void;
     children?: ReactNode;
+    className?: string;
 };
 
 const Collapse: FC<CollapseProps> = props => {
-    const { expanded, onChange, children } = props;
+    const { expanded, onChange, children, className } = props;
     return <CollapseContext.Provider value={{ expanded, onChange }}>
-        <div className={`ui-collapse${expanded ? " expanded" : ""}`}>{children}</div>
+        <div className={`ui-collapse${expanded ? " expanded" : ""} ${className ?? ""}`}>{children}</div>
     </CollapseContext.Provider>;
 };
 
-const CollapseHeader: FC<{ children?: ReactNode }> = props => {
-    const { children } = props;
+const CollapseHeader: FC<{ children?: ReactNode, className?: string }> = props => {
+    const { children, className } = props;
     const { onChange } = useContext(CollapseContext);
-    return <div className="ui-collapse-header" onClick={onChange}><span className="arrow"></span>{children}</div>;
+    return <div className={`ui-collapse-header ${className ?? ""}`} onClick={onChange}><span className="arrow"></span>{children}</div>;
 };
 
-const CollapseContent: FC<{ children?: ReactNode }> = props => {
-    const { children } = props;
+const CollapseContent: FC<{ children?: ReactNode, className?: string }> = props => {
+    const { children, className } = props;
     const { expanded } = useContext(CollapseContext);
-    return expanded ? <div className="ui-collapse-content">{children}</div> : <></>;
+    return expanded ? <div className={`ui-collapse-content ${className ?? ""}`}>{children}</div> : <></>;
 };
 
 export { Collapse, CollapseHeader, CollapseContent };

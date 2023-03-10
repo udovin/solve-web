@@ -10,9 +10,10 @@ import Verdict, { TestVerdict } from "../../ui/Verdict";
 import Duration from "../../ui/Duration";
 import ByteSize from "../../ui/ByteSize";
 import { AccountLink } from "../SolutionsPage";
+import Code from "../../ui/Code";
+import CollapseBlock from "../../ui/CollapseBlock";
 
 import "./index.scss";
-import Code from "../../ui/Code";
 
 export type SolutionBlockProps = BlockProps & {
 	solution: Solution;
@@ -63,7 +64,7 @@ export type SolutionReportBlockProps = BlockProps & {
 
 export const SolutionReportBlock: FC<SolutionReportBlockProps> = props => {
 	const { report, ...rest } = props;
-	return <Block title="Tests" className="b-solution-report" {...rest}>
+	return <CollapseBlock title="Tests" className="b-solution-report" {...rest}>
 		<table className="ui-table">
 			<thead>
 				<tr>
@@ -86,7 +87,7 @@ export const SolutionReportBlock: FC<SolutionReportBlockProps> = props => {
 				</tr>;
 			})}</tbody>
 		</table>
-	</Block>;
+	</CollapseBlock>;
 };
 
 const SolutionPage: FC = () => {
@@ -113,10 +114,10 @@ const SolutionPage: FC = () => {
 	const { content, compiler } = solution;
 	return <Page title="Solution" sidebar={<Sidebar />}>
 		<SolutionBlock solution={solution} />
-		{content && <Block title="Content" className="b-contest-solution-content">
+		{content && <CollapseBlock title="Content" className="b-contest-solution-content">
 			<Code value={content} language={compiler?.config?.extensions?.at(0)} />
-		</Block>}
-		{solution.report && <SolutionReportBlock report={solution.report} />}
+		</CollapseBlock>}
+		{!!solution.report?.tests && <SolutionReportBlock report={solution.report} />}
 	</Page>;
 };
 

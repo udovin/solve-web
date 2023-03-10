@@ -6,6 +6,7 @@ import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
 import Button from "../../ui/Button";
 import Code from "../../ui/Code";
+import CollapseBlock from "../../ui/CollapseBlock";
 import DateTime from "../../ui/DateTime";
 import Field from "../../ui/Field";
 import FileInput from "../../ui/FileInput";
@@ -179,10 +180,10 @@ export const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
                 </tbody>
             </table>
         </Block>
-        {content && <Block title="Content" className="b-contest-solution-content">
+        {content && <CollapseBlock title="Content" className="b-contest-solution-content">
             <Code value={content} language={compiler?.config?.extensions?.at(0)} readOnly={true} />
-        </Block>}
-        {report && <SolutionReportBlock report={report} />}
+        </CollapseBlock>}
+        {!!report?.tests && <SolutionReportBlock report={report} />}
     </>;
 };
 
