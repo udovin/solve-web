@@ -6,9 +6,9 @@ import Tooltip from "../ui/Tooltip";
 
 import "./index.scss";
 
-const webVersion = "0.0.1";
+const webVersion = "0.1.0";
 
-const Header: FC = props => {
+const Header: FC = () => {
 	const location = useLocation();
 	const getActiveClass = (...names: string[]): string => {
 		const { pathname } = location;

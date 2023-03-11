@@ -588,11 +588,15 @@ const encodeQueryData = (query: Record<string, string>) => {
 };
 
 export const observeContestStandings = (id: number, ignoreFreeze?: boolean, onlyOfficial?: boolean) => {
-	const query = {
-		"ignore_freeze": ignoreFreeze ? "t" : "f",
-		"only_official": onlyOfficial ? "t" : "f",
-	};
-	return parseResp(fetch(`${BASE}/api/v0/contests/${id}/standings?${encodeQueryData(query)}`, {
+	const query: Record<string, string> = {};
+	if (ignoreFreeze) {
+		query["ignore_freeze"] = "t";
+	}
+	if (onlyOfficial) {
+		query["only_official"] = "t";
+	}
+	const queryString = (ignoreFreeze || onlyOfficial) ? "?" + encodeQueryData(query) : "";
+	return parseResp(fetch(`${BASE}/api/v0/contests/${id}/standings${queryString}`, {
 		method: "GET",
 		headers: getHeaders(),
 	}));

@@ -13,14 +13,15 @@ export const ContestStandingsBlock: FC<ContestStandingsBlockProps> = props => {
     const { contest } = props;
     const [standings, setStandings] = useState<ContestStandings>();
     const [ignoreFreeze, setIgnoreFreeze] = useState<boolean>();
+    const [onlyOfficial, setOnlyOfficial] = useState<boolean>();
     const [canChangeFreeze, setCanChangeFreeze] = useState<boolean>(false);
     useEffect(() => {
-        observeContestStandings(contest.id, ignoreFreeze)
+        observeContestStandings(contest.id, ignoreFreeze, onlyOfficial)
             .then(standings => {
                 setStandings(standings);
                 setCanChangeFreeze(ignoreFreeze || standings.frozen);
-            })
-    }, [contest.id, ignoreFreeze]);
+            });
+    }, [contest.id, ignoreFreeze, onlyOfficial]);
     if (!standings) {
         return <>Loading...</>;
     }
@@ -33,6 +34,12 @@ export const ContestStandingsBlock: FC<ContestStandingsBlockProps> = props => {
                 onValueChange={setIgnoreFreeze} />
             <span className="label">Show unfrozen</span>
         </Field>}
+        <Field>
+            <Checkbox
+                value={onlyOfficial ?? false}
+                onValueChange={setOnlyOfficial} />
+            <span className="label">Official</span>
+        </Field>
     </>} className="b-contest-standings">
         {standings.kind === "ioi" ? <IOIStandingsTable standings={standings} /> : <ICPCStandingsTable standings={standings} />}
     </Block>;
