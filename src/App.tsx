@@ -43,6 +43,7 @@ const App: FC = () => {
 					<Route path="/solutions/:solution_id" element={<SolutionPage />} />
 					<Route path="/compilers/create" element={<CreateCompilerPage />} />
 					<Route path="/login" element={<LoginPage />} />
+					<Route path="/login/:scope_id" element={<LoginPage />} />
 					<Route path="/logout" element={<LogoutPage />} />
 					<Route path="/register" element={<RegisterPage />} />
 					<Route path="/users/:user_id" element={<UserPage />} />

@@ -3,7 +3,7 @@ import Page from "../components/Page";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
 import FormBlock from "../components/FormBlock";
-import { Navigate } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { AuthContext } from "../AuthContext";
 import Field from "../ui/Field";
 import { ErrorResponse, LoginForm, loginUser } from "../api";
@@ -11,6 +11,8 @@ import Alert from "../ui/Alert";
 import Sidebar from "../ui/Sidebar";
 
 const LoginPage = () => {
+	const params = useParams();
+	const { scope_id } = params;
 	const { status, updateStatus } = useContext(AuthContext);
 	const [error, setError] = useState<ErrorResponse>({ message: "" });
 	const [form, setForm] = useState<{ [key: string]: string }>({});
@@ -21,7 +23,10 @@ const LoginPage = () => {
 			login: form.login,
 			password: form.password,
 		};
-		if (form.login.includes("/")) {
+		if (scope_id !== undefined) {
+			loginForm.scope_id = Number(scope_id);
+			loginForm.login = form.login;
+		} else if (form.login.includes("/")) {
 			const parts = form.login.split("/", 2)
 			if (parts.length > 1) {
 				loginForm.scope_id = Number(parts[0]);
