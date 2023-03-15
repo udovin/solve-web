@@ -51,6 +51,8 @@ type StandingsTableProps = {
 
 const ICPCStandingsTable: FC<StandingsTableProps> = props => {
     const { standings } = props;
+    let currentGroup = 0;
+    let currentGroupScore: number | undefined = undefined;
     return <table className="ui-table">
         <thead>
             <tr>
@@ -76,7 +78,20 @@ const ICPCStandingsTable: FC<StandingsTableProps> = props => {
                     }
                 }
                 const { participant } = row;
-                return <tr key={index}>
+                if (participant?.kind === "regular") {
+                    if (currentGroupScore === undefined) {
+                        currentGroup = 1;
+                        currentGroupScore = row.score ?? 0;
+                    }
+                    if (currentGroupScore !== (row.score ?? 0)) {
+                        currentGroup = 3 - currentGroup;
+                        currentGroupScore = row.score ?? 0;
+                    }
+                } else {
+                    currentGroup = 0;
+                    currentGroupScore = undefined;
+                }
+                return <tr key={index} className={`group-${currentGroup}`}>
                     <td className="id">{row.place ?? ""}</td>
                     <td className="participant">
                         {!!participant && <ParticipantLink participant={participant} />}

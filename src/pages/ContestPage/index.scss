@@ -197,6 +197,16 @@
     .ui-table {
         border: none;
 
+        tbody {
+            tr.group-2 {
+                background-color: #f6fdff;
+            }
+
+            tr:hover {
+                background-color: #fff9ee;
+            }
+        }
+
         .id {
             text-align: right;
             width: 1%;
