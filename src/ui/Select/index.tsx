@@ -17,11 +17,13 @@ const Select: FC<SelectProps> = (props: SelectProps) => {
 	const [focused, setFocused] = useState(false);
 	const ref = useRef<HTMLSpanElement>(null);
 	const [style, setStyle] = useState<CSSProperties>({});
-	const toggleFocus = (event: MouseEvent) => {
-		event.stopPropagation();
+	const toggleFocus = () => {
 		setFocused(!focused);
 	};
-	const resetFocus = () => {
+	const resetFocus = (event: Event) => {
+		if (event.target instanceof Element && ref.current?.contains(event.target)) {
+			return;
+		}
 		setFocused(false);
 	};
 	useEffect(() => {

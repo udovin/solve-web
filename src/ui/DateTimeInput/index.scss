@@ -9,6 +9,7 @@
 .ui-datetime-input-calendar {
     display: block;
     position: absolute;
+    padding-top: 2px;
     z-index: 20;
 
     >.calendar {
@@ -17,5 +18,48 @@
         border-radius: 4px;
         background-color: $light-background-color;
         overflow: hidden;
+
+        >table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            padding: 6px;
+
+            td {
+                padding: 2px;
+                text-align: center;
+
+                >button {
+                    padding: 4px 6px;
+                    width: 100%;
+                    height: 100%;
+                    border: 1px solid transparent;
+                    border-radius: 4px;
+                    background-color: transparent;
+                    text-align: center;
+                    color: $light-secondary-text-color;
+                    font-family: inherit;
+                    font-size: inherit;
+
+                    &:hover {
+                        border-color: $light-hover-border-color;
+                    }
+                }
+
+                &.this-month>button {
+                    color: $light-text-color;
+                }
+
+                &.this-date>button {
+                    font-weight: bold;
+                }
+
+                &.selected>button {
+                    border-color: $light-border-primary-color;
+                    background-color: $light-background-primary-color;
+                    color: #ffffff;
+                }
+            }
+        }
     }
 }

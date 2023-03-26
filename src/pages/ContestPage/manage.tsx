@@ -4,6 +4,7 @@ import FormBlock from "../../components/FormBlock";
 import Alert from "../../ui/Alert";
 import Button from "../../ui/Button";
 import Checkbox from "../../ui/Checkbox";
+import DateTimeInput from "../../ui/DateTimeInput";
 import DurationInput from "../../ui/DurationInput";
 import Field from "../../ui/Field";
 import Input from "../../ui/Input";
@@ -42,13 +43,13 @@ export const EditContestBlock: FC<EditContestBlockProps> = props => {
         event.preventDefault();
         updateContest(contest.id, {
             title: title,
-            begin_time: beginTime,
+            begin_time: beginTime ?? 0,
             duration: duration,
             enable_registration: enableRegistration,
             enable_upsolving: enableUpsolving,
             enable_observing: enableObserving,
             freeze_begin_duration: freezeBeginDuration,
-            freeze_end_time: freezeEndTime,
+            freeze_end_time: freezeEndTime ?? 0,
             standings_kind: standingsKind,
         })
             .then(contest => {
@@ -82,10 +83,9 @@ export const EditContestBlock: FC<EditContestBlockProps> = props => {
                 required />
         </Field>
         <Field title="Begin time:" name="begin_time" errorResponse={error}>
-            <Input
-                type="number" name="begin_time" placeholder="Begin time"
-                value={beginTime ? String(beginTime) : undefined}
-                onValueChange={value => setBeginTime(value ? Number(value) : 0)} />
+            <DateTimeInput
+                value={beginTime}
+                onValueChange={setBeginTime} />
         </Field>
         <Field title="Duration:" name="duration" errorResponse={error}>
             <DurationInput
@@ -122,10 +122,9 @@ export const EditContestBlock: FC<EditContestBlockProps> = props => {
                 onValueChange={setFreezeBeginDuration} />
         </Field>
         <Field title="Unfreeze time:" name="freeze_end_time" errorResponse={error}>
-            <Input
-                type="number" name="freeze_end_time" placeholder="Unfreeze time"
-                value={freezeEndTime ? String(freezeEndTime) : undefined}
-                onValueChange={value => setFreezeEndTime(value ? Number(value) : 0)} />
+            <DateTimeInput
+                value={freezeEndTime}
+                onValueChange={setFreezeEndTime} />
         </Field>
     </FormBlock>;
 };
