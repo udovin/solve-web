@@ -1,6 +1,6 @@
 import { FC, FormEvent, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { createScope, createScopeUser, deleteScope, deleteScopeUser, ErrorResponse, observeScopes, observeScopeUsers, Scope, Scopes, ScopeUser, ScopeUsers, updateScopeUser } from "../../api";
+import { createScope, createScopeUser, deleteScope, deleteScopeUser, ErrorResponse, logoutScopeUser, observeScopes, observeScopeUsers, Scope, Scopes, ScopeUser, ScopeUsers, updateScopeUser } from "../../api";
 import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
 import Button from "../../ui/Button";
@@ -144,6 +144,11 @@ export const AdminScopeBlock: FC<AdminScopeBlockProps> = props => {
                             })
                             .catch(setError);
                     };
+                    const onLogout = () => {
+                        logoutScopeUser(scope.id, user.id)
+                            .then(() => setError(undefined))
+                            .catch(setError);
+                    };
                     const onRegeneratePassword = () => {
                         updateScopeUser(scope.id, user.id, { generate_password: true })
                             .then(user => {
@@ -162,7 +167,10 @@ export const AdminScopeBlock: FC<AdminScopeBlockProps> = props => {
                         <td className="login">{user.login}</td>
                         <td className="password">{user.password ? user.password : <Button onClick={onRegeneratePassword} color="danger">Regenerate password</Button>}</td>
                         <td className="title">{user.title}</td>
-                        <td className="actions">{<IconButton kind="delete" onClick={onDelete} />}</td>
+                        <td className="actions">
+                            <IconButton kind="refresh" onClick={onLogout} />
+                            <IconButton kind="delete" onClick={onDelete} />
+                        </td>
                     </tr>
                 })}
             </tbody>

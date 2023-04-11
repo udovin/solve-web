@@ -894,6 +894,13 @@ export const deleteScopeUser = (scopeID: number, userID: number) => {
 	}), true);
 };
 
+export const logoutScopeUser = (scopeID: number, userID: number) => {
+	return parseResp<ScopeUser>(fetch(`${BASE}/api/v0/scopes/${scopeID}/users/${userID}/logout`, {
+		method: "POST",
+		headers: getHeaders(),
+	}), true);
+};
+
 export const observeContestMessages = (contestID: number) => {
 	return parseResp<ContestMessages>(fetch(`${BASE}/api/v0/contests/${contestID}/messages`, {
 		method: "GET",
