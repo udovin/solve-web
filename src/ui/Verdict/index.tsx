@@ -28,6 +28,7 @@ const VERDICTS: Record<string, VerdictInfo | undefined> = {
     "running": {
         code: "running",
         title: "Running",
+        titleTest: "Test {}",
         description: "Running",
         disableUsage: true,
     },
