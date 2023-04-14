@@ -77,18 +77,31 @@
 	}
 }
 
-.ui-select-options {
+.ui-select-portal {
 	display: block;
 	position: absolute;
 	z-index: 20;
+	box-shadow: 0 0 2px $light-active-border-color;
+	border-radius: 4px;
 
-	>.options {
+	.ui-select {
+		width: 100%;
+
+		>button {
+			border-color: $light-active-border-color;
+			cursor: pointer;
+			@include transition(border-color 150ms ease-in, background-color 150ms ease-in);
+		}
+	}
+
+	.ui-select-options {
 		display: block;
 		margin-top: -1px;
 		border: 1px solid $light-border-color;
 		border-radius: 0 0 4px 4px;
 		background-color: $light-background-color;
-		overflow: hidden;
+		overflow: hidden auto;
+		max-height: 360px;
 
 		>.option {
 			display: block;

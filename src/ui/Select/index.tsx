@@ -1,4 +1,4 @@
-import { CSSProperties, FC, MouseEvent, ReactNode, useEffect, useRef, useState } from "react";
+import { CSSProperties, FC, ReactNode, useEffect, useRef, useState } from "react";
 import Portal from "../Portal";
 
 import "./index.scss";
@@ -15,9 +15,11 @@ export type SelectProps = {
 const Select: FC<SelectProps> = (props: SelectProps) => {
 	const { className, name, disabled, options, value, onValueChange } = props;
 	const [focused, setFocused] = useState(false);
+	const [wrapFocused, setWrapFocused] = useState(false);
 	const ref = useRef<HTMLSpanElement>(null);
 	const [style, setStyle] = useState<CSSProperties>({});
 	const toggleFocus = () => {
+		updateStyle();
 		setFocused(!focused);
 	};
 	const resetFocus = (event: Event) => {
@@ -27,6 +29,7 @@ const Select: FC<SelectProps> = (props: SelectProps) => {
 		setFocused(false);
 	};
 	useEffect(() => {
+		setWrapFocused(focused);
 		if (!focused) {
 			return;
 		}
@@ -39,7 +42,7 @@ const Select: FC<SelectProps> = (props: SelectProps) => {
 		}
 		const element = ref.current;
 		setStyle({
-			top: element.getBoundingClientRect().top + window.scrollY + element.scrollHeight,
+			top: element.getBoundingClientRect().top + window.scrollY,
 			left: element.getBoundingClientRect().left + window.scrollX,
 			minWidth: element.scrollWidth,
 		});
@@ -49,9 +52,14 @@ const Select: FC<SelectProps> = (props: SelectProps) => {
 			return;
 		}
 		updateStyle();
+		if (!focused) {
+			return;
+		}
+		const interval = setInterval(updateStyle, 100);
 		window.addEventListener("resize", updateStyle);
 		window.addEventListener("scroll", updateStyle, true);
 		return () => {
+			clearInterval(interval);
 			window.removeEventListener("resize", updateStyle);
 			window.removeEventListener("scroll", updateStyle, true);
 		};
@@ -65,8 +73,16 @@ const Select: FC<SelectProps> = (props: SelectProps) => {
 			<span className="arrow"></span>{value && (options[value] === undefined ? value : options[value])}
 		</button>
 		{focused && <Portal>
-			<div className="ui-select-options" style={style}>
-				<span className="options">
+			<div className="ui-select-portal" style={style}>
+				<span
+					className={`ui-select${wrapFocused ? " focused" : ""}${disabled ? " disabled" : ""} ${className ?? ""}`.trimEnd()}
+					onClick={!disabled ? toggleFocus : undefined}
+				>
+					<button type="button" disabled={disabled}>
+						<span className="arrow"></span>{value && (options[value] === undefined ? value : options[value])}
+					</button>
+				</span>
+				<span className="ui-select-options">
 					{Object.entries(options).map(([key, option], index) => {
 						return <button
 							type="button"
