@@ -13,26 +13,31 @@ export type TooltipProps = {
 const Tooltip: FC<TooltipProps> = (props: TooltipProps) => {
 	const { id, className, children, content } = props;
 	const ref = useRef<HTMLSpanElement>(null);
+	const blockRef = useRef<HTMLDivElement>(null);
 	const [style, setStyle] = useState<CSSProperties>({});
 	const [hover, setHover] = useState<boolean>(false);
 	const onMouseOver = () => setHover(true);
 	const onMouseOut = () => setHover(false);
 	const updateStyle = () => {
-		if (!ref.current) {
+		if (!ref.current || !blockRef.current) {
 			return;
 		}
 		const element = ref.current;
+		const blockElement = blockRef.current;
 		setStyle({
 			top: element.getBoundingClientRect().top + window.scrollY + element.clientHeight,
-			left: element.getBoundingClientRect().left + window.scrollX + element.clientWidth / 2,
+			left: element.getBoundingClientRect().left + window.scrollX + (element.clientWidth - blockElement.clientWidth) / 2,
 			minWidth: element.scrollWidth,
 		});
 	};
 	useEffect(() => {
-		if (!ref.current) {
+		if (!ref.current || !blockRef.current) {
 			return;
 		}
 		updateStyle();
+		if (!hover) {
+			return;
+		}
 		const interval = setInterval(updateStyle, 100);
 		window.addEventListener("resize", updateStyle);
 		window.addEventListener("scroll", updateStyle, true);
@@ -51,7 +56,7 @@ const Tooltip: FC<TooltipProps> = (props: TooltipProps) => {
 	>
 		{children}
 		{hover && <Portal>
-			<div className="ui-tooltip-block" style={style}>
+			<div className="ui-tooltip-block" style={style} ref={blockRef}>
 				<span className="ui-tooltip-arrow"></span>
 				<span className="ui-tooltip">
 					<span className="ui-tooltip-content">{content}</span>

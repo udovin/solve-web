@@ -6,6 +6,7 @@ import Block from "../../ui/Block";
 import Button from "../../ui/Button";
 import IconButton from "../../ui/IconButton";
 import Input from "../../ui/Input";
+import Tooltip from "../../ui/Tooltip";
 
 export const AdminScopesBlock: FC = () => {
     const [scopes, setScopes] = useState<Scopes>();
@@ -168,8 +169,8 @@ export const AdminScopeBlock: FC<AdminScopeBlockProps> = props => {
                         <td className="password">{user.password ? user.password : <Button onClick={onRegeneratePassword} color="danger">Regenerate password</Button>}</td>
                         <td className="title">{user.title}</td>
                         <td className="actions">
-                            <IconButton kind="refresh" onClick={onLogout} />
-                            <IconButton kind="delete" onClick={onDelete} />
+                            <Tooltip content="Logout"><IconButton kind="backward" onClick={onLogout} /></Tooltip>
+                            <Tooltip content="Delete"><IconButton kind="delete" onClick={onDelete} /></Tooltip>
                         </td>
                     </tr>
                 })}

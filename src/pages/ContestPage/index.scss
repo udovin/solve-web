@@ -119,10 +119,13 @@
                 vertical-align: middle;
             }
 
-            .ui-icon-button {
+            .rejudge {
                 margin-left: 4px;
-                width: 18px;
-                height: 18px;
+
+                .ui-icon-button {
+                    width: 18px;
+                    height: 18px;
+                }
             }
         }
 

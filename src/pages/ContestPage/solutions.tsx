@@ -12,6 +12,7 @@ import Field from "../../ui/Field";
 import FileInput from "../../ui/FileInput";
 import IconButton from "../../ui/IconButton";
 import Select from "../../ui/Select";
+import Tooltip from "../../ui/Tooltip";
 import Verdict from "../../ui/Verdict";
 import { SolutionReportBlock } from "../SolutionPage";
 import { ParticipantLink } from "./participants";
@@ -56,7 +57,7 @@ const ContestSolutionRow: FC<ContestSolutionRowProps> = props => {
         </td>
         <td className="verdict">
             <Verdict report={report} />
-            {canUpdateSolution && <IconButton kind={"reload"} onClick={rejudgeSolution} />}
+            {canUpdateSolution && <Tooltip className="rejudge" content="Rejudge"><IconButton kind={"reload"} onClick={rejudgeSolution} /></Tooltip>}
         </td>
     </tr>;
 };
