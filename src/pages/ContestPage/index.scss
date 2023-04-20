@@ -7,6 +7,19 @@
         .ui-tabs {
             border-bottom: 0;
         }
+
+        .counter {
+            display: inline-block;
+            margin-left: 4px;
+            padding: 0 4px;
+            vertical-align: middle;
+            line-height: 16px;
+            font-size: 10px;
+            border-color: #0073aa;
+            background-color: #0085ba;
+            color: #ffffff;
+            border-radius: 4px;
+        }
     }
 }
 

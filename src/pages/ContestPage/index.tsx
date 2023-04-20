@@ -5,11 +5,13 @@ import {
 	BASE,
 	Compilers,
 	Contest,
+	ContestMessages,
 	ContestProblem,
 	deleteContest,
 	ErrorResponse,
 	observeCompilers,
 	observeContest,
+	observeContestMessages,
 	observeContestProblem,
 	Solution,
 	submitContestSolution,
@@ -314,6 +316,7 @@ const ContestPage: FC = () => {
 	const location = useLocation();
 	const { contest_id } = params;
 	const [contest, setContest] = useState<Contest>();
+	const [newMessages, setNewMessages] = useState<number>(0);
 	const getNow = () => {
 		return Math.round((new Date()).getTime() / 1000);
 	};
@@ -329,13 +332,72 @@ const ContestPage: FC = () => {
 			const beforeDuration = contest?.begin_time && Math.max(contest.begin_time - getNow(), 0);
 			const remainingDuration = contest?.begin_time && contest.duration && Math.max(contest.begin_time + contest.duration - getNow(), 0);
 			if (contest?.state?.stage === "not_started" && beforeDuration !== undefined && beforeDuration <= 0) {
-				observeContest(contest.id).then(setContest);
+				observeContest(contest.id)
+					.then(setContest)
+					.catch(console.log);
 			} else if (contest?.state?.stage === "started" && remainingDuration !== undefined && remainingDuration <= 0) {
-				observeContest(contest.id).then(setContest);
+				observeContest(contest.id)
+					.then(setContest)
+					.catch(console.log);
 			}
 		}, 1000);
 		return () => clearInterval(intervalID);
 	}, [contest, setContest]);
+	useEffect(() => {
+		if (!contest || contest.state?.stage !== "started") {
+			return;
+		}
+		if (!contest.permissions?.includes("observe_contest_messages")) {
+			return;
+		}
+		if (!contest.state?.participant) {
+			return;
+		}
+		const seenMessage = toNumber(localStorage.getItem(`contest_seen_message`)) ?? 0;
+		observeContestMessages(contest.id)
+			.then((messages: ContestMessages) => {
+				let newMessages: number = 0;
+				messages.messages?.forEach(message => {
+					if (message.participant?.id === contest.state?.participant?.id) {
+						return;
+					}
+					if (message.id > seenMessage) {
+						newMessages++;
+					}
+				});
+				setNewMessages(newMessages);
+			})
+			.catch(console.log);
+	}, [contest]);
+	useEffect(() => {
+		if (!contest || contest.state?.stage !== "started") {
+			return;
+		}
+		if (!contest.permissions?.includes("observe_contest_messages")) {
+			return;
+		}
+		if (!contest.state?.participant) {
+			return;
+		}
+		const intervalID = setInterval(() => {
+			const seenMessage = toNumber(localStorage.getItem(`contest_seen_message`)) ?? 0;
+			observeContestMessages(contest.id)
+				.then((messages: ContestMessages) => {
+					let newMessages: number = 0;
+					messages.messages?.forEach(message => {
+						if (message.participant?.id === contest.state?.participant?.id) {
+							return;
+						}
+						if (message.id > seenMessage) {
+							newMessages++;
+						}
+					});
+					setNewMessages(newMessages);
+				})
+				.catch(console.log);
+		}, 2000);
+		return () => clearInterval(intervalID);
+	}, [contest]);
 	if (!contest) {
 		return <>Loading...</>;
 	}
@@ -357,7 +419,7 @@ const ContestPage: FC = () => {
 		<Route path="*" element={<ContestSideBlock contest={contest} />} />
 	</Routes>}>
 		<TabsGroup>
-			{(isIndex && !canObserveProblems) ? <></> : <ContestTabs contest={contest} />}
+			{(isIndex && !canObserveProblems) ? <></> : <ContestTabs contest={contest} newMessages={newMessages} />}
 			<Routes>
 				<Route index element={<ContestProblemsTab contest={contest} />} />
 				{canObserveProblems && <Route path="/problems" element={<ContestProblemsTab contest={contest} />} />}

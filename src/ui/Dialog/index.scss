@@ -1,3 +1,5 @@
+@import "../../mixins.scss";
+
 .ui-dialog-portal {
     position: fixed;
     top: 0;
@@ -27,4 +29,8 @@
 
 .ui-dialog {
     display: block;
+
+    .ui-block-wrap {
+        box-shadow: 0 0 4px $light-active-border-color;
+    }
 }

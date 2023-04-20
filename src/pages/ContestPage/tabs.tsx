@@ -7,10 +7,11 @@ import { Tab, Tabs } from "../../ui/Tabs";
 type ContestTabsProps = BlockProps & {
     contest: Contest;
     currentTab?: string;
+    newMessages: number;
 };
 
 export const ContestTabs: FC<ContestTabsProps> = props => {
-    const { contest } = props;
+    const { contest, newMessages } = props;
     const { id, permissions, state } = contest;
     const canRegister = !state?.participant && permissions?.includes("register_contest");
     const canObserveProblems = permissions?.includes("observe_contest_problems");
@@ -35,7 +36,7 @@ export const ContestTabs: FC<ContestTabsProps> = props => {
                 <Link to={`/contests/${id}/standings`}>Standings</Link>
             </Tab>}
             {canObserveMessages && <Tab tab="messages">
-                <Link to={`/contests/${id}/messages`}>Messages</Link>
+                <Link to={`/contests/${id}/messages`}>Messages{newMessages > 0 && <span className="counter">{newMessages}</span>}</Link>
             </Tab>}
             {canObserveParticipants && <Tab tab="participants">
                 <Link to={`/contests/${id}/participants`}>Participants</Link>
