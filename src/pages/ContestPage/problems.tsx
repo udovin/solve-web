@@ -1,18 +1,90 @@
 import { FC, FormEvent, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Contest, ContestProblem, ContestProblems, createContestProblem, deleteContestProblem, ErrorResponse, observeContestProblems } from "../../api";
+import { Contest, ContestProblem, ContestProblems, createContestProblem, deleteContestProblem, ErrorResponse, observeContestProblems, updateContestProblem, UpdateContestProblemForm } from "../../api";
+import FormBlock from "../../components/FormBlock";
 import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
 import Button from "../../ui/Button";
+import Checkbox from "../../ui/Checkbox";
+import Dialog from "../../ui/Dialog";
+import Field from "../../ui/Field";
 import IconButton from "../../ui/IconButton";
 import Input from "../../ui/Input";
 import NumberInput from "../../ui/NumberInput";
 
-type ContestProblemsBlockParams = {
+type ContestProblemRowProps = {
+    contest: Contest;
+    problem: ContestProblem;
+    onUpdate?: (form: UpdateContestProblemForm, close: () => void, setError: (error: ErrorResponse) => void) => void;
+    onDelete?: () => void;
+};
+
+const ContestProblemRow: FC<ContestProblemRowProps> = props => {
+    const { contest, problem, onUpdate, onDelete } = props;
+    const { code, title, statement, solved, points, locales } = problem;
+    const [open, setOpen] = useState(false);
+    const [error, setError] = useState<ErrorResponse>();
+    const [newCode, setNewCode] = useState(code);
+    const [newPoints, setNewPoints] = useState(points);
+    const [ruLocale, setRuLocale] = useState(locales?.includes("ru") ?? false);
+    const [enLocale, setEnLocale] = useState(locales?.includes("en") ?? false);
+    useEffect(() => {
+        setError(undefined);
+        setNewCode(code);
+        setNewPoints(points);
+        setRuLocale(locales?.includes("ru") ?? false);
+        setEnLocale(locales?.includes("en") ?? false);
+    }, [open, code, points, locales]);
+    return <tr className={`problem${solved ? " solved" : ""}`}>
+        <td className="code">
+            <Link to={`/contests/${contest.id}/problems/${code}`}>{code}</Link>
+        </td>
+        <td className="title">
+            <Link to={`/contests/${contest.id}/problems/${code}`}>{statement?.title ?? title}</Link>
+        </td>
+        <td className="actions">
+            {onUpdate && <IconButton kind="edit" onClick={() => setOpen(true)} />}
+            {onDelete && <IconButton kind="delete" onClick={onDelete} />}
+            {onUpdate && <Dialog open={open} onClose={() => setOpen(false)}>
+                <FormBlock title="Edit problem" onSubmit={(event: FormEvent) => {
+                    event.preventDefault();
+                    let newLocales: string[] = [];
+                    if (ruLocale) {
+                        newLocales.push("ru");
+                    }
+                    if (enLocale) {
+                        newLocales.push("en");
+                    }
+                    onUpdate({ code: newCode, points: newPoints ?? 0, locales: newLocales }, () => setOpen(false), setError);
+                }} footer={
+                    <Button type="submit">Update</Button>
+                }>
+                    {error && <Alert>{error.message}</Alert>}
+                    <Field title="Code:" name="code" errorResponse={error}>
+                        <Input value={newCode} onValueChange={setNewCode} placeholder="Code" />
+                    </Field>
+                    <Field title="Points:" name="points" errorResponse={error}>
+                        <NumberInput value={newPoints} onValueChange={setNewPoints} placeholder="Code" />
+                    </Field>
+                    <Field>
+                        <Checkbox value={ruLocale} onValueChange={setRuLocale} />
+                        <span className="label">Russian</span>
+                    </Field>
+                    <Field>
+                        <Checkbox value={enLocale} onValueChange={setEnLocale} />
+                        <span className="label">English</span>
+                    </Field>
+                </FormBlock>
+            </Dialog>}
+        </td>
+    </tr>;
+};
+
+type ContestProblemsBlockProps = {
     contest: Contest;
 };
 
-export const ContestProblemsBlock: FC<ContestProblemsBlockParams> = props => {
+export const ContestProblemsBlock: FC<ContestProblemsBlockProps> = props => {
     const { contest } = props;
     const [error, setError] = useState<ErrorResponse>();
     const [problems, setProblems] = useState<ContestProblems>();
@@ -83,8 +155,8 @@ export const ContestProblemsBlock: FC<ContestProblemsBlockParams> = props => {
             </thead>
             <tbody>
                 {contestProblems.map((problem: ContestProblem, key: number) => {
-                    const { code, title, statement, solved } = problem;
-                    const deleteProblem = () => {
+                    const { code } = problem;
+                    const onDeleteProblem = () => {
                         deleteContestProblem(contest.id, code)
                             .then(problem => {
                                 const contestProblems = [...(problems?.problems ?? [])];
@@ -98,21 +170,23 @@ export const ContestProblemsBlock: FC<ContestProblemsBlockParams> = props => {
                             })
                             .catch(setError);
                     };
-                    const updateProblem = () => {
-
+                    const onUpdateProblem = (form: UpdateContestProblemForm, close: () => void, setError: (error: ErrorResponse) => void) => {
+                        updateContestProblem(contest.id, code, form)
+                            .then(problem => {
+                                const contestProblems = [...(problems?.problems ?? [])];
+                                const pos = contestProblems.findIndex(value => value.id === problem.id);
+                                contestProblems[pos] = problem;
+                                setProblems({ ...problems, problems: contestProblems });
+                                close();
+                            })
+                            .catch(setError);
                     };
-                    return <tr key={key} className={`problem${solved ? " solved" : ""}`}>
-                        <td className="code">
-                            <Link to={`/contests/${contest.id}/problems/${code}`}>{code}</Link>
-                        </td>
-                        <td className="title">
-                            <Link to={`/contests/${contest.id}/problems/${code}`}>{statement?.title ?? title}</Link>
-                        </td>
-                        <td className="actions">
-                            {canUpdateProblem && <IconButton kind="edit" onClick={updateProblem} />}
-                            {canDeleteProblem && <IconButton kind="delete" onClick={deleteProblem} />}
-                        </td>
-                    </tr>;
+                    return <ContestProblemRow
+                        contest={contest}
+                        problem={problem}
+                        onUpdate={canUpdateProblem ? onUpdateProblem : undefined}
+                        onDelete={canDeleteProblem ? onDeleteProblem : undefined}
+                        key={key} />;
                 })}
             </tbody>
         </table>

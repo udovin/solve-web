@@ -133,6 +133,8 @@ export type Solutions = {
 export type ContestProblem = Problem & {
 	code: string;
 	contest_id: number;
+	points?: number;
+	locales?: string[];
 	solved?: boolean;
 };
 
@@ -560,6 +562,20 @@ export type CreateContestProblemForm = {
 export const createContestProblem = (contestID: number, form: CreateContestProblemForm) => {
 	return parseResp(fetch(`${BASE}/api/v0/contests/${contestID}/problems`, {
 		method: "POST",
+		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
+		body: JSON.stringify(form),
+	}));
+};
+
+export type UpdateContestProblemForm = {
+	code: string;
+	points?: number;
+	locales?: string[];
+};
+
+export const updateContestProblem = (contestID: number, code: string, form: UpdateContestProblemForm) => {
+	return parseResp(fetch(`${BASE}/api/v0/contests/${contestID}/problems/${code}`, {
+		method: "PATCH",
 		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
 		body: JSON.stringify(form),
 	}));

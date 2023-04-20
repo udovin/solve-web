@@ -1,4 +1,4 @@
-import { CSSProperties, FC, MouseEvent, useEffect, useRef, useState } from "react";
+import { CSSProperties, FC, useEffect, useMemo, useRef, useState } from "react";
 import Input from "../Input";
 import Portal from "../Portal";
 
@@ -60,7 +60,7 @@ const dateFormatter = (fmt: string) => {
     }) + "$");
     const parse = (raw: string) => {
         const match = raw.match(parseRegex);
-        if (!match || match.length != parts.length + 1) {
+        if (!match || match.length !== parts.length + 1) {
             return undefined;
         }
         let year = 0, month = 0, date = 1, hours = 0, minutes = 0, seconds = 0;
@@ -112,8 +112,8 @@ const getMonthCalendar = (year: number, month: number) => {
 const DateTimeInput: FC<DateTimeInputProps> = props => {
     const { value, onValueChange, disabled } = props;
     const fmt = "DD.MM.YYYY hh:mm:ss";
-    const valueDate = value ? new Date(value * 1000) : new Date();
-    const { format, parse } = dateFormatter(fmt);
+    const valueDate = useMemo(() => value ? new Date(value * 1000) : new Date(), [value]);
+    const { format, parse } = useMemo(() => dateFormatter(fmt), [fmt]);
     const [rawValue, setRawValue] = useState<string>(value ? format(new Date(value * 1000)) : "");
     const [valid, setValid] = useState<boolean>(false);
     const ref = useRef<HTMLSpanElement>(null);
@@ -158,7 +158,7 @@ const DateTimeInput: FC<DateTimeInputProps> = props => {
             window.removeEventListener("resize", updateStyle);
             window.removeEventListener("scroll", updateStyle, true);
         };
-    }, [ref, focused]);
+    }, [ref, focused, valueDate]);
     useEffect(() => {
         if (!onValueChange) {
             return;
@@ -166,13 +166,13 @@ const DateTimeInput: FC<DateTimeInputProps> = props => {
         const date = parse(rawValue);
         setValid(!!date || !rawValue);
         onValueChange(date ? Math.round(date.getTime() / 1000) : undefined);
-    }, [rawValue, onValueChange]);
+    }, [rawValue, onValueChange, parse]);
     useEffect(() => {
         if (value === undefined && !valid) {
             return;
         }
         setRawValue(value ? format(new Date(value * 1000)) : "");
-    }, [value]);
+    }, [value, format, valid]);
     const calendar = getMonthCalendar(calendarDate.getFullYear(), calendarDate.getMonth());
     return <span
         className={`ui-datetime-input${valid ? "" : " invalid"}`}

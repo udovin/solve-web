@@ -8,6 +8,10 @@
 		margin-bottom: 0;
 	}
 
+	label {
+		@include clear-fix;
+	}
+
 	.label {
 		display: inline-block;
 		padding: 0 0 4px 0;
