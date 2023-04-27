@@ -55,6 +55,7 @@ export type ProblemStatement = {
 	output?: string;
 	notes?: string;
 	scoring?: string;
+	interaction?: string;
 	samples?: ProblemStatementSample[];
 };
 
