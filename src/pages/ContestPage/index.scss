@@ -86,11 +86,11 @@
         border: none;
 
         .problem.solved {
-            background-color: #e0f7e0;
+            background-color: #e6ffe7;
         }
 
         .problem.not-solved {
-            background-color: #ffe6e5;
+            background-color: #ffebea;
         }
 
         .code {
@@ -220,6 +220,10 @@
         tbody {
             tr.group-2 {
                 background-color: #f6fdff;
+            }
+
+            tr.current {
+                background-color: #e6ffe7;
             }
 
             tr:hover {

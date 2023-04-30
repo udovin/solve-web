@@ -1,9 +1,10 @@
-import { FC, useEffect, useState } from "react";
-import { Contest, ContestStandings, ContestStandingsCell, observeContestStandings } from "../../api";
+import { FC, useContext, useEffect, useState } from "react";
+import { Contest, ContestParticipant, ContestStandings, ContestStandingsCell, observeContestStandings } from "../../api";
 import Block from "../../ui/Block";
 import Checkbox from "../../ui/Checkbox";
 import Field from "../../ui/Field";
 import { ParticipantLink } from "./participants";
+import { AuthContext } from "../../AuthContext";
 
 type ContestStandingsBlockProps = {
     contest: Contest;
@@ -53,6 +54,19 @@ const ICPCStandingsTable: FC<StandingsTableProps> = props => {
     const { standings } = props;
     let currentGroup = 0;
     let currentGroupScore: number | undefined = undefined;
+    const { status } = useContext(AuthContext);
+    const isCurrent = (rowParticipant?: ContestParticipant) => {
+        if (!rowParticipant) {
+            return false;
+        }
+        if (rowParticipant.user && status?.user) {
+            return rowParticipant.user.id === status.user.id;
+        }
+        if (rowParticipant.scope_user && status?.scope_user) {
+            return rowParticipant.scope_user.id === status.scope_user.id;
+        }
+        return false;
+    };
     return <table className="ui-table">
         <thead>
             <tr>
@@ -91,7 +105,7 @@ const ICPCStandingsTable: FC<StandingsTableProps> = props => {
                     currentGroup = 0;
                     currentGroupScore = undefined;
                 }
-                return <tr key={index} className={`group-${currentGroup}`}>
+                return <tr key={index} className={`group-${currentGroup}${isCurrent(participant) ? " current" : ""}`}>
                     <td className="id">{row.place ?? ""}</td>
                     <td className="participant">
                         {!!participant && <ParticipantLink participant={participant} />}
@@ -128,6 +142,19 @@ const ICPCStandingsTable: FC<StandingsTableProps> = props => {
 
 const IOIStandingsTable: FC<StandingsTableProps> = props => {
     const { standings } = props;
+    const { status } = useContext(AuthContext);
+    const isCurrent = (rowParticipant?: ContestParticipant) => {
+        if (!rowParticipant) {
+            return false;
+        }
+        if (rowParticipant.user && status?.user) {
+            return rowParticipant.user.id === status.user.id;
+        }
+        if (rowParticipant.scope_user && status?.scope_user) {
+            return rowParticipant.scope_user.id === status.scope_user.id;
+        }
+        return false;
+    };
     return <table className="ui-table">
         <thead>
             <tr>
@@ -152,7 +179,7 @@ const IOIStandingsTable: FC<StandingsTableProps> = props => {
                     }
                 }
                 const { participant } = row;
-                return <tr key={index}>
+                return <tr key={index} className={isCurrent(participant) ? "current" : undefined}>
                     <td className="id">{row.place ?? ""}</td>
                     <td className="participant">
                         {!!participant && <ParticipantLink participant={participant} />}
