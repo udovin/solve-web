@@ -140,7 +140,8 @@ const ContestProblemBlock: FC = () => {
 		return <>Loading...</>;
 	}
 	return <ProblemBlock
-		problem={problem}
+		problem={problem.problem}
+		code={problem.code}
 		imageBaseUrl={`${BASE}/api/v0/contests/${contest_id}/problems/${problem_code}/resources/`}
 	/>;
 };

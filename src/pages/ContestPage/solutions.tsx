@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { Link, Navigate, useLocation } from "react-router-dom";
-import { Compilers, Contest, ContestProblem, ContestProblems, ContestSolution, ContestSolutions, ErrorResponse, observeCompilers, observeContestProblems, observeContestSolution, observeContestSolutions, rejudgeContestSolution, Solution, submitContestSolution } from "../../api";
+import { Compilers, Contest, ContestProblems, ContestSolution, ContestSolutions, ErrorResponse, observeCompilers, observeContestProblems, observeContestSolution, observeContestSolutions, rejudgeContestSolution, Solution, submitContestSolution } from "../../api";
 import FormBlock from "../../components/FormBlock";
 import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
@@ -25,8 +25,10 @@ type ContestSolutionRowProps = {
 
 const ContestSolutionRow: FC<ContestSolutionRowProps> = props => {
     const { solution, onUpdateSolution, contest } = props;
-    const { id, create_time, compiler, participant, problem, report } = solution;
-    const { statement } = problem as ContestProblem;
+    const { id, solution: baseSolution, participant, problem } = solution;
+    const { create_time, compiler, report } = baseSolution;
+    const baseProblem = problem?.problem;
+    const statement = baseProblem?.statement;
     let compilerName = compiler?.name;
     if (compiler?.config?.language) {
         compilerName = compiler.config.language;
@@ -50,7 +52,7 @@ const ContestSolutionRow: FC<ContestSolutionRowProps> = props => {
             {!!participant && <ParticipantLink participant={participant} />}
         </td>
         <td className="problem">
-            {problem ? <Link to={`/contests/${contest.id}/problems/${problem.code}`}>{`${problem.code}. ${statement?.title ?? problem.title}`}</Link> : <>&mdash;</>}
+            {baseProblem ? <Link to={`/contests/${contest.id}/problems/${problem.code}`}>{`${problem.code}. ${statement?.title ?? baseProblem.title}`}</Link> : <>&mdash;</>}
         </td>
         <td className="compiler">
             {compilerName ?? <>&mdash;</>}
@@ -67,7 +69,7 @@ type ContestSolutionsBlockProps = {
 };
 
 const needUpdateSolution = (solution: ContestSolution) => {
-    return solution.report?.verdict === "queued" || solution.report?.verdict === "running";
+    return solution.solution.report?.verdict === "queued" || solution.solution.report?.verdict === "running";
 };
 
 export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
@@ -157,7 +159,8 @@ export const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
             {error ? <Alert>{error.message}</Alert> : "Loading..."}
         </Block>;
     }
-    const { id, report, content, compiler } = solution;
+    const { id, solution: baseSolution } = solution;
+    const { content, compiler, report } = baseSolution;
     return <>
         <Block title={`Solution #${id}`} className="b-contest-solutions">
             {error && <Alert>{error.message}</Alert>}
@@ -258,7 +261,7 @@ export const ContestSubmitSolutionBlock: FC<ContestSubmitSolutionBlockProps> = p
                 value={String(problem ?? "Select problem")}
                 onValueChange={setProblem}
                 options={problems?.problems?.reduce((options, problem) => {
-                    let title = `${problem.code}. ${problem.statement?.title ?? problem.title}`;
+                    let title = `${problem.code}. ${problem.problem.statement?.title ?? problem.problem.title}`;
                     return { ...options, [problem.code]: title };
                 }, {}) ?? {}}
                 disabled={!canSubmitSolution || !problems?.problems}

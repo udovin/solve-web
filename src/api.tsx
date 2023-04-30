@@ -131,9 +131,11 @@ export type Solutions = {
 	solutions?: Solution[];
 };
 
-export type ContestProblem = Problem & {
+export type ContestProblem = {
+	id: number;
+	problem: Problem;
+	contest_id?: number;
 	code: string;
-	contest_id: number;
 	points?: number;
 	locales?: string[];
 	solved?: boolean;
@@ -202,12 +204,10 @@ export type SolutionReport = {
 
 export type ContestSolution = {
 	id: number;
-	content?: string;
-	report?: SolutionReport;
+	solution: Solution;
+	contest_id?: number;
 	participant?: ContestParticipant;
 	problem?: ContestProblem;
-	compiler?: Compiler;
-	create_time: number;
 };
 
 export type ContestSolutions = {

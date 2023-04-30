@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { BASE, ContestProblem, ErrorResponse, observeProblem, Problem, ProblemStatementSample, ProblemTask } from "../../api";
+import { BASE, ErrorResponse, observeProblem, Problem, ProblemStatementSample, ProblemTask } from "../../api";
 import Page from "../../components/Page";
 import Alert, { AlertKind } from "../../ui/Alert";
 import Block from "../../ui/Block";
@@ -75,15 +75,15 @@ const ProblemTaskNotice: FC<ProblemTaskNoticeProps> = props => {
 };
 
 type ProblemBlockProps = {
-	problem: ContestProblem | Problem;
+	problem: Problem;
+	code?: string;
 	imageBaseUrl?: string;
 };
 
 export const ProblemBlock: FC<ProblemBlockProps> = props => {
-	const { problem, imageBaseUrl } = props;
+	const { problem, code, imageBaseUrl } = props;
 	const { config, statement } = problem;
-	const contestProblem = problem as ContestProblem;
-	return <Block title={`${contestProblem.code ? `${contestProblem.code}. ` : ""}${statement?.title ?? problem.title}`} className="b-problem-statement">
+	return <Block title={`${code ? `${code}. ` : ""}${statement?.title ?? problem.title}`} className="b-problem-statement">
 		<ProblemTaskNotice task={problem.last_task} />
 		{config && <table className="ui-table section limits">
 			<tbody>

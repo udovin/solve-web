@@ -20,8 +20,9 @@ type ContestProblemRowProps = {
 };
 
 const ContestProblemRow: FC<ContestProblemRowProps> = props => {
-    const { contest, problem, onUpdate, onDelete } = props;
-    const { code, title, statement, solved, points, locales } = problem;
+    const { contest, problem: contestProblem, onUpdate, onDelete } = props;
+    const { code, problem, solved, points, locales } = contestProblem;
+    const { title, statement } = problem;
     const [open, setOpen] = useState(false);
     const [error, setError] = useState<ErrorResponse>();
     const [newCode, setNewCode] = useState(code);
@@ -35,7 +36,7 @@ const ContestProblemRow: FC<ContestProblemRowProps> = props => {
         setRuLocale(locales?.includes("ru") ?? false);
         setEnLocale(locales?.includes("en") ?? false);
     }, [open, code, points, locales]);
-    return <tr className={`problem${solved ? " solved" : ""}`}>
+    return <tr className={`problem${solved === true ? " solved" : (solved === false ? " not-solved" : "")}`}>
         <td className="code">
             <Link to={`/contests/${contest.id}/problems/${code}`}>{code}</Link>
         </td>
@@ -160,7 +161,7 @@ export const ContestProblemsBlock: FC<ContestProblemsBlockProps> = props => {
                         deleteContestProblem(contest.id, code)
                             .then(problem => {
                                 const contestProblems = [...(problems?.problems ?? [])];
-                                const pos = contestProblems.findIndex(value => value.code === problem.code && value.title === problem.title);
+                                const pos = contestProblems.findIndex(value => value.id === problem.id);
                                 if (pos >= 0) {
                                     contestProblems.splice(pos, 1);
                                 }
