@@ -43,15 +43,13 @@ const macros: Record<string, (node: Macro, info: VisitInfo, context: Context) =>
         if (args["height"] && args["height"].length) {
             style += `height:${printRaw(args["height"][0])};`;
         }
+        let scale: string | undefined = undefined;
         if (args["scale"] && args["scale"].length) {
-            const scale = parseFloat(printRaw(args["scale"][0]));
-            if (scale > 0) {
-                style += `width:${scale * 100}%;`;
-            }
+            scale = printRaw(args["scale"][0]);
         }
         const imageName = printRaw(node.args[3].content);
         const imageUrl = (context.imageBaseUrl ?? "") + imageName;
-        return htmlLike({ tag: "img", attributes: { src: imageUrl, style: style } });
+        return htmlLike({ tag: "img", attributes: { src: imageUrl, style: style, "data-scale": scale } });
     },
     "^": (_: Macro, info: VisitInfo) => {
         if (info.context.inMathMode) {
@@ -105,6 +103,13 @@ const Latex: FC<LatexProps> = props => {
                 throwOnError: false,
             });
         }
+        node.querySelectorAll<HTMLImageElement>("img[data-scale]").forEach(img => {
+            const scaleAttr = img.getAttribute("data-scale");
+            const scale = scaleAttr ? parseFloat(scaleAttr) : undefined;
+            if (scale) {
+                img.onload = () => img.style.cssText += `width:${img.naturalWidth * (scale ?? 1)}px;height:${img.naturalHeight * (scale ?? 1)}px;`;
+            }
+        });
     }, []);
     return <div
         className={`ui-latex ${className ?? ""}`}
