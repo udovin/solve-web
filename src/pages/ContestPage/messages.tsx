@@ -93,7 +93,7 @@ export const ContestMessagesBlock: FC<ContestMessagesBlockProps> = props => {
         setMessages({ ...messages, messages: [message, ...(messages?.messages ?? [])] });
     };
     let byParent: Record<number, ContestMessage[]> = {};
-    let maxSeenMessage: number = toNumber(localStorage.getItem(`contest_seen_message`)) ?? 0;
+    let maxSeenMessage: number = toNumber(localStorage.getItem("contest_seen_message")) ?? 0;
     messages?.messages?.forEach((message: ContestMessage) => {
         if (!byParent[message.parent_id ?? 0]) {
             byParent[message.parent_id ?? 0] = [];
@@ -101,7 +101,7 @@ export const ContestMessagesBlock: FC<ContestMessagesBlockProps> = props => {
         byParent[message.parent_id ?? 0].push(message);
         maxSeenMessage = Math.max(maxSeenMessage, message.id);
     });
-    localStorage.setItem(`contest_seen_message`, String(maxSeenMessage));
+    localStorage.setItem("contest_seen_message", String(maxSeenMessage));
     return <Block title="Messages" className="b-contest-messages">
         <div className="controls">
             {canSubmitQuestion && <Link to={`/contests/${id}/question`}>

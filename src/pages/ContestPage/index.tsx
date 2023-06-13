@@ -354,7 +354,7 @@ const ContestPage: FC = () => {
 		if (!contest.state?.participant) {
 			return;
 		}
-		const seenMessage = toNumber(localStorage.getItem(`contest_seen_message`)) ?? 0;
+		const seenMessage = toNumber(localStorage.getItem("contest_seen_message")) ?? 0;
 		observeContestMessages(contest.id)
 			.then((messages: ContestMessages) => {
 				let newMessages: number = 0;
@@ -381,7 +381,7 @@ const ContestPage: FC = () => {
 			return;
 		}
 		const intervalID = setInterval(() => {
-			const seenMessage = toNumber(localStorage.getItem(`contest_seen_message`)) ?? 0;
+			const seenMessage = toNumber(localStorage.getItem("contest_seen_message")) ?? 0;
 			observeContestMessages(contest.id)
 				.then((messages: ContestMessages) => {
 					let newMessages: number = 0;
@@ -409,9 +409,15 @@ const ContestPage: FC = () => {
 	const canSubmitQuestion = permissions?.includes("submit_contest_question");
 	const canCreateMessage = permissions?.includes("create_contest_message");
 	const canObserveParticipants = permissions?.includes("observe_contest_participants");
+	const canObserveStandings = permissions?.includes("observe_contest_standings") &&
+		contest.standings_kind !== undefined &&
+		contest.standings_kind !== "disabled";
 	const canManageContest = permissions?.includes("update_contest") || permissions?.includes("delete_contest");
 	const isIndex = matchPath({ path: "/contests/:contest_id" }, location.pathname);
 	const isStandings = matchPath({ path: "/contests/:contest_id/standings" }, location.pathname);
+	if (isIndex && !canObserveProblems && canObserveStandings) {
+		return <Navigate to={`/contests/${contest.id}/standings`} />;
+	}
 	return <Page title={`Contest: ${title}`} sidebar={(isStandings || (isIndex && !canObserveProblems)) ? undefined : <Routes>
 		<Route path="/problems/:problem_code" element={<>
 			<ContestSideBlock contest={contest} />
@@ -426,7 +432,7 @@ const ContestPage: FC = () => {
 				{canObserveProblems && <Route path="/problems" element={<ContestProblemsTab contest={contest} />} />}
 				<Route path="/solutions" element={<ContestSolutionsTab contest={contest} />} />
 				{canSubmitSolution && <Route path="/submit" element={<ContestSubmitSolutionTab contest={contest} />} />}
-				<Route path="/standings" element={<ContestStandingsTab contest={contest} />} />
+				{canObserveStandings && <Route path="/standings" element={<ContestStandingsTab contest={contest} />} />}
 				{canObserveMessages && <Route path="/messages" element={<ContestMessagesTab contest={contest} />} />}
 				{canSubmitQuestion && <Route path="/question" element={<ContestQuestionTab contest={contest} />} />}
 				{canCreateMessage && <Route path="/messages/create" element={<ContestCreateMessageTab contest={contest} />} />}

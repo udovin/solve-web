@@ -14,7 +14,7 @@ export const ContestStandingsBlock: FC<ContestStandingsBlockProps> = props => {
     const { contest } = props;
     const [standings, setStandings] = useState<ContestStandings>();
     const [ignoreFreeze, setIgnoreFreeze] = useState<boolean>();
-    const [onlyOfficial, setOnlyOfficial] = useState<boolean>();
+    const [onlyOfficial, setOnlyOfficial] = useState<boolean>(localStorage.getItem("contest_only_official") === "true");
     const [canChangeFreeze, setCanChangeFreeze] = useState<boolean>(false);
     useEffect(() => {
         observeContestStandings(contest.id, ignoreFreeze, onlyOfficial)
@@ -22,6 +22,7 @@ export const ContestStandingsBlock: FC<ContestStandingsBlockProps> = props => {
                 setStandings(standings);
                 setCanChangeFreeze(ignoreFreeze || standings.frozen);
             });
+        localStorage.setItem("contest_only_official", onlyOfficial ? "true" : "false")
     }, [contest.id, ignoreFreeze, onlyOfficial]);
     if (!standings) {
         return <>Loading...</>;
