@@ -93,8 +93,8 @@ h5 {
 	>tbody>tr>td,
 	>tfoot>tr>td {
 		padding: 8px 10px;
-		border-top: 1px solid #dddddd;
 		border-right: 1px solid #dddddd;
+		border-bottom: 1px solid #dddddd;
 	}
 
 	>thead>tr>th:last-child,
@@ -103,10 +103,10 @@ h5 {
 		border-right: none;
 	}
 
-	>thead:first-child>tr:first-child>th,
-	>tbody:first-child>tr:first-child>td,
-	>tfoot:first-child>tr:first-child>td {
-		border-top: none;
+	>thead:last-child>tr:last-child>th,
+	>tbody:last-child>tr:last-child>td,
+	>tfoot:last-child>tr:last-child>td {
+		border-bottom: none;
 	}
 }
 

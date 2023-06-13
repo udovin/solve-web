@@ -45,11 +45,16 @@ const macros: Record<string, (node: Macro, info: VisitInfo, context: Context) =>
         }
         let scale: string | undefined = undefined;
         if (args["scale"] && args["scale"].length) {
+            style += `display:none;`
             scale = printRaw(args["scale"][0]);
         }
         const imageName = printRaw(node.args[3].content);
         const imageUrl = (context.imageBaseUrl ?? "") + imageName;
-        return htmlLike({ tag: "img", attributes: { src: imageUrl, style: style, "data-scale": scale } });
+        let attributes: object = { src: imageUrl, style: style };
+        if (scale) {
+            attributes = { ...attributes, style: style, "data-scale": scale };
+        }
+        return htmlLike({ tag: "img", attributes });
     },
     "^": (_: Macro, info: VisitInfo) => {
         if (info.context.inMathMode) {
@@ -91,23 +96,38 @@ const Latex: FC<LatexProps> = props => {
         if (!node) {
             return;
         }
-        for (const dm of Array.from(node.querySelectorAll(".display-math"))) {
+        node.querySelectorAll(".display-math").forEach(dm => {
             katex.render(dm.textContent ?? "", dm as HTMLElement, {
                 displayMode: true,
                 throwOnError: false,
             });
-        }
-        for (const im of Array.from(node.querySelectorAll(".inline-math"))) {
+        });
+        node.querySelectorAll(".inline-math").forEach(im => {
             katex.render(im.textContent ?? "", im as HTMLElement, {
                 displayMode: false,
                 throwOnError: false,
             });
-        }
+        });
+        // for (const dm of Array.from(node.querySelectorAll(".display-math"))) {
+        //     katex.render(dm.textContent ?? "", dm as HTMLElement, {
+        //         displayMode: true,
+        //         throwOnError: false,
+        //     });
+        // }
+        // for (const im of Array.from(node.querySelectorAll(".inline-math"))) {
+        //     katex.render(im.textContent ?? "", im as HTMLElement, {
+        //         displayMode: false,
+        //         throwOnError: false,
+        //     });
+        // }
         node.querySelectorAll<HTMLImageElement>("img[data-scale]").forEach(img => {
             const scaleAttr = img.getAttribute("data-scale");
-            const scale = scaleAttr ? parseFloat(scaleAttr) : undefined;
-            if (scale) {
-                img.onload = () => img.style.cssText += `width:${img.naturalWidth * (scale ?? 1)}px;height:${img.naturalHeight * (scale ?? 1)}px;`;
+            if (scaleAttr) {
+                const scale = parseFloat(scaleAttr);
+                img.onload = () => {
+                    img.style.setProperty("width", `${img.naturalWidth * scale}px`);
+                    img.style.removeProperty("display");
+                };
             }
         });
     }, []);

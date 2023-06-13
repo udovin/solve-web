@@ -17,7 +17,9 @@ export const ContestTabs: FC<ContestTabsProps> = props => {
     const canObserveProblems = permissions?.includes("observe_contest_problems");
     const canSubmitSolution = permissions?.includes("submit_contest_solution");
     const canObserveSolutions = permissions?.includes("observe_contest_solutions");
-    const canObserveStandings = permissions?.includes("observe_contest_standings");
+    const canObserveStandings = permissions?.includes("observe_contest_standings") &&
+        contest.standings_kind !== undefined &&
+        contest.standings_kind !== "disabled";
     const canObserveMessages = permissions?.includes("observe_contest_messages");
     const canObserveParticipants = permissions?.includes("observe_contest_participants");
     const canManage = permissions?.includes("update_contest") || permissions?.includes("delete_contest");
