@@ -11,6 +11,7 @@ import {
 	updateUserPassword,
 	updateUser,
 	Sessions,
+	updateUserEmail,
 } from "../../api";
 import Block from "../../ui/Block";
 import FormBlock from "../../components/FormBlock";
@@ -141,6 +142,44 @@ const ChangePasswordBlock: FC<ChangePasswordBlockProps> = props => {
 	</FormBlock>;
 };
 
+type ChangeEmailBlockProps = {
+	user: User;
+};
+
+const ChangeEmailBlock: FC<ChangeEmailBlockProps> = props => {
+	const { user } = props;
+	const [error, setError] = useState<ErrorResponse>();
+	const [email, setEmail] = useState<string>();
+	const onSubmit = (event: any) => {
+		event.preventDefault();
+		if (!email) {
+			return;
+		}
+		updateUserEmail(user.id, { email: email })
+			.then(() => {
+				setEmail(undefined);
+				setError(undefined);
+			})
+			.catch(setError);
+	};
+	return <FormBlock title="Change email" onSubmit={onSubmit} footer={
+		<Button
+			type="submit" color="primary"
+			disabled={email === undefined}
+		>Change</Button>
+	}>
+		{error && error.message && <Alert>{error.message}</Alert>}
+		<Field title="E-mail:" name="email" errorResponse={error}>
+			<Input
+				type="email" name="email" placeholder="E-mail"
+				value={email ?? user.email}
+				onValueChange={setEmail}
+				required
+			/>
+		</Field>
+	</FormBlock>;
+};
+
 type CurrentSessionsBlockProps = {
 	userID: UserID;
 };
@@ -236,6 +275,7 @@ const EditUserPage: FC = () => {
 				</TabContent>} />
 				<Route path="/security" element={<TabContent tab="security" setCurrent>
 					<ChangePasswordBlock userID={id} />
+					<ChangeEmailBlock user={user} />
 					<CurrentSessionsBlock userID={id} />
 				</TabContent>} />
 			</Routes>

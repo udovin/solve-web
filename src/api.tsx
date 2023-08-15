@@ -462,6 +462,18 @@ export const updateUserPassword = (userID: UserID, form: UpdatePasswordForm) => 
 	}));
 };
 
+export type UpdateEmailForm = {
+	email: string;
+};
+
+export const updateUserEmail = (userID: UserID, form: UpdateEmailForm) => {
+	return parseResp(fetch(`${BASE}/api/v0/users/${userID}/email`, {
+		method: "POST",
+		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
+		body: JSON.stringify(form),
+	}));
+};
+
 export const observeContest = (id: number) => {
 	return parseResp(fetch(`${BASE}/api/v0/contests/${id}`, {
 		method: "GET",
