@@ -451,7 +451,7 @@ export const deleteSession = (sessionID: number) => {
 
 export type UpdatePasswordForm = {
 	password: string;
-	old_password?: string;
+	current_password?: string;
 };
 
 export const updateUserPassword = (userID: UserID, form: UpdatePasswordForm) => {

@@ -97,7 +97,7 @@ const ChangePasswordBlock: FC<ChangePasswordBlockProps> = props => {
 	const onSubmit = (event: any) => {
 		event.preventDefault();
 		updateUserPassword(userID, {
-			old_password: form.old_password,
+			current_password: form.current_password,
 			password: form.password,
 		})
 			.then(() => {
@@ -109,27 +109,25 @@ const ChangePasswordBlock: FC<ChangePasswordBlockProps> = props => {
 	return <FormBlock title="Change password" onSubmit={onSubmit} footer={
 		<Button
 			type="submit" color="primary"
-			disabled={!form.old_password || !form.password || !equalPasswords}
+			disabled={!form.current_password || !form.password || !equalPasswords}
 		>Change</Button>
 	}>
 		{error && error.message && <Alert>{error.message}</Alert>}
-		<Field title="Old password:">
+		<Field title="Current password:" name="current_password" errorResponse={error}>
 			<Input
-				type="password" name="old_password" placeholder="Old password"
-				value={form.old_password}
-				onValueChange={(value) => setForm({ ...form, old_password: value })}
+				type="password" name="current_password" placeholder="Current password"
+				value={form.current_password}
+				onValueChange={(value) => setForm({ ...form, current_password: value })}
 				required
 			/>
-			{error && error.invalid_fields && error.invalid_fields["old_password"] && <Alert>{error.invalid_fields["old_password"].message}</Alert>}
 		</Field>
-		<Field title="New password:">
+		<Field title="New password:" name="password" errorResponse={error}>
 			<Input
 				type="password" name="password" placeholder="New password"
 				value={form.password}
 				onValueChange={(value) => setForm({ ...form, password: value })}
 				required
 			/>
-			{error && error.invalid_fields && error.invalid_fields["password"] && <Alert>{error.invalid_fields["password"].message}</Alert>}
 		</Field>
 		<Field title="Repeat new password:">
 			<Input
