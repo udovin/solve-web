@@ -451,7 +451,7 @@ export const deleteSession = (sessionID: number) => {
 
 export type UpdatePasswordForm = {
 	password: string;
-	current_password?: string;
+	current_password: string;
 };
 
 export const updateUserPassword = (userID: UserID, form: UpdatePasswordForm) => {
@@ -464,6 +464,7 @@ export const updateUserPassword = (userID: UserID, form: UpdatePasswordForm) => 
 
 export type UpdateEmailForm = {
 	email: string;
+	current_password: string;
 };
 
 export const updateUserEmail = (userID: UserID, form: UpdateEmailForm) => {
@@ -492,6 +493,14 @@ export const observeContests = () => {
 	return parseResp(fetch(`${BASE}/api/v0/contests`, {
 		method: "GET",
 		headers: getHeaders(),
+	}));
+};
+
+export const confirmEmail = (id: string, secret: string) => {
+	return parseResp(fetch(`${BASE}/api/v0/tokens/${id}`, {
+		method: "POST",
+		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
+		body: JSON.stringify({ secret: secret }),
 	}));
 };
 

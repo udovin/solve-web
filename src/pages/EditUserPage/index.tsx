@@ -150,12 +150,16 @@ const ChangeEmailBlock: FC<ChangeEmailBlockProps> = props => {
 	const { user } = props;
 	const [error, setError] = useState<ErrorResponse>();
 	const [email, setEmail] = useState<string>();
+	const [currentPassword, setCurrentPassword] = useState<string>();
 	const onSubmit = (event: any) => {
 		event.preventDefault();
-		if (!email) {
+		if (!email || !currentPassword) {
 			return;
 		}
-		updateUserEmail(user.id, { email: email })
+		updateUserEmail(user.id, {
+			email: email,
+			current_password: currentPassword
+		})
 			.then(() => {
 				setEmail(undefined);
 				setError(undefined);
@@ -165,10 +169,18 @@ const ChangeEmailBlock: FC<ChangeEmailBlockProps> = props => {
 	return <FormBlock title="Change email" onSubmit={onSubmit} footer={
 		<Button
 			type="submit" color="primary"
-			disabled={email === undefined}
+			disabled={email === undefined || !currentPassword}
 		>Change</Button>
 	}>
 		{error && error.message && <Alert>{error.message}</Alert>}
+		<Field title="Current password:" name="current_password" errorResponse={error}>
+			<Input
+				type="password" name="current_password" placeholder="Current password"
+				value={currentPassword}
+				onValueChange={setCurrentPassword}
+				required
+			/>
+		</Field>
 		<Field title="E-mail:" name="email" errorResponse={error}>
 			<Input
 				type="email" name="email" placeholder="E-mail"
