@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { confirmEmail } from "../../api";
 import { Navigate, useSearchParams } from "react-router-dom";
 
@@ -7,8 +7,10 @@ const ConfirmEmailPage: FC = () => {
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id") || "";
     const secret = searchParams.get("secret") || "";
-    confirmEmail(id, secret)
-        .then(() => setRedirect(true));
+    useEffect(() => {
+        confirmEmail(id, secret)
+            .then(() => setRedirect(true));
+    }, []);
     if (redirect) {
         return <Navigate to={"/"} />;
     }
