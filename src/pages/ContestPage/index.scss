@@ -85,25 +85,25 @@
     .ui-table {
         border: none;
 
-        .problem.solved {
+        tr>.problem.solved {
             background-color: #e6ffe7;
         }
 
-        .problem.not-solved {
+        tr>.problem.not-solved {
             background-color: #ffebea;
         }
 
-        .code {
+        tr>.code {
             text-align: right;
             width: 1%;
             white-space: nowrap;
         }
 
-        .title {
+        tr>.title {
             text-align: left;
         }
 
-        .actions {
+        tr>.actions {
             text-align: left;
             width: 1%;
         }
@@ -119,19 +119,19 @@
     .ui-table {
         border: none;
 
-        .id {
+        tr>.id {
             text-align: right;
             width: 1%;
         }
 
-        .problem,
-        .verdict,
-        .points,
-        .compiler {
+        tr>.date,
+        tr>.problem,
+        tr>.verdict,
+        tr>.compiler {
             text-align: center;
         }
 
-        .verdict {
+        tr>.verdict {
             .ui-verdict-wrap {
                 vertical-align: middle;
             }
@@ -146,7 +146,7 @@
             }
         }
 
-        .participant {
+        tr>.participant {
             text-align: center;
 
             .kind {
@@ -179,21 +179,26 @@
     .ui-table {
         border: none;
 
-        .id {
+        tr>.id {
             text-align: right;
             width: 1%;
         }
 
-        .login {
+        tr>.login {
             text-align: left;
+
+            .kind {
+                color: #666666;
+                font-size: 12px;
+            }
         }
 
-        .kind {
+        tr>.kind {
             width: 70px;
             text-align: center;
         }
 
-        .actions {
+        tr>.actions {
             text-align: left;
             width: 60px;
         }
@@ -232,12 +237,14 @@
             }
         }
 
-        .id {
+        tr>.id {
             text-align: right;
             width: 1%;
+            border-right: none;
+            padding-right: 0;
         }
 
-        .participant {
+        tr>.participant {
             text-align: left;
 
             .kind {
@@ -246,15 +253,16 @@
             }
         }
 
-        .score,
-        .penalty {
+        tr>.score,
+        tr>.penalty {
             width: 60px;
             text-align: center;
         }
 
-        .problem {
+        tr>.problem {
             width: 40px;
             text-align: center;
+            padding: 4px;
 
             .code {
                 display: block;

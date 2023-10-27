@@ -644,6 +644,7 @@ export type CreateContestParticipantForm = {
 	user_id?: number;
 	user_login?: string;
 	scope_user_id?: number;
+	scope_id?: number;
 	kind: string;
 };
 

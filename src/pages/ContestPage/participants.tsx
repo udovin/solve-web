@@ -52,10 +52,16 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
             user_login: form.user_id,
             kind: form.kind ?? "regular",
         };
-        if (form.user_id && form.user_id.length > 0 && form.user_id[0] === '#') {
-            createForm.user_id = undefined;
-            createForm.user_login = undefined;
-            createForm.scope_user_id = Number((form.user_id ?? 0).substring(1));
+        if (form.user_id && form.user_id.length > 0) {
+            if (form.user_id[0] === '#') {
+                createForm.user_id = undefined;
+                createForm.user_login = undefined;
+                createForm.scope_user_id = Number((form.user_id ?? 0).substring(1));
+            } else if (form.user_id[0] === '@') {
+                createForm.user_id = undefined;
+                createForm.user_login = undefined;
+                createForm.scope_id = Number((form.user_id ?? 0).substring(1));
+            }
         }
         createContestParticipant(contest.id, createForm)
             .then(participant => {

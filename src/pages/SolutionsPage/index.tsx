@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ErrorResponse, observeSolutions, Problem, ScopeUser, Solution, Solutions, User } from "../../api";
+import { ErrorResponse, observeSolutions, Problem, Scope, ScopeUser, Solution, Solutions, User } from "../../api";
 import Page from "../../components/Page";
 import Sidebar from "../../ui/Sidebar";
 import Alert from "../../ui/Alert";
@@ -17,6 +17,7 @@ export type SolutionsBlockProps = BlockProps & {
 
 interface Account {
 	user?: User;
+	scope?: Scope;
 	scope_user?: ScopeUser;
 };
 
@@ -26,9 +27,12 @@ type AccountLinkProps = {
 
 export const AccountLink: FC<AccountLinkProps> = props => {
 	const { account } = props;
-	const { user, scope_user } = account;
+	const { user, scope_user, scope } = account;
 	if (user) {
 		return <UserLink user={user} />;
+	}
+	if (scope) {
+		return <><span className="kind">Scope: </span>{scope.title ?? scope.id}</>;
 	}
 	if (scope_user) {
 		return <>{scope_user.title ?? scope_user.login}</>;
