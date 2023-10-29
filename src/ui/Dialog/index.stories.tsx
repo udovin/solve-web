@@ -13,7 +13,7 @@ const TestDialog: FC = () => {
 	return <>
 		<Button onClick={() => setOpen(true)}>Open dialog</Button>
 		<Dialog open={open} onClose={() => setOpen(false)}>
-			<Block>
+			<Block title="Some title" footer={<Button onClick={() => setOpen(false)}>Close</Button>}>
 				Some dialog content with <Tooltip content="Some content">tooltip</Tooltip>.
 			</Block>
 		</Dialog>

@@ -1,4 +1,5 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
+import { DateFormatter } from "../../utils";
 
 export type DateTimeProps = {
 	value: number;
@@ -8,7 +9,7 @@ const plural = (one: string, n: number): string => {
 	return n > 1 ? one + "s" : one;
 };
 
-const formatDateTime = (value: number, now: number): string => {
+const formatDateTime = (value: number, now: number, format: any): string => {
 	if (value <= now) {
 		const seconds = now - value;
 		const minutes = Math.trunc(seconds / 60)
@@ -32,7 +33,7 @@ const formatDateTime = (value: number, now: number): string => {
 			return `in ${hours} ${plural("hour", hours)}`;
 		}
 	}
-	return `${(new Date(value * 1000)).toLocaleString()}`;
+	return format(new Date(value * 1000));
 };
 
 const DateTime: FC<DateTimeProps> = props => {
@@ -41,11 +42,13 @@ const DateTime: FC<DateTimeProps> = props => {
 		return Math.round((new Date()).getTime() / 1000);
 	};
 	const [now, setNow] = useState(getNow());
+	const fmt = "DD.MM.YYYY hh:mm:ss";
+	const format = useMemo(() => DateFormatter(fmt), [fmt]);
 	useEffect(() => {
 		let intervalID = setInterval(() => setNow(getNow()), 1000);
 		return () => clearInterval(intervalID);
 	}, [setNow]);
-	return <>{formatDateTime(value, now)}</>;
+	return <>{formatDateTime(value, now, format)}</>;
 };
 
 export default DateTime;

@@ -12,5 +12,5 @@ const TestDateTimeInput: FC<DateTimeInputProps> = props => {
 };
 
 export const Index = () => <>
-	<TestDateTimeInput value={(new Date()).getTime() / 1000} />
+	<TestDateTimeInput value={(new Date(1577970855000)).getTime() / 1000} />
 </>;

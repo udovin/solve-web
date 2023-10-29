@@ -232,7 +232,7 @@ const StandingsDuration: FC<StandingsDurationProps> = props => {
     const hours = Math.trunc(value / 3600) % 24;
     const days = Math.trunc(value / 86400);
     if (days) {
-        return <>{days}d{formatPart(hours)}:{formatPart(minutes)}</>;
+        return <>{days}d {formatPart(hours)}:{formatPart(minutes)}</>;
     }
     return <>{formatPart(hours)}:{formatPart(minutes)}</>;
 };

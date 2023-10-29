@@ -510,6 +510,10 @@ export type CreateContestForm = {
 	duration?: number;
 	enable_registration?: boolean;
 	enable_upsolving?: boolean;
+	enable_observing?: boolean;
+	freeze_begin_duration?: number;
+	freeze_end_time?: number;
+	standings_kind?: string;
 };
 
 export const createContest = (form: CreateContestForm) => {

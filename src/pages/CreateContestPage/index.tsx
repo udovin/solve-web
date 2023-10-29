@@ -1,36 +1,36 @@
 import { FC, useState } from "react";
 import { Navigate } from "react-router-dom";
 import Page from "../../components/Page";
-import Input from "../../ui/Input";
 import Button from "../../ui/Button";
 import FormBlock from "../../components/FormBlock";
 import { Contest, ErrorResponse, createContest } from "../../api";
-import Field from "../../ui/Field";
-import Alert from "../../ui/Alert";
-import DurationInput from "../../ui/DurationInput";
-import Checkbox from "../../ui/Checkbox";
-
-const toNumber = (n?: string) => {
-	return n === undefined ? undefined : Number(n);
-};
-
-const toBoolean = (n?: string) => {
-	return n === undefined ? undefined : n === "true";
-};
+import { ContestForm } from "../../forms/ContestForm";
 
 const CreateContestPage: FC = () => {
 	const [newContest, setNewContest] = useState<Contest>();
+	const [title, setTitle] = useState<string>("");
+	const [beginTime, setBeginTime] = useState<number>();
+	const [duration, setDuration] = useState<number>();
+	const [enableRegistration, setEnableRegistration] = useState<boolean>();
+	const [enableUpsolving, setEnableUpsolving] = useState<boolean>();
+	const [enableObserving, setEnableObserving] = useState<boolean>();
+	const [freezeBeginDuration, setFreezeBeginDuration] = useState<number>();
+	const [freezeEndTime, setFreezeEndTime] = useState<number>();
+	const [standingsKind, setStandingsKind] = useState<string>();
 	const [error, setError] = useState<ErrorResponse>();
-	const [form, setForm] = useState<{ [key: string]: string }>({});
 	const onSubmit = (event: any) => {
 		event.preventDefault();
 		setError(undefined);
 		createContest({
-			title: form.title,
-			begin_time: toNumber(form.begin_time),
-			duration: toNumber(form.duration),
-			enable_registration: toBoolean(form.enable_registration),
-			enable_upsolving: toBoolean(form.enable_upsolving),
+			title: title,
+			begin_time: beginTime ?? 0,
+			duration: duration ?? 0,
+			enable_registration: enableRegistration,
+			enable_upsolving: enableUpsolving,
+			enable_observing: enableObserving,
+			freeze_begin_duration: freezeBeginDuration ?? 0,
+			freeze_end_time: freezeEndTime ?? 0,
+			standings_kind: standingsKind,
 		})
 			.then(setNewContest)
 			.catch(setError);
@@ -42,40 +42,27 @@ const CreateContestPage: FC = () => {
 		<FormBlock onSubmit={onSubmit} title="Create contest" footer={
 			<Button type="submit" color="primary">Create</Button>
 		}>
-			{error && error.message && <Alert>{error.message}</Alert>}
-			<Field title="Title:">
-				<Input
-					type="text" name="title" placeholder="Title"
-					value={form.title || ""}
-					onValueChange={value => setForm({ ...form, title: value })}
-					required autoFocus />
-				{error && error.invalid_fields && error.invalid_fields["title"] && <Alert>{error.invalid_fields["title"].message}</Alert>}
-			</Field>
-			<Field title="Begin time:">
-				<Input
-					type="number" name="begin_time" placeholder="Begin time"
-					value={form.begin_time || ""}
-					onValueChange={value => setForm({ ...form, begin_time: value })} />
-				{error && error.invalid_fields && error.invalid_fields["begin_time"] && <Alert>{error.invalid_fields["begin_time"].message}</Alert>}
-			</Field>
-			<Field title="Duration:">
-				<DurationInput
-					value={Number(form.duration || "0")}
-					onValueChange={value => setForm({ ...form, duration: String(value) })} />
-				{error && error.invalid_fields && error.invalid_fields["duration"] && <Alert>{error.invalid_fields["duration"].message}</Alert>}
-			</Field>
-			<Field name="enable_registration" errorResponse={error}>
-				<Checkbox
-					value={toBoolean(form.enable_registration) ?? false}
-					onValueChange={value => setForm({ ...form, enable_registration: value ? "true" : "false" })} />
-				<span className="label">Enable registration</span>
-			</Field>
-			<Field name="enable_upsolving" errorResponse={error}>
-				<Checkbox
-					value={toBoolean(form.enable_upsolving) ?? false}
-					onValueChange={value => setForm({ ...form, enable_upsolving: value ? "true" : "false" })} />
-				<span className="label">Enable upsolving</span>
-			</Field>
+			<ContestForm
+				title={title}
+				onTitleChange={setTitle}
+				beginTime={beginTime}
+				onBeginTimeChange={setBeginTime}
+				duration={duration}
+				onDurationChange={setDuration}
+				enableRegistration={enableRegistration}
+				onEnableRegistrationChange={setEnableRegistration}
+				enableUpsolving={enableUpsolving}
+				onEnableUpsolvingChange={setEnableUpsolving}
+				enableObserving={enableObserving}
+				onEnableObservingChange={setEnableObserving}
+				freezeBeginDuration={freezeBeginDuration}
+				onFreezeBeginDurationChange={setFreezeBeginDuration}
+				freezeEndTime={freezeEndTime}
+				onFreezeEndTimeChange={setFreezeEndTime}
+				standingsKind={standingsKind}
+				onStandingsKindChange={setStandingsKind}
+				error={error}
+			/>
 		</FormBlock>
 	</Page>;
 };
