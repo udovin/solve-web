@@ -85,27 +85,29 @@
     .ui-table {
         border: none;
 
-        tr>.problem.solved {
-            background-color: #e6ffe7;
-        }
+        >tr {
+            &.solved {
+                background-color: #e6ffe7;
+            }
 
-        tr>.problem.not-solved {
-            background-color: #ffebea;
-        }
+            &.not-solved {
+                background-color: #ffebea;
+            }
 
-        tr>.code {
-            text-align: right;
-            width: 1%;
-            white-space: nowrap;
-        }
+            >.code {
+                text-align: right;
+                width: 1%;
+                white-space: nowrap;
+            }
 
-        tr>.title {
-            text-align: left;
-        }
+            >.title {
+                text-align: left;
+            }
 
-        tr>.actions {
-            text-align: left;
-            width: 1%;
+            >.actions {
+                text-align: left;
+                width: 1%;
+            }
         }
     }
 }
@@ -119,39 +121,41 @@
     .ui-table {
         border: none;
 
-        tr>.id {
-            text-align: right;
-            width: 1%;
-        }
-
-        tr>.date,
-        tr>.problem,
-        tr>.verdict,
-        tr>.compiler {
-            text-align: center;
-        }
-
-        tr>.verdict {
-            .ui-verdict-wrap {
-                vertical-align: middle;
+        tr {
+            >.id {
+                text-align: right;
+                width: 1%;
             }
 
-            .rejudge {
-                margin-left: 4px;
+            >.date,
+            >.problem,
+            >.verdict,
+            >.compiler {
+                text-align: center;
+            }
 
-                .ui-icon-button {
-                    width: 18px;
-                    height: 18px;
+            >.verdict {
+                .ui-verdict-wrap {
+                    vertical-align: middle;
+                }
+
+                .rejudge {
+                    margin-left: 4px;
+
+                    .ui-icon-button {
+                        width: 18px;
+                        height: 18px;
+                    }
                 }
             }
-        }
 
-        tr>.participant {
-            text-align: center;
+            >.participant {
+                text-align: center;
 
-            .kind {
-                color: #666666;
-                font-size: 12px;
+                .kind {
+                    color: #666666;
+                    font-size: 12px;
+                }
             }
         }
     }
