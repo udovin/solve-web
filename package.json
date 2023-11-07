@@ -76,7 +76,7 @@
     "@storybook/react": "^6.5.15",
     "@types/compression": "^1.7.2",
     "@types/katex": "^0.16.0",
-    "@types/react-syntax-highlighter": "^15.5.5",
+    "@types/react-syntax-highlighter": "^15.5.10",
     "postcss": "^8.4.31",
     "postcss-loader": "^7.0.2",
     "rewire": "^6.0.0",
