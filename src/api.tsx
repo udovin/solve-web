@@ -361,7 +361,7 @@ const POST_JSON_HEADERS = {
 };
 
 export const BASE = process.env.PUBLIC_URL ?? "";
-export const VERSION = process.env.PUBLIC_VERSION ?? "development";
+export const VERSION = process.env.REACT_APP_VERSION ?? "development";
 
 let solveVersion: string | null = null;
 

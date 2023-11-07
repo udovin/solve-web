@@ -3,7 +3,7 @@ WORKDIR /app
 COPY package.json /app/
 RUN npm install
 COPY . /app
-ARG PUBLIC_VERSION=development
+ARG REACT_APP_VERSION=development
 RUN npm run build && npm run build-server
 
 FROM alpine:3.17
