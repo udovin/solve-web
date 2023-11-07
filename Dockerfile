@@ -1,8 +1,9 @@
-FROM node:14-alpine AS build
+FROM node:16-alpine AS build
 WORKDIR /app
 COPY package.json /app/
 RUN npm install
 COPY . /app
+ARG REACT_APP_VERSION=development
 RUN npm run build && npm run build-server
 
 FROM alpine:3.17

@@ -1,12 +1,10 @@
 import { FC, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { getSolveVersion } from "../api";
+import { VERSION, getSolveVersion } from "../api";
 import { AuthContext } from "../AuthContext";
 import Tooltip from "../ui/Tooltip";
 
 import "./index.scss";
-
-const webVersion = "0.1.0";
 
 const Header: FC = () => {
 	const location = useLocation();
@@ -66,9 +64,9 @@ const Header: FC = () => {
 			</ul>
 		</nav>
 		<div id="header-version" title="Version"><Tooltip content={<span className="ui-version-tooltip">
-			<span>Web: {webVersion}</span>
+			<span>Web: {VERSION}</span>
 			<span>API: {getSolveVersion()}</span>
-		</span>}>{webVersion}</Tooltip></div>
+		</span>}>{VERSION}</Tooltip></div>
 	</header>;
 };
 
