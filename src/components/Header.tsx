@@ -1,12 +1,10 @@
 import { FC, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { getSolveVersion } from "../api";
+import { VERSION, getSolveVersion } from "../api";
 import { AuthContext } from "../AuthContext";
 import Tooltip from "../ui/Tooltip";
 
 import "./index.scss";
-
-export const VERSION = process.env.VERSION ?? "development";
 
 const Header: FC = () => {
 	const location = useLocation();
