@@ -13,6 +13,7 @@ export type ErrorResponse = {
 export type User = {
 	id: number;
 	login: string;
+	status?: string;
 	email?: string;
 	first_name?: string;
 	last_name?: string;
@@ -473,6 +474,13 @@ export const updateUserEmail = (userID: UserID, form: UpdateEmailForm) => {
 		method: "POST",
 		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
 		body: JSON.stringify(form),
+	}));
+};
+
+export const resendUserEmail = (userID: UserID) => {
+	return parseResp(fetch(`${BASE}/api/v0/users/${userID}/resend-email`, {
+		method: "POST",
+		headers: getHeaders(),
 	}));
 };
 

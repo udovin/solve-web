@@ -12,13 +12,14 @@ import {
 	updateUser,
 	Sessions,
 	updateUserEmail,
+	resendUserEmail,
 } from "../../api";
 import Block from "../../ui/Block";
 import FormBlock from "../../components/FormBlock";
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
 import Field from "../../ui/Field";
-import Alert from "../../ui/Alert";
+import Alert, { AlertKind } from "../../ui/Alert";
 import { AuthContext } from "../../AuthContext";
 import Sidebar from "../../ui/Sidebar";
 import DateTime from "../../ui/DateTime";
@@ -150,7 +151,9 @@ const ChangeEmailBlock: FC<ChangeEmailBlockProps> = props => {
 	const { user } = props;
 	const [error, setError] = useState<ErrorResponse>();
 	const [email, setEmail] = useState<string>();
+	const { status } = useContext(AuthContext);
 	const [currentPassword, setCurrentPassword] = useState<string>();
+	const [resendAvailable, setResendAvailable] = useState(true);
 	const onSubmit = (event: any) => {
 		event.preventDefault();
 		if (!email || !currentPassword) {
@@ -166,6 +169,16 @@ const ChangeEmailBlock: FC<ChangeEmailBlockProps> = props => {
 			})
 			.catch(setError);
 	};
+	const onResendEmail = (event: any) => {
+		event.preventDefault();
+		setResendAvailable(false);
+		resendUserEmail(user.id)
+			.then(() => setError(undefined))
+			.catch(error => {
+				setResendAvailable(true);
+				setError(error);
+			});
+	};
 	return <FormBlock title="Change email" onSubmit={onSubmit} footer={
 		<Button
 			type="submit" color="primary"
@@ -173,6 +186,11 @@ const ChangeEmailBlock: FC<ChangeEmailBlockProps> = props => {
 		>Change</Button>
 	}>
 		{error && error.message && <Alert>{error.message}</Alert>}
+		{status?.user?.id === user.id && status.user.status === "pending" && user.email && <Alert kind={AlertKind.INFO}>
+			<p>We have sent an email to confirm your email address.
+				If the email has not arrived, please check the spelling of your email address and the presence of the letter in the "Spam" folder.</p>
+			{resendAvailable && <p>You can also try to <b><a onClick={onResendEmail}>resubmit</a></b> the email.</p>}
+		</Alert>}
 		<Field title="Current password:" name="current_password" errorResponse={error}>
 			<Input
 				type="password" name="current_password" placeholder="Current password"
