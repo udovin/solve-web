@@ -1,3 +1,4 @@
+const webpack = require("webpack");
 const path = require("path");
 
 module.exports = {
@@ -18,6 +19,9 @@ module.exports = {
   node: {
     __dirname: false,
   },
+  plugins: [
+    new webpack.EnvironmentPlugin(["REACT_APP_VERSION"]),
+  ],
   module: {
     rules: [
       {

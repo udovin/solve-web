@@ -6,7 +6,7 @@ COPY . /app
 ARG REACT_APP_VERSION=development
 RUN npm run build && npm run build-server
 
-FROM alpine:3.17
+FROM alpine:3.18
 RUN apk add --no-cache nodejs
 WORKDIR /app
 COPY --from=build /app/build /app/build

@@ -1,6 +1,6 @@
 {
   "name": "solve-web",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "dependencies": {
     "@codemirror/commands": "^6.2.1",
@@ -38,6 +38,9 @@
   "overrides": {
     "react-scripts": {
       "typescript": "^5"
+    },
+    "react-dev-utils": {
+      "fork-ts-checker-webpack-plugin": "^6.5.3"
     }
   },
   "scripts": {
