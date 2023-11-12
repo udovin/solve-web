@@ -1,9 +1,23 @@
+@import "../../mixins.scss";
+
 #header {
     display: block;
     position: relative;
 
     >.ui-alert {
         margin-top: 10px;
+
+        .ui-alert-content {
+            position: relative;
+            padding-right: 32px;
+
+            .ui-icon-button {
+                display: block;
+                position: absolute;
+                top: 6px;
+                right: 6px;
+            }
+        }
     }
 }
 

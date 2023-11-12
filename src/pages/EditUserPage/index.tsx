@@ -41,8 +41,8 @@ const EditUserBlock: FC<EditUserBlockProps> = props => {
 	const onSubmit = (event: any) => {
 		event.preventDefault();
 		updateUser(user.id, form)
-			.then(user => {
-				onUpdateUser(user);
+			.then(newUser => {
+				onUpdateUser(newUser);
 				setForm({});
 				setError(undefined);
 			})
@@ -145,10 +145,11 @@ const ChangePasswordBlock: FC<ChangePasswordBlockProps> = props => {
 
 type ChangeEmailBlockProps = {
 	user: User;
+	onUpdateUser(user: User): void;
 };
 
 const ChangeEmailBlock: FC<ChangeEmailBlockProps> = props => {
-	const { user } = props;
+	const { user, onUpdateUser } = props;
 	const [error, setError] = useState<ErrorResponse>();
 	const [email, setEmail] = useState<string>();
 	const { status } = useContext(AuthContext);
@@ -163,7 +164,8 @@ const ChangeEmailBlock: FC<ChangeEmailBlockProps> = props => {
 			email: email,
 			current_password: currentPassword
 		})
-			.then(() => {
+			.then(newUser => {
+				onUpdateUser({ ...user, email: newUser.email });
 				setEmail(undefined);
 				setError(undefined);
 			})
@@ -182,7 +184,7 @@ const ChangeEmailBlock: FC<ChangeEmailBlockProps> = props => {
 	return <FormBlock title="Change email" onSubmit={onSubmit} footer={
 		<Button
 			type="submit" color="primary"
-			disabled={email === undefined || !currentPassword}
+			disabled={email === undefined || email === user.email || !currentPassword}
 		>Change</Button>
 	}>
 		{error && error.message && <Alert>{error.message}</Alert>}
@@ -305,7 +307,7 @@ const EditUserPage: FC = () => {
 				</TabContent>} />
 				<Route path="/security" element={<TabContent tab="security" setCurrent>
 					<ChangePasswordBlock userID={id} />
-					<ChangeEmailBlock user={user} />
+					<ChangeEmailBlock user={user} onUpdateUser={setUser} />
 					<CurrentSessionsBlock userID={id} />
 				</TabContent>} />
 			</Routes>

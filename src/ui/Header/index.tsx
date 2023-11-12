@@ -1,4 +1,4 @@
-import { FC, useContext } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { VERSION, getSolveVersion } from "../../api";
 import { AuthContext } from "../../AuthContext";
@@ -7,6 +7,7 @@ import Tooltip from "../Tooltip";
 import Alert, { AlertKind } from "../Alert";
 
 import "./index.scss";
+import IconButton from "../IconButton";
 
 const Header: FC = () => {
     const location = useLocation();
@@ -20,6 +21,10 @@ const Header: FC = () => {
         return "";
     };
     const { status } = useContext(AuthContext);
+    const [showConfirmEmail, setShowConfirmEmail] = useState(false);
+    useEffect(() => {
+        setShowConfirmEmail(status?.user?.status === "pending");
+    }, [status]);
     const accountLinks = <>
         {status?.user && <li>
             Hello, <Link to={`/users/${status.user.login}`}>{status.user.login}</Link>!
@@ -69,8 +74,9 @@ const Header: FC = () => {
             <span>Web: {VERSION}</span>
             <span>API: {getSolveVersion()}</span>
         </span>}>{VERSION}</Tooltip></div>
-        {status?.user?.status === "pending" && <Alert kind={AlertKind.WARNING}>
+        {showConfirmEmail && <Alert kind={AlertKind.WARNING}>
             A confirmation email has been sent to your email address. To get full access, you need to follow the link provided in this email.
+            <IconButton kind="delete" onClick={() => setShowConfirmEmail(false)}></IconButton>
         </Alert>}
     </header>;
 };
