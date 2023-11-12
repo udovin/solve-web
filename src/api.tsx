@@ -478,7 +478,7 @@ export const updateUserEmail = (userID: UserID, form: UpdateEmailForm) => {
 };
 
 export const resendUserEmail = (userID: UserID) => {
-	return parseResp(fetch(`${BASE}/api/v0/users/${userID}/resend-email`, {
+	return parseResp(fetch(`${BASE}/api/v0/users/${userID}/email-resend`, {
 		method: "POST",
 		headers: getHeaders(),
 	}));
@@ -510,7 +510,7 @@ export const confirmEmail = (id: string, secret: string) => {
 		method: "POST",
 		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
 		body: JSON.stringify({ secret: secret }),
-	}));
+	}), true);
 };
 
 export type CreateContestForm = {
