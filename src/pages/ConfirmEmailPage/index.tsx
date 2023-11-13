@@ -10,7 +10,7 @@ const ConfirmEmailPage: FC = () => {
     useEffect(() => {
         confirmEmail(id, secret)
             .then(() => setRedirect(true));
-    }, []);
+    }, [id, secret]);
     if (redirect) {
         return <Navigate to={"/"} />;
     }

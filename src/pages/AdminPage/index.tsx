@@ -73,6 +73,7 @@ const AdminPage: FC = () => {
                 <Route path="/roles" element={<AdminRolesTab />} />
                 <Route path="/scopes/:scope_id" element={<AdminScopeTab />} />
                 <Route path="/scopes" element={<AdminScopesTab />} />
+                <Route path="" element={<TabContent tab="" setCurrent />} />
             </Routes>
         </TabsGroup>
     </Page>;

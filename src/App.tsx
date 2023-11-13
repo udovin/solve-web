@@ -2,7 +2,7 @@ import { FC } from "react";
 import { Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./AuthContext";
 import Header from "./ui/Header";
-import Footer from "./components/Footer";
+import Footer from "./ui/Footer";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import IndexPage from "./pages/IndexPage";

@@ -191,7 +191,7 @@ const ChangeEmailBlock: FC<ChangeEmailBlockProps> = props => {
 		{status?.user?.id === user.id && status.user.status === "pending" && user.email && <Alert kind={AlertKind.INFO}>
 			<p>We have sent an email to confirm your email address.
 				If the email has not arrived, please check the spelling of your email address and the presence of the letter in the "Spam" folder.</p>
-			{resendAvailable && <p>You can also try to <b><a onClick={onResendEmail}>resubmit</a></b> the email.</p>}
+			{resendAvailable && <p>You can also try to <b><a href="#email-resend" onClick={onResendEmail}>resubmit</a></b> the email.</p>}
 		</Alert>}
 		<Field title="Current password:" name="current_password" errorResponse={error}>
 			<Input

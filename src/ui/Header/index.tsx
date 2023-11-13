@@ -1,13 +1,10 @@
 import { FC, useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { VERSION, getSolveVersion } from "../../api";
 import { AuthContext } from "../../AuthContext";
-import Tooltip from "../Tooltip";
-
 import Alert, { AlertKind } from "../Alert";
+import IconButton from "../IconButton";
 
 import "./index.scss";
-import IconButton from "../IconButton";
 
 const Header: FC = () => {
     const location = useLocation();
@@ -42,6 +39,10 @@ const Header: FC = () => {
             <Link to="/logout">Logout</Link>
         </li>}
     </>;
+    const canObserveSettings = status?.permissions?.includes("observe_settings");
+    const canObserveRoles = status?.permissions?.includes("observe_roles");
+    const canObserveScopes = status?.permissions?.includes("observe_scopes");
+    const canObserveAdmin = canObserveSettings || canObserveRoles || canObserveScopes;
     return <header id="header">
         <div id="header-top">
             <div id="header-logo">
@@ -49,9 +50,7 @@ const Header: FC = () => {
                 <span>Online Judge</span>
             </div>
             <div id="header-account">
-                <ul>
-                    {accountLinks}
-                </ul>
+                <ul>{accountLinks}</ul>
             </div>
         </div>
         <nav id="header-nav">
@@ -68,12 +67,11 @@ const Header: FC = () => {
                 {status?.permissions?.includes("observe_solutions") && <li className={getActiveClass("/solutions")}>
                     <Link to="/solutions">Solutions</Link>
                 </li>}
+                {canObserveAdmin && <li className={`admin ${getActiveClass("/admin", "/admin/settings", "/admin/roles", "/admin/scopes")}`}>
+                    <Link to="/admin">Admin</Link>
+                </li>}
             </ul>
         </nav>
-        <div id="header-version" title="Version"><Tooltip content={<span className="ui-version-tooltip">
-            <span>Web: {VERSION}</span>
-            <span>API: {getSolveVersion()}</span>
-        </span>}>{VERSION}</Tooltip></div>
         {showConfirmEmail && <Alert kind={AlertKind.WARNING}>
             A confirmation email has been sent to your email address. To get full access, you need to follow the link provided in this email.
             <IconButton kind="delete" onClick={() => setShowConfirmEmail(false)}></IconButton>
