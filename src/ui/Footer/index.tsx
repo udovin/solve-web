@@ -33,7 +33,7 @@ const Footer: FC = () => {
             </div>
         </div>
         <div id="footer-copy">
-            <a href="//github.com/udovin">Ivan Udovin</a> &copy; 2019-2023
+            <a href="//github.com/udovin">Ivan Udovin</a> &copy; 2019-2024
         </div>
     </footer>;
 };
