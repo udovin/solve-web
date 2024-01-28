@@ -53,6 +53,9 @@
     "server": "node dist/server.js",
     "build-server": "webpack"
   },
+  "jest": {
+    "transformIgnorePatterns": []
+  },
   "proxy": "http://localhost:4242",
   "eslintConfig": {
     "extends": [
@@ -73,6 +76,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@storybook/addon-actions": "^7.6.0-alpha.4",
     "@storybook/addon-essentials": "^7.6.0-alpha.4",
     "@storybook/addon-links": "^7.6.0-alpha.4",

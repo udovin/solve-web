@@ -6,7 +6,7 @@ module.exports = {
   entry: {
     server: path.resolve(__dirname, "server/server.tsx"),
   },
-  mode: 'production',
+  mode: "production",
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "[name].js",
