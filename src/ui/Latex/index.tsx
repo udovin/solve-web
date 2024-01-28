@@ -108,18 +108,6 @@ const Latex: FC<LatexProps> = props => {
                 throwOnError: false,
             });
         });
-        // for (const dm of Array.from(node.querySelectorAll(".display-math"))) {
-        //     katex.render(dm.textContent ?? "", dm as HTMLElement, {
-        //         displayMode: true,
-        //         throwOnError: false,
-        //     });
-        // }
-        // for (const im of Array.from(node.querySelectorAll(".inline-math"))) {
-        //     katex.render(im.textContent ?? "", im as HTMLElement, {
-        //         displayMode: false,
-        //         throwOnError: false,
-        //     });
-        // }
         node.querySelectorAll<HTMLImageElement>("img[data-scale]").forEach(img => {
             const scaleAttr = img.getAttribute("data-scale");
             if (scaleAttr) {
