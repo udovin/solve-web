@@ -484,6 +484,18 @@ export const resendUserEmail = (userID: UserID) => {
 	}));
 };
 
+export type ResetPasswordForm = {
+	login: string;
+};
+
+export const resetUserPassword = (form: ResetPasswordForm) => {
+	return parseResp(fetch(`${BASE}/api/v0/password-reset`, {
+		method: "POST",
+		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
+		body: JSON.stringify(form),
+	}));
+};
+
 export const observeContest = (id: number) => {
 	return parseResp(fetch(`${BASE}/api/v0/contests/${id}`, {
 		method: "GET",
@@ -510,6 +522,14 @@ export const confirmEmail = (id: string, secret: string) => {
 		method: "POST",
 		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
 		body: JSON.stringify({ secret: secret }),
+	}), true);
+};
+
+export const confirmPassword = (id: string, secret: string, password: string) => {
+	return parseResp(fetch(`${BASE}/api/v0/tokens/${id}`, {
+		method: "POST",
+		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
+		body: JSON.stringify({ secret: secret, password: password }),
 	}), true);
 };
 

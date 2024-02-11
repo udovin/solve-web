@@ -9,6 +9,7 @@ import Field from "../ui/Field";
 import { ErrorResponse, LoginForm, loginUser } from "../api";
 import Alert from "../ui/Alert";
 import Sidebar from "../ui/Sidebar";
+import { Link } from "react-router-dom";
 
 const LoginPage = () => {
 	const params = useParams();
@@ -45,9 +46,10 @@ const LoginPage = () => {
 		return <Navigate to={"/"} />
 	}
 	return <Page title="Login" sidebar={<Sidebar />}>
-		<FormBlock onSubmit={onSubmit} title="Login" footer={
+		<FormBlock onSubmit={onSubmit} title="Login" className="b-login-form" footer={<>
 			<Button type="submit" color="primary">Login</Button>
-		}>
+			<Link to="/reset-password" className="reset-password">Forgot password?</Link>
+		</>}>
 			{error.message && <Alert>{error.message}</Alert>}
 			<Field title="Username:">
 				<Input

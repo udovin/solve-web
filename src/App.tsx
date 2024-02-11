@@ -22,9 +22,10 @@ import ContestPage from "./pages/ContestPage";
 import ProblemPage from "./pages/ProblemPage";
 import SolutionPage from "./pages/SolutionPage";
 import AdminPage from "./pages/AdminPage";
+import ConfirmEmailPage from "./pages/ConfirmEmailPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 import "./App.scss";
-import ConfirmEmailPage from "./pages/ConfirmEmailPage";
 
 const App: FC = () => {
 	return (
@@ -51,6 +52,7 @@ const App: FC = () => {
 					<Route path="/users/:user_id/edit/*" element={<EditUserPage />} />
 					<Route path="/language" element={<LanguagePage />} />
 					<Route path="/confirm-email" element={<ConfirmEmailPage />} />
+					<Route path="/reset-password" element={<ResetPasswordPage />} />
 					<Route path="/admin/*" element={<AdminPage />} />
 					<Route path="*" element={<NotFoundPage />} />
 				</Routes>
