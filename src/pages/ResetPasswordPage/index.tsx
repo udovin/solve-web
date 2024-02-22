@@ -1,5 +1,5 @@
-import { FC, useEffect, useState } from "react";
-import { ErrorResponse, confirmEmail, confirmPassword, resetUserPassword } from "../../api";
+import { FC, useState } from "react";
+import { ErrorResponse, confirmPassword, resetUserPassword } from "../../api";
 import { Navigate, useSearchParams } from "react-router-dom";
 import Page from "../../components/Page";
 import Sidebar from "../../ui/Sidebar";

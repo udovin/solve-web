@@ -56,7 +56,6 @@ const DateParser = (fmt: string) => {
         }
         let year = 0, month = 0, date = 1, hours = 0, minutes = 0, seconds = 0;
         for (let i = 1; i < match.length; i++) {
-            console.log(parts[i - 1], match[i]);
             switch (parts[i - 1]) {
                 case "YYYY":
                     year = Number(match[i]);

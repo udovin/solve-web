@@ -9,6 +9,7 @@ import { cpp } from "@codemirror/lang-cpp";
 import { python } from "@codemirror/lang-python";
 import { java } from "@codemirror/lang-java";
 import { rust } from "@codemirror/lang-rust";
+import { go } from "@codemirror/lang-go";
 
 import "./index.scss";
 
@@ -27,6 +28,7 @@ const languages: Record<string, Extension | undefined> = {
     "py": python(),
     "java": java(),
     "rs": rust(),
+    "go": go(),
 };
 
 const highlightStyle = HighlightStyle.define([
