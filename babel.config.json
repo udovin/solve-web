@@ -9,5 +9,8 @@
         "modules": "commonjs"
       }
     ]
+  ],
+  "plugins": [
+    "@loadable/babel-plugin"
   ]
 }

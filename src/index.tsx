@@ -3,17 +3,20 @@ import { hydrateRoot } from "react-dom/client";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
+import { loadableReady } from "@loadable/component";
 
 import "./index.scss";
 
-hydrateRoot(
-	document.getElementById("root")!,
-	<React.StrictMode>
-		<BrowserRouter basename={process.env.PUBLIC_URL}>
-			<App />
-		</BrowserRouter>
-	</React.StrictMode>
-);
+loadableReady(() => {
+	hydrateRoot(
+		document.getElementById("root")!,
+		<React.StrictMode>
+			<BrowserRouter basename={process.env.PUBLIC_URL}>
+				<App />
+			</BrowserRouter>
+		</React.StrictMode>
+	);
+});
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

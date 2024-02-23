@@ -10,6 +10,6 @@ FROM alpine:3.18
 RUN apk add --no-cache nodejs
 WORKDIR /app
 COPY --from=build /app/build /app/build
-COPY --from=build /app/dist/server.js /app/server.js
+COPY --from=build /app/dist /app/dist
 EXPOSE 8080
-ENTRYPOINT ["node", "server.js"]
+ENTRYPOINT ["node", "./dist/server.js"]

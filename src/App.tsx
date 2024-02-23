@@ -1,31 +1,32 @@
 import { FC } from "react";
 import { Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./AuthContext";
+import loadable from "@loadable/component";
 import Header from "./ui/Header";
 import Footer from "./ui/Footer";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
 import IndexPage from "./pages/IndexPage";
-import LanguagePage from "./pages/LanguagePage";
-import CreateProblemPage from "./pages/CreateProblemPage";
-import ProblemsPage from "./pages/ProblemsPage";
-import ContestsPage from "./pages/ContestsPage";
-import CreateContestPage from "./pages/CreateContestPage";
-import CreateCompilerPage from "./pages/CreateCompilerPage";
+import LoginPage from "./pages/LoginPage";
 import LogoutPage from "./pages/LogoutPage";
-import UserPage from "./pages/UserPage";
-import EditUserPage from "./pages/EditUserPage";
-import NotFoundPage from "./pages/NotFoundPage";
-import SolutionsPage from "./pages/SolutionsPage";
-import EditProblemPage from "./pages/EditProblemPage";
-import ContestPage from "./pages/ContestPage";
-import ProblemPage from "./pages/ProblemPage";
-import SolutionPage from "./pages/SolutionPage";
-import AdminPage from "./pages/AdminPage";
+import RegisterPage from "./pages/RegisterPage";
+import LanguagePage from "./pages/LanguagePage";
 import ConfirmEmailPage from "./pages/ConfirmEmailPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
-
+import NotFoundPage from "./pages/NotFoundPage";
 import "./App.scss";
+
+const ProblemsPage = loadable(() => import("./pages/ProblemsPage"));
+const ProblemPage = loadable(() => import("./pages/ProblemPage"));
+const CreateProblemPage = loadable(() => import("./pages/CreateProblemPage"));
+const EditProblemPage = loadable(() => import("./pages/EditProblemPage"));
+const ContestsPage = loadable(() => import("./pages/ContestsPage"));
+const ContestPage = loadable(() => import("./pages/ContestPage"));
+const CreateContestPage = loadable(() => import("./pages/CreateContestPage"));
+const CreateCompilerPage = loadable(() => import("./pages/CreateCompilerPage"));
+const UserPage = loadable(() => import("./pages/UserPage"));
+const EditUserPage = loadable(() => import("./pages/EditUserPage"));
+const SolutionsPage = loadable(() => import("./pages/SolutionsPage"));
+const SolutionPage = loadable(() => import("./pages/SolutionPage"));
+const AdminPage = loadable(() => import("./pages/AdminPage"));
 
 const App: FC = () => {
 	return (

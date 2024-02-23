@@ -1,5 +1,6 @@
 const webpack = require("webpack");
 const path = require("path");
+const LoadablePlugin = require('@loadable/webpack-plugin');
 
 module.exports = {
   name: "server",
@@ -20,7 +21,8 @@ module.exports = {
     __dirname: false,
   },
   plugins: [
-    new webpack.EnvironmentPlugin(["REACT_APP_VERSION"]),
+    new webpack.EnvironmentPlugin({ "REACT_APP_VERSION": "development" }),
+    new LoadablePlugin(),
   ],
   module: {
     rules: [
