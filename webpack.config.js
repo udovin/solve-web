@@ -5,7 +5,7 @@ const LoadablePlugin = require('@loadable/webpack-plugin');
 module.exports = {
   name: "server",
   entry: {
-    server: path.resolve(__dirname, "server/server.tsx"),
+    server: path.resolve(__dirname, "server/index.tsx"),
   },
   mode: "production",
   output: {

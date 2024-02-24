@@ -1,5 +1,6 @@
 const rewire = require("rewire");
 const defaults = rewire("react-scripts/scripts/build.js");
+const LoadablePlugin = require("@loadable/webpack-plugin");
 
 let config = defaults.__get__("config");
 config.output.filename = config.output.filename.replace(".[contenthash:8]", "");
@@ -15,3 +16,8 @@ config.plugins.forEach(plugin => {
         }
     }
 });
+config.plugins.push(new LoadablePlugin());
+
+let loaders = config.module.rules.find(rule => Array.isArray(rule.oneOf)).oneOf;
+let babelLoader = loaders.find(rule => rule.loader && rule.loader.includes("babel") && rule.include);
+babelLoader.options.plugins.push("@loadable/babel-plugin");

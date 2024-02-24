@@ -1,7 +1,7 @@
 @import "../../mixins.scss";
 
 .b-contest-tabs {
-    .ui-block-content {
+    >.ui-block>.ui-block-content {
         padding-bottom: 0;
 
         .ui-tabs {
@@ -57,7 +57,7 @@
 }
 
 .b-contest-side-submit {
-    .ui-block-footer {
+    >.ui-block>.ui-block-footer {
         span {
             padding-left: 8px;
         }
@@ -65,7 +65,7 @@
 }
 
 .b-contest-edit {
-    .ui-block-footer {
+    >.ui-block>.ui-block-footer {
         @include clear-fix;
 
         .ui-button {
@@ -77,7 +77,7 @@
 }
 
 .b-contest-problems {
-    .ui-block-content {
+    >.ui-block>.ui-block-content {
         padding: 0;
         overflow-x: auto;
     }
@@ -113,7 +113,7 @@
 }
 
 .b-contest-solutions {
-    .ui-block-content {
+    >.ui-block>.ui-block-content {
         padding: 0;
         overflow-x: auto;
     }
@@ -162,7 +162,7 @@
 }
 
 .b-contest-solution-content {
-    .ui-block-content {
+    >.ui-block>.ui-block-content {
         padding: 0;
         overflow-x: auto;
     }
@@ -175,7 +175,7 @@
 }
 
 .b-contest-participants {
-    .ui-block-content {
+    >.ui-block>.ui-block-content {
         padding: 0;
         overflow-x: auto;
     }
@@ -210,7 +210,7 @@
 }
 
 .b-contest-standings {
-    .ui-block-header {
+    >.ui-block>.ui-block-header {
         .ui-field {
             display: inline-block;
             margin-left: 10px;
@@ -219,7 +219,7 @@
         }
     }
 
-    .ui-block-content {
+    >.ui-block>.ui-block-content {
         padding: 0;
         overflow-x: auto;
     }

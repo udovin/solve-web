@@ -13,7 +13,7 @@
 	border-radius: 4px;
 	background-color: $light-background-color;
 
-	.ui-block-header {
+	>.ui-block>.ui-block-header {
 		padding: 10px;
 		border-bottom: 1px solid $light-border-color;
 
@@ -23,17 +23,17 @@
 		}
 	}
 
-	.ui-block-content {
+	>.ui-block>.ui-block-content {
 		padding: 10px;
 		border-bottom: 1px solid $light-border-color;
 	}
 
-	.ui-block-footer {
+	>.ui-block>.ui-block-footer {
 		padding: 10px;
 	}
 
-	.ui-block-header,
-	.ui-block-content {
+	>.ui-block>.ui-block-header,
+	>.ui-block>.ui-block-content {
 		&:last-child {
 			border-bottom: none;
 		}
