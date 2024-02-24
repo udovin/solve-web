@@ -12,4 +12,4 @@ WORKDIR /app
 COPY --from=build /app/build /app/build
 COPY --from=build /app/dist/server.js /app/server.js
 EXPOSE 8080
-ENTRYPOINT ["node", "./server.js"]
+ENTRYPOINT ["node", "server.js"]
