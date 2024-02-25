@@ -211,6 +211,10 @@
 
 .b-contest-standings {
     .ui-block-header {
+        >.title {
+            vertical-align: middle;
+        }
+
         .ui-field {
             display: inline-block;
             margin-left: 10px;
