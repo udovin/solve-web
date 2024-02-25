@@ -4,7 +4,7 @@ const path = require("path");
 module.exports = {
   name: "server",
   entry: {
-    server: path.resolve(__dirname, "server/server.tsx"),
+    server: path.resolve(__dirname, "server/index.tsx"),
   },
   mode: "production",
   output: {
@@ -20,7 +20,7 @@ module.exports = {
     __dirname: false,
   },
   plugins: [
-    new webpack.EnvironmentPlugin(["REACT_APP_VERSION"]),
+    new webpack.EnvironmentPlugin({ "REACT_APP_VERSION": "development" }),
   ],
   module: {
     rules: [
