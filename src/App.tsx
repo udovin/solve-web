@@ -37,7 +37,7 @@ const CreateCompilerPage = lazy(() => import("./pages/CreateCompilerPage"));
 const AdminPage = lazy(() => import("./pages/AdminPage"));
 
 const App: FC = () => {
-	strings.setLanguage(getLocale() ?? "ru");
+	strings.setLanguage(getLocale());
 	return (
 		<div id="layout">
 			<AuthProvider>

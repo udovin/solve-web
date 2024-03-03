@@ -340,7 +340,7 @@ export type RegisterForm = {
 };
 
 export const getLocale = () => {
-	return localStorage.getItem("locale");
+	return localStorage.getItem("locale") ?? "ru";
 }
 
 export const setLocale = (locale: string) => {
