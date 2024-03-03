@@ -10,6 +10,7 @@ import { ErrorResponse, LoginForm, loginUser } from "../api";
 import Alert from "../ui/Alert";
 import Sidebar from "../ui/Sidebar";
 import { Link } from "react-router-dom";
+import { strings } from "../Locale";
 
 const LoginPage = () => {
 	const params = useParams();
@@ -45,23 +46,23 @@ const LoginPage = () => {
 	if ((status?.user || status?.scope_user) && success) {
 		return <Navigate to={"/"} />
 	}
-	return <Page title="Login" sidebar={<Sidebar />}>
-		<FormBlock onSubmit={onSubmit} title="Login" className="b-login-form" footer={<>
-			<Button type="submit" color="primary">Login</Button>
-			<Link to="/reset-password" className="reset-password">Forgot password?</Link>
+	return <Page title={strings.login} sidebar={<Sidebar />}>
+		<FormBlock onSubmit={onSubmit} title={strings.login} className="b-login-form" footer={<>
+			<Button type="submit" color="primary">{strings.login}</Button>
+			<Link to="/reset-password" className="reset-password">{strings.forgotPassword}</Link>
 		</>}>
 			{error.message && <Alert>{error.message}</Alert>}
-			<Field title="Username:">
+			<Field title={strings.username + ":"}>
 				<Input
-					type="text" name="login" placeholder="Username"
+					type="text" name="login" placeholder={strings.username}
 					value={form.login}
 					onValueChange={(value) => setForm({ ...form, login: value })}
 					required autoFocus
 				/>
 			</Field>
-			<Field title="Password:">
+			<Field title={strings.password + ":"}>
 				<Input
-					type="password" name="password" placeholder="Password"
+					type="password" name="password" placeholder={strings.password}
 					value={form.password}
 					onValueChange={(value) => setForm({ ...form, password: value })}
 					required

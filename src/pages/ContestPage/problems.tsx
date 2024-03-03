@@ -11,6 +11,7 @@ import Field from "../../ui/Field";
 import IconButton from "../../ui/IconButton";
 import Input from "../../ui/Input";
 import NumberInput from "../../ui/NumberInput";
+import { strings } from "../../Locale";
 
 type ContestProblemRowProps = {
     contest: Contest;
@@ -116,7 +117,7 @@ export const ContestProblemsBlock: FC<ContestProblemsBlockProps> = props => {
     const canUpdateProblem = contest.permissions?.includes("update_contest_problem");
     const canDeleteProblem = contest.permissions?.includes("delete_contest_problem");
     if (!problems) {
-        return <Block title="Problems" className="b-contest-problems">
+        return <Block title={strings.problems} className="b-contest-problems">
             {error ? <Alert>{error.message}</Alert> : "Loading..."}
         </Block>;
     }
@@ -125,7 +126,7 @@ export const ContestProblemsBlock: FC<ContestProblemsBlockProps> = props => {
         return String(a.code).localeCompare(b.code);
     });
     return <Block
-        title="Problems"
+        title={strings.problems} 
         className="b-contest-problems"
         footer={canCreateProblem && <form onSubmit={onSubmit}>
             <Input name="code"
@@ -150,8 +151,8 @@ export const ContestProblemsBlock: FC<ContestProblemsBlockProps> = props => {
             <thead>
                 <tr>
                     <th className="code">#</th>
-                    <th className="title">Title</th>
-                    <th className="actions">Actions</th>
+                    <th className="title">{strings.title}</th>
+                    <th className="actions">{strings.actions}</th>
                 </tr>
             </thead>
             <tbody>

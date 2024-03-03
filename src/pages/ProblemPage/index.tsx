@@ -11,6 +11,7 @@ import Icon from "../../ui/Icon";
 import IconButton from "../../ui/IconButton";
 import Latex from "../../ui/Latex";
 import Sidebar from "../../ui/Sidebar";
+import { strings } from "../../Locale";
 
 import "./index.scss";
 
@@ -23,8 +24,8 @@ const ProblemSamlpes: FC<ProblemSamplesProps> = props => {
 	return <table className="ui-table section samples">
 		<thead>
 			<tr>
-				<th className="input">Input data</th>
-				<th className="output">Output data</th>
+				<th className="input">{strings.input}</th>
+				<th className="output">{strings.output}</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -88,46 +89,46 @@ export const ProblemBlock: FC<ProblemBlockProps> = props => {
 		{config && <table className="ui-table section limits">
 			<tbody>
 				{config.time_limit && <tr>
-					<td>Time limit:</td>
+					<td>{strings.timeLimit}:</td>
 					<td><Duration value={config.time_limit * 0.001} /></td>
 				</tr>}
 				{config.memory_limit && <tr>
-					<td>Memory limit:</td>
+					<td>{strings.memoryLimit}:</td>
 					<td><ByteSize value={config.memory_limit} /></td>
 				</tr>}
 				<tr>
-					<td>Input:</td>
+					<td>{strings.input}:</td>
 					<td><code>stdin</code></td>
 				</tr>
 				<tr>
-					<td>Output:</td>
+					<td>{strings.output}:</td>
 					<td><code>stdout</code></td>
 				</tr>
 			</tbody>
 		</table>}
 		<Latex className={"section legend"} content={statement?.legend} imageBaseUrl={imageBaseUrl} />
 		{statement?.input && <>
-			<h3>Input</h3>
+			<h3>{strings.inputData}</h3>
 			<Latex className={"section input"} content={statement?.input} imageBaseUrl={imageBaseUrl} />
 		</>}
 		{statement?.output && <>
-			<h3>Output</h3>
+			<h3>{strings.outputData}</h3>
 			<Latex className={"section output"} content={statement?.output} imageBaseUrl={imageBaseUrl} />
 		</>}
 		{statement?.interaction && <>
-			<h3>Interaction</h3>
+			<h3>{strings.interaction}</h3>
 			<Latex className={"section interaction"} content={statement?.interaction} imageBaseUrl={imageBaseUrl} />
 		</>}
 		{statement?.scoring && <>
-			<h3>Scoring</h3>
+			<h3>{strings.scoring}</h3>
 			<Latex className={"section scoring"} content={statement?.scoring} imageBaseUrl={imageBaseUrl} />
 		</>}
 		{statement?.samples && <>
-			<h3>Samples</h3>
+			<h3>{strings.samples}</h3>
 			<ProblemSamlpes samples={statement.samples} />
 		</>}
 		{statement?.notes && <>
-			<h3>Notes</h3>
+			<h3>{strings.notes}</h3>
 			<Latex className={"section notes"} content={statement?.notes} imageBaseUrl={imageBaseUrl} />
 		</>}
 	</Block>;

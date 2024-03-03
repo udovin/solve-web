@@ -3,6 +3,7 @@ import { SolutionReport, TestReport } from "../../api";
 import ByteSize from "../ByteSize";
 import Duration from "../Duration";
 import Tooltip from "../Tooltip";
+import { strings } from "../../Locale"
 
 import "./index.scss";
 
@@ -18,77 +19,81 @@ type VerdictInfo = {
     disableUsage?: boolean;
 };
 
-const VERDICTS: Record<string, VerdictInfo | undefined> = {
-    "queued": {
-        code: "queued",
-        title: "Queued",
-        description: "Queued",
-        disableUsage: true,
-    },
-    "running": {
-        code: "running",
-        title: "Running",
-        titleTest: "Test {}",
-        description: "Running",
-        disableUsage: true,
-    },
-    "accepted": {
-        code: "accepted",
-        title: "Accepted",
-        description: "Accepted",
-    },
-    "rejected": {
-        code: "rejected",
-        title: "Rejected",
-        description: "Rejected",
-    },
-    "compilation_error": {
-        code: "ce",
-        title: "CE",
-        description: "Compilation error",
-        disableUsage: true,
-    },
-    "time_limit_exceeded": {
-        code: "tle",
-        title: "TLE",
-        titleTest: "TLE {}",
-        description: "Time limit exceeded",
-    },
-    "memory_limit_exceeded": {
-        code: "mle",
-        title: "MLE",
-        titleTest: "MLE {}",
-        description: "Memory limit exceeded",
-    },
-    "runtime_error": {
-        code: "re",
-        title: "RE",
-        titleTest: "RE {}",
-        description: "Run-time error",
-    },
-    "wrong_answer": {
-        code: "wa",
-        title: "WA",
-        titleTest: "WA {}",
-        description: "Wrong answer",
-    },
-    "presentation_error": {
-        code: "pe",
-        title: "PE",
-        titleTest: "PE {}",
-        description: "Presentation error",
-    },
-    "partially_accepted": {
-        code: "pa",
-        title: "Partial",
-        description: "Partially accepted",
-    },
-    "failed": {
-        code: "failed",
-        title: "Failed",
-        description: "Failed",
-        disableUsage: true,
-    },
+var VERDICTS: Record<string, VerdictInfo | undefined>;
+
+const updateVerdicts = () => {
+    VERDICTS = {
+        "queued": {
+            code: "queued",
+            title: strings.verdictQueued,
+            description: strings.verdictQueued,
+            disableUsage: true,
+        },
+        "running": {
+            code: "running",
+            title: strings.verdictRunning,
+            titleTest: strings.test + " {}",
+            description: strings.verdictRunning,
+            disableUsage: true,
+        },
+        "accepted": {
+            code: "accepted",
+            title: "OK",
+            description: strings.verdictAccepted,
+        },
+        "rejected": {
+            code: "rejected",
+            title: "RJ",
+            description: strings.verdictRejected,
+        },
+        "compilation_error": {
+            code: "ce",
+            title: "CE",
+            description: strings.verdictCE,
+            disableUsage: true,
+        },
+        "time_limit_exceeded": {
+            code: "tle",
+            title: "TLE",
+            titleTest: "TLE {}",
+            description: strings.verdictTLE,
+        },
+        "memory_limit_exceeded": {
+            code: "mle",
+            title: "MLE",
+            titleTest: "MLE {}",
+            description: strings.verdictMLE,
+        },
+        "runtime_error": {
+            code: "re",
+            title: "RE",
+            titleTest: "RE {}",
+            description: strings.verdictRE,
+        },
+        "wrong_answer": {
+            code: "wa",
+            title: "WA",
+            titleTest: "WA {}",
+            description: strings.verdictWA,
+        },
+        "presentation_error": {
+            code: "pe",
+            title: "PE",
+            titleTest: "PE {}",
+            description: strings.verdictPE,
+        },
+        "partially_accepted": {
+            code: "pa",
+            title: "PA",
+            description: strings.verdictPartial,
+        },
+        "failed": {
+            code: "failed",
+            title: "Failed",
+            description: strings.verdictFailed,
+            disableUsage: true,
+        },
+    }
 };
 
 const getTitle = (info?: VerdictInfo, testNumber?: number) => {
@@ -102,6 +107,7 @@ const getTitle = (info?: VerdictInfo, testNumber?: number) => {
 };
 
 const Verdict: FC<VerdictProps> = props => {
+    updateVerdicts();
     const { report } = props;
     const verdict = report?.verdict;
     const points = report?.points;
@@ -113,13 +119,13 @@ const Verdict: FC<VerdictProps> = props => {
     const disableUsage = info?.disableUsage ?? false;
     return <Tooltip className="ui-verdict-wrap" content={<div className="ui-verdict-details">
         <span className={`item description ui-verdict ${info?.code ?? "unknown"}`}>{info?.description ?? verdict}</span>
-        {points !== undefined && <span className="item points">Points: {points}</span>}
-        {test_number && <span className="item test">on test {test_number}</span>}
+        {points !== undefined && <span className="item points">{strings.points}: {points}</span>}
+        {test_number && <span className="item test">{strings.onTest} {test_number}</span>}
         {!disableUsage && <span className="item time"><Duration value={(used_time ?? 0) * 0.001} /></span>}
         {!disableUsage && <span className="item memory"><ByteSize value={used_memory ?? 0} /></span>}
     </div>}>
         <span className={`ui-verdict ${info?.code ?? "unknown"}`}>{title}</span>
-        {points !== undefined && <span className="points">Points: {points}</span>}
+        {points !== undefined && <span className="points">{strings.points}: {points}</span>}
     </Tooltip >;
 };
 

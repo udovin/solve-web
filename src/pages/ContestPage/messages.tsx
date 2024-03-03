@@ -9,6 +9,7 @@ import Field from "../../ui/Field";
 import Input from "../../ui/Input";
 import Textarea from "../../ui/Textarea";
 import { ParticipantLink } from "./participants";
+import { strings } from "../../Locale";
 
 type MessageItemProps = {
     contest: Contest;
@@ -102,13 +103,13 @@ export const ContestMessagesBlock: FC<ContestMessagesBlockProps> = props => {
         maxSeenMessage = Math.max(maxSeenMessage, message.id);
     });
     localStorage.setItem("contest_seen_message", String(maxSeenMessage));
-    return <Block title="Messages" className="b-contest-messages">
+    return <Block title={strings.messages} className="b-contest-messages">
         <div className="controls">
             {canSubmitQuestion && <Link to={`/contests/${id}/question`}>
-                <Button>New question</Button>
+                <Button>{strings.newQuestion}</Button>
             </Link>}
             {canCreateMessage && <Link to={`/contests/${id}/messages/create`}>
-                <Button>New message</Button>
+                <Button>{strings.newMessage}</Button>
             </Link>}
         </div>
         {error && error.message && <Alert>{error.message}</Alert>}
@@ -148,22 +149,22 @@ export const SubmitContestQuestionBlock: FC<ContestMessagesBlockProps> = props =
     if (newMessage) {
         return <Navigate to={`/contests/${contest.id}/messages`} />;
     }
-    return <FormBlock className="b-contest-question" title="New question" onSubmit={onSubmit} footer={<>
+    return <FormBlock className="b-contest-question" title={strings.newQuestion} onSubmit={onSubmit} footer={<>
         <Button
             type="submit" color="primary" disabled={!title || !description}
-        >Submit</Button>
+        >{strings.submit}</Button>
     </>}>
         {error && error.message && <Alert>{error.message}</Alert>}
-        <Field title="Title:" name="title" errorResponse={error}>
+        <Field title={strings.subject + ":"} name="title" errorResponse={error}>
             <Input
-                type="text" name="title" placeholder="Title"
+                type="text" name="title" placeholder={strings.subject}
                 value={title}
                 onValueChange={setTitle}
                 required />
         </Field>
-        <Field title="Description:" name="description" errorResponse={error}>
+        <Field title={strings.question + ":"} name="description" errorResponse={error}>
             <Textarea
-                name="description" placeholder="Description"
+                name="description" placeholder={strings.question}
                 value={description}
                 onValueChange={setDescription}
                 required />
@@ -195,7 +196,7 @@ export const CreateContestMessageBlock: FC<ContestMessagesBlockProps> = props =>
     if (newMessage) {
         return <Navigate to={`/contests/${contest.id}/messages`} />;
     }
-    return <FormBlock className="b-contest-message" title="New message" onSubmit={onSubmit} footer={<>
+    return <FormBlock className="b-contest-message" title={strings.newMessage} onSubmit={onSubmit} footer={<>
         <Button
             type="submit" color="primary" disabled={!title || !description}
         >Submit</Button>

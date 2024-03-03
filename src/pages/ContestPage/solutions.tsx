@@ -16,6 +16,7 @@ import Tooltip from "../../ui/Tooltip";
 import Verdict from "../../ui/Verdict";
 import { SolutionReportBlock } from "../SolutionPage";
 import { ParticipantLink } from "./participants";
+import { strings } from "../../Locale";
 
 type ContestSolutionRowProps = {
     contest: Contest;
@@ -101,22 +102,22 @@ export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
         return () => clearInterval(interval);
     }, [contest.id, solutions]);
     if (!solutions) {
-        return <Block title="Solutions" className="b-contest-solutions">
+        return <Block title={strings.solutions} className="b-contest-solutions">
             {error ? <Alert>{error.message}</Alert> : "Loading..."}
         </Block>;
     }
     let contestSolutions: ContestSolution[] = solutions.solutions ?? [];
-    return <Block title="Solutions" className="b-contest-solutions">{error ?
+    return <Block title={strings.solutions} className="b-contest-solutions">{error ?
         <Alert>{error.message}</Alert> :
         <table className="ui-table">
             <thead>
                 <tr>
                     <th className="id">#</th>
-                    <th className="date">Date</th>
-                    <th className="participant">Participant</th>
-                    <th className="problem">Problem</th>
-                    <th className="compiler">Compiler</th>
-                    <th className="verdict">Verdict</th>
+                    <th className="date">{strings.time}</th>
+                    <th className="participant">{strings.participant}</th>
+                    <th className="problem">{strings.problem}</th>
+                    <th className="compiler">{strings.compiler}</th>
+                    <th className="verdict">{strings.verdict}</th>
                 </tr>
             </thead>
             <tbody>
@@ -162,17 +163,17 @@ export const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
     const { id, solution: baseSolution } = solution;
     const { content, compiler, report } = baseSolution;
     return <>
-        <Block title={`Solution #${id}`} className="b-contest-solutions">
+        <Block title={strings.solution + " #" + id} className="b-contest-solutions">
             {error && <Alert>{error.message}</Alert>}
             <table className="ui-table">
                 <thead>
                     <tr>
                         <th className="id">#</th>
-                        <th className="date">Date</th>
-                        <th className="participant">Participant</th>
-                        <th className="problem">Problem</th>
-                        <th className="compiler">Compiler</th>
-                        <th className="verdict">Verdict</th>
+                        <th className="date">{strings.time}</th>
+                        <th className="participant">{strings.participant}</th>
+                        <th className="problem">{strings.problem}</th>
+                        <th className="compiler">{strings.compiler}</th>
+                        <th className="verdict">{strings.verdict}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -184,7 +185,7 @@ export const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
                 </tbody>
             </table>
         </Block>
-        {content && <CollapseBlock title="Content" className="b-contest-solution-content">
+        {content && <CollapseBlock title={strings.sourceCode} className="b-contest-solution-content">
             <Code value={content} language={compiler?.config?.extensions?.at(0)} readOnly={true} />
         </CollapseBlock>}
         {!!report?.tests && <SolutionReportBlock report={report} />}
@@ -247,18 +248,18 @@ export const ContestSubmitSolutionBlock: FC<ContestSubmitSolutionBlockProps> = p
         return <Navigate to={`/contests/${contest.id}/solutions`} />
     }
     const errorMessage = error && error.message;
-    return <FormBlock onSubmit={onSubmit} title="Submit solution" className="b-contest-submit" footer={
+    return <FormBlock onSubmit={onSubmit} title={strings.submitSolution} className="b-contest-submit" footer={
         <Button
             type="submit"
             color="primary"
             disabled={!canSubmitSolution || uploading || (!file && !content) || !problem || !compilerInfo}
-        >Submit</Button>
+        >{strings.submit}</Button>
     }>
         {errorMessage && <Alert>{errorMessage}</Alert>}
-        <Field title="Problem:" name="problem_code" errorResponse={error}>
+        <Field title={strings.problem + ":"} name="problem_code" errorResponse={error}>
             <Select
                 name="problem_code"
-                value={String(problem ?? "Select problem")}
+                value={String(problem ?? strings.selectProblem)}
                 onValueChange={setProblem}
                 options={problems?.problems?.reduce((options, problem) => {
                     let title = `${problem.code}. ${problem.problem.statement?.title ?? problem.problem.title}`;
@@ -267,7 +268,7 @@ export const ContestSubmitSolutionBlock: FC<ContestSubmitSolutionBlockProps> = p
                 disabled={!canSubmitSolution || !problems?.problems}
             />
         </Field>
-        <Field title="Compiler:" name="compiler_id" errorResponse={error}>
+        <Field title={strings.compiler + ":"} name="compiler_id" errorResponse={error}>
             <Select
                 name="compiler_id"
                 value={String(compilerInfo?.id ?? "Select compiler")}
@@ -285,14 +286,14 @@ export const ContestSubmitSolutionBlock: FC<ContestSubmitSolutionBlockProps> = p
                 disabled={!canSubmitSolution || !compilers?.compilers}
             />
         </Field>
-        <Field title="Solution content:" name="content">
+        <Field title={strings.sourceCode + ":"} name="content">
             <Code
                 editable={true}
                 language={compilerInfo?.config?.extensions?.at(0)}
                 value={content}
                 onValueChange={setContent} />
         </Field>
-        <Field title="Solution file:" name="file" errorResponse={error}>
+        <Field title={strings.solutionFile + ":"} name="file" errorResponse={error}>
             <FileInput
                 name="file"
                 accept={extensions}

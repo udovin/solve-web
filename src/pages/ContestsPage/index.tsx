@@ -9,6 +9,7 @@ import Sidebar from "../../ui/Sidebar";
 import Block, { BlockProps } from "../../ui/Block";
 import DateTime from "../../ui/DateTime";
 import Duration from "../../ui/Duration";
+import { strings } from "../../Locale";
 
 import "./index.scss";
 
@@ -18,14 +19,14 @@ export type ContestsBlockProps = BlockProps & {
 
 const ContestsBlock: FC<ContestsBlockProps> = props => {
 	const { contests, ...rest } = props;
-	return <Block className="b-contests" title="Contests" {...rest}>
+	return <Block className="b-contests" title={strings.contests} {...rest}>
 		<table className="ui-table">
 			<thead>
 				<tr>
-					<th className="title">Title</th>
-					<th className="duration">Duration</th>
-					<th className="start">Start</th>
-					<th className="actions">Actions</th>
+					<th className="title">{strings.title}</th>
+					<th className="duration">{strings.duration}</th>
+					<th className="start">{strings.start}</th>
+					<th className="actions">{strings.actions}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -45,8 +46,8 @@ const ContestsBlock: FC<ContestsBlockProps> = props => {
 						</td>
 						<td className="actions">
 							{
-								(canRegister && <Link to={`/contests/${id}/register`}>Register &raquo;</Link>) ||
-								(canObserve && <Link to={`/contests/${id}`}>Enter &raquo;</Link>)
+								(canRegister && <Link to={`/contests/${id}/register`}>{strings.register} &raquo;</Link>) ||
+								(canObserve && <Link to={`/contests/${id}`}>{strings.enter} &raquo;</Link>)
 							}
 						</td>
 					</tr>;
@@ -71,9 +72,9 @@ const ContestsPage: FC = () => {
 			{error.message && <Alert>{error.message}</Alert>}
 		</Page>;
 	}
-	return <Page title="Contests" sidebar={<Sidebar />}>
+	return <Page title={strings.contests} sidebar={<Sidebar />}>
 		{status?.permissions?.includes("create_contest") && <p>
-			<Link to={"/contests/create"}><Button>Create</Button></Link>
+			<Link to={"/contests/create"}><Button>{strings.create}</Button></Link>
 		</p>}
 		{contests ?
 			<ContestsBlock contests={contests.contests || []} /> :

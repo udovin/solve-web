@@ -8,6 +8,7 @@ import Block, { BlockProps } from "../../ui/Block";
 import DateTime from "../../ui/DateTime";
 import UserLink from "../../ui/UserLink";
 import Verdict from "../../ui/Verdict";
+import { strings } from "../../Locale";
 
 import "./index.scss";
 
@@ -47,11 +48,11 @@ const SolutionsBlock: FC<SolutionsBlockProps> = props => {
 			<thead>
 				<tr>
 					<th className="id">#</th>
-					<th className="date">Date</th>
-					<th className="author">Author</th>
-					<th className="problem">Problem</th>
-					<th className="compiler">Compiler</th>
-					<th className="verdict">Verdict</th>
+					<th className="date">{strings.time}</th>
+					<th className="author">{strings.participant}</th>
+					<th className="problem">{strings.problem}</th>
+					<th className="compiler">{strings.compiler}</th>
+					<th className="verdict">{strings.verdict}</th>
 				</tr>
 			</thead>
 			<tbody>

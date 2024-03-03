@@ -5,6 +5,7 @@ import Checkbox from "../../ui/Checkbox";
 import Field from "../../ui/Field";
 import { ParticipantLink } from "./participants";
 import { AuthContext } from "../../AuthContext";
+import { strings } from "../../Locale";
 
 type ContestStandingsBlockProps = {
     contest: Contest;
@@ -29,7 +30,7 @@ export const ContestStandingsBlock: FC<ContestStandingsBlockProps> = props => {
     }
     const canObserveFullStandings = contest.permissions?.includes("observe_contest_full_standings");
     return <Block header={<>
-        <span className="title">Standings</span>
+        <span className="title">{strings.standings}</span>
         {canObserveFullStandings && canChangeFreeze && <Field>
             <Checkbox
                 value={ignoreFreeze ?? false}
@@ -40,7 +41,7 @@ export const ContestStandingsBlock: FC<ContestStandingsBlockProps> = props => {
             <Checkbox
                 value={onlyOfficial ?? false}
                 onValueChange={setOnlyOfficial} />
-            <span className="label">Official</span>
+            <span className="label">{strings.onlyOfficial}</span>
         </Field>
     </>} className="b-contest-standings">
         {standings.kind === "ioi" ? <IOIStandingsTable standings={standings} /> : <ICPCStandingsTable standings={standings} />}
@@ -72,9 +73,9 @@ const ICPCStandingsTable: FC<StandingsTableProps> = props => {
         <thead>
             <tr>
                 <th className="id">#</th>
-                <th className="participant">Participant</th>
-                <th className="score">Score</th>
-                <th className="penalty">Penalty</th>
+                <th className="participant">{strings.participant}</th>
+                <th className="score">{strings.points}</th>
+                <th className="penalty">{strings.penalty}</th>
                 {standings.columns?.map((column, index) => {
                     return <th className={"problem"} key={index}>
                         <span className="code">{column.code}</span>

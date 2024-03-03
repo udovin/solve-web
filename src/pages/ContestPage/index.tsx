@@ -35,6 +35,7 @@ import { ContestTabs } from "./tabs";
 import { ContestMessagesBlock, CreateContestMessageBlock, SubmitContestQuestionBlock } from "./messages";
 import { EditContestBlock } from "./manage";
 import FileInput from "../../ui/FileInput";
+import { strings } from "../../Locale";
 
 import "./index.scss";
 
@@ -89,16 +90,16 @@ const ContestProblemSideBlock: FC<ContestSideBlockProps> = props => {
 		return <Navigate to={`/contests/${contest_id}/solutions`} />
 	}
 	const errorMessage = error && error.message;
-	return <FormBlock onSubmit={onSubmit} title="Submit solution" className="b-contest-side-submit" footer={<>
+	return <FormBlock onSubmit={onSubmit} title={strings.submitSolution} className="b-contest-side-submit" footer={<>
 		<Button
 			type="submit"
 			color="primary"
 			disabled={!canSubmitSolution || uploading || !file || !compilerInfo}
-		>Submit</Button>
-		<span>or <Link to={`/contests/${contest_id}/submit?problem=${problem_code}`}>paste source code</Link>.</span>
+		>{strings.submit}</Button>
+		<span>{strings.or} <Link to={`/contests/${contest_id}/submit?problem=${problem_code}`}>{strings.pasteSourceCode}</Link>.</span>
 	</>}>
 		{errorMessage && <Alert>{errorMessage}</Alert>}
-		<Field title="Compiler:" name="compiler_id" errorResponse={error}>
+		<Field title={strings.compiler + ":"} name="compiler_id" errorResponse={error}>
 			<Select
 				name="compiler_id"
 				value={String(compilerInfo?.id ?? "Select compiler")}
@@ -116,7 +117,7 @@ const ContestProblemSideBlock: FC<ContestSideBlockProps> = props => {
 				disabled={!canSubmitSolution || !compilers?.compilers}
 			/>
 		</Field>
-		<Field title="Solution file:" name="file" errorResponse={error}>
+		<Field title={strings.solutionFile + ":"} name="file" errorResponse={error}>
 			<FileInput
 				name="file"
 				accept={extensions}
@@ -299,15 +300,15 @@ const ContestSideBlock: FC<ContestSideBlockProps> = props => {
 	return <Block className="b-contest-side">
 		<h3>{contest.title}</h3>
 		{state?.stage === "not_started" && <>
-			<div className="stage">Not started</div>
+			<div className="stage">{strings.contestNotStarted}</div>
 			{!!beforeDuration && <div className="duration"><Duration value={beforeDuration} /></div>}
 		</>}
 		{state?.stage === "started" && <>
-			<div className="stage">Running</div>
+			<div className="stage">{strings.contestRunning}</div>
 			{!!remainingDuration && <div className="duration"><Duration value={remainingDuration} /></div>}
 		</>}
 		{state?.stage === "finished" && <>
-			<div className="stage">Finished</div>
+			<div className="stage">{strings.contestFinished}</div>
 		</>}
 	</Block>;
 };
@@ -418,7 +419,7 @@ const ContestPage: FC = () => {
 	if (isIndex && !canObserveProblems && canObserveStandings) {
 		return <Navigate to={`/contests/${contest.id}/standings`} />;
 	}
-	return <Page title={`Contest: ${title}`} sidebar={(isStandings || (isIndex && !canObserveProblems)) ? undefined : <Routes>
+	return <Page title={strings.contest + ": " + title} sidebar={(isStandings || (isIndex && !canObserveProblems)) ? undefined : <Routes>
 		<Route path="/problems/:problem_code" element={<>
 			<ContestSideBlock contest={contest} />
 			<ContestProblemSideBlock contest={contest} />
