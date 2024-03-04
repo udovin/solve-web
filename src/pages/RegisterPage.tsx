@@ -8,6 +8,7 @@ import Field from "../ui/Field";
 import Alert from "../ui/Alert";
 import { ErrorResponse, registerUser } from "../api";
 import Sidebar from "../ui/Sidebar";
+import { strings } from "../Locale";
 
 const RegisterPage = () => {
 	const [success, setSuccess] = useState<boolean>();
@@ -33,27 +34,24 @@ const RegisterPage = () => {
 		return <Navigate to={"/login"} />
 	}
 	const equalPasswords = form.password === form.password_repeat;
-	return <Page title="Register" sidebar={<Sidebar />}>
-		<FormBlock onSubmit={onSubmit} title="Register" footer={
+	return <Page title={strings.register} sidebar={<Sidebar />}>
+		<FormBlock onSubmit={onSubmit} title={strings.register} footer={
 			<Button
 				type="submit" color="primary"
 				disabled={!form.password || !equalPasswords}
-			>Register</Button>
+			>{strings.register}</Button>
 		}>
 			{error.message && <Alert>{error.message}</Alert>}
-			<Field title="Username:" description={<>
-				You can use only English letters, digits, symbols &laquo;<code>_</code>&raquo; and &laquo;<code>-</code>&raquo;.
-				Username can starts only with English letter and ends with English letter and digit.
-			</>}>
+			<Field title={strings.username + ":"} description={strings.usernameRestrictions}>
 				<Input
-					type="text" name="login" placeholder="Username"
+					type="text" name="login" placeholder={strings.username}
 					value={form.login || ""}
 					onValueChange={(value) => setForm({ ...form, login: value })}
 					required autoFocus
 				/>
 				{error.invalid_fields && error.invalid_fields["login"] && <Alert>{error.invalid_fields["login"].message}</Alert>}
 			</Field>
-			<Field title="E-mail:" description="You will receive an email to verify your account.">
+			<Field title="E-mail:" description={strings.emailConfirmation}>
 				<Input
 					type="text" name="email" placeholder="E-mail"
 					value={form.email || ""}
@@ -62,43 +60,43 @@ const RegisterPage = () => {
 				/>
 				{error.invalid_fields && error.invalid_fields["email"] && <Alert>{error.invalid_fields["email"].message}</Alert>}
 			</Field>
-			<Field title="Password:">
+			<Field title={strings.password + ":"}>
 				<Input
-					type="password" name="password" placeholder="Password"
+					type="password" name="password" placeholder={strings.password}
 					value={form.password}
 					onValueChange={(value) => setForm({ ...form, password: value })}
 					required
 				/>
 				{error.invalid_fields && error.invalid_fields["password"] && <Alert>{error.invalid_fields["password"].message}</Alert>}
 			</Field>
-			<Field title="Repeat password:">
+			<Field title={strings.repeatPassword + ":"}>
 				<Input
-					type="password" name="password_repeat" placeholder="Repeat password"
+					type="password" name="password_repeat" placeholder={strings.repeatPassword}
 					value={form.password_repeat}
 					onValueChange={(value) => setForm({ ...form, password_repeat: value })}
 					required
 				/>
-				{form.password && !equalPasswords && <Alert>Passwords does not match</Alert>}
+				{form.password && !equalPasswords && <Alert>{strings.passwordsDoNotMatch}</Alert>}
 			</Field>
-			<Field title="First name:">
+			<Field title={strings.firstName + ":"}>
 				<Input
-					type="text" name="first_name" placeholder="First name"
+					type="text" name="first_name" placeholder={strings.firstName}
 					value={form.first_name || ""}
 					onValueChange={(value) => setForm({ ...form, first_name: value })}
 				/>
 				{error.invalid_fields && error.invalid_fields["first_name"] && <Alert>{error.invalid_fields["first_name"].message}</Alert>}
 			</Field>
-			<Field title="Last name:">
+			<Field title={strings.firstName + ":"}>
 				<Input
-					type="text" name="last_name" placeholder="Last name"
+					type="text" name="last_name" placeholder={strings.lastName}
 					value={form.last_name || ""}
 					onValueChange={(value) => setForm({ ...form, last_name: value })}
 				/>
 				{error.invalid_fields && error.invalid_fields["last_name"] && <Alert>{error.invalid_fields["last_name"].message}</Alert>}
 			</Field>
-			<Field title="Middle name:">
+			<Field title={strings.middleName + ":"}>
 				<Input
-					type="text" name="middle_name" placeholder="Middle name"
+					type="text" name="middle_name" placeholder={strings.middleName}
 					value={form.middle_name || ""}
 					onValueChange={(value) => setForm({ ...form, middle_name: value })}
 				/>

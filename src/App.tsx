@@ -7,6 +7,9 @@ import IndexPage from "./pages/IndexPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import "./App.scss";
 
+import { getLocale } from "./api";
+import { strings } from "./Locale";
+
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const LogoutPage = lazy(() => import("./pages/LogoutPage"));
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
@@ -34,6 +37,7 @@ const CreateCompilerPage = lazy(() => import("./pages/CreateCompilerPage"));
 const AdminPage = lazy(() => import("./pages/AdminPage"));
 
 const App: FC = () => {
+	strings.setLanguage(getLocale());
 	return (
 		<div id="layout">
 			<AuthProvider>

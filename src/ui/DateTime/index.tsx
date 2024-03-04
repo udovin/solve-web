@@ -1,5 +1,6 @@
 import { FC, useEffect, useMemo, useState } from "react";
 import { DateFormatter } from "../../utils";
+import { getLocale } from "../../api";
 
 export type DateTimeProps = {
 	value: number;
@@ -9,7 +10,7 @@ const plural = (one: string, n: number): string => {
 	return n > 1 ? one + "s" : one;
 };
 
-const formatDateTime = (value: number, now: number, format: any): string => {
+const formatDateTimeEn = (value: number, now: number, format: any): string => {
 	if (value <= now) {
 		const seconds = now - value;
 		const minutes = Math.trunc(seconds / 60)
@@ -34,6 +35,82 @@ const formatDateTime = (value: number, now: number, format: any): string => {
 		}
 	}
 	return format(new Date(value * 1000));
+};
+
+const getSecondsString = (n: number): string => {
+	const mod10 = n % 10, mod100 = n % 100;
+	if(mod10 === 0 || (11 <= mod100 && mod100 <= 14)) {
+		return "секунд";
+	}
+	if(mod10 === 1) {
+		return "секунда";
+	}
+	if(mod10 <= 4) {
+		return "секунды";
+	}
+	return "секунд";
+};
+
+const getMinutesString = (n: number): string => {
+	const mod10 = n % 10, mod100 = n % 100;
+	if(mod10 === 0 || (11 <= mod100 && mod100 <= 14)) {
+		return "минут";
+	}
+	if(mod10 === 1) {
+		return "минтуа";
+	}
+	if(mod10 <= 4) {
+		return "минуты";
+	}
+	return "минут";
+};
+
+const getHoursString = (n: number): string => {
+	const mod10 = n % 10, mod100 = n % 100;
+	if(mod10 === 0 || (11 <= mod100 && mod100 <= 14)) {
+		return "часов";
+	}
+	if(mod10 === 1) {
+		return "час";
+	}
+	if(mod10 <= 4) {
+		return "часа";
+	}
+	return "часов";
+};
+
+const formatDateTimeRu = (value: number, now: number, format: any): string => {
+	if (value <= now) {
+		const seconds = now - value;
+		const minutes = Math.trunc(seconds / 60)
+		const hours = Math.trunc(minutes / 60);
+		if (seconds < 60) {
+			return `${seconds} ${getSecondsString(seconds)} назад`;
+		} else if (minutes < 60) {
+			return `${minutes} ${getMinutesString(minutes)} назад`;
+		} else if (hours < 24) {
+			return `${hours} ${getHoursString(hours)} назад`;
+		}
+	} else {
+		const seconds = value - now;
+		const minutes = Math.trunc(seconds / 60)
+		const hours = Math.trunc(minutes / 60);
+		if (seconds < 60) {
+			return `через ${seconds} ${getSecondsString(seconds)}`;
+		} else if (minutes < 60) {
+			return `через ${minutes} ${getMinutesString(minutes)}`;
+		} else if (hours < 24) {
+			return `через ${hours} ${getHoursString(hours)}`;
+		}
+	}
+	return format(new Date(value * 1000));
+};
+
+const formatDateTime = (value: number, now: number, format: any): string => {
+	if(getLocale() === "ru") {
+		return formatDateTimeRu(value, now, format);
+	}
+	return formatDateTimeEn(value, now, format);
 };
 
 const DateTime: FC<DateTimeProps> = props => {

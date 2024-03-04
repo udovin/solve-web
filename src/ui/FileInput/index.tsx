@@ -1,6 +1,7 @@
 import { ChangeEvent, FC, useEffect, useRef } from "react";
 import Button from "../Button";
 import Icon from "../Icon";
+import { strings } from "../../Locale";
 
 import "./index.scss";
 
@@ -35,7 +36,7 @@ const FileInput: FC<FileInputProps> = props => {
     return <>
         <Button className="ui-file-input" onClick={onClick} disabled={disabled}>
             <Icon kind="document" />
-            <span className="filename" title={file ? file.name : undefined}>{file ? <>{file.name}</> : <>Choose file</>}</span>
+            <span className="filename" title={file ? file.name : undefined}>{file ? <>{file.name}</> : <>{strings.chooseFile}</>}</span>
         </Button>
         <input
             type="file"

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../../AuthContext";
 import Tooltip from "../Tooltip";
 import { VERSION, getSolveVersion } from "../../api";
+import { strings } from "../../Locale";
 
 import "./index.scss";
 
@@ -26,9 +27,9 @@ const Footer: FC = () => {
                         </span>}>{VERSION}</Tooltip>
                     </li>
                     <li>
-                        <a href="//github.com/udovin/solve">Repository</a>
+                        <a href="//github.com/udovin/solve">{strings.repository}</a>
                     </li>
-                    <li>Language: <Link to="/language">{localeTitle}</Link></li>
+                    <li>{strings.language + ":"} <Link to="/language">{localeTitle}</Link></li>
                 </ul>
             </div>
         </div>

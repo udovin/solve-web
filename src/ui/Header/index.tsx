@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { AuthContext } from "../../AuthContext";
 import Alert, { AlertKind } from "../Alert";
 import IconButton from "../IconButton";
+import { strings } from "../../Locale";
 
 import "./index.scss";
 
@@ -24,19 +25,19 @@ const Header: FC = () => {
     }, [status]);
     const accountLinks = <>
         {status?.user && <li>
-            Hello, <Link to={`/users/${status.user.login}`}>{status.user.login}</Link>!
+            {strings.hello}, <Link to={`/users/${status.user.login}`}>{status.user.login}</Link>!
         </li>}
         {status?.scope_user && <li>
-            Hello, {status.scope_user.login}!
+            {strings.hello}, {status.scope_user.login}!
         </li>}
         {(!status || (!status.session && status.permissions?.includes("login"))) && <li>
-            <Link to="/login">Login</Link>
+            <Link to="/login">{strings.login}</Link>
         </li>}
         {(!status || (!status.session && status.permissions?.includes("register"))) && <li>
-            <Link to="/register">Register</Link>
+            <Link to="/register">{strings.register}</Link>
         </li>}
         {status?.session && status.permissions?.includes("logout") && <li>
-            <Link to="/logout">Logout</Link>
+            <Link to="/logout">{strings.logout}</Link>
         </li>}
     </>;
     const canObserveSettings = status?.permissions?.includes("observe_settings");
@@ -56,19 +57,19 @@ const Header: FC = () => {
         <nav id="header-nav">
             <ul>
                 <li className={getActiveClass("/")}>
-                    <Link to="/">Index</Link>
+                    <Link to="/">{strings.index}</Link>
                 </li>
                 {status?.permissions?.includes("observe_contests") && <li className={getActiveClass("/contests")}>
-                    <Link to="/contests">Contests</Link>
+                    <Link to="/contests">{strings.contests}</Link>
                 </li>}
                 {status?.permissions?.includes("observe_problems") && <li className={getActiveClass("/problems")}>
-                    <Link to="/problems">Problems</Link>
+                    <Link to="/problems">{strings.problems}</Link>
                 </li>}
                 {status?.permissions?.includes("observe_solutions") && <li className={getActiveClass("/solutions")}>
-                    <Link to="/solutions">Solutions</Link>
+                    <Link to="/solutions">{strings.solutions}</Link>
                 </li>}
                 {canObserveAdmin && <li className={`admin ${getActiveClass("/admin", "/admin/settings", "/admin/roles", "/admin/scopes")}`}>
-                    <Link to="/admin">Admin</Link>
+                    <Link to="/admin">{strings.admin}</Link>
                 </li>}
             </ul>
         </nav>
