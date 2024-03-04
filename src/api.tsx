@@ -340,9 +340,10 @@ export type RegisterForm = {
 };
 
 export const getLocale = () => {
-	return localStorage.getItem("locale") ?? "ru";
-}
+	return localStorage?.getItem("locale") ?? "en";
+};
 
+// Note: cannot be called from server side.
 export const setLocale = (locale: string) => {
 	localStorage.setItem("locale", locale);
 };
@@ -354,7 +355,7 @@ const getHeaders = () => {
 		"X-Solve-Web-Version": "0.0.1",
 		"X-Solve-Sync": (Date.now() < fetchActuality ? "1" : "0"),
 	};
-	const locale = localStorage.getItem("locale");
+	const locale = localStorage?.getItem("locale");
 	if (locale) {
 		headers["Accept-Language"] = locale;
 	}

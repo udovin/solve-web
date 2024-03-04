@@ -1,6 +1,6 @@
 FROM node:16-alpine AS build
 WORKDIR /app
-COPY package.json /app/
+COPY package.json package-lock.json /app/
 RUN npm ci
 COPY . /app
 ARG REACT_APP_VERSION=development

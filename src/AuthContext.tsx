@@ -1,5 +1,6 @@
 import React, { FC, ReactNode, useEffect, useState } from "react";
 import { statusUser, Status } from "./api";
+import { strings } from "./Locale";
 
 type Auth = {
 	status?: Status;
@@ -16,7 +17,13 @@ const AuthProvider: FC<{ children?: ReactNode }> = props => {
 	const [status, setStatus] = useState<Status>();
 	const updateStatus = () => {
 		statusUser()
-			.then(result => setStatus(result))
+			.then(result => {
+				setStatus(result);
+				if (result.locale) {
+					// TODO: Possibly we need update this only when localStorage "locale" is undefined.
+					strings.setLanguage(result.locale);
+				}
+			})
 			.catch(error => setStatus(undefined));
 	};
 	useEffect(updateStatus, []);
