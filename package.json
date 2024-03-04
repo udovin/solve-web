@@ -92,7 +92,7 @@
     "@typescript-eslint/eslint-plugin": "^6.9.2-alpha.7",
     "@typescript-eslint/parser": "^6.9.2-alpha.7",
     "node-sass": "^9.0.0",
-    "rewire": "^6.0.0",
+    "rewire": "^7.0.0",
     "sass-loader": "^13.3.2",
     "storybook": "^7.6.0-alpha.4",
     "ts-loader": "^9.4.2",
