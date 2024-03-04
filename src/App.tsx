@@ -5,10 +5,11 @@ import Header from "./ui/Header";
 import Footer from "./ui/Footer";
 import IndexPage from "./pages/IndexPage";
 import NotFoundPage from "./pages/NotFoundPage";
-import "./App.scss";
-
 import { getLocale } from "./api";
 import { strings } from "./Locale";
+
+import "./App.scss";
+
 
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const LogoutPage = lazy(() => import("./pages/LogoutPage"));

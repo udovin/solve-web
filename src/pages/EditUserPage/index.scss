@@ -1,8 +1,19 @@
 @import "../../mixins.scss";
 
+.b-profile-edit-tabs {
+    >.ui-block>.ui-block-content {
+        padding-bottom: 0;
+
+        .ui-tabs {
+            border-bottom: 0;
+        }
+    }
+}
+
 .b-profile-edit {
-    .ui-block-footer {
+    >.ui-block>.ui-block-footer {
         @include clear-fix;
+
         .ui-button {
             display: block;
             float: left;
@@ -12,26 +23,27 @@
 }
 
 .b-current-sessions {
-    .ui-block-content {
+    >.ui-block>.ui-block-content {
         padding: 0;
         overflow-x: auto;
-    }
-  
-    .ui-table {
-        border: none;
 
-        .id {
-            text-align: right;
-            width: 1%;
-        }
+        >.ui-table {
+            border: none;
 
-        .created, .expires {
-            text-align: center;
-            width: 40%;
-        }
+            .id {
+                text-align: right;
+                width: 1%;
+            }
 
-        .actions {
-            text-align: left;
+            .created,
+            .expires {
+                text-align: center;
+                width: 40%;
+            }
+
+            .actions {
+                text-align: left;
+            }
         }
     }
 }

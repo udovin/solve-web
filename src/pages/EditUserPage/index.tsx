@@ -295,7 +295,7 @@ const EditUserPage: FC = () => {
 	const { id, login } = user;
 	return <Page title={`Edit user: ${login}`} sidebar={<Sidebar />}>
 		<TabsGroup>
-			<Block className="b-contest-tabs">
+			<Block className="b-profile-edit-tabs">
 				<Tabs>
 					<Tab tab="profile"><Link to={`/users/${login}/edit`}>Profile</Link></Tab>
 					<Tab tab="security"><Link to={`/users/${login}/edit/security`}>Security</Link></Tab>
