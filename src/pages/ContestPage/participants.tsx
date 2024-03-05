@@ -7,29 +7,32 @@ import IconButton from "../../ui/IconButton";
 import Input from "../../ui/Input";
 import Select from "../../ui/Select";
 import { AccountLink } from "../SolutionsPage";
+import { strings } from "../../Locale";
 
 type ParticipantLinkProps = {
     participant: ContestParticipant;
+};
+
+const getKinds = (): Record<string, string> => {
+    return {
+        "regular": strings.participantRegular,
+        "upsolving": strings.participantUpsolving,
+        "manager": strings.participantManager,
+        "observer": strings.participantObserver,
+    };
 };
 
 export const ParticipantLink: FC<ParticipantLinkProps> = props => {
     const { participant } = props;
     const { kind } = participant;
     return <>
-        {(!!participant.kind && participant.kind !== "regular") && <span className="kind">{KINDS[kind] ?? kind}: </span>}
+        {(!!participant.kind && participant.kind !== "regular") && <span className="kind">{getKinds()[kind] ?? kind}: </span>}
         <AccountLink account={participant} />
     </>
 };
 
 type ContestParticipantsBlockProps = {
     contest: Contest;
-};
-
-const KINDS: Record<string, string> = {
-    "regular": "Participant",
-    "upsolving": "Upsolving",
-    "manager": "Manager",
-    "observer": "Observer",
 };
 
 export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props => {
@@ -93,7 +96,7 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
             <Select
                 name="kind"
                 value={form.kind || "regular"}
-                options={KINDS}
+                options={getKinds()}
                 onValueChange={value => setForm({ ...form, kind: value })}
             />
             <Button type="submit">Create</Button>
@@ -132,7 +135,7 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
                     return <tr key={key} className="participant">
                         <td className="id">{id}</td>
                         <td className="login"><AccountLink account={participant} /></td>
-                        <td className="kind">{KINDS[kind] ?? kind}</td>
+                        <td className="kind">{getKinds()[kind] ?? kind}</td>
                         <td className="actions">{canDeleteParticipant && <IconButton kind="delete" onClick={deleteParticipant} />}</td>
                     </tr>;
                 })}

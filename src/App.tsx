@@ -5,7 +5,6 @@ import Header from "./ui/Header";
 import Footer from "./ui/Footer";
 import IndexPage from "./pages/IndexPage";
 import NotFoundPage from "./pages/NotFoundPage";
-import { getLocale } from "./api";
 import { strings } from "./Locale";
 
 import "./App.scss";
@@ -38,7 +37,9 @@ const CreateCompilerPage = lazy(() => import("./pages/CreateCompilerPage"));
 const AdminPage = lazy(() => import("./pages/AdminPage"));
 
 const App: FC = () => {
-	strings.setLanguage(getLocale());
+	// TODO: Currentry we need double render because of SSR error.
+	// strings.setLanguage(getLocale());
+	strings.setLanguage("en");
 	return (
 		<div id="layout">
 			<AuthProvider>

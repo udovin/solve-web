@@ -19,10 +19,18 @@ type VerdictInfo = {
     disableUsage?: boolean;
 };
 
-var VERDICTS: Record<string, VerdictInfo | undefined>;
+const getTitle = (info?: VerdictInfo, testNumber?: number) => {
+    if (!info) {
+        return undefined;
+    }
+    if (testNumber && info.titleTest) {
+        return info.titleTest.replace("{}", String(testNumber));
+    }
+    return info.title;
+};
 
-const updateVerdicts = () => {
-    VERDICTS = {
+const getVerdicts = (): Record<string, VerdictInfo | undefined> => {
+    return {
         "queued": {
             code: "queued",
             title: strings.verdictQueued,
@@ -93,28 +101,17 @@ const updateVerdicts = () => {
             description: strings.verdictFailed,
             disableUsage: true,
         },
-    }
-};
-
-const getTitle = (info?: VerdictInfo, testNumber?: number) => {
-    if (!info) {
-        return undefined;
-    }
-    if (testNumber && info.titleTest) {
-        return info.titleTest.replace("{}", String(testNumber));
-    }
-    return info.title;
-};
+    };
+}
 
 const Verdict: FC<VerdictProps> = props => {
-    updateVerdicts();
     const { report } = props;
     const verdict = report?.verdict;
     const points = report?.points;
     const used_time = report?.used_time;
     const used_memory = report?.used_memory;
     const test_number = report?.test_number;
-    const info = verdict ? VERDICTS[verdict] : VERDICTS["running"];
+    const info = getVerdicts()[verdict ? verdict : "running"];
     const title = getTitle(info, test_number) ?? verdict;
     const disableUsage = info?.disableUsage ?? false;
     return <Tooltip className="ui-verdict-wrap" content={<div className="ui-verdict-details">
@@ -136,7 +133,7 @@ type TestVerdictProps = {
 export const TestVerdict: FC<TestVerdictProps> = props => {
     const { report } = props;
     const verdict = report?.verdict;
-    const info = verdict ? VERDICTS[verdict] : VERDICTS["running"];
+    const info = getVerdicts()[verdict ? verdict : "running"];
     return <Tooltip className={`ui-verdict ${info?.code ?? "unknown"}`} content={<div className="ui-verdict-details">
         <span className={`item description ui-verdict ${info?.code ?? "unknown"}`}>{info?.description ?? verdict}</span>
     </div>}>{info?.title ?? verdict}</Tooltip>;
