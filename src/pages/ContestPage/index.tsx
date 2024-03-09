@@ -143,7 +143,7 @@ const ContestProblemBlock: FC = () => {
 	return <ProblemBlock
 		problem={problem.problem}
 		code={problem.code}
-		imageBaseUrl={`${BASE}/api/v0/contests/${contest_id}/problems/${problem_code}/resources/`}
+		imageBaseUrl={`${BASE}/api/v0/contests/${contest_id}/problems/${problem_code}/statement-files/`}
 	/>;
 };
 

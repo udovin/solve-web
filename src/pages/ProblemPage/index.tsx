@@ -176,7 +176,7 @@ const ProblemPage: FC = () => {
 		<Sidebar />
 	</>}>
 		{problem ?
-			<ProblemBlock problem={problem} imageBaseUrl={`${BASE}/api/v0/problems/${problem.id}/resources/`} /> :
+			<ProblemBlock problem={problem} imageBaseUrl={`${BASE}/api/v0/problems/${problem.id}/statement-files/`} /> :
 			<>Loading...</>}
 	</Page>;
 };
