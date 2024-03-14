@@ -23,7 +23,7 @@ const withThemeProvider = (Story, context) => {
 		if (name.startsWith(`theme-`)) {
 			document.body.classList.remove(name);
 		}
-	})
+	});
 	document.body.classList.add(`theme-${theme}`);
 	return <Story />;
 }

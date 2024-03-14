@@ -48,7 +48,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "node ./scripts/build.js",
+    "build": "GENERATE_SOURCEMAP=false node ./scripts/build.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "storybook dev -p 6006 -s public",

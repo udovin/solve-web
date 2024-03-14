@@ -23,8 +23,199 @@
 	}
 }
 
+$themes: (
+	light: (
+		// Body.
+		text-color: #000000,
+		background-color: #ffffff,
+		body-background-color: #f1f1f1,
+		shade-background-color: rgba(0, 0, 0, 0.1),
+
+		// Block.
+		block-border-color: #dddddd,
+		block-background-color: #ffffff,
+		block-title-text-color: #666666,
+
+		// Default button.
+		button-text-color: #000000,
+		button-hover-text-color: #000000,
+		button-active-text-color: #000000,
+		button-disabled-text-color: #666666,
+
+		button-border-color: #dddddd,
+		button-hover-border-color: #bbbbbb,
+		button-active-border-color: #bbbbbb,
+		button-disabled-border-color: #dddddd,
+
+		button-background-color: #ffffff,
+		button-hover-background-color: #ffffff,
+		button-active-background-color: #eeeeee,
+		button-disabled-background-color: #f1f1f1,
+		
+		// Primary button.
+		primary-button-text-color: #ffffff,
+		primary-button-hover-text-color: #ffffff,
+		primary-button-active-text-color: #ffffff,
+
+		primary-button-border-color: #0073aa,
+		primary-button-hover-border-color: #0073aa,
+		primary-button-active-border-color: #0073aa,
+
+		primary-button-background-color: #0085ba,
+		primary-button-hover-background-color: #008ec2,
+		primary-button-active-background-color: #0073aa,
+
+		// Success button.
+		success-button-text-color: #ffffff,
+		success-button-hover-text-color: #ffffff,
+		success-button-active-text-color: #ffffff,
+
+		success-button-border-color: #1e7e34,
+		success-button-hover-border-color: #1e7e34,
+		success-button-active-border-color: #1e7e34,
+
+		success-button-background-color: #2b8e42,
+		success-button-hover-background-color: #309648,
+		success-button-active-background-color: #1e7e34,
+
+		// Danger button.
+		danger-button-text-color: #ffffff,
+		danger-button-hover-text-color: #ffffff,
+		danger-button-active-text-color: #ffffff,
+
+		danger-button-border-color: #cc342f,
+		danger-button-hover-border-color: #cc342f,
+		danger-button-active-border-color: #cc342f,
+
+		danger-button-background-color: #d9534f,
+		danger-button-hover-background-color: #e2615e,
+		danger-button-active-background-color: #cc342f,
+
+		// Success alert.
+		success-alert-text-color: #3c763d,
+		success-alert-border-color: #c6e3bb,
+		success-alert-background-color: #dff0d8,
+
+		// Info alert.
+		info-alert-text-color: #31708f,
+		info-alert-border-color: #bcdff1,
+		info-alert-background-color: #d9edf7,
+
+		// Warning alert.
+		warning-alert-text-color: #8a6d3b,
+		warning-alert-border-color: #ede3b4,
+		warning-alert-background-color: #fcf8e3,
+
+		// Danger alert.
+		danger-alert-text-color: #a94442,
+		danger-alert-border-color: #ebcccc,
+		danger-alert-background-color: #f2dede,
+	),
+	dark: (
+		// Body.
+		text-color: #c9cdcf,
+		background-color: #222425,
+		body-background-color: #222425,
+		shade-background-color: rgba(0, 0, 0, 0.1),
+
+		// Block.
+		block-border-color: #515355,
+		block-background-color: #292c2e,
+		block-title-text-color: #dddddd,
+
+		// Default button.
+		button-text-color: #c9cdcf,
+		button-hover-text-color: #c9cdcf,
+		button-active-text-color: #c9cdcf,
+		button-disabled-text-color: #7f8081,
+
+		button-border-color: #515355,
+		button-hover-border-color: #798186,
+		button-active-border-color: #798186,
+		button-disabled-border-color: #515355,
+
+		button-background-color: #292c2e,
+		button-hover-background-color: #292c2e,
+		button-active-background-color: #373b3d,
+		button-disabled-background-color: #222425,
+		
+		// Primary button.
+		primary-button-text-color: #ffffff,
+		primary-button-hover-text-color: #ffffff,
+		primary-button-active-text-color: #ffffff,
+
+		primary-button-border-color: #2499c7,
+		primary-button-hover-border-color: #2499c7,
+		primary-button-active-border-color: #2499c7,
+
+		primary-button-background-color: #0085ba,
+		primary-button-hover-background-color: #0073aa,
+		primary-button-active-background-color: #008ec2,
+
+		// Success button.
+		success-button-text-color: #ffffff,
+		success-button-hover-text-color: #ffffff,
+		success-button-active-text-color: #ffffff,
+
+		success-button-border-color: #47a35c,
+		success-button-hover-border-color: #47a35c,
+		success-button-active-border-color: #47a35c,
+
+		success-button-background-color: #2b8e42,
+		success-button-hover-background-color: #1e7e34,
+		success-button-active-background-color: #309648,
+
+		// Danger button.
+		danger-button-text-color: #ffffff,
+		danger-button-hover-text-color: #ffffff,
+		danger-button-active-text-color: #ffffff,
+
+		danger-button-border-color: #e76864,
+		danger-button-hover-border-color: #e76864,
+		danger-button-active-border-color: #e76864,
+
+		danger-button-background-color: #d9534f,
+		danger-button-hover-background-color: #cc342f,
+		danger-button-active-background-color: #e2615e,
+
+		// Success alert.
+		success-alert-text-color: #3c763d,
+		success-alert-border-color: #c6e3bb,
+		success-alert-background-color: #dff0d8,
+
+		// Info alert.
+		info-alert-text-color: #31708f,
+		info-alert-border-color: #bcdff1,
+		info-alert-background-color: #d9edf7,
+
+		// Warning alert.
+		warning-alert-text-color: #8a6d3b,
+		warning-alert-border-color: #ede3b4,
+		warning-alert-background-color: #fcf8e3,
+
+		// Danger alert.
+		danger-alert-text-color: #a94442,
+		danger-alert-border-color: #ebcccc,
+		danger-alert-background-color: #f2dede,
+	),
+);
+
+@mixin themify($themes) {
+	@each $name, $values in $themes {
+		body.theme-#{$name} {
+			$theme-map: $values !global;
+			@content;
+		}
+	}
+}
+
+@function themed($key) {
+	@return map-get($theme-map, $key);
+}
+
 $light-body-background-color: #f1f1f1;
 $light-background-color: #ffffff;
+$light-active-background-color: #eeeeee;
 $light-disabled-background-color: #f1f1f1;
 $light-background-primary-color: #0085ba;
 $light-hover-background-primary-color: #008ec2;

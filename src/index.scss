@@ -4,7 +4,6 @@
 body {
 	margin: 0;
 	padding: 0;
-	background: $light-body-background-color;
 	font-family: Helvetica, Arial, sans-serif;
 	font-size: 14px;
 
@@ -21,10 +20,15 @@ body {
 		left: 0;
 		right: 0;
 		overflow-y: auto;
+	}
+}
 
-		&.shade {
-			background-color: rgba(0, 0, 0, 0.1);
-		}
+@include themify($themes) {
+	background: themed("body-background-color");
+	color: themed("text-color");
+
+	.ui-layer.shade {
+		background-color: themed("shade-background-color");
 	}
 }
 

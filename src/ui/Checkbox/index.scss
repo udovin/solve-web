@@ -1,54 +1,85 @@
 @import "../../mixins.scss";
 
 .ui-checkbox {
-    display: inline-block;
-    margin: 0;
-    padding: 0;
-    width: 20px;
-    height: 20px;
-    border: 1px solid $light-border-color;
-    border-radius: 4px;
-    background-color: $light-background-color;
-    box-shadow: 0 0;
-    @include box-sizing(border-box);
-    @include transition(border-color 150ms ease-out, background-color 150ms ease-out);
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+	width: 20px;
+	height: 20px;
+	border: 1px solid;
+	border-radius: 4px;
+	box-shadow: 0 0;
+	@include box-sizing(border-box);
+	@include transition(border-color 150ms ease-out, background-color 150ms ease-out);
 
-    appearance: none;
-    -webkit-appearance: none;
+	appearance: none;
+	-webkit-appearance: none;
 
-    &:hover {
-        border-color: $light-active-border-color;
-        cursor: pointer;
-        @include transition(border-color 150ms ease-in, background-color 150ms ease-in);
-    }
+	&:hover {
+		cursor: pointer;
+		@include transition(border-color 150ms ease-in, background-color 150ms ease-in);
+	}
 
-    &:active,
-    &:focus {
-        border-color: $light-border-primary-color;
-        box-shadow: 0 0 2px $light-border-primary-color;
-        outline: none;
-        @include transition(border-color 150ms ease-in, background-color 150ms ease-in);
-    }
+	&:active,
+	&:focus {
+		outline: none;
+		@include transition(border-color 150ms ease-in, background-color 150ms ease-in);
+	}
 
-    &:checked {
-        border-color: #0073aa;
-        background-color: #0085ba;
-        background-image: url('../../images/icons-white.svg');
-        background-repeat: no-repeat;
-        background-size: 600% 600%;
-        background-position: 40% 80%;
-        @include transition(border-color 150ms ease-in, background-color 150ms ease-in);
-    }
+	&:checked {
+		background-image: url('../../images/icons-white.svg');
+		background-repeat: no-repeat;
+		background-size: 600% 600%;
+		background-position: 40% 80%;
+		@include transition(border-color 150ms ease-in, background-color 150ms ease-in);
+	}
 
-    &:disabled {
-        border-color: $light-border-color;
-        background-color: $light-disabled-background-color;
-        box-shadow: 0 0;
-        color: #666666;
-        cursor: default;
+	&:disabled {
+		box-shadow: 0 0 !important;
+		color: #666666;
+		cursor: default;
 
-        &:checked {
-            background-image: url('../../images/icons.svg');
-        }
-    }
+		&:checked {
+			background-image: url('../../images/icons.svg');
+		}
+	}
+}
+
+@include themify($themes) {
+	.ui-checkbox {
+		border-color: themed("button-border-color");
+		background-color: themed("button-background-color");
+
+		&:hover {
+			border-color: themed("button-hover-border-color");
+			background-color: themed("button-hover-background-color");
+		}
+
+		&:active,
+		&:focus {
+			border-color: themed("primary-button-active-border-color");
+			background-color: themed("button-active-background-color");
+		    box-shadow: 0 0 2px themed("primary-button-active-border-color");
+		}
+
+		&:checked {
+			border-color: themed("primary-button-active-border-color");
+			background-color: themed("primary-button-active-background-color");
+		}
+
+		&:disabled {
+			border-color: themed("button-disabled-border-color");
+			background-color: themed("button-disabled-background-color");
+		}
+	}
+}
+
+body.theme-dark {
+	.ui-checkbox {
+		&:disabled {
+			&:checked {
+				background-image: url('../../images/icons-white.svg');
+			}
+		}
+	}
 }
