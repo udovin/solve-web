@@ -21,12 +21,16 @@
         margin-top: 8px;
     }
 
-    .stage {
-        color: #666666;
-    }
-
     .duration {
         font-size: 16px;
+    }
+}
+
+@include themify {
+    .b-contest-side {
+        .stage {
+            color: themed("label-text-color");
+        }
     }
 }
 
@@ -73,14 +77,6 @@
         border: none;
 
         tr {
-            &.solved {
-                background-color: #e6ffe7;
-            }
-
-            &.not-solved {
-                background-color: #ffebea;
-            }
-
             >.code {
                 text-align: right;
                 width: 1%;
@@ -94,6 +90,23 @@
             >.actions {
                 text-align: left;
                 width: 1%;
+            }
+        }
+    }
+}
+
+
+@include themify {
+    .b-contest-problems {
+        .ui-table {
+            tr {
+                &.solved {
+                    background-color: themed("success-row-background-color");
+                }
+
+                &.not-solved {
+                    background-color: themed("danger-row-background-color");
+                }
             }
         }
     }
@@ -140,8 +153,19 @@
                 text-align: center;
 
                 .kind {
-                    color: #666666;
                     font-size: 12px;
+                }
+            }
+        }
+    }
+}
+
+@include themify {
+    .b-contest-solutions {
+        .ui-table {
+            tr>.participant {
+                .kind {
+                    color: themed("label-text-color");
                 }
             }
         }
@@ -179,7 +203,6 @@
             text-align: left;
 
             .kind {
-                color: #666666;
                 font-size: 12px;
             }
         }
@@ -192,6 +215,18 @@
         tr>.actions {
             text-align: left;
             width: 60px;
+        }
+    }
+}
+
+@include themify {
+    .b-contest-participants {
+        .ui-table {
+            tr>.login {
+                .kind {
+                    color: themed("label-text-color");
+                }
+            }
         }
     }
 }
@@ -218,20 +253,6 @@
     .ui-table {
         border: none;
 
-        tbody {
-            tr.group-2 {
-                background-color: #f6fdff;
-            }
-
-            tr.current {
-                background-color: #e6ffe7;
-            }
-
-            tr:hover {
-                background-color: #fff9ee;
-            }
-        }
-
         tr>.id {
             text-align: right;
             width: 1%;
@@ -243,7 +264,6 @@
             text-align: left;
 
             .kind {
-                color: #666666;
                 font-size: 12px;
             }
         }
@@ -272,36 +292,70 @@
                 white-space: nowrap;
             }
 
-            .solutions {
-                color: #666666;
-            }
-
             .attempt {
                 display: block;
             }
 
             .time {
                 display: block;
-                color: #666666;
                 font-size: 9px;
             }
 
             &.accepted {
                 .attempt {
-                    color: #3c763d;
                     font-weight: bold;
                 }
             }
+        }
+    }
+}
 
-            &.rejected {
-                .attempt {
-                    color: #a94442;
+@include themify {
+    .b-contest-standings {
+        .ui-table {
+            tbody {
+                tr.group-2 {
+                    background-color: themed("group-row-background-color");
+                }
+
+                tr.current {
+                    background-color: themed("success-row-background-color");
+                }
+
+                tr:hover {
+                    background-color: themed("warning-row-background-color");
                 }
             }
 
-            &.unknown {
-                .attempt {
-                    color: #666666;
+            tr>.participant {
+                .kind {
+                    color: themed("label-text-color");
+                }
+            }
+
+            tr>.problem {
+
+                .solutions,
+                .time {
+                    color: themed("label-text-color");
+                }
+
+                &.accepted {
+                    .attempt {
+                        color: themed("success-alert-text-color");
+                    }
+                }
+
+                &.rejected {
+                    .attempt {
+                        color: themed("danger-alert-text-color");
+                    }
+                }
+
+                &.unknown {
+                    .attempt {
+                        color: themed("label-text-color");
+                    }
                 }
             }
         }
@@ -325,7 +379,7 @@
         }
 
         .message {
-            border: 1px solid $light-border-color;
+            border: 1px solid;
             border-radius: 4px;
             padding: 8px;
 
@@ -346,19 +400,14 @@
             }
 
             >.participant {
-                color: $light-secondary-text-color;
                 font-size: 12px;
-
-                >a {
-                    color: $light-secondary-text-color;
-                }
             }
         }
 
         .new-message {
             margin-top: 8px;
             margin-left: 16px;
-            border: 1px solid $light-border-color;
+            border: 1px solid;
             border-radius: 4px;
             padding: 8px;
         }
@@ -366,6 +415,28 @@
         .children {
             margin-top: 8px;
             margin-left: 16px;
+        }
+    }
+}
+
+@include themify {
+    .b-contest-messages {
+        .message-wrap {
+            .message {
+                border-color: themed("block-border-color");
+
+                >.participant {
+                    color: themed("label-text-color");
+
+                    >a {
+                        color: themed("label-text-color");
+                    }
+                }
+            }
+
+            .new-message {
+                border-color: themed("block-border-color");
+            }
         }
     }
 }

@@ -3,6 +3,9 @@ import LocalizedStrings from "react-localization";
 export const strings = new LocalizedStrings({
     en: {
         changeLanguage: "Change language",
+        theme: "Theme",
+        themeLight: "Light",
+        themeDark: "Dark",
         login: "Login",
         register: "Register",
         logout: "Logout",
@@ -93,6 +96,9 @@ export const strings = new LocalizedStrings({
     },
     ru: {
         changeLanguage: "Сменить язык",
+        theme: "Тема",
+        themeLight: "Светлая",
+        themeDark: "Тёмная",
         login: "Войти",
         register: "Зарегистрироваться",
         logout: "Выйти",

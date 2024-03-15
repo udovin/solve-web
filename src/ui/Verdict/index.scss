@@ -2,33 +2,18 @@
 
 .ui-verdict {
     &.failed {
-        color: #000000;
         font-style: italic;
     }
 
-    &.queued,
-    &.running {
-        color: #666666;
-    }
-
-    &.accepted {
-        color: #3c763d;
-        font-weight: bold;
-    }
-
+    &.accepted,
     &.ce,
     &.rejected,
     &.wa,
-    &.pe {
-        color: #a94442;
-        font-weight: bold;
-    }
-
+    &.pe,
     &.tle,
     &.mle,
     &.re,
     &.pa {
-        color: #31708f;
         font-weight: bold;
     }
 }
@@ -38,7 +23,6 @@
         display: block;
         font-size: 12px;
         font-weight: normal;
-        color: #666666;
     }
 }
 
@@ -59,7 +43,49 @@
     .points,
     .time,
     .memory {
-        color: $light-secondary-text-color;
         font-size: 12px;
+    }
+}
+
+@include themify {
+    .ui-verdict {
+        &.failed {
+            color: themed("text-color");
+        }
+
+        &.queued,
+        &.running {
+            color: themed("label-text-color");
+        }
+
+        &.accepted {
+            color: themed("success-alert-text-color");
+        }
+
+        &.ce,
+        &.rejected,
+        &.wa,
+        &.pe {
+            color: themed("danger-alert-text-color");
+        }
+
+        &.tle,
+        &.mle,
+        &.re,
+        &.pa {
+            color: themed("info-alert-text-color");
+        }
+    }
+
+    .ui-verdict-wrap {
+        .points {
+            color: themed("label-text-color");
+        }
+    }
+
+    .ui-verdict-details {
+        .memory {
+            color: themed("label-text-color");
+        }
     }
 }

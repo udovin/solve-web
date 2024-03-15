@@ -20,23 +20,35 @@
 		height: 0;
 		border-width: 5px;
 		border-style: solid;
-		border-color: transparent transparent $light-active-border-color transparent;
+		border-color: transparent;
 		pointer-events: none;
 	}
 
 	>.ui-tooltip {
 		display: block;
 		position: relative;
-		border: 1px solid $light-active-border-color;
+		border: 1px solid;
 		border-radius: 4px;
-		background-color: $light-background-color;
-		box-shadow: 0 0 2px $light-active-border-color;
 
 		>.ui-tooltip-content {
 			display: block;
 			padding: 8px 10px;
 			max-width: 400px;
 			text-align: center;
+		}
+	}
+}
+
+@include themify {
+	.ui-tooltip-portal {
+		>.ui-tooltip-arrow {
+			border-bottom-color: themed("button-active-border-color");
+		}
+
+		>.ui-tooltip {
+			border-color: themed("button-active-border-color");
+			background-color: themed("block-background-color");
+			box-shadow: 0 0 2px themed("button-active-border-color");
 		}
 	}
 }

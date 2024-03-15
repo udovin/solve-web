@@ -85,66 +85,6 @@
 	}
 }
 
-/*
- * Footer style
- */
-#footer {
-	display: block;
-	position: relative;
-	margin: 20px 0;
-}
-
-#footer-nav {
-	margin: 0 10px 10px 10px;
-}
-
-#footer-nav:after {
-	content: '.';
-	display: block;
-	clear: both;
-	height: 0;
-	line-height: 0;
-	font-size: 0;
-	color: transparent;
-	visibility: hidden;
-}
-
-#footer-nav>.wrap {
-	position: relative;
-	float: right;
-	right: 50%;
-}
-
-#footer-nav>.wrap>ul {
-	position: relative;
-	float: right;
-	right: -50%;
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-
-#footer-nav>.wrap>ul>li {
-	float: left;
-	margin: 0 10px 0 0;
-	color: #666666;
-}
-
-#footer-nav>.wrap>ul>li:last-child {
-	margin-right: 0;
-}
-
-#footer-copy {
-	margin: 0 10px;
-	color: #bbbbbb;
-	text-align: center;
-	font-size: 10px;
-}
-
-#footer-copy>a {
-	color: #bbbbbb;
-}
-
 .b-login-form a.reset-password {
 	margin-left: 10px;
 }

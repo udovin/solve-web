@@ -6,6 +6,8 @@ import { VERSION, getSolveVersion } from "../../api";
 import { strings } from "../../Locale";
 
 import "./index.scss";
+import Select from "../Select";
+import { ThemeContext } from "../Theme";
 
 export const LOCALES: Record<string, string> = {
     "en": "English",
@@ -14,6 +16,7 @@ export const LOCALES: Record<string, string> = {
 
 const Footer: FC = () => {
     const { status } = useContext(AuthContext);
+    const { theme, setTheme } = useContext(ThemeContext);
     const locale = status?.locale ?? "en";
     const localeTitle = LOCALES[locale] ?? "English";
     return <footer id="footer">
@@ -29,7 +32,8 @@ const Footer: FC = () => {
                     <li>
                         <a href="//github.com/udovin/solve">{strings.repository}</a>
                     </li>
-                    <li>{strings.language + ":"} <Link to="/language">{localeTitle}</Link></li>
+                    <li>{strings.language}: <Link to="/language">{localeTitle}</Link></li>
+                    <li>{strings.theme}: <Select options={{"light": strings.themeLight, "dark": strings.themeDark}} value={theme} onValueChange={setTheme}/></li>
                 </ul>
             </div>
         </div>

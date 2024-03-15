@@ -6,36 +6,58 @@
 	padding: 0 10px;
 	height: 32px;
 	line-height: 30px;
-	border: 1px solid $light-border-color;
+	border: 1px solid;
 	border-radius: 4px;
-	background-color: $light-background-color;
 	box-shadow: 0 0;
 	font-family: inherit;
 	font-size: inherit;
-	color: $light-text-color;
 	z-index: 0;
 	@include transition(border-color 150ms ease-out, z-index 150ms ease-out);
 
 	&:hover {
-		border-color: $light-active-border-color;
 		z-index: 10;
 		@include transition(border-color 150ms ease-in, z-index 150ms ease-in);
 	}
 
 	&:active,
 	&:focus {
-		border-color: #0085ba;
-		box-shadow: 0 0 2px #0085ba;
 		outline: none;
 		z-index: 20;
 		@include transition(border-color 150ms ease-in, z-index 150ms ease-in);
 	}
 
 	&:disabled {
-		border-color: $light-border-color;
-		background-color: $light-disabled-background-color;
-		box-shadow: 0 0;
-		color: #666666;
+		box-shadow: 0 0 !important;
 		cursor: default;
+	}
+}
+
+@include themify {
+	.ui-input {
+		border-color: themed("input-border-color");
+		background-color: themed("input-background-color");
+		color: themed("input-text-color");
+
+		&:hover {
+			border-color: themed("input-hover-border-color");
+			background-color: themed("input-hover-background-color");
+			color: themed("input-hover-text-color");
+		}
+
+		&:active,
+		&:focus {
+			border-color: themed("input-active-border-color");
+			box-shadow: 0 0 2px themed("input-active-border-color");
+		}
+
+		&:disabled {
+			border-color: themed("input-disabled-border-color") !important;
+			background-color: themed("input-disabled-background-color") !important;
+			color: themed("input-disabled-text-color") !important;
+		}
+
+		&::placeholder {
+			color: themed("input-placeholder-color");
+		}
 	}
 }

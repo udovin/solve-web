@@ -9,23 +9,21 @@
 }
 
 .ui-block {
-	border: 1px solid $light-border-color;
+	border: 1px solid;
 	border-radius: 4px;
-	background-color: $light-background-color;
 
 	.ui-block-header {
 		padding: 10px;
-		border-bottom: 1px solid $light-border-color;
+		border-bottom: 1px solid;
 
 		>.title {
 			font-size: 15px;
-			color: $light-secondary-text-color;
 		}
 	}
 
 	.ui-block-content {
 		padding: 10px;
-		border-bottom: 1px solid $light-border-color;
+		border-bottom: 1px solid;
 	}
 
 	.ui-block-footer {
@@ -36,6 +34,25 @@
 	.ui-block-content {
 		&:last-child {
 			border-bottom: none;
+		}
+	}
+}
+
+@include themify {
+	.ui-block {
+		border-color: themed("block-border-color");
+		background-color: themed("block-background-color");
+
+		.ui-block-header {
+			border-color: themed("block-border-color");
+
+			>.title {
+				color: themed("label-text-color");
+			}
+		}
+
+		.ui-block-content {
+			border-color: themed("block-border-color");
 		}
 	}
 }

@@ -4,7 +4,6 @@
 body {
 	margin: 0;
 	padding: 0;
-	background: $light-body-background-color;
 	font-family: Helvetica, Arial, sans-serif;
 	font-size: 14px;
 
@@ -21,10 +20,15 @@ body {
 		left: 0;
 		right: 0;
 		overflow-y: auto;
+	}
+}
 
-		&.shade {
-			background-color: rgba(0, 0, 0, 0.1);
-		}
+@include themify {
+	background: themed("background-color");
+	color: themed("text-color");
+
+	.ui-layer.shade {
+		background-color: themed("shade-color");
 	}
 }
 
@@ -36,6 +40,12 @@ a {
 	&:hover {
 		text-decoration: underline;
 		cursor: pointer;
+	}
+}
+
+@include themify {
+	a {
+		color: themed("link-text-color");
 	}
 }
 
@@ -84,17 +94,16 @@ h5 {
 
 .ui-table {
 	width: 100%;
-	border: 1px solid #dddddd;
+	border: 1px solid;
 	border-radius: 4px;
 	border-spacing: 0;
-	background-color: #ffffff;
 
 	>thead>tr>th,
 	>tbody>tr>td,
 	>tfoot>tr>td {
 		padding: 8px 10px;
-		border-right: 1px solid #dddddd;
-		border-bottom: 1px solid #dddddd;
+		border-right: 1px solid;
+		border-bottom: 1px solid;
 	}
 
 	>thead>tr>th:last-child,
@@ -110,9 +119,20 @@ h5 {
 	}
 }
 
+@include themify {
+	.ui-table {
+		border-color: themed("block-border-color");
+		background-color: themed("block-background-color");
+
+		th,
+		td {
+			border-color: themed("block-border-color");
+		}
+	}
+}
+
 // Fix for iOS.
 @media screen and (-webkit-min-device-pixel-ratio:0) and (max-device-width:1024px) {
-
 	.ui-input,
 	.ui-textarea {
 		font-size: 16px !important;

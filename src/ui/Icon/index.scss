@@ -1,8 +1,10 @@
+@import "../../mixins.scss";
+
 .ui-icon {
     display: inline-block;
     width: 24px;
     height: 24px;
-    background: url('../../images/icons.svg') no-repeat;
+    background-repeat: no-repeat;
     background-size: 600% 600%;
 
     &.danger {
@@ -67,5 +69,11 @@
 
     &.i-keyboard {
         background-position: 20% 100%;
+    }
+}
+
+@include themify {
+    .ui-icon {
+        background-image: themed("icons");
     }
 }

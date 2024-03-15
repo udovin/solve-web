@@ -3,36 +3,14 @@
 .ui-alert {
 	display: block;
 	margin: 0 0 10px 0;
-	border: 1px solid $light-border-color;
+	border: 1px solid;
 	border-radius: 4px;
 
 	&:last-child {
 		margin-bottom: 0;
 	}
 
-	&.success {
-		background-color: #dff0d8;
-		border-color: #c6e3bb;
-		color: #3c763d;
-	}
-
-	&.info {
-		background-color: #d9edf7;
-		border-color: #bcdff1;
-		color: #31708f;
-	}
-
-	&.warning {
-		background-color: #fcf8e3;
-		border-color: #ede3b4;
-		color: #8a6d3b;
-	}
-
 	&.danger {
-		background-color: #f2dede;
-		border-color: #ebcccc;
-		color: #a94442;
-
 		.ui-collapse {
 			>.ui-collapse-header {
 				>.arrow {
@@ -65,6 +43,34 @@
 				padding: 0;
 				border-top: none;
 			}
+		}
+	}
+}
+
+@include themify {
+	.ui-alert {
+		&.success {
+			background-color: themed("success-alert-background-color");
+			border-color: themed("success-alert-border-color");
+			color: themed("success-alert-text-color");
+		}
+	
+		&.info {
+			background-color: themed("info-alert-background-color");
+			border-color: themed("info-alert-border-color");
+			color: themed("info-alert-text-color");
+		}
+	
+		&.warning {
+			background-color: themed("warning-alert-background-color");
+			border-color: themed("warning-alert-border-color");
+			color: themed("warning-alert-text-color");
+		}
+	
+		&.danger {
+			background-color: themed("danger-alert-background-color");
+			border-color: themed("danger-alert-border-color");
+			color: themed("danger-alert-text-color");
 		}
 	}
 }

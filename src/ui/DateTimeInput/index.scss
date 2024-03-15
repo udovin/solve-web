@@ -14,9 +14,8 @@
 
     >.calendar {
         display: block;
-        border: 1px solid $light-border-color;
+        border: 1px solid;
         border-radius: 4px;
-        background-color: $light-background-color;
         overflow: hidden;
 
         >table {
@@ -37,27 +36,44 @@
                     border-radius: 4px;
                     background-color: transparent;
                     text-align: center;
-                    color: $light-secondary-text-color;
                     font-family: inherit;
                     font-size: inherit;
-
-                    &:hover {
-                        border-color: $light-hover-border-color;
-                    }
-                }
-
-                &.this-month>button {
-                    color: $light-text-color;
                 }
 
                 &.this-date>button {
                     font-weight: bold;
                 }
+            }
+        }
+    }
+}
 
-                &.selected>button {
-                    border-color: $light-border-primary-color;
-                    background-color: $light-background-primary-color;
-                    color: #ffffff;
+@include themify {
+    .ui-datetime-input-calendar {
+        >.calendar {
+            border-color: themed("button-active-border-color");
+            background-color: themed("block-background-color");
+
+            >table {
+
+                td {
+                    >button {
+                        color: themed("label-text-color");
+
+                        &:hover {
+                            border-color: themed("button-hover-border-color");
+                        }
+                    }
+
+                    &.this-month>button {
+                        color: themed("text-color");
+                    }
+
+                    &.selected>button {
+                        border-color: themed("primary-button-border-color");
+                        background-color: themed("primary-button-background-color");
+                        color: themed("primary-button-text-color");
+                    }
                 }
             }
         }

@@ -1,3 +1,5 @@
+@import "../../mixins.scss";
+
 .b-solution {
     .ui-block-content {
         padding: 0;
@@ -48,10 +50,19 @@
                 margin: 0;
                 padding: 10px;
                 font-family: monospace;
-                background-color: #eee;
                 border-radius: 4px;
                 overflow: auto;
                 max-width: 400px;
+            }
+        }
+    }
+}
+
+@include themify {
+    .b-solution-report {
+        .ui-table {
+            .check-log .log {
+                background-color: themed("button-active-background-color");
             }
         }
     }

@@ -111,71 +111,64 @@
 
 #header-nav {
     display: block;
-    border: 1px solid #dddddd;
+    border: 1px solid;
     border-radius: 4px;
-    background-color: #ffffff;
+
+    >ul {
+        margin: 0 10px;
+        padding: 0;
+        list-style: none;
+        @include clear-fix;
+
+        >li {
+            float: left;
+            margin: 0 8px 0 0;
+
+            &:last-child {
+                margin-right: 0;
+            }
+
+            >a {
+                display: block;
+                padding: 0 10px;
+                height: 42px;
+                line-height: 46px;
+                font-size: 15px;
+                border-bottom: 4px solid transparent;
+                transition: border-color 150ms ease-out;
+                -moz-transition: border-color 150ms ease-out;
+                -o-transition: border-color 150ms ease-out;
+                -webkit-transition: border-color 150ms ease-out;
+
+                &:hover {
+                    text-decoration: none;
+                    transition: border-color 150ms ease-in;
+                    -moz-transition: border-color 150ms ease-in;
+                    -o-transition: border-color 150ms ease-in;
+                    -webkit-transition: border-color 150ms ease-in;
+                }
+            }
+
+            &.admin {
+                float: right;
+            }
+        }
+    }
 }
 
-#header-nav>ul {
-    margin: 0 10px;
-    padding: 0;
-    list-style: none;
-}
+@include themify {
+    #header-nav {
+        border-color: themed("block-border-color");
+        background-color: themed("block-background-color");
 
-#header-nav>ul:after {
-    content: '.';
-    display: block;
-    clear: both;
-    height: 0;
-    line-height: 0;
-    font-size: 0;
-    color: transparent;
-    visibility: hidden;
-}
+        >ul>li {
+            >a:hover {
+                border-color: themed("button-active-background-color");
+            }
 
-#header-nav>ul>li {
-    float: left;
-    margin: 0 8px 0 0;
-}
-
-#header-nav>ul>li:last-child {
-    margin-right: 0;
-}
-
-#header-nav>ul>li>a {
-    display: block;
-    padding: 0 10px;
-    height: 42px;
-    line-height: 46px;
-    font-size: 15px;
-    border-bottom: 4px solid transparent;
-    transition: border-color 150ms ease-out;
-    -moz-transition: border-color 150ms ease-out;
-    -o-transition: border-color 150ms ease-out;
-    -webkit-transition: border-color 150ms ease-out;
-}
-
-#header-nav>ul>li>a:hover {
-    border-color: #eeeeee;
-    text-decoration: none;
-    transition: border-color 150ms ease-in;
-    -moz-transition: border-color 150ms ease-in;
-    -o-transition: border-color 150ms ease-in;
-    -webkit-transition: border-color 150ms ease-in;
-}
-
-#header-nav>ul>li.active>a {
-    border-color: #0085ba;
-}
-
-#header-nav>ul>li.admin {
-    float: right;
-}
-
-#header-version {
-    float: right;
-    margin: -22px 10px 0 0;
-    line-height: 16px;
-    font-size: 12px;
-    color: #cccccc;
+            &.active > a {
+                border-color: themed("primary-button-active-background-color");
+            }
+        }
+    }
 }

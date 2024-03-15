@@ -1,8 +1,70 @@
+@import "../../mixins.scss";
+
+#footer {
+    display: block;
+    position: relative;
+    margin: 20px 0;
+}
+
+#footer-nav {
+    margin: 0 10px 10px 10px;
+    @include clear-fix;
+
+    >.wrap {
+        position: relative;
+        float: right;
+        right: 50%;
+
+        >ul {
+            position: relative;
+            float: right;
+            right: -50%;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+
+            >li {
+                float: left;
+                margin: 0 10px 0 0;
+                height: 32px;
+                line-height: 32px;
+                color: #666666;
+
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+        }
+    }
+}
+
+#footer-copy {
+    margin: 0 10px;
+    text-align: center;
+    font-size: 10px;
+}
+
 .ui-version-tooltip {
     font-size: 12px;
     text-align: left;
 
     span {
         display: block;
+    }
+}
+
+@include themify {
+    #footer-nav {
+        >.wrap>ul>li {
+            color: themed("label-text-color");
+        }
+    }
+
+    #footer-copy {
+        color: themed("copy-text-color");
+
+        >a {
+            color: themed("copy-text-color");
+        }
     }
 }

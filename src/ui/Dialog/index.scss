@@ -31,6 +31,18 @@
     display: block;
 
     .ui-block-wrap {
-        box-shadow: 0 0 4px $light-active-border-color;
+        border-radius: 4px;
+    }
+}
+
+@include themify {
+    .ui-dialog {
+        .ui-block-wrap {
+            box-shadow: 0 0 4px themed("button-active-border-color");
+        }
+    }
+
+    .ui-dialog-backdrop {
+        background-color: themed("shade-color");
     }
 }

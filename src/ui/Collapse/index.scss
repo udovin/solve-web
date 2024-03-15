@@ -2,9 +2,8 @@
 
 .ui-collapse {
     margin: 0 0 10px 0;
-    border: 1px solid $light-border-color;
+    border: 1px solid;
     border-radius: 4px;
-    background-color: $light-background-color;
 
     &:last-child {
         margin-bottom: 0;
@@ -24,7 +23,6 @@
             width: 20px;
             height: 20px;
             left: 10px;
-            background-image: url('../../images/icons.svg');
             background-repeat: no-repeat;
             background-size: 600% 600%;
             background-position: 40% 60%;
@@ -42,6 +40,21 @@
 
     .ui-collapse-content {
         padding: 10px;
-        border-top: 1px solid $light-border-color;
+        border-top: 1px solid;
+    }
+}
+
+@include themify {
+    .ui-collapse {
+        border-color: themed("block-border-color");
+        background-color: themed("block-background-color");
+
+        .ui-collapse-header >.arrow {
+            background-image: themed("icons");
+        }
+
+        .ui-collapse-content {
+            border-color: themed("block-border-color");
+        }
     }
 }

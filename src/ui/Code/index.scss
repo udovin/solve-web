@@ -1,29 +1,43 @@
+@import "../../mixins.scss";
+
 .ui-code {
-    border: 1px solid #dddddd;
+    border: 1px solid;
     border-radius: 4px;
     overflow: hidden;
 
     .cm-gutter.cm-lineNumbers {
         margin-left: 4px;
     }
+}
 
-    .hl-comment {
-        color: #008000;
-    }
+@include themify {
+    .ui-code {
+        border-color: themed("block-border-color");
 
-    .hl-keyword {
-        color: #770088;
-    }
+        .cm-gutters {
+            background-color: themed("group-row-background-color");
+            border-color: themed("block-border-color");
+            color: themed("label-text-color");
+        }
 
-    .hl-type {
-        color: #3300bb;
-    }
+        .hl-comment {
+            color: themed("code-comment-text-color");
+        }
 
-    .hl-string {
-        color: #a31515;
-    }
+        .hl-keyword {
+            color: themed("code-keyword-text-color");
+        }
 
-    .hl-number {
-        color: #098658;
+        .hl-type {
+            color: themed("code-type-text-color");
+        }
+
+        .hl-string {
+            color: themed("code-string-text-color");
+        }
+
+        .hl-number {
+            color: themed("code-number-text-color");
+        }
     }
 }
