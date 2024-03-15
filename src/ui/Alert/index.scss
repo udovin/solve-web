@@ -47,7 +47,7 @@
 	}
 }
 
-@include themify($themes) {
+@include themify {
 	.ui-alert {
 		&.success {
 			background-color: themed("success-alert-background-color");

@@ -15,16 +15,11 @@
 	.label {
 		display: inline-block;
 		padding: 0 0 4px 0;
-		color: $light-secondary-text-color;
 	}
 
 	.text {
 		display: inline-block;
 		padding: 4px 0 0 0;
-
-		&.danger {
-			color: #a94442;
-		}
 	}
 
 	.ui-input,
@@ -52,17 +47,19 @@
 
 	.ui-alert {
 		margin: 4px 0 0 0;
-		border: none;
+		border: none !important;
+		background: none !important;
 
-		&.success,
-		&.info,
-		&.warning,
-		&.danger {
-			background: none;
-		}
-
-		.ui-alert-content {
+		>.ui-alert-content {
 			padding: 0;
+		}
+	}
+}
+
+@include themify {
+	.ui-field {
+		.label {
+			color: themed("label-text-color");
 		}
 	}
 }

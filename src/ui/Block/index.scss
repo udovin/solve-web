@@ -38,7 +38,7 @@
 	}
 }
 
-@include themify($themes) {
+@include themify {
 	.ui-block {
 		border-color: themed("block-border-color");
 		background-color: themed("block-background-color");
@@ -47,7 +47,7 @@
 			border-color: themed("block-border-color");
 
 			>.title {
-				color: themed("block-title-text-color");
+				color: themed("label-text-color");
 			}
 		}
 

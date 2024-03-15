@@ -39,7 +39,6 @@
 			height: 20px;
 			top: 5px;
 			right: 5px;
-			background-image: url('../../images/icons.svg');
 			background-repeat: no-repeat;
 			background-size: 600% 600%;
 			background-position: 40% 60%;
@@ -109,7 +108,7 @@
 	}
 }
 
-@include themify($themes) {
+@include themify {
 	.ui-select {
 		>button {
 			border-color: themed("button-border-color");
@@ -120,6 +119,10 @@
 				border-color: themed("button-hover-border-color");
 				background-color: themed("button-hover-background-color");
 				color: themed("button-hover-text-color");
+			}
+
+			>.arrow {
+				background-image: themed("icons");
 			}
 		}
 
@@ -133,9 +136,9 @@
 
 		&.disabled {
 			>button {
-				border-color: themed("button-disabled-border-color") !important;
-				background-color: themed("button-disabled-background-color") !important;
-				color: themed("button-disabled-text-color") !important;
+				border-color: themed("button-disabled-border-color");
+				background-color: themed("button-disabled-background-color");
+				color: themed("button-disabled-text-color");
 			}
 		}
 	}
@@ -177,14 +180,6 @@
 					color: themed("primary-button-text-color");
 				}
 			}
-		}
-	}
-}
-
-body.theme-dark {
-	.ui-select {
-		>button >.arrow {
-				background-image: url('../../images/icons-white.svg');
 		}
 	}
 }

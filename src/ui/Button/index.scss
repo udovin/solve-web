@@ -32,7 +32,7 @@
 	}
 }
 
-@include themify($themes) {
+@include themify {
 	.ui-button {
 		border-color: themed("button-border-color");
 		background-color: themed("button-background-color");
@@ -52,9 +52,9 @@
 
 		// Disabled buttons.
 		&:disabled {
-			border-color: themed("button-disabled-border-color") !important;
-			background-color: themed("button-disabled-background-color") !important;
-			color: themed("button-disabled-text-color") !important;
+			border-color: themed("button-disabled-border-color");
+			background-color: themed("button-disabled-background-color");
+			color: themed("button-disabled-text-color");
 		}
 
 		// Primary buttons.

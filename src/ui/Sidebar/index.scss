@@ -4,15 +4,15 @@
     .ui-block-content {
         padding: 0;
 
-        ul {
+        >ul {
             margin: 0;
             padding: 10px 0;
             list-style: none;
 
-            li {
+            >li {
                 display: block;
 
-                a {
+                >a {
                     display: block;
                     padding: 4px 10px;
                     @include transition(background-color 150ms ease-out);
@@ -35,6 +35,16 @@
                         min-height: 24px;
                     }
                 }
+            }
+        }
+    }
+}
+
+@include themify {
+    .b-sidebar {
+        .ui-block-content {
+            >ul>li>a:hover {
+                background-color: themed("button-active-background-color");
             }
         }
     }

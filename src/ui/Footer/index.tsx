@@ -33,7 +33,7 @@ const Footer: FC = () => {
                         <a href="//github.com/udovin/solve">{strings.repository}</a>
                     </li>
                     <li>{strings.language}: <Link to="/language">{localeTitle}</Link></li>
-                    <li>Theme: <Select options={{"light": "Light", "dark": "Dark"}} value={theme} onValueChange={setTheme}/></li>
+                    <li>{strings.theme}: <Select options={{"light": strings.themeLight, "dark": strings.themeDark}} value={theme} onValueChange={setTheme}/></li>
                 </ul>
             </div>
         </div>

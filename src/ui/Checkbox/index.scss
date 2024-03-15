@@ -27,7 +27,6 @@
 	}
 
 	&:checked {
-		background-image: url('../../images/icons-white.svg');
 		background-repeat: no-repeat;
 		background-size: 600% 600%;
 		background-position: 40% 80%;
@@ -36,49 +35,38 @@
 
 	&:disabled {
 		box-shadow: 0 0 !important;
-		color: #666666;
 		cursor: default;
-
-		&:checked {
-			background-image: url('../../images/icons.svg');
-		}
 	}
 }
 
-@include themify($themes) {
+@include themify {
 	.ui-checkbox {
-		border-color: themed("button-border-color");
-		background-color: themed("button-background-color");
+		border-color: themed("input-border-color");
+		background-color: themed("input-background-color");
 
 		&:hover {
-			border-color: themed("button-hover-border-color");
-			background-color: themed("button-hover-background-color");
+			border-color: themed("input-hover-border-color");
+			background-color: themed("input-hover-background-color");
 		}
 
 		&:active,
 		&:focus {
-			border-color: themed("primary-button-active-border-color");
-			background-color: themed("button-active-background-color");
-		    box-shadow: 0 0 2px themed("primary-button-active-border-color");
+			border-color: themed("input-active-border-color");
+		    box-shadow: 0 0 2px themed("input-active-border-color");
 		}
 
 		&:checked {
-			border-color: themed("primary-button-active-border-color");
-			background-color: themed("primary-button-active-background-color");
+			border-color: themed("checkbox-checked-border-color");
+			background-color: themed("checkbox-checked-background-color");
+            background-image: themed("primary-icons");
 		}
 
 		&:disabled {
-			border-color: themed("button-disabled-border-color");
-			background-color: themed("button-disabled-background-color");
-		}
-	}
-}
+			border-color: themed("input-disabled-border-color");
+			background-color: themed("input-disabled-background-color");
 
-body.theme-dark {
-	.ui-checkbox {
-		&:disabled {
-			&:checked {
-				background-image: url('../../images/icons-white.svg');
+            &:checked {
+				background-image: themed("icons");
 			}
 		}
 	}

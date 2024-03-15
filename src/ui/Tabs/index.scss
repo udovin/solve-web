@@ -3,7 +3,7 @@
 .ui-tabs {
 	margin: 0 0 10px 0;
 	padding: 0;
-	border-bottom: 1px solid #dddddd;
+	border-bottom: 1px solid;
 	list-style: none;
 	@include clear-fix;
 
@@ -28,20 +28,34 @@
 			border: 1px solid transparent;
 			border-bottom: 0;
 			border-radius: 4px 4px 0 0;
-			background-color: #ffffff;
 			@include transition(border-color 150ms ease-out, background-color 150ms ease-out);
 
 			&:hover {
-				background-color: #eeeeee;
 				text-decoration: none;
 				@include transition(border-color 150ms ease-in, background-color 150ms ease-in);
 			}
 		}
+	}
+}
 
-		&.active>a {
-			border-color: #0073aa;
-			background-color: #0085ba;
-			color: #ffffff;
+@include themify {
+	.ui-tabs {
+		border-color: themed("block-border-color");
+
+		>li {
+			>a {
+				background-color: themed("button-background-color");
+
+				&:hover {
+					background-color: themed("button-active-background-color");
+				}
+			}
+
+			&.active>a {
+				border-color: themed("primary-button-border-color");
+				background-color: themed("primary-button-background-color");
+				color: themed("primary-button-text-color");
+			}
 		}
 	}
 }
