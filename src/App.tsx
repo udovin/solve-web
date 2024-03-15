@@ -1,4 +1,4 @@
-import { FC, Suspense, lazy, useEffect, useState } from "react";
+import { FC, Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./AuthContext";
 import Header from "./ui/Header";

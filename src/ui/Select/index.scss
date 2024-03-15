@@ -85,7 +85,8 @@
 
 	.ui-select-options {
 		display: block;
-		border: 0 1px 1px 1px solid;
+		border-width: 0 1px 1px 1px;
+		border-style: solid;
 		border-radius: 0 0 4px 4px;
 		overflow: hidden auto;
 		max-height: 360px;

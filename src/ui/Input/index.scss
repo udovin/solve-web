@@ -51,9 +51,9 @@
 		}
 
 		&:disabled {
-			border-color: themed("input-disabled-border-color");
-			background-color: themed("input-disabled-background-color");
-			color: themed("input-disabled-text-color");
+			border-color: themed("input-disabled-border-color") !important;
+			background-color: themed("input-disabled-background-color") !important;
+			color: themed("input-disabled-text-color") !important;
 		}
 
 		&::placeholder {

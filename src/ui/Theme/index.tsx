@@ -13,7 +13,7 @@ const ThemeContext = createContext<ThemeContextProps>({
 const ThemeProvider: FC<{ children?: ReactNode }> = props => {
     const [theme, setTheme] = useState("light");
     const changeTheme = (theme: string) => {
-        if (theme != "light" && theme != "dark") {
+        if (theme !== "light" && theme !== "dark") {
             return;
         }
         localStorage.setItem("theme", theme);
