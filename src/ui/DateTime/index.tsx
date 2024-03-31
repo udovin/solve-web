@@ -57,7 +57,7 @@ const getMinutesString = (n: number): string => {
 		return "минут";
 	}
 	if(mod10 === 1) {
-		return "минтуа";
+		return "минута";
 	}
 	if(mod10 <= 4) {
 		return "минуты";
