@@ -85,7 +85,7 @@
     "@storybook/addon-links": "^7.6.17",
     "@storybook/node-logger": "^7.6.0-alpha.4",
     "@storybook/preset-create-react-app": "^7.6.0-alpha.4",
-    "@storybook/react": "^7.6.0-alpha.4",
+    "@storybook/react": "^8.0.5",
     "@storybook/react-webpack5": "^7.6.0-alpha.4",
     "@types/compression": "^1.7.2",
     "@types/katex": "^0.16.0",
