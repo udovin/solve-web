@@ -134,7 +134,7 @@ export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
         if (loading || !nextBeginID) {
             return;
         }
-        const interval = setInterval(checkAutoload, 1000);
+        const interval = setInterval(checkAutoload, 100);
         window.addEventListener("resize", checkAutoload);
         window.addEventListener("scroll", checkAutoload, true);
         return () => {
