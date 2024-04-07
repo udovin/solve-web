@@ -77,10 +77,13 @@ export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
     const { contest } = props;
     const [error, setError] = useState<ErrorResponse>();
     const [solutions, setSolutions] = useState<ContestSolutions>();
+    const [loading, setLoading] = useState(false);
     useEffect(() => {
-        observeContestSolutions(contest.id)
+        setLoading(true);
+        observeContestSolutions(contest.id, 0)
             .then(result => setSolutions(result || []))
-            .catch(setError);
+            .catch(setError)
+            .finally(() => setLoading(false));
     }, [contest.id]);
     useEffect(() => {
         if (!solutions) {
@@ -94,19 +97,52 @@ export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
             return;
         }
         const updateSolutions = () => {
-            observeContestSolutions(contest.id)
+            observeContestSolutions(contest.id, 0)
                 .then(result => setSolutions(result || []))
                 .catch(setError);
         };
         const interval = setInterval(updateSolutions, 2000);
         return () => clearInterval(interval);
     }, [contest.id, solutions]);
-    if (!solutions) {
-        return <Block title={strings.solutions} className="b-contest-solutions">
-            {error ? <Alert>{error.message}</Alert> : "Loading..."}
-        </Block>;
-    }
-    let contestSolutions: ContestSolution[] = solutions.solutions ?? [];
+    let contestSolutions: ContestSolution[] = solutions?.solutions ?? [];
+    let nextBeginID = solutions?.next_begin_id ?? 0;
+    const loadMoreSolutions = () => {
+        if (loading) {
+            return;
+        }
+        setLoading(true);
+        observeContestSolutions(contest.id, nextBeginID)
+            .then(result => setSolutions({
+                solutions: [...contestSolutions, ...(result.solutions ?? [])],
+                next_begin_id: result.next_begin_id,
+            }))
+            .catch(setError)
+            .finally(() => setLoading(false));
+    };
+    const checkAutoload = () => {
+        if (!document || !document.scrollingElement) {
+            return;
+        }
+        if (window.innerHeight + document.documentElement.scrollTop + 50 >= document.scrollingElement.scrollHeight) {
+            loadMoreSolutions();
+        }
+    };
+    useEffect(() => {
+        if (!document || !document.scrollingElement) {
+            return;
+        }
+        if (loading || !nextBeginID) {
+            return;
+        }
+        const interval = setInterval(checkAutoload, 1000);
+        window.addEventListener("resize", checkAutoload);
+        window.addEventListener("scroll", checkAutoload, true);
+        return () => {
+            clearInterval(interval);
+            window.removeEventListener("resize", checkAutoload);
+            window.removeEventListener("scroll", checkAutoload, true);
+        };
+    }, [loading]);
     return <Block title={strings.solutions} className="b-contest-solutions">{error ?
         <Alert>{error.message}</Alert> :
         <table className="ui-table">
@@ -124,6 +160,12 @@ export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
                 {contestSolutions.map((solution: ContestSolution, key: number) => {
                     return <ContestSolutionRow contest={contest} solution={solution} key={key} />;
                 })}
+                {loading && <tr><td colSpan={6}>Loading...</td></tr>}
+                {!!nextBeginID && !loading && <tr>
+                    <td colSpan={6}>
+                        <Button onClick={loadMoreSolutions}>Load more</Button>
+                    </td>
+                </tr>}
             </tbody>
         </table>
     }</Block>;

@@ -213,6 +213,7 @@ export type ContestSolution = {
 
 export type ContestSolutions = {
 	solutions?: ContestSolution[];
+	next_begin_id?: number;
 };
 
 export type ContestMessage = {
@@ -799,8 +800,9 @@ export const submitContestSolution = (
 	), true);
 };
 
-export const observeContestSolutions = (id: number) => {
-	return parseResp<ContestSolutions>(fetch(`${BASE}/api/v0/contests/${id}/solutions`, {
+export const observeContestSolutions = (id: number, beginID: number) => {
+	let params = new URLSearchParams({ begin_id: `${beginID}` });
+	return parseResp<ContestSolutions>(fetch(`${BASE}/api/v0/contests/${id}/solutions?${params}`, {
 		method: "GET",
 		headers: getHeaders(),
 	}));
