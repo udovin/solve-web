@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import { Compilers, Contest, ContestProblems, ContestSolution, ContestSolutions, ErrorResponse, observeCompilers, observeContestProblems, observeContestSolution, observeContestSolutions, rejudgeContestSolution, Solution, submitContestSolution } from "../../api";
 import FormBlock from "../../components/FormBlock";
@@ -85,23 +85,6 @@ export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
             .catch(setError)
             .finally(() => setLoading(false));
     }, [contest.id]);
-    const mergeSolutions = (newSolutions: ContestSolution[]) => {
-        if (!solutions) {
-            return;
-        }
-        let solutionPos: Record<number, number | undefined> = {};
-        newSolutions.forEach((solution, index) => {
-            solutionPos[solution.id] = index;
-        });
-        let mergedSolutions = solutions.solutions?.map(solution => {
-            let index = solutionPos[solution.id];
-            return index !== undefined ? newSolutions[index] : solution;
-        });
-        setSolutions({
-            solutions: mergedSolutions || [],
-            next_begin_id: solutions.next_begin_id,
-        });
-    };
     useEffect(() => {
         if (!solutions) {
             return;
@@ -113,6 +96,20 @@ export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
         if (!needUpdate) {
             return;
         }
+        const mergeSolutions = (newSolutions: ContestSolution[]) => {
+            let solutionPos: Record<number, number | undefined> = {};
+            newSolutions.forEach((solution, index) => {
+                solutionPos[solution.id] = index;
+            });
+            let mergedSolutions = solutions.solutions?.map(solution => {
+                let index = solutionPos[solution.id];
+                return index !== undefined ? newSolutions[index] : solution;
+            });
+            setSolutions({
+                solutions: mergedSolutions || [],
+                next_begin_id: solutions.next_begin_id,
+            });
+        };
         const updateSolutions = () => {
             observeContestSolutions(contest.id, 0)
                 .then(result => mergeSolutions(result?.solutions ?? []))
@@ -121,36 +118,34 @@ export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
         const interval = setInterval(updateSolutions, 2000);
         return () => clearInterval(interval);
     }, [contest.id, solutions]);
-    let contestSolutions: ContestSolution[] = solutions?.solutions ?? [];
-    let nextBeginID = solutions?.next_begin_id ?? 0;
-    const loadMoreSolutions = () => {
+    const loadMoreSolutions = useCallback(() => {
         if (loading) {
             return;
         }
         setLoading(true);
-        observeContestSolutions(contest.id, nextBeginID)
+        observeContestSolutions(contest.id, solutions?.next_begin_id ?? 0)
             .then(result => setSolutions({
-                solutions: [...contestSolutions, ...(result.solutions ?? [])],
+                solutions: [...(solutions?.solutions ?? []), ...(result.solutions ?? [])],
                 next_begin_id: result.next_begin_id,
             }))
             .catch(setError)
             .finally(() => setLoading(false));
-    };
-    const checkAutoload = () => {
-        if (!document || !document.scrollingElement) {
-            return;
-        }
-        if (window.innerHeight + document.documentElement.scrollTop + 50 >= document.scrollingElement.scrollHeight) {
-            loadMoreSolutions();
-        }
-    };
+    }, [contest, loading, solutions]);
     useEffect(() => {
         if (!document || !document.scrollingElement) {
             return;
         }
-        if (loading || !nextBeginID) {
+        if (loading || !solutions?.next_begin_id) {
             return;
         }
+        const checkAutoload = () => {
+            if (!document || !document.scrollingElement) {
+                return;
+            }
+            if (window.innerHeight + document.documentElement.scrollTop + 150 >= document.scrollingElement.scrollHeight) {
+                loadMoreSolutions();
+            }
+        };
         const interval = setInterval(checkAutoload, 100);
         window.addEventListener("resize", checkAutoload);
         window.addEventListener("scroll", checkAutoload, true);
@@ -159,7 +154,9 @@ export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
             window.removeEventListener("resize", checkAutoload);
             window.removeEventListener("scroll", checkAutoload, true);
         };
-    }, [loading]);
+    }, [loading, loadMoreSolutions, solutions]);
+    let contestSolutions = solutions?.solutions ?? [];
+    let nextBeginID = solutions?.next_begin_id ?? 0;
     return <Block title={strings.solutions} className="b-contest-solutions">{error ?
         <Alert>{error.message}</Alert> :
         <table className="ui-table">
