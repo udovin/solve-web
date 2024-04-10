@@ -81,10 +81,27 @@ export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
     useEffect(() => {
         setLoading(true);
         observeContestSolutions(contest.id, 0)
-            .then(result => setSolutions(result || []))
+            .then(setSolutions)
             .catch(setError)
             .finally(() => setLoading(false));
     }, [contest.id]);
+    const mergeSolutions = (newSolutions: ContestSolution[]) => {
+        if (!solutions) {
+            return;
+        }
+        let solutionPos: Record<number, number | undefined> = {};
+        newSolutions.forEach((solution, index) => {
+            solutionPos[solution.id] = index;
+        });
+        let mergedSolutions = solutions.solutions?.map(solution => {
+            let index = solutionPos[solution.id];
+            return index !== undefined ? newSolutions[index] : solution;
+        });
+        setSolutions({
+            solutions: mergedSolutions || [],
+            next_begin_id: solutions.next_begin_id,
+        });
+    };
     useEffect(() => {
         if (!solutions) {
             return;
@@ -98,7 +115,7 @@ export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
         }
         const updateSolutions = () => {
             observeContestSolutions(contest.id, 0)
-                .then(result => setSolutions(result || []))
+                .then(result => mergeSolutions(result?.solutions ?? []))
                 .catch(setError);
         };
         const interval = setInterval(updateSolutions, 2000);
