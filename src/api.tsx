@@ -148,9 +148,13 @@ export type ContestProblems = {
 
 export type ContestParticipant = {
 	id?: number;
+	kind: string;
+	// Users.
 	user?: User;
 	scope_user?: ScopeUser;
-	kind: string;
+	// Groups.
+	scope?: Scope;
+	group?: Group;
 };
 
 export type ContestParticipants = {
@@ -271,6 +275,10 @@ export type ScopeUser = {
 
 export type ScopeUsers = {
 	users?: ScopeUser[];
+};
+
+export type Group = {
+	id: number;
 };
 
 export const RUNNING: number = -1;
