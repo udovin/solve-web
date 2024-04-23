@@ -1,11 +1,10 @@
 import { FC, Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./AuthContext";
+import { AuthProvider } from "./ui/Auth";
 import Header from "./ui/Header";
 import Footer from "./ui/Footer";
 import IndexPage from "./pages/IndexPage";
 import NotFoundPage from "./pages/NotFoundPage";
-import { strings } from "./Locale";
 import { ThemeProvider } from "./ui/Theme";
 
 import "./App.scss";
@@ -38,13 +37,10 @@ const CreateCompilerPage = lazy(() => import("./pages/CreateCompilerPage"));
 const AdminPage = lazy(() => import("./pages/AdminPage"));
 
 const App: FC = () => {
-	// TODO: Currentry we need double render because of SSR error.
-	// strings.setLanguage(getLocale());
-	strings.setLanguage("en");
 	return (
 		<div id="layout">
-			<ThemeProvider>
-				<AuthProvider>
+			<AuthProvider>
+				<ThemeProvider>
 					<Header />
 					<Suspense>
 						<Routes>
@@ -73,8 +69,8 @@ const App: FC = () => {
 						</Routes>
 					</Suspense>
 					<Footer />
-				</AuthProvider>
-			</ThemeProvider>
+				</ThemeProvider>
+			</AuthProvider>
 		</div>
 	);
 };

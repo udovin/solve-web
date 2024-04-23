@@ -1,7 +1,7 @@
 import { FC, useContext } from "react";
 import { Link } from "react-router-dom";
 import Block from "../Block";
-import { AuthContext } from "../../AuthContext";
+import { AuthContext } from "../Auth";
 import Icon from "../Icon";
 import { strings } from "../../Locale";
 

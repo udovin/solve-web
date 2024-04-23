@@ -1,6 +1,6 @@
 import { FC, useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../../AuthContext";
+import { AuthContext } from "../../ui/Auth";
 import { Contests, ErrorResponse, Contest, observeContests } from "../../api";
 import Alert from "../../ui/Alert";
 import Button from "../../ui/Button";
@@ -41,7 +41,7 @@ const ContestsBlock: FC<ContestsBlockProps> = props => {
 						<td className="duration">
 							{duration ? <Duration value={duration} /> : <>&mdash;</>}
 						</td>
-						<td className="start">
+						<td className="start" suppressHydrationWarning={true}>
 							{begin_time ? <DateTime value={begin_time} /> : <>&mdash;</>}
 						</td>
 						<td className="actions">

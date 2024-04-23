@@ -1,6 +1,6 @@
 import { FC, useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { AuthContext } from "../../AuthContext";
+import { AuthContext } from "../Auth";
 import Alert, { AlertKind } from "../Alert";
 import IconButton from "../IconButton";
 import { strings } from "../../Locale";

@@ -20,7 +20,7 @@ import Input from "../../ui/Input";
 import Button from "../../ui/Button";
 import Field from "../../ui/Field";
 import Alert, { AlertKind } from "../../ui/Alert";
-import { AuthContext } from "../../AuthContext";
+import { AuthContext } from "../../ui/Auth";
 import Sidebar from "../../ui/Sidebar";
 import DateTime from "../../ui/DateTime";
 import { Route, Routes, useParams } from "react-router-dom";

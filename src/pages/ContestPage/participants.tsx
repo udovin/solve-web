@@ -11,6 +11,7 @@ import { strings } from "../../Locale";
 
 type ParticipantLinkProps = {
     participant: ContestParticipant;
+    disabled?: boolean;
 };
 
 const getKinds = (): Record<string, string> => {
@@ -23,11 +24,11 @@ const getKinds = (): Record<string, string> => {
 };
 
 export const ParticipantLink: FC<ParticipantLinkProps> = props => {
-    const { participant } = props;
+    const { participant, disabled } = props;
     const { kind } = participant;
     return <>
         {(!!participant.kind && participant.kind !== "regular") && <span className="kind">{getKinds()[kind] ?? kind}: </span>}
-        <AccountLink account={participant} />
+        <AccountLink account={participant} disabled={disabled} />
     </>
 };
 
@@ -43,8 +44,8 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
     useEffect(() => {
         observeContestParticipants(contest.id)
             .then(participants => {
-                setParticipants(participants)
-                setError(undefined)
+                setParticipants(participants);
+                setError(undefined);
             })
             .catch(setError);
     }, [contest.id]);

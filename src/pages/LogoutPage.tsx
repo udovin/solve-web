@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { logoutUser } from "../api";
-import { AuthContext } from "../AuthContext";
+import { AuthContext } from "../ui/Auth";
 
 const LogoutPage = () => {
-	const { status, updateStatus } = useContext(AuthContext);
+	const { status, refreshStatus } = useContext(AuthContext);
 	const [success, setSuccess] = useState<boolean>();
 	useEffect(() => {
 		if (!status) {
@@ -13,9 +13,9 @@ const LogoutPage = () => {
 		logoutUser()
 			.then(() => {
 				setSuccess(true);
-				updateStatus();
+				refreshStatus();
 			});
-	}, [status, updateStatus]);
+	}, [status, refreshStatus]);
 	if (!(status && (status.user || status.scope_user)) || success) {
 		return <Navigate to={"/"} />;
 	}

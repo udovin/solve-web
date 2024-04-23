@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { setLocale } from "../../api";
-import { AuthContext } from "../../AuthContext";
+import { AuthContext } from "../../ui/Auth";
 import Page from "../../components/Page";
 import Block from "../../ui/Block";
 import Button from "../../ui/Button";
@@ -9,12 +9,12 @@ import { strings } from "../../Locale"
 import "./index.scss";
 
 const LanguagePage = () => {
-    const { status, updateStatus } = useContext(AuthContext);
+    const { status, refreshStatus } = useContext(AuthContext);
     const locale = status?.locale ?? "en";
     const updateLocale = (locale: string) => {
-        setLocale(locale);
         strings.setLanguage(locale);
-        updateStatus();
+        setLocale(locale);
+        refreshStatus();
     };
     return <Page title={strings.changeLanguage}>
         <Block title={strings.changeLanguage} className="b-locales">

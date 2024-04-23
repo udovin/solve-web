@@ -301,11 +301,15 @@ const ContestSideBlock: FC<ContestSideBlockProps> = props => {
 		<h3>{contest.title}</h3>
 		{state?.stage === "not_started" && <>
 			<div className="stage">{strings.contestNotStarted}</div>
-			{!!beforeDuration && <div className="duration"><Duration value={beforeDuration} /></div>}
+			{!!beforeDuration && <div className="duration" suppressHydrationWarning={true}>
+				<Duration value={beforeDuration} />
+			</div>}
 		</>}
 		{state?.stage === "started" && <>
 			<div className="stage">{strings.contestRunning}</div>
-			{!!remainingDuration && <div className="duration"><Duration value={remainingDuration} /></div>}
+			{!!remainingDuration && <div className="duration" suppressHydrationWarning={true}>
+				<Duration value={remainingDuration} />
+			</div>}
 		</>}
 		{state?.stage === "finished" && <>
 			<div className="stage">{strings.contestFinished}</div>

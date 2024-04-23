@@ -4,7 +4,7 @@ import Block from "../../ui/Block";
 import Checkbox from "../../ui/Checkbox";
 import Field from "../../ui/Field";
 import { ParticipantLink } from "./participants";
-import { AuthContext } from "../../AuthContext";
+import { AuthContext } from "../../ui/Auth";
 import { strings } from "../../Locale";
 
 type ContestStandingsBlockProps = {

@@ -1,6 +1,6 @@
 import { FC, useCallback, useEffect, useState } from "react";
 import { Link, Navigate, useLocation } from "react-router-dom";
-import { Compilers, Contest, ContestProblems, ContestSolution, ContestSolutions, ErrorResponse, observeCompilers, observeContestProblems, observeContestSolution, observeContestSolutions, rejudgeContestSolution, Solution, submitContestSolution } from "../../api";
+import { Compilers, Contest, ContestParticipants, ContestProblems, ContestSolution, ContestSolutions, ErrorResponse, observeCompilers, observeContestParticipants, observeContestProblems, observeContestSolution, observeContestSolutions, rejudgeContestSolution, Solution, submitContestSolution } from "../../api";
 import FormBlock from "../../components/FormBlock";
 import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
@@ -67,6 +67,8 @@ const ContestSolutionRow: FC<ContestSolutionRowProps> = props => {
 
 type ContestSolutionsBlockProps = {
     contest: Contest;
+    participantFilter?: number;
+    problemFilter?: number;
 };
 
 const needUpdateSolution = (solution: ContestSolution) => {
@@ -78,13 +80,42 @@ export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
     const [error, setError] = useState<ErrorResponse>();
     const [solutions, setSolutions] = useState<ContestSolutions>();
     const [loading, setLoading] = useState(false);
+    const [participantFilter, setParticipantFilter] = useState<number>();
+    const [problemFilter, setProblemFilter] = useState<number>();
+    const [problems, setProblems] = useState<ContestProblems>();
+    const [participants, setParticipants] = useState<ContestParticipants>();
+    const canObserveProblems = contest?.permissions?.includes("observe_contest_problems");
+    const canObserveParticipants = contest?.permissions?.includes("observe_contest_participants");
     useEffect(() => {
         setLoading(true);
-        observeContestSolutions(contest.id, 0)
+        setSolutions(undefined);
+        observeContestSolutions(contest.id, {
+            begin_id: 0,
+            participant_id: participantFilter,
+            problem_id: problemFilter,
+        })
             .then(setSolutions)
             .catch(setError)
             .finally(() => setLoading(false));
-    }, [contest.id]);
+    }, [contest.id, participantFilter, problemFilter]);
+    useEffect(() => {
+        setParticipants(undefined);
+        if (!canObserveProblems || !canObserveParticipants) {
+            return;
+        }
+        observeContestParticipants(contest.id)
+            .then(setParticipants)
+            .catch(setError);
+    }, [contest.id, canObserveProblems, canObserveParticipants]);
+    useEffect(() => {
+        setProblems(undefined);
+        if (!canObserveProblems || !canObserveParticipants) {
+            return;
+        }
+        observeContestProblems(contest.id)
+            .then(setProblems)
+            .catch(setError);
+    }, [contest.id, canObserveProblems, canObserveParticipants]);
     useEffect(() => {
         if (!solutions) {
             return;
@@ -111,26 +142,34 @@ export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
             });
         };
         const updateSolutions = () => {
-            observeContestSolutions(contest.id, 0)
+            observeContestSolutions(contest.id, {
+                begin_id: 0,
+                participant_id: participantFilter,
+                problem_id: problemFilter,
+            })
                 .then(result => mergeSolutions(result?.solutions ?? []))
                 .catch(setError);
         };
         const interval = setInterval(updateSolutions, 2000);
         return () => clearInterval(interval);
-    }, [contest.id, solutions]);
+    }, [contest.id, solutions, participantFilter, problemFilter]);
     const loadMoreSolutions = useCallback(() => {
         if (loading) {
             return;
         }
         setLoading(true);
-        observeContestSolutions(contest.id, solutions?.next_begin_id ?? 0)
+        observeContestSolutions(contest.id, {
+            begin_id: solutions?.next_begin_id ?? 0,
+            participant_id: participantFilter,
+            problem_id: problemFilter,
+        })
             .then(result => setSolutions({
                 solutions: [...(solutions?.solutions ?? []), ...(result.solutions ?? [])],
                 next_begin_id: result.next_begin_id,
             }))
             .catch(setError)
             .finally(() => setLoading(false));
-    }, [contest, loading, solutions]);
+    }, [contest, loading, solutions, participantFilter, problemFilter]);
     useEffect(() => {
         if (!document || !document.scrollingElement) {
             return;
@@ -157,32 +196,44 @@ export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
     }, [loading, loadMoreSolutions, solutions]);
     let contestSolutions = solutions?.solutions ?? [];
     let nextBeginID = solutions?.next_begin_id ?? 0;
-    return <Block title={strings.solutions} className="b-contest-solutions">{error ?
-        <Alert>{error.message}</Alert> :
-        <table className="ui-table">
-            <thead>
-                <tr>
-                    <th className="id">#</th>
-                    <th className="date">{strings.time}</th>
-                    <th className="participant">{strings.participant}</th>
-                    <th className="problem">{strings.problem}</th>
-                    <th className="compiler">{strings.compiler}</th>
-                    <th className="verdict">{strings.verdict}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {contestSolutions.map((solution: ContestSolution, key: number) => {
-                    return <ContestSolutionRow contest={contest} solution={solution} key={key} />;
-                })}
-                {loading && <tr><td colSpan={6}>Loading...</td></tr>}
-                {!!nextBeginID && !loading && <tr>
-                    <td colSpan={6}>
-                        <Button onClick={loadMoreSolutions}>Load more</Button>
-                    </td>
-                </tr>}
-            </tbody>
-        </table>
-    }</Block>;
+    return <Block header={<>
+        <span className="title">{strings.solutions}</span>
+        {problems && <Select name="problem" options={problems?.problems?.reduce((options, problem) => {
+            let title = `${problem.code}. ${problem.problem.statement?.title ?? problem.problem.title}`;
+            return { ...options, [problem.id]: title };
+        }, { "0": "Any problem" }) ?? {}} value={String(problemFilter ?? 0)} onValueChange={v => setProblemFilter(Number(v))} />}
+        {participants && <Select name="participant" options={participants?.participants?.reduce((options, participant) => {
+            let title = <ParticipantLink participant={participant} disabled />;
+            return { ...options, [participant.id ?? 0]: title };
+        }, { "0": "Any participant" }) ?? {}} value={String(participantFilter ?? 0)} onValueChange={v => setParticipantFilter(Number(v))} />}
+    </>
+    } className="b-contest-solutions" > {
+            error ?
+                <Alert>{error.message}</Alert> :
+                <table className="ui-table">
+                    <thead>
+                        <tr>
+                            <th className="id">#</th>
+                            <th className="date">{strings.time}</th>
+                            <th className="participant">{strings.participant}</th>
+                            <th className="problem">{strings.problem}</th>
+                            <th className="compiler">{strings.compiler}</th>
+                            <th className="verdict">{strings.verdict}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {contestSolutions.map((solution: ContestSolution, key: number) => {
+                            return <ContestSolutionRow contest={contest} solution={solution} key={key} />;
+                        })}
+                        {loading && <tr><td colSpan={6}>Loading...</td></tr>}
+                        {!!nextBeginID && !loading && <tr>
+                            <td colSpan={6}>
+                                <Button onClick={loadMoreSolutions}>Load more</Button>
+                            </td>
+                        </tr>}
+                    </tbody>
+                </table>
+        }</Block>;
 };
 
 type ContestSolutionBlockProps = {

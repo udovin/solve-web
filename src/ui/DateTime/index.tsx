@@ -39,13 +39,13 @@ const formatDateTimeEn = (value: number, now: number, format: any): string => {
 
 const getSecondsString = (n: number): string => {
 	const mod10 = n % 10, mod100 = n % 100;
-	if(mod10 === 0 || (11 <= mod100 && mod100 <= 14)) {
+	if (mod10 === 0 || (11 <= mod100 && mod100 <= 14)) {
 		return "секунд";
 	}
-	if(mod10 === 1) {
+	if (mod10 === 1) {
 		return "секунда";
 	}
-	if(mod10 <= 4) {
+	if (mod10 <= 4) {
 		return "секунды";
 	}
 	return "секунд";
@@ -53,13 +53,13 @@ const getSecondsString = (n: number): string => {
 
 const getMinutesString = (n: number): string => {
 	const mod10 = n % 10, mod100 = n % 100;
-	if(mod10 === 0 || (11 <= mod100 && mod100 <= 14)) {
+	if (mod10 === 0 || (11 <= mod100 && mod100 <= 14)) {
 		return "минут";
 	}
 	if(mod10 === 1) {
 		return "минута";
 	}
-	if(mod10 <= 4) {
+	if (mod10 <= 4) {
 		return "минуты";
 	}
 	return "минут";
@@ -67,13 +67,13 @@ const getMinutesString = (n: number): string => {
 
 const getHoursString = (n: number): string => {
 	const mod10 = n % 10, mod100 = n % 100;
-	if(mod10 === 0 || (11 <= mod100 && mod100 <= 14)) {
+	if (mod10 === 0 || (11 <= mod100 && mod100 <= 14)) {
 		return "часов";
 	}
-	if(mod10 === 1) {
+	if (mod10 === 1) {
 		return "час";
 	}
-	if(mod10 <= 4) {
+	if (mod10 <= 4) {
 		return "часа";
 	}
 	return "часов";
@@ -107,7 +107,7 @@ const formatDateTimeRu = (value: number, now: number, format: any): string => {
 };
 
 const formatDateTime = (value: number, now: number, format: any): string => {
-	if(getLocale() === "ru") {
+	if (getLocale() === "ru") {
 		return formatDateTimeRu(value, now, format);
 	}
 	return formatDateTimeEn(value, now, format);

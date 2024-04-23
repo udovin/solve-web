@@ -24,12 +24,16 @@ interface Account {
 
 type AccountLinkProps = {
 	account: Account;
+	disabled?: boolean;
 };
 
 export const AccountLink: FC<AccountLinkProps> = props => {
-	const { account } = props;
+	const { account, disabled } = props;
 	const { user, scope_user, scope } = account;
 	if (user) {
+		if (disabled) {
+			return <>{user.login}</>;
+		}
 		return <UserLink user={user} />;
 	}
 	if (scope) {

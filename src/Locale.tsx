@@ -188,3 +188,5 @@ export const strings = new LocalizedStrings({
         participantObserver: "Наблюдатель",
     }
 });
+
+strings.setLanguage("en");

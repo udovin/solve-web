@@ -800,9 +800,33 @@ export const submitContestSolution = (
 	), true);
 };
 
-export const observeContestSolutions = (id: number, beginID: number) => {
-	let params = new URLSearchParams({ begin_id: `${beginID}` });
-	return parseResp<ContestSolutions>(fetch(`${BASE}/api/v0/contests/${id}/solutions?${params}`, {
+export type ContestSolutionsFilter = {
+	problem_id?: number;
+	participant_id?: number;
+	verdict?: string;
+	begin_id?: number;
+	limit?: number;
+};
+
+export const observeContestSolutions = (id: number, filter: ContestSolutionsFilter = {}) => {
+	const query: Record<string, string> = {};
+	if (filter.problem_id) {
+		query["problem_id"] = `${filter.problem_id}`;
+	}
+	if (filter.participant_id) {
+		query["participant_id"] = `${filter.participant_id}`;
+	}
+	if (filter.verdict) {
+		query["verdict"] = filter.verdict;
+	}
+	if (filter.begin_id) {
+		query["begin_id"] = `${filter.begin_id}`;
+	}
+	if (filter.limit) {
+		query["limit"] = `${filter.limit}`;
+	}
+	const queryString = encodeQueryData(query);
+	return parseResp<ContestSolutions>(fetch(`${BASE}/api/v0/contests/${id}/solutions?${queryString}`, {
 		method: "GET",
 		headers: getHeaders(),
 	}));

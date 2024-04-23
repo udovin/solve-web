@@ -4,7 +4,7 @@ import Input from "../ui/Input";
 import Button from "../ui/Button";
 import FormBlock from "../components/FormBlock";
 import { Navigate, useParams } from "react-router-dom";
-import { AuthContext } from "../AuthContext";
+import { AuthContext } from "../ui/Auth";
 import Field from "../ui/Field";
 import { ErrorResponse, LoginForm, loginUser } from "../api";
 import Alert from "../ui/Alert";
@@ -15,7 +15,7 @@ import { strings } from "../Locale";
 const LoginPage = () => {
 	const params = useParams();
 	const { scope_id } = params;
-	const { status, updateStatus } = useContext(AuthContext);
+	const { status, refreshStatus } = useContext(AuthContext);
 	const [error, setError] = useState<ErrorResponse>({ message: "" });
 	const [form, setForm] = useState<{ [key: string]: string }>({});
 	const [success, setSuccess] = useState<boolean>();
@@ -38,7 +38,7 @@ const LoginPage = () => {
 		loginUser(loginForm)
 			.then(() => {
 				setSuccess(true);
-				updateStatus();
+				refreshStatus();
 				setError({ message: "" });
 			})
 			.catch(error => setError(error));

@@ -18,7 +18,7 @@ const roundNumber = (value: number, places: number) => {
 };
 
 const getDaysStringEn = (n: number) => {
-	if(n === 1) {
+	if (n === 1) {
 		return "day";
 	}
 	return "days";
@@ -26,20 +26,20 @@ const getDaysStringEn = (n: number) => {
 
 const getDaysStringRu = (n: number) => {
 	const mod10 = n % 10, mod100 = n % 100;
-	if(mod10 === 0 || (11 <= mod100 && mod100 <= 14)) {
+	if (mod10 === 0 || (11 <= mod100 && mod100 <= 14)) {
 		return "дней";
 	}
-	if(mod10 === 1) {
+	if (mod10 === 1) {
 		return "день";
 	}
-	if(mod10 <= 4) {
+	if (mod10 <= 4) {
 		return "дня";
 	}
 	return "дней";
 }
 
 const getDaysString = (n: number) => {
-	if(getLocale() === "ru") {
+	if (getLocale() === "ru") {
 		return getDaysStringRu(n);
 	}
 	return getDaysStringEn(n);
