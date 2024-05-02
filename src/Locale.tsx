@@ -115,7 +115,7 @@ export const strings = new LocalizedStrings({
         repeatPassword: "Повторите пароль",
         passwordsDoNotMatch: "Пароли не совпадают",
         firstName: "Имя",
-        lastName: "Фамилиля",
+        lastName: "Фамилия",
         middleName: "Отчество",
         hello: "Привет",
         problem: "Задача",
