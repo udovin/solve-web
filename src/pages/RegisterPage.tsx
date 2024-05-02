@@ -86,7 +86,7 @@ const RegisterPage = () => {
 				/>
 				{error.invalid_fields && error.invalid_fields["first_name"] && <Alert>{error.invalid_fields["first_name"].message}</Alert>}
 			</Field>
-			<Field title={strings.firstName + ":"}>
+			<Field title={strings.lastName + ":"}>
 				<Input
 					type="text" name="last_name" placeholder={strings.lastName}
 					value={form.last_name || ""}
