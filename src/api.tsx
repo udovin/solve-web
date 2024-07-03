@@ -439,6 +439,7 @@ export type UpdateUserForm = {
 	first_name?: string;
 	last_name?: string;
 	middle_name?: string;
+	status?: string;
 };
 
 export const updateUser = (userID: UserID, form: UpdateUserForm) => {

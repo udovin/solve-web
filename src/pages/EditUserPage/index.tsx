@@ -23,8 +23,9 @@ import Alert, { AlertKind } from "../../ui/Alert";
 import { AuthContext } from "../../ui/Auth";
 import Sidebar from "../../ui/Sidebar";
 import DateTime from "../../ui/DateTime";
-import { Route, Routes, useParams } from "react-router-dom";
+import Select from "../../ui/Select";
 import { Tab, TabContent, Tabs, TabsGroup } from "../../ui/Tabs";
+import { Route, Routes, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 import "./index.scss";
@@ -43,8 +44,7 @@ const EditUserBlock: FC<EditUserBlockProps> = props => {
 		updateUser(user.id, form)
 			.then(newUser => {
 				onUpdateUser(newUser);
-				setForm({});
-				setError(undefined);
+				onResetForm();
 			})
 			.catch(setError);
 	};
@@ -60,29 +60,65 @@ const EditUserBlock: FC<EditUserBlockProps> = props => {
 		{!!Object.keys(form).length && <Button type="reset" onClick={onResetForm}>Reset</Button>}
 	</>}>
 		{error && error.message && <Alert>{error.message}</Alert>}
-		<Field title="First name:">
+		<Field title="First name:" errorResponse={error} name="first_name">
 			<Input
 				type="text" name="first_name" placeholder="First name"
 				value={form.first_name ?? user.first_name}
 				onValueChange={(value) => setForm({ ...form, first_name: value })}
 			/>
-			{error && error.invalid_fields && error.invalid_fields["first_name"] && <Alert>{error.invalid_fields["first_name"].message}</Alert>}
 		</Field>
-		<Field title="Last name:">
+		<Field title="Last name:" errorResponse={error} name="last_name">
 			<Input
 				type="text" name="last_name" placeholder="Last name"
 				value={form.last_name ?? user.last_name}
 				onValueChange={(value) => setForm({ ...form, last_name: value })}
 			/>
-			{error && error.invalid_fields && error.invalid_fields["last_name"] && <Alert>{error.invalid_fields["last_name"].message}</Alert>}
 		</Field>
-		<Field title="Middle name:">
+		<Field title="Middle name:" errorResponse={error} name="middle_name">
 			<Input
 				type="text" name="middle_name" placeholder="Middle name"
 				value={form.middle_name ?? user.middle_name}
 				onValueChange={(value) => setForm({ ...form, middle_name: value })}
 			/>
-			{error && error.invalid_fields && error.invalid_fields["middle_name"] && <Alert>{error.invalid_fields["middle_name"].message}</Alert>}
+		</Field>
+	</FormBlock>;
+};
+
+const EditUserStatusBlock: FC<EditUserBlockProps> = props => {
+	const { user, onUpdateUser } = props;
+	const [status, setStatus] = useState<string>();
+	const [error, setError] = useState<ErrorResponse>();
+	const onSubmit = (event: any) => {
+		event.preventDefault();
+		if (!status) {
+			return;
+		}
+		updateUser(user.id, { status: status })
+			.then(newUser => {
+				onUpdateUser(newUser);
+				onResetForm();
+			})
+			.catch(setError);
+	};
+	const onResetForm = () => {
+		setStatus(undefined);
+		setError(undefined);
+	};
+	return <FormBlock className="b-profile-edit" title="Edit status" onSubmit={onSubmit} footer={<>
+		<Button
+			type="submit" color="primary"
+			disabled={!status}
+		>Change</Button>
+		{!!status && <Button type="reset" onClick={onResetForm}>Reset</Button>}
+	</>}>
+		{error && error.message && <Alert>{error.message}</Alert>}
+		<Field title="Status:" errorResponse={error} name="status">
+			<Select
+				name="status"
+				options={{ "pending": "Pending", "active": "Active", "blocked": "Blocked" }}
+				value={status ?? user.status ?? "pending"}
+				onValueChange={(value) => setStatus(value)}
+			/>
 		</Field>
 	</FormBlock>;
 };
@@ -284,6 +320,7 @@ const EditUserPage: FC = () => {
 			})
 			.catch(setError);
 	}, [user_id]);
+	const { status } = useContext(AuthContext);
 	if (error) {
 		return <Page title="Error" sidebar={<Sidebar />}>
 			{error.message && <Alert>{error.message}</Alert>}
@@ -292,6 +329,7 @@ const EditUserPage: FC = () => {
 	if (!user) {
 		return <Page title="Edit user" sidebar={<Sidebar />}>Loading...</Page>;
 	}
+	const canUpdateStatus = status?.permissions?.includes("update_user_status");
 	const { id, login } = user;
 	return <Page title={`Edit user: ${login}`} sidebar={<Sidebar />}>
 		<TabsGroup>
@@ -304,6 +342,7 @@ const EditUserPage: FC = () => {
 			<Routes>
 				<Route index element={<TabContent tab="profile" setCurrent>
 					<EditUserBlock user={user} onUpdateUser={setUser} />
+					{canUpdateStatus && <EditUserStatusBlock user={user} onUpdateUser={setUser} />}
 				</TabContent>} />
 				<Route path="/security" element={<TabContent tab="security" setCurrent>
 					<ChangePasswordBlock userID={id} />
