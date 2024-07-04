@@ -439,7 +439,6 @@ export type UpdateUserForm = {
 	first_name?: string;
 	last_name?: string;
 	middle_name?: string;
-	status?: string;
 };
 
 export const updateUser = (userID: UserID, form: UpdateUserForm) => {
@@ -470,9 +469,22 @@ export const deleteSession = (sessionID: number) => {
 	}));
 };
 
-export type UpdatePasswordForm = {
-	password: string;
+export type UpdateUserStatusForm = {
 	current_password: string;
+	status: string;
+};
+
+export const updateUserStatus = (userID: UserID, form: UpdateUserStatusForm) => {
+	return parseResp(fetch(`${BASE}/api/v0/users/${userID}/status`, {
+		method: "POST",
+		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
+		body: JSON.stringify(form),
+	}));
+};
+
+export type UpdatePasswordForm = {
+	current_password: string;
+	password: string;
 };
 
 export const updateUserPassword = (userID: UserID, form: UpdatePasswordForm) => {

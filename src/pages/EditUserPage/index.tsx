@@ -13,6 +13,7 @@ import {
 	Sessions,
 	updateUserEmail,
 	resendUserEmail,
+	updateUserStatus,
 } from "../../api";
 import Block from "../../ui/Block";
 import FormBlock from "../../components/FormBlock";
@@ -86,14 +87,18 @@ const EditUserBlock: FC<EditUserBlockProps> = props => {
 
 const EditUserStatusBlock: FC<EditUserBlockProps> = props => {
 	const { user, onUpdateUser } = props;
+	const [currentPassword, setCurrentPassword] = useState<string>();
 	const [status, setStatus] = useState<string>();
 	const [error, setError] = useState<ErrorResponse>();
 	const onSubmit = (event: any) => {
 		event.preventDefault();
-		if (!status) {
+		if (!status || !currentPassword) {
 			return;
 		}
-		updateUser(user.id, { status: status })
+		updateUserStatus(user.id, {
+			current_password: currentPassword,
+			status: status,
+		})
 			.then(newUser => {
 				onUpdateUser(newUser);
 				onResetForm();
@@ -101,6 +106,7 @@ const EditUserStatusBlock: FC<EditUserBlockProps> = props => {
 			.catch(setError);
 	};
 	const onResetForm = () => {
+		setCurrentPassword(undefined);
 		setStatus(undefined);
 		setError(undefined);
 	};
@@ -109,9 +115,17 @@ const EditUserStatusBlock: FC<EditUserBlockProps> = props => {
 			type="submit" color="primary"
 			disabled={!status}
 		>Change</Button>
-		{!!status && <Button type="reset" onClick={onResetForm}>Reset</Button>}
+		{(!!status || !!currentPassword) && <Button type="reset" onClick={onResetForm}>Reset</Button>}
 	</>}>
 		{error && error.message && <Alert>{error.message}</Alert>}
+		<Field title="Current password:" name="current_password" errorResponse={error}>
+			<Input
+				type="password" name="current_password" placeholder="Current password"
+				value={currentPassword}
+				onValueChange={(value) => setCurrentPassword(value)}
+				required
+			/>
+		</Field>
 		<Field title="Status:" errorResponse={error} name="status">
 			<Select
 				name="status"
