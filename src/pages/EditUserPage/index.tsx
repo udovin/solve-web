@@ -88,26 +88,30 @@ const EditUserBlock: FC<EditUserBlockProps> = props => {
 const EditUserStatusBlock: FC<EditUserBlockProps> = props => {
 	const { user, onUpdateUser } = props;
 	const [currentPassword, setCurrentPassword] = useState<string>();
-	const [status, setStatus] = useState<string>();
+	const [newStatus, setNewStatus] = useState<string>();
+	const { status, setStatus } = useContext(AuthContext);
 	const [error, setError] = useState<ErrorResponse>();
 	const onSubmit = (event: any) => {
 		event.preventDefault();
-		if (!status || !currentPassword) {
+		if (!newStatus || !currentPassword) {
 			return;
 		}
 		updateUserStatus(user.id, {
 			current_password: currentPassword,
-			status: status,
+			status: newStatus,
 		})
 			.then(newUser => {
 				onUpdateUser(newUser);
 				onResetForm();
+				if (status?.user && newUser.status && newUser.id === status.user.id) {
+					setStatus({ ...status, user: { ...status.user, status: newUser.status } });
+				}
 			})
 			.catch(setError);
 	};
 	const onResetForm = () => {
 		setCurrentPassword(undefined);
-		setStatus(undefined);
+		setNewStatus(undefined);
 		setError(undefined);
 	};
 	return <FormBlock className="b-profile-edit" title="Edit status" onSubmit={onSubmit} footer={<>
@@ -130,8 +134,8 @@ const EditUserStatusBlock: FC<EditUserBlockProps> = props => {
 			<Select
 				name="status"
 				options={{ "pending": "Pending", "active": "Active", "blocked": "Blocked" }}
-				value={status ?? user.status ?? "pending"}
-				onValueChange={(value) => setStatus(value)}
+				value={newStatus ?? user.status ?? "pending"}
+				onValueChange={(value) => setNewStatus(value)}
 			/>
 		</Field>
 	</FormBlock>;
