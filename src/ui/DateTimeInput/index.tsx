@@ -36,7 +36,7 @@ const DateTimeInput: FC<DateTimeInputProps> = props => {
     const parse = useMemo(() => DateParser(fmt), [fmt]);
     const [rawValue, setRawValue] = useState<string>(value ? format(new Date(value * 1000)) : "");
     const [valid, setValid] = useState<boolean>(false);
-    const ref = useRef<HTMLSpanElement>(null);
+    const ref = useRef<HTMLInputElement>(null);
     const [focused, setFocused] = useState(false);
     const [style, setStyle] = useState<CSSProperties>({});
     const [calendarDate, setCalendarDate] = useState(valueDate);
@@ -62,7 +62,7 @@ const DateTimeInput: FC<DateTimeInputProps> = props => {
         }
         const element = ref.current;
         setStyle({
-            top: element.getBoundingClientRect().top + window.scrollY + element.scrollHeight,
+            top: element.getBoundingClientRect().top + window.scrollY + element.offsetHeight,
             left: element.getBoundingClientRect().left + window.scrollX,
         });
     };
@@ -94,17 +94,17 @@ const DateTimeInput: FC<DateTimeInputProps> = props => {
         setRawValue(value ? format(new Date(value * 1000)) : "");
     }, [value, format, valid]);
     const calendar = getMonthCalendar(calendarDate.getFullYear(), calendarDate.getMonth());
-    return <span
-        className={`ui-datetime-input${valid ? "" : " invalid"}`}
-        onClick={!disabled ? toggleFocus : undefined}
-        ref={ref}>
+    return <>
         <Input
+            className={`ui-datetime-input${valid ? "" : " invalid"}`}
+            onClick={!disabled ? toggleFocus : undefined}
+            ref={ref}
             value={rawValue}
             onValueChange={onValueChange ? setRawValue : undefined}
             placeholder={fmt}
             disabled={disabled} />
         {focused && <Portal>
-            <div className="ui-datetime-input-calendar" style={style} onClick={(event) => { event.stopPropagation(); }}>
+            <div className="ui-calendar-portal" style={style} onClick={(event) => { event.stopPropagation(); }}>
                 <div className="calendar">
                     <table>
                         <tbody>
@@ -137,7 +137,7 @@ const DateTimeInput: FC<DateTimeInputProps> = props => {
                 </div>
             </div>
         </Portal>}
-    </span>;
+    </>;
 };
 
 export default DateTimeInput;

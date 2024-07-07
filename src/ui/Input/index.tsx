@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, forwardRef, MouseEventHandler, RefObject } from "react";
 
 import "./index.scss";
 
@@ -13,17 +13,20 @@ export type InputProps = {
 	placeholder?: string;
 	value?: string;
 	onValueChange?(value: string): void;
+	ref?: RefObject<HTMLInputElement>;
+	onClick?: MouseEventHandler<HTMLInputElement>;
 };
 
-const Input: FC<InputProps> = props => {
+const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
 	const { value, onValueChange, className, ...rest } = props;
 	return <input
 		className={`ui-input ${className ?? ""}`.trimEnd()}
 		value={value || ""}
 		onChange={onValueChange ? e => onValueChange(e.target.value) : undefined}
 		readOnly={!onValueChange}
+		ref={ref}
 		{...rest}
 	/>
-};
+});
 
 export default Input;

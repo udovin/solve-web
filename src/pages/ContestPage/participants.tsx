@@ -1,5 +1,5 @@
 import { FC, FormEvent, useEffect, useState } from "react";
-import { Contest, ContestParticipant, ContestParticipants, createContestParticipant, CreateContestParticipantForm, deleteContestParticipant, ErrorResponse, observeContestParticipants } from "../../api";
+import { Contest, ContestParticipant, ContestParticipants, createContestParticipant, CreateContestParticipantForm, deleteContestParticipant, ErrorResponse, observeAccounts, observeContestParticipants } from "../../api";
 import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
 import Button from "../../ui/Button";
@@ -8,6 +8,7 @@ import Input from "../../ui/Input";
 import Select from "../../ui/Select";
 import { AccountLink } from "../SolutionsPage";
 import { strings } from "../../Locale";
+import AccountInput, { Account } from "../../ui/AccountInput";
 
 type ParticipantLinkProps = {
     participant: ContestParticipant;
@@ -40,7 +41,8 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
     const { contest } = props;
     const [error, setError] = useState<ErrorResponse>();
     const [participants, setParticipants] = useState<ContestParticipants>();
-    const [form, setForm] = useState<{ [key: string]: string }>({});
+    const [account, setAccount] = useState<Account>();
+    const [kind, setKind] = useState<string>("regular");
     useEffect(() => {
         observeContestParticipants(contest.id)
             .then(participants => {
@@ -51,26 +53,17 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
     }, [contest.id]);
     const onSubmit = (event: FormEvent) => {
         event.preventDefault();
-        let createForm: CreateContestParticipantForm = {
-            user_id: Number(form.user_id ?? 0),
-            user_login: form.user_id,
-            kind: form.kind ?? "regular",
-        };
-        if (form.user_id && form.user_id.length > 0) {
-            if (form.user_id[0] === '#') {
-                createForm.user_id = undefined;
-                createForm.user_login = undefined;
-                createForm.scope_user_id = Number((form.user_id ?? 0).substring(1));
-            } else if (form.user_id[0] === '@') {
-                createForm.user_id = undefined;
-                createForm.user_login = undefined;
-                createForm.scope_id = Number((form.user_id ?? 0).substring(1));
-            }
+        if (!account) {
+            return;
         }
+        let createForm: CreateContestParticipantForm = {
+            account_id: account.id,
+            kind: kind,
+        };
         createContestParticipant(contest.id, createForm)
             .then(participant => {
                 setParticipants({ ...participants, participants: [...(participants?.participants ?? []), participant] });
-                setForm({});
+                setAccount(undefined);
                 setError(undefined);
             })
             .catch(setError);
@@ -86,21 +79,32 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
     contestParticipants.sort((a, b: ContestParticipant) => {
         return (a.id ?? 0) - (b.id ?? 0);
     });
+    const fetchAccounts = (kind?: string, query?: string) => {
+        return observeAccounts({ kind, query }).then(accounts => {
+            return accounts?.accounts?.map(account => {
+                return {
+                    id: account.id,
+                    kind: account.kind,
+                    title: account.user?.login ?? account.scope_user?.title ?? account.scope?.title,
+                };
+            }) ?? [];
+        });
+    };
     return <Block
         title="Participants" className="b-contest-participants"
         footer={canCreateParticipant && <form onSubmit={onSubmit}>
-            <Input name="user_id"
-                value={form.user_id || ""}
-                onValueChange={value => setForm({ ...form, user_id: value })}
-                placeholder="User ID"
-                required />
+            <AccountInput
+                placeholder="Participant"
+                account={account}
+                onAccountChange={setAccount}
+                fetchAccounts={fetchAccounts} />
             <Select
                 name="kind"
-                value={form.kind || "regular"}
+                value={kind}
                 options={getKinds()}
-                onValueChange={value => setForm({ ...form, kind: value })}
+                onValueChange={setKind}
             />
-            <Button type="submit">Create</Button>
+            <Button type="submit" disabled={!account}>Create</Button>
         </form>}
     >
         {error && <Alert>{error.message}</Alert>}
@@ -128,7 +132,7 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
                                     contestParticipants.splice(pos, 1);
                                 }
                                 setParticipants({ ...participants, participants: contestParticipants });
-                                setForm({});
+                                setAccount(undefined);
                                 setError(undefined);
                             })
                             .catch(setError);

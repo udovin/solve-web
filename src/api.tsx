@@ -710,6 +710,7 @@ export type CreateContestParticipantForm = {
 	scope_user_id?: number;
 	scope_id?: number;
 	kind: string;
+	account_id?: number;
 };
 
 export const createContestParticipant = (contestID: number, form: CreateContestParticipantForm) => {
@@ -1061,4 +1062,40 @@ export const submitContestQuestion = (contestID: number, form: SubmitContestQues
 		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
 		body: JSON.stringify(form),
 	}), true);
+};
+
+export type Account = {
+	id: number;
+	kind?: string;
+	user?: User;
+	scope_user?: ScopeUser;
+	scope?: Scope;
+};
+
+export type Accounts = {
+	accounts?: Account[];
+};
+
+export type AccountFilter = {
+	kind?: string;
+	query?: string;
+	limit?: number;
+};
+
+export const observeAccounts = (filter: AccountFilter = {}) => {
+	const query: Record<string, string> = {};
+	if (filter.kind) {
+		query["kind"] = filter.kind;
+	}
+	if (filter.query) {
+		query["q"] = filter.query;
+	}
+	if (filter.limit) {
+		query["limit"] = `${filter.limit}`;
+	}
+	const queryString = encodeQueryData(query);
+	return parseResp<Accounts>(fetch(`${BASE}/api/v0/accounts?${queryString}`, {
+		method: "GET",
+		headers: getHeaders(),
+	}));
 };
