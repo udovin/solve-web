@@ -8,7 +8,6 @@ export default {
 const TestAccountInput: FC<AccountInputProps> = props => {
 	const { ...rest } = props;
 	const fetchAccounts = (kind?: string, query?: string) => {
-		console.log(kind, query);
 		if (kind === undefined) {
 			return Promise.resolve([
 				{

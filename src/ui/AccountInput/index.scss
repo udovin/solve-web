@@ -66,37 +66,34 @@
         >.search-box {
             border-color: themed("button-active-border-color");
             background-color: themed("block-background-color");
+            box-shadow: 0 0 2px themed("button-active-border-color");
 
-            >ul.tabs {
-                >li {
-                    color: themed("label-text-color");
+            >ul.tabs>li {
+                color: themed("label-text-color");
 
-                    &:hover {
-                        border-color: themed("button-hover-border-color");
-                    }
+                &:hover {
+                    border-color: themed("button-hover-border-color");
+                }
 
-                    &.selected {
-                        border-color: themed("primary-button-border-color");
-                        background-color: themed("primary-button-background-color");
-                        color: themed("primary-button-text-color");
-                    }
+                &.selected {
+                    border-color: themed("primary-button-border-color");
+                    background-color: themed("primary-button-background-color");
+                    color: themed("primary-button-text-color");
                 }
             }
 
-            >ul.accounts {
-                >li {
-                    background-color: themed("button-background-color");
-                    color: themed("button-text-color");
+            >ul.accounts>li {
+                background-color: themed("button-background-color");
+                color: themed("button-text-color");
 
-                    &:hover {
-                        background-color: themed("button-active-background-color");
-                        color: themed("button-active-text-color");
-                    }
+                &:hover {
+                    background-color: themed("button-active-background-color");
+                    color: themed("button-active-text-color");
+                }
 
-                    &.selected {
-                        background-color: themed("primary-button-background-color");
-                        color: themed("primary-button-text-color");
-                    }
+                &.selected {
+                    background-color: themed("primary-button-background-color");
+                    color: themed("primary-button-text-color");
                 }
             }
         }

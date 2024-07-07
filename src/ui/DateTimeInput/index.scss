@@ -47,6 +47,7 @@
         >.calendar {
             border-color: themed("button-active-border-color");
             background-color: themed("block-background-color");
+            box-shadow: 0 0 2px themed("button-active-border-color");
 
             >table {
 
