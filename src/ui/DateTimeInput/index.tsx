@@ -40,22 +40,6 @@ const DateTimeInput: FC<DateTimeInputProps> = props => {
     const [focused, setFocused] = useState(false);
     const [style, setStyle] = useState<CSSProperties>({});
     const [calendarDate, setCalendarDate] = useState(valueDate);
-    const toggleFocus = () => {
-        setFocused(!focused);
-    };
-    const resetFocus = (event: Event) => {
-        if (event.target instanceof Element && ref.current?.contains(event.target)) {
-            return;
-        }
-        setFocused(false);
-    };
-    useEffect(() => {
-        if (!focused) {
-            return;
-        }
-        document.addEventListener("click", resetFocus);
-        return () => document.removeEventListener("click", resetFocus);
-    }, [focused, setFocused]);
     const updateStyle = () => {
         if (!ref.current) {
             return;
@@ -97,14 +81,15 @@ const DateTimeInput: FC<DateTimeInputProps> = props => {
     return <>
         <Input
             className={`ui-datetime-input${valid ? "" : " invalid"}`}
-            onClick={!disabled ? toggleFocus : undefined}
-            ref={ref}
             value={rawValue}
             onValueChange={onValueChange ? setRawValue : undefined}
             placeholder={fmt}
-            disabled={disabled} />
-        {focused && <Portal>
-            <div className="ui-calendar-portal" style={style} onClick={(event) => { event.stopPropagation(); }}>
+            disabled={disabled}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
+            ref={ref} />
+        {focused && !disabled && <Portal>
+            <div className="ui-calendar-portal" style={style} onMouseDown={(event) => { event.preventDefault(); }}>
                 <div className="calendar">
                     <table>
                         <tbody>

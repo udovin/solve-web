@@ -27,22 +27,6 @@ const AccountInput: FC<AccountInputProps> = props => {
     const [kind, setKind] = useState<string | undefined>(account?.kind);
     const [query, setQuery] = useState<string | undefined>(account?.title ?? account?.id.toString());
     const [accounts, setAccounts] = useState<Account[]>([]);
-    const toggleFocus = () => {
-        setFocused(!focused);
-    };
-    const resetFocus = (event: Event) => {
-        if (event.target instanceof Element && ref.current?.contains(event.target)) {
-            return;
-        }
-        setFocused(false);
-    };
-    useEffect(() => {
-        if (!focused) {
-            return;
-        }
-        document.addEventListener("click", resetFocus);
-        return () => document.removeEventListener("click", resetFocus);
-    }, [focused, setFocused]);
     const updateStyle = () => {
         if (!ref.current) {
             return;
@@ -85,14 +69,15 @@ const AccountInput: FC<AccountInputProps> = props => {
     }, [kind, query, fetchAccounts]);
     return <>
         <Input
-            placeholder={placeholder}
             value={query}
             onValueChange={updateQuery}
+            placeholder={placeholder}
             disabled={disabled}
-            onClick={!disabled ? toggleFocus : undefined}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
             ref={ref} />
-        {focused && <Portal>
-            <div className="ui-search-portal" style={style} onClick={(event) => { event.stopPropagation(); }}>
+        {focused && !disabled && <Portal>
+            <div className="ui-search-portal" style={style} onMouseDown={(event) => { event.preventDefault(); }}>
                 <div className="search-box">
                     <ul className="tabs">
                         <li className={kind === undefined ? "selected" : undefined} onClick={() => setKind(undefined)}>All</li>

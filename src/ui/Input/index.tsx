@@ -1,4 +1,4 @@
-import { FC, forwardRef, MouseEventHandler, RefObject } from "react";
+import { FC, FocusEventHandler, forwardRef, MouseEventHandler, RefObject } from "react";
 
 import "./index.scss";
 
@@ -15,6 +15,8 @@ export type InputProps = {
 	onValueChange?(value: string): void;
 	ref?: RefObject<HTMLInputElement>;
 	onClick?: MouseEventHandler<HTMLInputElement>;
+	onFocus?: FocusEventHandler<HTMLInputElement>;
+	onBlur?: FocusEventHandler<HTMLInputElement>;
 };
 
 const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
