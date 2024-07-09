@@ -421,7 +421,7 @@ const ContestPage: FC = () => {
 	const isIndex = matchPath({ path: "/contests/:contest_id" }, location.pathname);
 	const isStandings = matchPath({ path: "/contests/:contest_id/standings" }, location.pathname);
 	if (isIndex && !canObserveProblems && canObserveStandings) {
-		return <Navigate to={`/contests/${contest.id}/standings`} />;
+		return <Navigate to={`/contests/${contest.id}/standings`} replace />;
 	}
 	return <Page title={strings.contest + ": " + title} sidebar={(isStandings || (isIndex && !canObserveProblems)) ? undefined : <Routes>
 		<Route path="/problems/:problem_code" element={<>
