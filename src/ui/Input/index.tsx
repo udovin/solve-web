@@ -1,4 +1,4 @@
-import { FC, FocusEventHandler, forwardRef, MouseEventHandler, RefObject } from "react";
+import { FocusEventHandler, forwardRef, MouseEventHandler, RefObject } from "react";
 
 import "./index.scss";
 

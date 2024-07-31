@@ -3,7 +3,6 @@ import Input from "../Input";
 import Portal from "../Portal";
 
 import "./index.scss";
-import { placeholder } from "@codemirror/view";
 
 export type Account = {
     id: number;

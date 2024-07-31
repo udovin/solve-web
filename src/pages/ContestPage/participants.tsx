@@ -4,7 +4,6 @@ import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
 import Button from "../../ui/Button";
 import IconButton from "../../ui/IconButton";
-import Input from "../../ui/Input";
 import Select from "../../ui/Select";
 import { AccountLink } from "../SolutionsPage";
 import { strings } from "../../Locale";

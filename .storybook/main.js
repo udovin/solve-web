@@ -7,15 +7,18 @@ module.exports = {
     addons: [
         "@storybook/addon-links",
         "@storybook/addon-essentials",
-        "@storybook/preset-create-react-app"
+        "@storybook/preset-create-react-app",
+        "@chromatic-com/storybook"
     ],
 
-    docs: {
-        autodocs: true
-    },
+    docs: {},
 
     framework: {
         name: "@storybook/react-webpack5",
         options: {}
+    },
+
+    typescript: {
+        reactDocgen: "react-docgen-typescript"
     }
 };

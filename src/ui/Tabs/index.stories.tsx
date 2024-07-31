@@ -1,5 +1,5 @@
 import { Tab, TabContent, Tabs, TabsGroup } from ".";
-import { Story } from "@storybook/react";
+import { StoryFn } from "@storybook/react";
 
 export default {
 	title: "Tabs",
@@ -11,7 +11,7 @@ export default {
 	},
 };
 
-const Template: Story = args => <TabsGroup>
+const Template: StoryFn = args => <TabsGroup>
 	<Tabs>
 		<Tab tab="tab1"><a>Tab 1</a></Tab>
 		<Tab tab="tab2"><a>Tab 2</a></Tab>
