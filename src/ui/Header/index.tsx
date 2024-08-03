@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { AuthContext } from "../Auth";
 import Alert, { AlertKind } from "../Alert";
 import IconButton from "../IconButton";
-import { strings } from "../../Locale";
+import { LocaleContext } from "../Locale";
 
 import "./index.scss";
 
@@ -19,25 +19,26 @@ const Header: FC = () => {
         return "";
     };
     const { status } = useContext(AuthContext);
+    const { localize } = useContext(LocaleContext);
     const [showConfirmEmail, setShowConfirmEmail] = useState(false);
     useEffect(() => {
         setShowConfirmEmail(status?.user?.status === "pending");
     }, [status]);
     const accountLinks = <>
         {status?.user && <li>
-            {strings.hello}, <Link to={`/users/${status.user.login}`}>{status.user.login}</Link>!
+            {localize("Hello")}, <Link to={`/users/${status.user.login}`}>{status.user.login}</Link>!
         </li>}
         {status?.scope_user && <li>
-            {strings.hello}, {status.scope_user.login}!
+            {localize("Hello")}, {status.scope_user.login}!
         </li>}
         {(!status || (!status.session && status.permissions?.includes("login"))) && <li>
-            <Link to="/login">{strings.login}</Link>
+            <Link to="/login">{localize("Login")}</Link>
         </li>}
         {(!status || (!status.session && status.permissions?.includes("register"))) && <li>
-            <Link to="/register">{strings.register}</Link>
+            <Link to="/register">{localize("Register")}</Link>
         </li>}
         {status?.session && status.permissions?.includes("logout") && <li>
-            <Link to="/logout">{strings.logout}</Link>
+            <Link to="/logout">{localize("Logout")}</Link>
         </li>}
     </>;
     const canObserveSettings = status?.permissions?.includes("observe_settings");
@@ -57,19 +58,19 @@ const Header: FC = () => {
         <nav id="header-nav">
             <ul>
                 <li className={getActiveClass("/")}>
-                    <Link to="/">{strings.index}</Link>
+                    <Link to="/">{localize("Index")}</Link>
                 </li>
                 {status?.permissions?.includes("observe_contests") && <li className={getActiveClass("/contests")}>
-                    <Link to="/contests">{strings.contests}</Link>
+                    <Link to="/contests">{localize("Contests")}</Link>
                 </li>}
                 {status?.permissions?.includes("observe_problems") && <li className={getActiveClass("/problems")}>
-                    <Link to="/problems">{strings.problems}</Link>
+                    <Link to="/problems">{localize("Problems")}</Link>
                 </li>}
                 {status?.permissions?.includes("observe_solutions") && <li className={getActiveClass("/solutions")}>
-                    <Link to="/solutions">{strings.solutions}</Link>
+                    <Link to="/solutions">{localize("Solutions")}</Link>
                 </li>}
                 {canObserveAdmin && <li className={`admin ${getActiveClass("/admin", "/admin/settings", "/admin/roles", "/admin/scopes")}`}>
-                    <Link to="/admin">{strings.admin}</Link>
+                    <Link to="/admin">{localize("Admin")}</Link>
                 </li>}
             </ul>
         </nav>

@@ -463,6 +463,13 @@ export const statusUser = () => {
 	}));
 };
 
+export const localeUser = () => {
+	return parseResp(fetch(`${BASE}/api/v0/locale`, {
+		method: "GET",
+		headers: getHeaders(),
+	}));
+};
+
 export const deleteSession = (sessionID: number) => {
 	return parseResp(fetch(`${BASE}/api/v0/sessions/${sessionID}`, {
 		method: "DELETE",
