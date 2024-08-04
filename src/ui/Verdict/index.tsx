@@ -65,7 +65,7 @@ const VERDICTS: Record<string, VerdictInfo | undefined> = {
         code: "re",
         title: "RE",
         titleTest: "RE {test}",
-        description: "Run-time error",
+        description: "Runtime error",
     },
     "wrong_answer": {
         code: "wa",
@@ -123,8 +123,8 @@ const Verdict: FC<VerdictProps> = props => {
     const disableUsage = info?.disableUsage ?? false;
     return <Tooltip className="ui-verdict-wrap" content={<div className="ui-verdict-details">
         <span className={`item description ui-verdict ${info?.code ?? "unknown"}`}>{description}</span>
+        {test_number && <span className="item test">{localize("on test")} {test_number}</span>}
         {points !== undefined && <span className="item points">{localize("Points")}: {points}</span>}
-        {test_number && <span className="item test">{localize("On test")} {test_number}</span>}
         {!disableUsage && <span className="item time"><Duration value={(used_time ?? 0) * 0.001} /></span>}
         {!disableUsage && <span className="item memory"><ByteSize value={used_memory ?? 0} /></span>}
     </div>}>
