@@ -1,7 +1,7 @@
-import { ChangeEvent, FC, useEffect, useRef } from "react";
+import { ChangeEvent, FC, useContext, useEffect, useRef } from "react";
 import Button from "../Button";
 import Icon from "../Icon";
-import { strings } from "../../Locale";
+import { LocaleContext } from "../Locale";
 
 import "./index.scss";
 
@@ -16,6 +16,7 @@ export type FileInputProps = {
 
 const FileInput: FC<FileInputProps> = props => {
     const { name, accept, file, onFileChange, disabled, ...rest } = props;
+    const { localize } = useContext(LocaleContext);
     const ref = useRef<HTMLInputElement>(null);
     useEffect(() => {
         const element = ref.current;
@@ -36,7 +37,7 @@ const FileInput: FC<FileInputProps> = props => {
     return <>
         <Button className="ui-file-input" onClick={onClick} disabled={disabled}>
             <Icon kind="document" />
-            <span className="filename" title={file ? file.name : undefined}>{file ? <>{file.name}</> : <>{strings.chooseFile}</>}</span>
+            <span className="filename" title={file ? file.name : undefined}>{file ? <>{file.name}</> : <>{localize("Choose file")}</>}</span>
         </Button>
         <input
             type="file"

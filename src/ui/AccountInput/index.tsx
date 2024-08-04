@@ -1,6 +1,7 @@
-import { CSSProperties, FC, useEffect, useRef, useState } from "react";
+import { CSSProperties, FC, useContext, useEffect, useRef, useState } from "react";
 import Input from "../Input";
 import Portal from "../Portal";
+import { LocaleContext } from "../Locale";
 
 import "./index.scss";
 
@@ -20,6 +21,7 @@ export type AccountInputProps = {
 
 const AccountInput: FC<AccountInputProps> = props => {
     const { placeholder, disabled, account, onAccountChange, fetchAccounts } = props;
+    const { localize } = useContext(LocaleContext);
     const ref = useRef<HTMLInputElement>(null);
     const [focused, setFocused] = useState(false);
     const [style, setStyle] = useState<CSSProperties>({});
@@ -79,11 +81,11 @@ const AccountInput: FC<AccountInputProps> = props => {
             <div className="ui-search-portal" style={style} onMouseDown={(event) => { event.preventDefault(); }}>
                 <div className="search-box">
                     <ul className="tabs">
-                        <li className={kind === undefined ? "selected" : undefined} onClick={() => setKind(undefined)}>All</li>
-                        <li className={kind === "user" ? "selected" : undefined} onClick={() => setKind("user")}>Users</li>
-                        <li className={kind === "scope_user" ? "selected" : undefined} onClick={() => setKind("scope_user")}>Scope users</li>
-                        <li className={kind === "scope" ? "selected" : undefined} onClick={() => setKind("scope")}>Scopes</li>
-                        <li className={kind === "group" ? "selected" : undefined} onClick={() => setKind("group")}>Groups</li>
+                        <li className={kind === undefined ? "selected" : undefined} onClick={() => setKind(undefined)}>{localize("All")}</li>
+                        <li className={kind === "user" ? "selected" : undefined} onClick={() => setKind("user")}>{localize("Users")}</li>
+                        <li className={kind === "scope_user" ? "selected" : undefined} onClick={() => setKind("scope_user")}>{localize("Scope users")}</li>
+                        <li className={kind === "scope" ? "selected" : undefined} onClick={() => setKind("scope")}>{localize("Scopes")}</li>
+                        <li className={kind === "group" ? "selected" : undefined} onClick={() => setKind("group")}>{localize("Groups")}</li>
                     </ul>
                     <ul className="accounts">
                         {accounts && accounts.map((item: Account, key: number) => {

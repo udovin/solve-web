@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useContext, useEffect, useState } from "react";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import { Compilers, Contest, ContestParticipants, ContestProblems, ContestSolution, ContestSolutions, ErrorResponse, observeCompilers, observeContestParticipants, observeContestProblems, observeContestSolution, observeContestSolutions, rejudgeContestSolution, Solution, submitContestSolution } from "../../api";
 import FormBlock from "../../components/FormBlock";
@@ -16,7 +16,7 @@ import Tooltip from "../../ui/Tooltip";
 import Verdict from "../../ui/Verdict";
 import { SolutionReportBlock } from "../SolutionPage";
 import { ParticipantLink } from "./participants";
-import { strings } from "../../Locale";
+import { LocaleContext } from "../../ui/Locale";
 
 type ContestSolutionRowProps = {
     contest: Contest;
@@ -77,6 +77,7 @@ const needUpdateSolution = (solution: ContestSolution) => {
 
 export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
     const { contest } = props;
+    const { localize } = useContext(LocaleContext);
     const [error, setError] = useState<ErrorResponse>();
     const [solutions, setSolutions] = useState<ContestSolutions>();
     const [loading, setLoading] = useState(false);
@@ -197,7 +198,7 @@ export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
     let contestSolutions = solutions?.solutions ?? [];
     let nextBeginID = solutions?.next_begin_id ?? 0;
     return <Block header={<>
-        <span className="title">{strings.solutions}</span>
+        <span className="title">{localize("Solutions")}</span>
         {problems?.problems && <Select name="problem" options={problems?.problems?.reduce((options, problem) => {
             let title = `${problem.code}. ${problem.problem.statement?.title ?? problem.problem.title}`;
             return { ...options, [problem.id]: title };
@@ -217,11 +218,11 @@ export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
                     <thead>
                         <tr>
                             <th className="id">#</th>
-                            <th className="date">{strings.time}</th>
-                            <th className="participant">{strings.participant}</th>
-                            <th className="problem">{strings.problem}</th>
-                            <th className="compiler">{strings.compiler}</th>
-                            <th className="verdict">{strings.verdict}</th>
+                            <th className="date">{localize("Time")}</th>
+                            <th className="participant">{localize("Participant")}</th>
+                            <th className="problem">{localize("Problem")}</th>
+                            <th className="compiler">{localize("Compiler")}</th>
+                            <th className="verdict">{localize("Verdict")}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -246,6 +247,7 @@ type ContestSolutionBlockProps = {
 
 export const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
     const { contest, solutionID } = props;
+    const { localize } = useContext(LocaleContext);
     const [error, setError] = useState<ErrorResponse>();
     const [solution, setSolution] = useState<ContestSolution>();
     useEffect(() => {
@@ -273,17 +275,17 @@ export const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
     const { id, solution: baseSolution } = solution;
     const { content, compiler, report } = baseSolution;
     return <>
-        <Block title={strings.solution + " #" + id} className="b-contest-solutions">
+        <Block title={localize("Solution") + " #" + id} className="b-contest-solutions">
             {error && <Alert>{error.message}</Alert>}
             <table className="ui-table">
                 <thead>
                     <tr>
                         <th className="id">#</th>
-                        <th className="date">{strings.time}</th>
-                        <th className="participant">{strings.participant}</th>
-                        <th className="problem">{strings.problem}</th>
-                        <th className="compiler">{strings.compiler}</th>
-                        <th className="verdict">{strings.verdict}</th>
+                        <th className="date">{localize("Time")}</th>
+                        <th className="participant">{localize("Participant")}</th>
+                        <th className="problem">{localize("Problem")}</th>
+                        <th className="compiler">{localize("Compiler")}</th>
+                        <th className="verdict">{localize("Verdict")}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -295,7 +297,7 @@ export const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
                 </tbody>
             </table>
         </Block>
-        {content && <CollapseBlock title={strings.sourceCode} className="b-contest-solution-content">
+        {content && <CollapseBlock title={localize("Source code")} className="b-contest-solution-content">
             <Code value={content} language={compiler?.config?.extensions?.at(0)} readOnly={true} />
         </CollapseBlock>}
         {!!report?.tests && <SolutionReportBlock report={report} />}
@@ -311,6 +313,7 @@ export const ContestSubmitSolutionBlock: FC<ContestSubmitSolutionBlockProps> = p
     const { search } = useLocation();
     const query = new URLSearchParams(search);
     const queryProblem = query.get("problem") || undefined;
+    const { localize } = useContext(LocaleContext);
     const [newSolution, setNewSolution] = useState<Solution>();
     const [problem, setProblem] = useState<string | undefined>(queryProblem);
     const [compiler, setCompiler] = useState<number>();
@@ -358,18 +361,18 @@ export const ContestSubmitSolutionBlock: FC<ContestSubmitSolutionBlockProps> = p
         return <Navigate to={`/contests/${contest.id}/solutions`} />
     }
     const errorMessage = error && error.message;
-    return <FormBlock onSubmit={onSubmit} title={strings.submitSolution} className="b-contest-submit" footer={
+    return <FormBlock onSubmit={onSubmit} title={localize("Submit solution")} className="b-contest-submit" footer={
         <Button
             type="submit"
             color="primary"
             disabled={!canSubmitSolution || uploading || (!file && !content) || !problem || !compilerInfo}
-        >{strings.submit}</Button>
+        >{localize("Submit")}</Button>
     }>
         {errorMessage && <Alert>{errorMessage}</Alert>}
-        <Field title={strings.problem + ":"} name="problem_code" errorResponse={error}>
+        <Field title={localize("Problem") + ":"} name="problem_code" errorResponse={error}>
             <Select
                 name="problem_code"
-                value={String(problem ?? strings.selectProblem)}
+                value={String(problem ?? localize("Select problem"))}
                 onValueChange={setProblem}
                 options={problems?.problems?.reduce((options, problem) => {
                     let title = `${problem.code}. ${problem.problem.statement?.title ?? problem.problem.title}`;
@@ -378,10 +381,10 @@ export const ContestSubmitSolutionBlock: FC<ContestSubmitSolutionBlockProps> = p
                 disabled={!canSubmitSolution || !problems?.problems}
             />
         </Field>
-        <Field title={strings.compiler + ":"} name="compiler_id" errorResponse={error}>
+        <Field title={localize("Compiler") + ":"} name="compiler_id" errorResponse={error}>
             <Select
                 name="compiler_id"
-                value={String(compilerInfo?.id ?? "Select compiler")}
+                value={String(compilerInfo?.id ?? localize("Select compiler"))}
                 onValueChange={value => setCompiler(Number(value))}
                 options={compilers?.compilers?.reduce((options, compiler) => {
                     let name = compiler.name;
@@ -396,14 +399,14 @@ export const ContestSubmitSolutionBlock: FC<ContestSubmitSolutionBlockProps> = p
                 disabled={!canSubmitSolution || !compilers?.compilers}
             />
         </Field>
-        <Field title={strings.sourceCode + ":"} name="content">
+        <Field title={localize("Source code") + ":"} name="content">
             <Code
                 editable={true}
                 language={compilerInfo?.config?.extensions?.at(0)}
                 value={content}
                 onValueChange={setContent} />
         </Field>
-        <Field title={strings.solutionFile + ":"} name="file" errorResponse={error}>
+        <Field title={localize("Solution file") + ":"} name="file" errorResponse={error}>
             <FileInput
                 name="file"
                 accept={extensions}

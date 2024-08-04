@@ -2,11 +2,15 @@ import { FC, ReactNode, createContext, useEffect, useState } from "react";
 
 import { localeUser } from "../../api";
 
+export type LocalizeFn = (text: string) => string;
+export type LocalizeKeyFn = (key: string, text: string) => string;
+
 type LocaleContextProps = {
     name: string,
     localizations: { [index: string]: string },
-    localize(text: string): string,
-    localizeKey(key: string, text: string): string,
+    localize: LocalizeFn,
+    localizeKey: LocalizeKeyFn,
+    setLocale(name: string): void;
 };
 
 const LocaleContext = createContext<LocaleContextProps>({
@@ -14,6 +18,7 @@ const LocaleContext = createContext<LocaleContextProps>({
     localizations: {},
     localize: (text: string) => text,
     localizeKey: (_key: string, text: string) => text,
+    setLocale: (_name: string) => { },
 });
 
 const getLocalizationKey = (text: string) => {
@@ -36,7 +41,7 @@ const getLocalizationKey = (text: string) => {
 const LocaleProvider: FC<{ children?: ReactNode }> = props => {
     const [name, setName] = useState("en");
     const [localizations, setLocalizations] = useState<{ [index: string]: string }>({});
-    useEffect(() => {
+    const refreshLocale = () => {
         localeUser()
             .then(result => {
                 let localizations: { [index: string]: string } = {};
@@ -47,12 +52,17 @@ const LocaleProvider: FC<{ children?: ReactNode }> = props => {
                 setLocalizations(localizations);
             })
             .catch(console.log);
-    }, [setName, setLocalizations]);
+    };
+    useEffect(refreshLocale, [setName, setLocalizations]);
     const localizeKey = (key: string, text: string) => {
         return localizations["web." + key] ?? localizations[key] ?? text;
     };
     const localize = (text: string) => localizeKey(getLocalizationKey(text), text);
-    return <LocaleContext.Provider value={{ name, localizations, localize, localizeKey }}>
+    const setLocale = (name: string) => {
+        localStorage.setItem("locale", name);
+        refreshLocale();
+    };
+    return <LocaleContext.Provider value={{ name, localizations, localize, localizeKey, setLocale }}>
         {props.children}
     </LocaleContext.Provider>;
 };

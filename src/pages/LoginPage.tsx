@@ -10,12 +10,13 @@ import { ErrorResponse, LoginForm, loginUser } from "../api";
 import Alert from "../ui/Alert";
 import Sidebar from "../ui/Sidebar";
 import { Link } from "react-router-dom";
-import { strings } from "../Locale";
+import { LocaleContext } from "../ui/Locale";
 
 const LoginPage = () => {
 	const params = useParams();
 	const { scope_id } = params;
 	const { status, refreshStatus } = useContext(AuthContext);
+	const { localize } = useContext(LocaleContext);
 	const [error, setError] = useState<ErrorResponse>({ message: "" });
 	const [form, setForm] = useState<{ [key: string]: string }>({});
 	const [success, setSuccess] = useState<boolean>();
@@ -46,23 +47,23 @@ const LoginPage = () => {
 	if ((status?.user || status?.scope_user) && success) {
 		return <Navigate to={"/"} />
 	}
-	return <Page title={strings.login} sidebar={<Sidebar />}>
-		<FormBlock onSubmit={onSubmit} title={strings.login} className="b-login-form" footer={<>
-			<Button type="submit" color="primary">{strings.login}</Button>
-			<Link to="/reset-password" className="reset-password">{strings.forgotPassword}</Link>
+	return <Page title={localize("Login")} sidebar={<Sidebar />}>
+		<FormBlock onSubmit={onSubmit} title={localize("Login")} className="b-login-form" footer={<>
+			<Button type="submit" color="primary">{localize("Login")}</Button>
+			<Link to="/reset-password" className="reset-password">{localize("Forgot password")}</Link>
 		</>}>
 			{error.message && <Alert>{error.message}</Alert>}
-			<Field title={strings.username + ":"}>
+			<Field title={localize("Username") + ":"}>
 				<Input
-					type="text" name="login" placeholder={strings.username}
+					type="text" name="login" placeholder={localize("Username")}
 					value={form.login}
 					onValueChange={(value) => setForm({ ...form, login: value })}
 					required autoFocus
 				/>
 			</Field>
-			<Field title={strings.password + ":"}>
+			<Field title={localize("Password") + ":"}>
 				<Input
-					type="password" name="password" placeholder={strings.password}
+					type="password" name="password" placeholder={localize("Password")}
 					value={form.password}
 					onValueChange={(value) => setForm({ ...form, password: value })}
 					required

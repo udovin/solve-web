@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { BASE, ErrorResponse, observeProblem, Problem, ProblemStatementSample, ProblemTask } from "../../api";
 import Page from "../../components/Page";
@@ -11,7 +11,7 @@ import Icon from "../../ui/Icon";
 import IconButton from "../../ui/IconButton";
 import Latex from "../../ui/Latex";
 import Sidebar from "../../ui/Sidebar";
-import { strings } from "../../Locale";
+import { LocaleContext } from "../../ui/Locale";
 
 import "./index.scss";
 
@@ -21,11 +21,12 @@ type ProblemSamplesProps = {
 
 const ProblemSamlpes: FC<ProblemSamplesProps> = props => {
 	const { samples } = props;
+	const { localize } = useContext(LocaleContext);
 	return <table className="ui-table section samples">
 		<thead>
 			<tr>
-				<th className="input">{strings.input}</th>
-				<th className="output">{strings.output}</th>
+				<th className="input">{localize("Input")}</th>
+				<th className="output">{localize("Output")}</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -84,51 +85,52 @@ type ProblemBlockProps = {
 export const ProblemBlock: FC<ProblemBlockProps> = props => {
 	const { problem, code, imageBaseUrl } = props;
 	const { config, statement } = problem;
+	const { localize } = useContext(LocaleContext);
 	return <Block title={`${code ? `${code}. ` : ""}${statement?.title ?? problem.title}`} className="b-problem-statement">
 		<ProblemTaskNotice task={problem.last_task} />
 		{config && <table className="ui-table section limits">
 			<tbody>
 				{config.time_limit && <tr>
-					<td>{strings.timeLimit}:</td>
+					<td>{localize("Time limit")}:</td>
 					<td><Duration value={config.time_limit * 0.001} /></td>
 				</tr>}
 				{config.memory_limit && <tr>
-					<td>{strings.memoryLimit}:</td>
+					<td>{localize("Memory limit")}:</td>
 					<td><ByteSize value={config.memory_limit} /></td>
 				</tr>}
 				<tr>
-					<td>{strings.input}:</td>
+					<td>{localize("Input")}:</td>
 					<td><code>stdin</code></td>
 				</tr>
 				<tr>
-					<td>{strings.output}:</td>
+					<td>{localize("Output")}:</td>
 					<td><code>stdout</code></td>
 				</tr>
 			</tbody>
 		</table>}
 		<Latex className={"section legend"} content={statement?.legend} imageBaseUrl={imageBaseUrl} />
 		{statement?.input && <>
-			<h3>{strings.inputData}</h3>
+			<h3>{localize("Input data")}</h3>
 			<Latex className={"section input"} content={statement?.input} imageBaseUrl={imageBaseUrl} />
 		</>}
 		{statement?.output && <>
-			<h3>{strings.outputData}</h3>
+			<h3>{localize("Output data")}</h3>
 			<Latex className={"section output"} content={statement?.output} imageBaseUrl={imageBaseUrl} />
 		</>}
 		{statement?.interaction && <>
-			<h3>{strings.interaction}</h3>
+			<h3>{localize("Interaction")}</h3>
 			<Latex className={"section interaction"} content={statement?.interaction} imageBaseUrl={imageBaseUrl} />
 		</>}
 		{statement?.scoring && <>
-			<h3>{strings.scoring}</h3>
+			<h3>{localize("Scoring")}</h3>
 			<Latex className={"section scoring"} content={statement?.scoring} imageBaseUrl={imageBaseUrl} />
 		</>}
 		{statement?.samples && <>
-			<h3>{strings.samples}</h3>
+			<h3>{localize("Samples")}</h3>
 			<ProblemSamlpes samples={statement.samples} />
 		</>}
 		{statement?.notes && <>
-			<h3>{strings.notes}</h3>
+			<h3>{localize("Notes")}</h3>
 			<Latex className={"section notes"} content={statement?.notes} imageBaseUrl={imageBaseUrl} />
 		</>}
 	</Block>;
@@ -157,6 +159,7 @@ export const ManageProblemSideBlock: FC<ManageProblemSideBlockProps> = props => 
 const ProblemPage: FC = () => {
 	const params = useParams();
 	const { problem_id } = params;
+	const { localize } = useContext(LocaleContext);
 	const [problem, setProblem] = useState<Problem>();
 	const [error, setError] = useState<ErrorResponse>();
 	useEffect(() => {
@@ -171,7 +174,7 @@ const ProblemPage: FC = () => {
 		</Page>;
 	}
 	const canUpdate = problem?.permissions?.includes("update_problem");
-	return <Page title="Problem" sidebar={<>
+	return <Page title={localize("Problem")} sidebar={<>
 		{problem && canUpdate && <ManageProblemSideBlock problem={problem as Problem} />}
 		<Sidebar />
 	</>}>

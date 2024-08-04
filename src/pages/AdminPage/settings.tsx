@@ -1,12 +1,14 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 import { createSetting, deleteSetting, ErrorResponse, observeSettings, Setting, Settings } from "../../api";
 import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
 import Button from "../../ui/Button";
 import IconButton from "../../ui/IconButton";
 import Input from "../../ui/Input";
+import { LocaleContext } from "../../ui/Locale";
 
 export const AdminSettingsBlock = () => {
+    const { localize } = useContext(LocaleContext);
     const [settings, setSettings] = useState<Settings>();
     const [form, setForm] = useState<{ [key: string]: string }>({});
     const [error, setError] = useState<ErrorResponse>();
@@ -31,27 +33,27 @@ export const AdminSettingsBlock = () => {
             })
             .catch(setError);
     };
-    return <Block title="Settings" className="b-admin-settings">
+    return <Block title={localize("Settings")} className="b-admin-settings">
         {error && <Alert>{error.message}</Alert>}
         <form onSubmit={onCreate}>
             <Input name="key"
                 value={form.key || ""}
                 onValueChange={value => setForm({ ...form, key: value })}
-                placeholder="Key"
+                placeholder={localize("Key")}
                 required />
             <Input name="value"
                 value={form.value || ""}
                 onValueChange={value => setForm({ ...form, value: value })}
-                placeholder="Value"
+                placeholder={localize("Value")}
                 required />
-            <Button type="submit">Add</Button>
+            <Button type="submit">{localize("Add")}</Button>
         </form>
         <table className="ui-table">
             <thead>
                 <tr>
-                    <th className="key">Key</th>
-                    <th className="value">Value</th>
-                    <th className="actions">Actions</th>
+                    <th className="key">{localize("Key")}</th>
+                    <th className="value">{localize("Value")}</th>
+                    <th className="actions">{localize("Actions")}</th>
                 </tr>
             </thead>
             <tbody>

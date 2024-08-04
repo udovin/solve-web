@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import Page from "../../components/Page";
 import { ErrorResponse, observeUser, User } from "../../api";
 import Block from "../../ui/Block";
@@ -6,7 +6,7 @@ import Sidebar from "../../ui/Sidebar";
 import Field from "../../ui/Field";
 import Alert from "../../ui/Alert";
 import { useParams } from "react-router-dom";
-import { strings } from "../../Locale";
+import { LocaleContext } from "../../ui/Locale";
 
 export type UserPageParams = {
 	user_id: string;
@@ -15,6 +15,7 @@ export type UserPageParams = {
 const UserPage: FC = () => {
 	const params = useParams();
 	const { user_id } = params;
+	const { localize } = useContext(LocaleContext);
 	const [user, setUser] = useState<User>();
 	const [error, setError] = useState<ErrorResponse>();
 	useEffect(() => {
@@ -31,15 +32,15 @@ const UserPage: FC = () => {
 		</Page>;
 	}
 	if (!user) {
-		return <Page title={strings.user} sidebar={<Sidebar />}>Loading...</Page>;
+		return <Page title={localize("User")} sidebar={<Sidebar />}>Loading...</Page>;
 	}
 	const { login, email, first_name, last_name, middle_name } = user;
-	return <Page title={strings.user + ": " + login} sidebar={<Sidebar />}>
+	return <Page title={localize("User") + ": " + login} sidebar={<Sidebar />}>
 		<Block title={login} className="b-user-profile">
 			{email && <Field title="E-mail: "><span>{email}</span></Field>}
-			{first_name && <Field title={strings.firstName + ": "}><span>{first_name}</span></Field>}
-			{last_name && <Field title={strings.lastName + ": "}><span>{last_name}</span></Field>}
-			{middle_name && <Field title={strings.middleName + ": "}><span>{middle_name}</span></Field>}
+			{first_name && <Field title={localize("First name") + ": "}><span>{first_name}</span></Field>}
+			{last_name && <Field title={localize("Last name") + ": "}><span>{last_name}</span></Field>}
+			{middle_name && <Field title={localize("Middle name") + ": "}><span>{middle_name}</span></Field>}
 		</Block>
 	</Page>;
 };

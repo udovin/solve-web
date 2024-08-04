@@ -7,6 +7,7 @@ import Button from "../../ui/Button";
 import Page from "../../components/Page";
 import Sidebar from "../../ui/Sidebar";
 import Block, { BlockProps } from "../../ui/Block";
+import { LocaleContext } from "../../ui/Locale";
 
 import "./index.scss";
 
@@ -16,11 +17,12 @@ export type ProblemsBlockProps = BlockProps & {
 
 const ProblemsBlock: FC<ProblemsBlockProps> = props => {
 	const { problems, ...rest } = props;
-	return <Block className="b-problems" title="Problems" {...rest}>
+	const { localize } = useContext(LocaleContext);
+	return <Block className="b-problems" title={localize("Problems")} {...rest}>
 		<table className="ui-table">
 			<thead>
 				<tr>
-					<th className="title">Title</th>
+					<th className="title">{localize("Title")}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -38,6 +40,7 @@ const ProblemsBlock: FC<ProblemsBlockProps> = props => {
 };
 
 const ProblemsPage: FC = () => {
+	const { localize } = useContext(LocaleContext);
 	const [problems, setProblems] = useState<Problems>();
 	const [error, setError] = useState<ErrorResponse>();
 	const { status } = useContext(AuthContext);
@@ -52,7 +55,7 @@ const ProblemsPage: FC = () => {
 			{error.message && <Alert>{error.message}</Alert>}
 		</Page>;
 	}
-	return <Page title="Problems" sidebar={<Sidebar />}>
+	return <Page title={localize("Problems")} sidebar={<Sidebar />}>
 		{status?.permissions?.includes("create_problem") && <p>
 			<Link to={"/problems/create"}><Button>Create</Button></Link>
 		</p>}

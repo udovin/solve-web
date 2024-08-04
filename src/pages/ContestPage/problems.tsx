@@ -1,4 +1,4 @@
-import { FC, FormEvent, useEffect, useState } from "react";
+import { FC, FormEvent, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Contest, ContestProblem, ContestProblems, createContestProblem, deleteContestProblem, ErrorResponse, observeContestProblems, updateContestProblem, UpdateContestProblemForm } from "../../api";
 import FormBlock from "../../components/FormBlock";
@@ -11,7 +11,7 @@ import Field from "../../ui/Field";
 import IconButton from "../../ui/IconButton";
 import Input from "../../ui/Input";
 import NumberInput from "../../ui/NumberInput";
-import { strings } from "../../Locale";
+import { LocaleContext } from "../../ui/Locale";
 
 type ContestProblemRowProps = {
     contest: Contest;
@@ -24,6 +24,7 @@ const ContestProblemRow: FC<ContestProblemRowProps> = props => {
     const { contest, problem: contestProblem, onUpdate, onDelete } = props;
     const { code, problem, solved, points, locales } = contestProblem;
     const { title, statement } = problem;
+    const { localize } = useContext(LocaleContext);
     const [open, setOpen] = useState(false);
     const [error, setError] = useState<ErrorResponse>();
     const [newCode, setNewCode] = useState(code);
@@ -48,7 +49,7 @@ const ContestProblemRow: FC<ContestProblemRowProps> = props => {
             {onUpdate && <IconButton kind="edit" onClick={() => setOpen(true)} />}
             {onDelete && <IconButton kind="delete" onClick={onDelete} />}
             {onUpdate && <Dialog open={open} onClose={() => setOpen(false)}>
-                <FormBlock title="Edit problem" onSubmit={(event: FormEvent) => {
+                <FormBlock title={localize("Edit problem")} onSubmit={(event: FormEvent) => {
                     event.preventDefault();
                     let newLocales: string[] = [];
                     if (ruLocale) {
@@ -59,18 +60,18 @@ const ContestProblemRow: FC<ContestProblemRowProps> = props => {
                     }
                     onUpdate({ code: newCode, points: newPoints ?? 0, locales: newLocales }, () => setOpen(false), setError);
                 }} footer={
-                    <Button type="submit">Update</Button>
+                    <Button type="submit">{localize("Update")}</Button>
                 }>
                     {error && <Alert>{error.message}</Alert>}
-                    <Field title="Code:" name="code" errorResponse={error}>
-                        <Input value={newCode} onValueChange={setNewCode} placeholder="Code" />
+                    <Field title={localize("Code") + ":"} name="code" errorResponse={error}>
+                        <Input value={newCode} onValueChange={setNewCode} placeholder={localize("Code")} />
                     </Field>
-                    <Field title="Points:" name="points" errorResponse={error}>
-                        <NumberInput value={newPoints} onValueChange={setNewPoints} placeholder="Code" />
+                    <Field title={localize("Points") + ":"} name="points" errorResponse={error}>
+                        <NumberInput value={newPoints} onValueChange={setNewPoints} placeholder={localize("Points")} />
                     </Field>
                     <Field>
                         <Checkbox value={ruLocale} onValueChange={setRuLocale} />
-                        <span className="label">Russian</span>
+                        <span className="label">Русский</span>
                     </Field>
                     <Field>
                         <Checkbox value={enLocale} onValueChange={setEnLocale} />
@@ -88,6 +89,7 @@ type ContestProblemsBlockProps = {
 
 export const ContestProblemsBlock: FC<ContestProblemsBlockProps> = props => {
     const { contest } = props;
+    const { localize } = useContext(LocaleContext);
     const [error, setError] = useState<ErrorResponse>();
     const [problems, setProblems] = useState<ContestProblems>();
     const [form, setForm] = useState<{ [key: string]: string }>({});
@@ -117,7 +119,7 @@ export const ContestProblemsBlock: FC<ContestProblemsBlockProps> = props => {
     const canUpdateProblem = contest.permissions?.includes("update_contest_problem");
     const canDeleteProblem = contest.permissions?.includes("delete_contest_problem");
     if (!problems) {
-        return <Block title={strings.problems} className="b-contest-problems">
+        return <Block title={localize("Problems")} className="b-contest-problems">
             {error ? <Alert>{error.message}</Alert> : "Loading..."}
         </Block>;
     }
@@ -126,7 +128,7 @@ export const ContestProblemsBlock: FC<ContestProblemsBlockProps> = props => {
         return String(a.code).localeCompare(b.code);
     });
     return <Block
-        title={strings.problems} 
+        title={localize("Problems")}
         className="b-contest-problems"
         footer={canCreateProblem && <form onSubmit={onSubmit}>
             <Input name="code"
@@ -151,8 +153,8 @@ export const ContestProblemsBlock: FC<ContestProblemsBlockProps> = props => {
             <thead>
                 <tr>
                     <th className="code">#</th>
-                    <th className="title">{strings.title}</th>
-                    <th className="actions">{strings.actions}</th>
+                    <th className="title">{localize("Title")}</th>
+                    <th className="actions">{localize("Actions")}</th>
                 </tr>
             </thead>
             <tbody>

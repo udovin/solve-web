@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Navigate } from "react-router-dom";
 import Page from "../components/Page";
 import Input from "../ui/Input";
@@ -8,10 +8,11 @@ import Field from "../ui/Field";
 import Alert from "../ui/Alert";
 import { ErrorResponse, registerUser } from "../api";
 import Sidebar from "../ui/Sidebar";
-import { strings } from "../Locale";
+import { LocaleContext } from "../ui/Locale";
 
 const RegisterPage = () => {
 	const [success, setSuccess] = useState<boolean>();
+	const { localize, localizeKey } = useContext(LocaleContext);
 	const [error, setError] = useState<ErrorResponse>({ message: "" });
 	const [form, setForm] = useState<{ [key: string]: string }>({});
 	const onSubmit = (event: any) => {
@@ -34,24 +35,24 @@ const RegisterPage = () => {
 		return <Navigate to={"/login"} />
 	}
 	const equalPasswords = form.password === form.password_repeat;
-	return <Page title={strings.register} sidebar={<Sidebar />}>
-		<FormBlock onSubmit={onSubmit} title={strings.register} footer={
+	return <Page title={localize("Register")} sidebar={<Sidebar />}>
+		<FormBlock onSubmit={onSubmit} title={localize("Register")} footer={
 			<Button
 				type="submit" color="primary"
 				disabled={!form.password || !equalPasswords}
-			>{strings.register}</Button>
+			>{localize("Register")}</Button>
 		}>
 			{error.message && <Alert>{error.message}</Alert>}
-			<Field title={strings.username + ":"} description={strings.usernameRestrictions}>
+			<Field title={localize("Username") + ":"} description={localizeKey("username_restrictions", "You can use only English letters, digits, symbols «_» and «-». Username can start only with English letter and end with English letter or digit.")}>
 				<Input
-					type="text" name="login" placeholder={strings.username}
+					type="text" name="login" placeholder={localize("Username")}
 					value={form.login || ""}
 					onValueChange={(value) => setForm({ ...form, login: value })}
 					required autoFocus
 				/>
 				{error.invalid_fields && error.invalid_fields["login"] && <Alert>{error.invalid_fields["login"].message}</Alert>}
 			</Field>
-			<Field title="E-mail:" description={strings.emailConfirmation}>
+			<Field title="E-mail:" description={localizeKey("email_confirmation", "You will receive an email to verify your account.")}>
 				<Input
 					type="text" name="email" placeholder="E-mail"
 					value={form.email || ""}
@@ -60,43 +61,43 @@ const RegisterPage = () => {
 				/>
 				{error.invalid_fields && error.invalid_fields["email"] && <Alert>{error.invalid_fields["email"].message}</Alert>}
 			</Field>
-			<Field title={strings.password + ":"}>
+			<Field title={localize("Password") + ":"}>
 				<Input
-					type="password" name="password" placeholder={strings.password}
+					type="password" name="password" placeholder={localize("Password")}
 					value={form.password}
 					onValueChange={(value) => setForm({ ...form, password: value })}
 					required
 				/>
 				{error.invalid_fields && error.invalid_fields["password"] && <Alert>{error.invalid_fields["password"].message}</Alert>}
 			</Field>
-			<Field title={strings.repeatPassword + ":"}>
+			<Field title={localize("Repeat password") + ":"}>
 				<Input
-					type="password" name="password_repeat" placeholder={strings.repeatPassword}
+					type="password" name="password_repeat" placeholder={localize("Repeat password")}
 					value={form.password_repeat}
 					onValueChange={(value) => setForm({ ...form, password_repeat: value })}
 					required
 				/>
-				{form.password && !equalPasswords && <Alert>{strings.passwordsDoNotMatch}</Alert>}
+				{form.password && !equalPasswords && <Alert>{localize("Passwords do not match")}</Alert>}
 			</Field>
-			<Field title={strings.firstName + ":"}>
+			<Field title={localize("First name") + ":"}>
 				<Input
-					type="text" name="first_name" placeholder={strings.firstName}
+					type="text" name="first_name" placeholder={localize("First name")}
 					value={form.first_name || ""}
 					onValueChange={(value) => setForm({ ...form, first_name: value })}
 				/>
 				{error.invalid_fields && error.invalid_fields["first_name"] && <Alert>{error.invalid_fields["first_name"].message}</Alert>}
 			</Field>
-			<Field title={strings.lastName + ":"}>
+			<Field title={localize("Last name") + ":"}>
 				<Input
-					type="text" name="last_name" placeholder={strings.lastName}
+					type="text" name="last_name" placeholder={localize("Last name")}
 					value={form.last_name || ""}
 					onValueChange={(value) => setForm({ ...form, last_name: value })}
 				/>
 				{error.invalid_fields && error.invalid_fields["last_name"] && <Alert>{error.invalid_fields["last_name"].message}</Alert>}
 			</Field>
-			<Field title={strings.middleName + ":"}>
+			<Field title={localize("Middle name") + ":"}>
 				<Input
-					type="text" name="middle_name" placeholder={strings.middleName}
+					type="text" name="middle_name" placeholder={localize("Middle name")}
 					value={form.middle_name || ""}
 					onValueChange={(value) => setForm({ ...form, middle_name: value })}
 				/>

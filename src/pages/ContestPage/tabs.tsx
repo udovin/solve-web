@@ -1,9 +1,9 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Contest } from "../../api";
 import Block, { BlockProps } from "../../ui/Block";
 import { Tab, Tabs } from "../../ui/Tabs";
-import { strings } from "../../Locale";
+import { LocaleContext } from "../../ui/Locale";
 
 type ContestTabsProps = BlockProps & {
     contest: Contest;
@@ -14,6 +14,7 @@ type ContestTabsProps = BlockProps & {
 export const ContestTabs: FC<ContestTabsProps> = props => {
     const { contest, newMessages } = props;
     const { id, permissions, state } = contest;
+    const { localize } = useContext(LocaleContext);
     const canRegister = !state?.participant && permissions?.includes("register_contest");
     const canObserveProblems = permissions?.includes("observe_contest_problems");
     const canSubmitSolution = permissions?.includes("submit_contest_solution");
@@ -27,28 +28,28 @@ export const ContestTabs: FC<ContestTabsProps> = props => {
     return <Block className="b-contest-tabs">
         <Tabs>
             {canObserveProblems && <Tab tab="problems">
-                <Link to={`/contests/${id}`}>{strings.problems}</Link>
+                <Link to={`/contests/${id}`}>{localize("Problems")}</Link>
             </Tab>}
             {canObserveSolutions && <Tab tab="solutions">
-                <Link to={`/contests/${id}/solutions`}>{strings.solutions}</Link>
+                <Link to={`/contests/${id}/solutions`}>{localize("Solutions")}</Link>
             </Tab>}
             {canSubmitSolution && <Tab tab="submit">
-                <Link to={`/contests/${id}/submit`}>{strings.submit}</Link>
+                <Link to={`/contests/${id}/submit`}>{localize("Submit")}</Link>
             </Tab>}
             {canObserveStandings && <Tab tab="standings">
-                <Link to={`/contests/${id}/standings`}>{strings.standings}</Link>
+                <Link to={`/contests/${id}/standings`}>{localize("Standings")}</Link>
             </Tab>}
             {canObserveMessages && <Tab tab="messages">
-                <Link to={`/contests/${id}/messages`}>{strings.messages}{newMessages > 0 && <span className="counter">{newMessages}</span>}</Link>
+                <Link to={`/contests/${id}/messages`}>{localize("Messages")}{newMessages > 0 && <span className="counter">{newMessages}</span>}</Link>
             </Tab>}
             {canObserveParticipants && <Tab tab="participants">
-                <Link to={`/contests/${id}/participants`}>{strings.participants}</Link>
+                <Link to={`/contests/${id}/participants`}>{localize("Participants")}</Link>
             </Tab>}
             {canRegister && <Tab tab="register">
-                <Link to={`/contests/${id}/register`}>{strings.register}</Link>
+                <Link to={`/contests/${id}/register`}>{localize("Register")}</Link>
             </Tab>}
             {canManage && <Tab tab="manage">
-                <Link to={`/contests/${id}/manage`}>{strings.manage}</Link>
+                <Link to={`/contests/${id}/manage`}>{localize("Manage")}</Link>
             </Tab>}
         </Tabs>
     </Block>;

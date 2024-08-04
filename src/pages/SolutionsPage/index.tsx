@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ErrorResponse, observeSolutions, Problem, Scope, ScopeUser, Solution, Solutions, User } from "../../api";
 import Page from "../../components/Page";
@@ -8,7 +8,7 @@ import Block, { BlockProps } from "../../ui/Block";
 import DateTime from "../../ui/DateTime";
 import UserLink from "../../ui/UserLink";
 import Verdict from "../../ui/Verdict";
-import { strings } from "../../Locale";
+import { LocaleContext } from "../../ui/Locale";
 
 import "./index.scss";
 
@@ -47,16 +47,17 @@ export const AccountLink: FC<AccountLinkProps> = props => {
 
 const SolutionsBlock: FC<SolutionsBlockProps> = props => {
 	const { solutions, ...rest } = props;
-	return <Block className="b-solutions" title="Solutions" {...rest}>
+	const { localize } = useContext(LocaleContext);
+	return <Block className="b-solutions" title={localize("Solutions")} {...rest}>
 		<table className="ui-table">
 			<thead>
 				<tr>
 					<th className="id">#</th>
-					<th className="date">{strings.time}</th>
-					<th className="author">{strings.participant}</th>
-					<th className="problem">{strings.problem}</th>
-					<th className="compiler">{strings.compiler}</th>
-					<th className="verdict">{strings.verdict}</th>
+					<th className="date">{localize("Time")}</th>
+					<th className="author">{localize("Author")}</th>
+					<th className="problem">{localize("Problem")}</th>
+					<th className="compiler">{localize("Compiler")}</th>
+					<th className="verdict">{localize("Verdict")}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -87,6 +88,7 @@ const SolutionsBlock: FC<SolutionsBlockProps> = props => {
 };
 
 const SolutionsPage: FC = () => {
+	const { localize } = useContext(LocaleContext);
 	const [solutions, setSolutions] = useState<Solutions>();
 	const [error, setError] = useState<ErrorResponse>();
 	useEffect(() => {
@@ -100,7 +102,7 @@ const SolutionsPage: FC = () => {
 			{error.message && <Alert>{error.message}</Alert>}
 		</Page>;
 	}
-	return <Page title="Solutions" sidebar={<Sidebar />}>
+	return <Page title={localize("Solutions")} sidebar={<Sidebar />}>
 		{solutions ?
 			<SolutionsBlock solutions={solutions.solutions || []} /> :
 			<>Loading...</>}

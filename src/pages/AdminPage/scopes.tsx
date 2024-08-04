@@ -1,4 +1,4 @@
-import { FC, FormEvent, useEffect, useState } from "react";
+import { FC, FormEvent, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { createScope, createScopeUser, deleteScope, deleteScopeUser, ErrorResponse, logoutScopeUser, observeScopes, observeScopeUsers, Scope, Scopes, ScopeUser, ScopeUsers, updateScopeUser } from "../../api";
 import Alert from "../../ui/Alert";
@@ -7,8 +7,10 @@ import Button from "../../ui/Button";
 import IconButton from "../../ui/IconButton";
 import Input from "../../ui/Input";
 import Tooltip from "../../ui/Tooltip";
+import { LocaleContext } from "../../ui/Locale";
 
 export const AdminScopesBlock: FC = () => {
+    const { localize } = useContext(LocaleContext);
     const [scopes, setScopes] = useState<Scopes>();
     const [form, setForm] = useState<{ [key: string]: string }>({});
     const [error, setError] = useState<ErrorResponse>();
@@ -32,22 +34,22 @@ export const AdminScopesBlock: FC = () => {
             })
             .catch(setError);
     };
-    return <Block title="Scopes" className="b-admin-scopes">
+    return <Block title={localize("Scopes")} className="b-admin-scopes">
         {error && <Alert>{error.message}</Alert>}
         <form onSubmit={onCreate}>
             <Input name="title"
                 value={form.title || ""}
                 onValueChange={value => setForm({ ...form, title: value })}
-                placeholder="Title"
+                placeholder={localize("Title")}
                 required />
-            <Button type="submit">Add</Button>
+            <Button type="submit">{localize("Add")}</Button>
         </form>
         <table className="ui-table">
             <thead>
                 <tr>
                     <th className="id">#</th>
-                    <th className="title">Title</th>
-                    <th className="actions">Actions</th>
+                    <th className="title">{localize("Title")}</th>
+                    <th className="actions">{localize("Actions")}</th>
                 </tr>
             </thead>
             <tbody>
@@ -82,6 +84,7 @@ type AdminScopeBlockProps = {
 
 export const AdminScopeBlock: FC<AdminScopeBlockProps> = props => {
     const { scope } = props;
+    const { localize } = useContext(LocaleContext);
     const [users, setUsers] = useState<ScopeUsers>();
     const [form, setForm] = useState<{ [key: string]: string }>({});
     const [error, setError] = useState<ErrorResponse>();
@@ -106,28 +109,28 @@ export const AdminScopeBlock: FC<AdminScopeBlockProps> = props => {
             })
             .catch(setError);
     };
-    return <Block title={`Scope users: ${scope.title}`} className="b-admin-scope-users">
+    return <Block title={localize("Scope users") + ": " + scope.title} className="b-admin-scope-users">
         {error && <Alert>{error.message}</Alert>}
         <form onSubmit={onCreate}>
             <Input name="login"
                 value={form.login || ""}
                 onValueChange={value => setForm({ ...form, login: value })}
-                placeholder="Login"
+                placeholder={localize("Username")}
                 required />
             <Input name="title"
                 value={form.title || ""}
                 onValueChange={value => setForm({ ...form, title: value })}
-                placeholder="Title" />
-            <Button type="submit">Add</Button>
+                placeholder={localize("Title")} />
+            <Button type="submit">{localize("Add")}</Button>
         </form>
         <table className="ui-table">
             <thead>
                 <tr>
                     <th className="id">#</th>
-                    <th className="login">Login</th>
-                    <th className="password">Password</th>
-                    <th className="title">Title</th>
-                    <th className="actions">Actions</th>
+                    <th className="login">{localize("Username")}</th>
+                    <th className="password">{localize("Password")}</th>
+                    <th className="title">{localize("Title")}</th>
+                    <th className="actions">{localize("Actions")}</th>
                 </tr>
             </thead>
             <tbody>
@@ -166,7 +169,7 @@ export const AdminScopeBlock: FC<AdminScopeBlockProps> = props => {
                     return <tr key={key}>
                         <td className="id">{user.id}</td>
                         <td className="login">{user.login}</td>
-                        <td className="password">{user.password ? user.password : <Button onClick={onRegeneratePassword} color="danger">Regenerate password</Button>}</td>
+                        <td className="password">{user.password ? user.password : <Button onClick={onRegeneratePassword} color="danger">{localize("Regenerate password")}</Button>}</td>
                         <td className="title">{user.title}</td>
                         <td className="actions">
                             <Tooltip content="Logout"><IconButton kind="backward" onClick={onLogout} /></Tooltip>

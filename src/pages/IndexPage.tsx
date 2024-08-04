@@ -1,11 +1,13 @@
+import { useContext } from "react";
 import Page from "../components/Page";
 import Block from "../ui/Block";
 import Sidebar from "../ui/Sidebar";
-import { strings } from "../Locale"
+import { LocaleContext } from "../ui/Locale";
 
 const IndexPage = () => {
-	return <Page title={strings.index} sidebar={<Sidebar />}>
-		<Block title={strings.index}>
+	const { localize } = useContext(LocaleContext);
+	return <Page title={localize("Index")} sidebar={<Sidebar />}>
+		<Block title={localize("Index")}>
 		</Block>
 	</Page>;
 };

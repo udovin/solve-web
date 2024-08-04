@@ -9,7 +9,7 @@ import Sidebar from "../../ui/Sidebar";
 import Block, { BlockProps } from "../../ui/Block";
 import DateTime from "../../ui/DateTime";
 import Duration from "../../ui/Duration";
-import { strings } from "../../Locale";
+import { LocaleContext } from "../../ui/Locale";
 
 import "./index.scss";
 
@@ -19,14 +19,15 @@ export type ContestsBlockProps = BlockProps & {
 
 const ContestsBlock: FC<ContestsBlockProps> = props => {
 	const { contests, ...rest } = props;
-	return <Block className="b-contests" title={strings.contests} {...rest}>
+	const { localize } = useContext(LocaleContext);
+	return <Block className="b-contests" title={localize("Contests")} {...rest}>
 		<table className="ui-table">
 			<thead>
 				<tr>
-					<th className="title">{strings.title}</th>
-					<th className="duration">{strings.duration}</th>
-					<th className="start">{strings.start}</th>
-					<th className="actions">{strings.actions}</th>
+					<th className="title">{localize("Title")}</th>
+					<th className="duration">{localize("Duration")}</th>
+					<th className="start">{localize("Start")}</th>
+					<th className="actions">{localize("Actions")}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -46,8 +47,8 @@ const ContestsBlock: FC<ContestsBlockProps> = props => {
 						</td>
 						<td className="actions">
 							{
-								(canRegister && <Link to={`/contests/${id}/register`}>{strings.register} &raquo;</Link>) ||
-								(canObserve && <Link to={`/contests/${id}`}>{strings.enter} &raquo;</Link>)
+								(canRegister && <Link to={`/contests/${id}/register`}>{localize("Register")} &raquo;</Link>) ||
+								(canObserve && <Link to={`/contests/${id}`}>{localize("Enter")} &raquo;</Link>)
 							}
 						</td>
 					</tr>;
@@ -61,6 +62,7 @@ const ContestsPage: FC = () => {
 	const [contests, setContests] = useState<Contests>();
 	const [error, setError] = useState<ErrorResponse>();
 	const { status } = useContext(AuthContext);
+	const { localize } = useContext(LocaleContext);
 	useEffect(() => {
 		setContests(undefined);
 		observeContests()
@@ -72,9 +74,9 @@ const ContestsPage: FC = () => {
 			{error.message && <Alert>{error.message}</Alert>}
 		</Page>;
 	}
-	return <Page title={strings.contests} sidebar={<Sidebar />}>
+	return <Page title={localize("Contests")} sidebar={<Sidebar />}>
 		{status?.permissions?.includes("create_contest") && <p>
-			<Link to={"/contests/create"}><Button>{strings.create}</Button></Link>
+			<Link to={"/contests/create"}><Button>{localize("Create")}</Button></Link>
 		</p>}
 		{contests ?
 			<ContestsBlock contests={contests.contests || []} /> :

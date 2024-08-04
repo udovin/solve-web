@@ -1,4 +1,4 @@
-import { FC, FormEvent, useEffect, useState } from "react";
+import { FC, FormEvent, useContext, useEffect, useState } from "react";
 import { Contest, ContestParticipant, ContestParticipants, createContestParticipant, CreateContestParticipantForm, deleteContestParticipant, ErrorResponse, observeAccounts, observeContestParticipants } from "../../api";
 import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
@@ -6,28 +6,27 @@ import Button from "../../ui/Button";
 import IconButton from "../../ui/IconButton";
 import Select from "../../ui/Select";
 import { AccountLink } from "../SolutionsPage";
-import { strings } from "../../Locale";
 import AccountInput, { Account } from "../../ui/AccountInput";
+import { LocaleContext } from "../../ui/Locale";
 
 type ParticipantLinkProps = {
     participant: ContestParticipant;
     disabled?: boolean;
 };
 
-const getKinds = (): Record<string, string> => {
-    return {
-        "regular": strings.participantRegular,
-        "upsolving": strings.participantUpsolving,
-        "manager": strings.participantManager,
-        "observer": strings.participantObserver,
-    };
+const KINDS: Record<string, string | undefined> = {
+    "regular": "Participant",
+    "upsolving": "Upsolving",
+    "manager": "Manager",
+    "observer": "Observer",
 };
 
 export const ParticipantLink: FC<ParticipantLinkProps> = props => {
     const { participant, disabled } = props;
     const { kind } = participant;
+    const { localizeKey } = useContext(LocaleContext);
     return <>
-        {(!!participant.kind && participant.kind !== "regular") && <span className="kind">{getKinds()[kind] ?? kind}: </span>}
+        {(!!participant.kind && participant.kind !== "regular") && <span className="kind">{localizeKey(`participant_${kind}`, KINDS[kind] ?? kind)}: </span>}
         <AccountLink account={participant} disabled={disabled} />
     </>
 };
@@ -38,6 +37,7 @@ type ContestParticipantsBlockProps = {
 
 export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props => {
     const { contest } = props;
+    const { localizeKey } = useContext(LocaleContext);
     const [error, setError] = useState<ErrorResponse>();
     const [participants, setParticipants] = useState<ContestParticipants>();
     const [account, setAccount] = useState<Account>();
@@ -100,7 +100,7 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
             <Select
                 name="kind"
                 value={kind}
-                options={getKinds()}
+                options={Object.fromEntries(Object.entries(KINDS).map(([key, value]) => [key, localizeKey(`participant_${key}`, value ?? key)]))}
                 onValueChange={setKind}
             />
             <Button type="submit" disabled={!account}>Create</Button>
@@ -139,7 +139,7 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
                     return <tr key={key} className="participant">
                         <td className="id">{id}</td>
                         <td className="login"><AccountLink account={participant} /></td>
-                        <td className="kind">{getKinds()[kind] ?? kind}</td>
+                        <td className="kind">{localizeKey(`participant_${kind}`, KINDS[kind] ?? kind)}</td>
                         <td className="actions">{canDeleteParticipant && <IconButton kind="delete" onClick={deleteParticipant} />}</td>
                     </tr>;
                 })}

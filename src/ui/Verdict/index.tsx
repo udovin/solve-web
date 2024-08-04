@@ -1,9 +1,9 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
 import { SolutionReport, TestReport } from "../../api";
 import ByteSize from "../ByteSize";
 import Duration from "../Duration";
 import Tooltip from "../Tooltip";
-import { strings } from "../../Locale"
+import { LocaleContext, LocalizeKeyFn } from "../Locale";
 
 import "./index.scss";
 
@@ -19,110 +19,117 @@ type VerdictInfo = {
     disableUsage?: boolean;
 };
 
-const getTitle = (info?: VerdictInfo, testNumber?: number) => {
+const VERDICTS: Record<string, VerdictInfo | undefined> = {
+    "queued": {
+        code: "queued",
+        title: "Queued",
+        description: "Queued",
+        disableUsage: true,
+    },
+    "running": {
+        code: "running",
+        title: "Running",
+        titleTest: "Test {test}",
+        description: "Running",
+        disableUsage: true,
+    },
+    "accepted": {
+        code: "accepted",
+        title: "OK",
+        description: "Accepted",
+    },
+    "rejected": {
+        code: "rejected",
+        title: "RJ",
+        description: "Rejected",
+    },
+    "compilation_error": {
+        code: "ce",
+        title: "CE",
+        description: "Compilation error",
+        disableUsage: true,
+    },
+    "time_limit_exceeded": {
+        code: "tle",
+        title: "TLE",
+        titleTest: "TLE {test}",
+        description: "Time limit exceeded",
+    },
+    "memory_limit_exceeded": {
+        code: "mle",
+        title: "MLE",
+        titleTest: "MLE {test}",
+        description: "Memory limit exceeded",
+    },
+    "runtime_error": {
+        code: "re",
+        title: "RE",
+        titleTest: "RE {test}",
+        description: "Run-time error",
+    },
+    "wrong_answer": {
+        code: "wa",
+        title: "WA",
+        titleTest: "WA {test}",
+        description: "Wrong answer",
+    },
+    "presentation_error": {
+        code: "pe",
+        title: "PE",
+        titleTest: "PE {test}",
+        description: "Presentation error",
+    },
+    "partially_accepted": {
+        code: "pa",
+        title: "PA",
+        description: "Partially accepted",
+    },
+    "failed": {
+        code: "failed",
+        title: "Failed",
+        description: "Failed",
+        disableUsage: true,
+    },
+};
+
+const getTitle = (localizeKey: LocalizeKeyFn, info?: VerdictInfo, testNumber?: number) => {
     if (!info) {
         return undefined;
     }
     if (testNumber && info.titleTest) {
-        return info.titleTest.replace("{}", String(testNumber));
+        return localizeKey(`verdict_${info.code}_title_test`, info.titleTest).replace("{test}", String(testNumber));
     }
-    return info.title;
+    return localizeKey(`verdict_${info.code}_title`, info.title);
 };
 
-const getVerdicts = (): Record<string, VerdictInfo | undefined> => {
-    return {
-        "queued": {
-            code: "queued",
-            title: strings.verdictQueued,
-            description: strings.verdictQueued,
-            disableUsage: true,
-        },
-        "running": {
-            code: "running",
-            title: strings.verdictRunning,
-            titleTest: strings.test + " {}",
-            description: strings.verdictRunning,
-            disableUsage: true,
-        },
-        "accepted": {
-            code: "accepted",
-            title: "OK",
-            description: strings.verdictAccepted,
-        },
-        "rejected": {
-            code: "rejected",
-            title: "RJ",
-            description: strings.verdictRejected,
-        },
-        "compilation_error": {
-            code: "ce",
-            title: "CE",
-            description: strings.verdictCE,
-            disableUsage: true,
-        },
-        "time_limit_exceeded": {
-            code: "tle",
-            title: "TLE",
-            titleTest: "TLE {}",
-            description: strings.verdictTLE,
-        },
-        "memory_limit_exceeded": {
-            code: "mle",
-            title: "MLE",
-            titleTest: "MLE {}",
-            description: strings.verdictMLE,
-        },
-        "runtime_error": {
-            code: "re",
-            title: "RE",
-            titleTest: "RE {}",
-            description: strings.verdictRE,
-        },
-        "wrong_answer": {
-            code: "wa",
-            title: "WA",
-            titleTest: "WA {}",
-            description: strings.verdictWA,
-        },
-        "presentation_error": {
-            code: "pe",
-            title: "PE",
-            titleTest: "PE {}",
-            description: strings.verdictPE,
-        },
-        "partially_accepted": {
-            code: "pa",
-            title: "PA",
-            description: strings.verdictPartial,
-        },
-        "failed": {
-            code: "failed",
-            title: "Failed",
-            description: strings.verdictFailed,
-            disableUsage: true,
-        },
-    };
-}
+const getDescription = (localizeKey: LocalizeKeyFn, info?: VerdictInfo) => {
+    if (!info) {
+        return undefined;
+    }
+    return localizeKey(`verdict_${info.code}_description`, info.description);
+};
 
 const Verdict: FC<VerdictProps> = props => {
     const { report } = props;
+    const { localize, localizeKey } = useContext(LocaleContext);
     const verdict = report?.verdict;
     const points = report?.points;
     const used_time = report?.used_time;
     const used_memory = report?.used_memory;
     const test_number = report?.test_number;
-    const info = getVerdicts()[verdict ? verdict : "running"];
-    const title = getTitle(info, test_number) ?? verdict;
+    const info = VERDICTS[verdict ? verdict : "running"];
+    const title = getTitle(localizeKey, info, test_number) ?? verdict;
+    const description = getDescription(localizeKey, info) ?? verdict;
     const disableUsage = info?.disableUsage ?? false;
     return <Tooltip className="ui-verdict-wrap" content={<div className="ui-verdict-details">
-        <span className={`item description ui-verdict ${info?.code ?? "unknown"}`}>{info?.description ?? verdict}</span>
-        {points !== undefined && <span className="item points">{strings.points}: {points}</span>}
-        {test_number && <span className="item test">{strings.onTest} {test_number}</span>}
+        <span className={`item description ui-verdict ${info?.code ?? "unknown"}`}>{description}</span>
+        {points !== undefined && <span className="item points">{localize("Points")}: {points}</span>}
+        {test_number && <span className="item test">{localize("On test")} {test_number}</span>}
         {!disableUsage && <span className="item time"><Duration value={(used_time ?? 0) * 0.001} /></span>}
         {!disableUsage && <span className="item memory"><ByteSize value={used_memory ?? 0} /></span>}
     </div>}>
         <span className={`ui-verdict ${info?.code ?? "unknown"}`}>{title}</span>
-        {points !== undefined && <span className="points">{strings.points}: {points}</span>}
+        {points !== undefined && <span className="points">{localize("Points")}: {points}</span>}
     </Tooltip >;
 };
 
@@ -132,11 +139,14 @@ type TestVerdictProps = {
 
 export const TestVerdict: FC<TestVerdictProps> = props => {
     const { report } = props;
+    const { localizeKey } = useContext(LocaleContext);
     const verdict = report?.verdict;
-    const info = getVerdicts()[verdict ? verdict : "running"];
+    const info = VERDICTS[verdict ? verdict : "running"];
+    const title = getTitle(localizeKey, info) ?? verdict;
+    const description = getDescription(localizeKey, info) ?? verdict;
     return <Tooltip className={`ui-verdict ${info?.code ?? "unknown"}`} content={<div className="ui-verdict-details">
-        <span className={`item description ui-verdict ${info?.code ?? "unknown"}`}>{info?.description ?? verdict}</span>
-    </div>}>{info?.title ?? verdict}</Tooltip>;
+        <span className={`item description ui-verdict ${info?.code ?? "unknown"}`}>{description}</span>
+    </div>}>{title}</Tooltip>;
 };
 
 export default Verdict;

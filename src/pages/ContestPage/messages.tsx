@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { Contest, ContestMessage, ContestMessages, createContestMessage, ErrorResponse, observeContestMessages, submitContestQuestion } from "../../api";
 import FormBlock from "../../components/FormBlock";
@@ -9,7 +9,7 @@ import Field from "../../ui/Field";
 import Input from "../../ui/Input";
 import Textarea from "../../ui/Textarea";
 import { ParticipantLink } from "./participants";
-import { strings } from "../../Locale";
+import { LocaleContext } from "../../ui/Locale";
 
 type MessageItemProps = {
     contest: Contest;
@@ -21,6 +21,7 @@ type MessageItemProps = {
 
 const MessageItem: FC<MessageItemProps> = props => {
     const { contest, message, subMessages, canCreateMessage, onNewMessage } = props;
+    const { localize } = useContext(LocaleContext);
     const [show, setShow] = useState(false);
     const [error, setError] = useState<ErrorResponse>();
     const [description, setDescription] = useState<string>();
@@ -50,9 +51,9 @@ const MessageItem: FC<MessageItemProps> = props => {
         </div>
         {show && <div className="new-message">
             {error && error.message && <Alert>{error.message}</Alert>}
-            <Field title="Description:" name="description" errorResponse={error}>
+            <Field title={localize("Description") + ":"} name="description" errorResponse={error}>
                 <Textarea
-                    name="description" placeholder="Description"
+                    name="description" placeholder={localize("Description")}
                     value={description}
                     onValueChange={setDescription}
                     required />
@@ -81,6 +82,7 @@ const toNumber = (n?: string | null) => {
 export const ContestMessagesBlock: FC<ContestMessagesBlockProps> = props => {
     const { contest } = props;
     const { id, permissions, state } = contest;
+    const { localize } = useContext(LocaleContext);
     const canSubmitQuestion = permissions?.includes("submit_contest_question") && state?.participant;
     const canCreateMessage = permissions?.includes("create_contest_message");
     const [error, setError] = useState<ErrorResponse>();
@@ -103,13 +105,13 @@ export const ContestMessagesBlock: FC<ContestMessagesBlockProps> = props => {
         maxSeenMessage = Math.max(maxSeenMessage, message.id);
     });
     localStorage.setItem("contest_seen_message", String(maxSeenMessage));
-    return <Block title={strings.messages} className="b-contest-messages">
+    return <Block title={localize("Messages")} className="b-contest-messages">
         <div className="controls">
             {canSubmitQuestion && <Link to={`/contests/${id}/question`}>
-                <Button>{strings.newQuestion}</Button>
+                <Button>{localize("New question")}</Button>
             </Link>}
             {canCreateMessage && <Link to={`/contests/${id}/messages/create`}>
-                <Button>{strings.newMessage}</Button>
+                <Button>{localize("New message")}</Button>
             </Link>}
         </div>
         {error && error.message && <Alert>{error.message}</Alert>}
@@ -127,6 +129,7 @@ export const ContestMessagesBlock: FC<ContestMessagesBlockProps> = props => {
 
 export const SubmitContestQuestionBlock: FC<ContestMessagesBlockProps> = props => {
     const { contest } = props;
+    const { localize } = useContext(LocaleContext);
     const [error, setError] = useState<ErrorResponse>();
     const [title, setTitle] = useState<string>();
     const [description, setDescription] = useState<string>();
@@ -149,22 +152,22 @@ export const SubmitContestQuestionBlock: FC<ContestMessagesBlockProps> = props =
     if (newMessage) {
         return <Navigate to={`/contests/${contest.id}/messages`} />;
     }
-    return <FormBlock className="b-contest-question" title={strings.newQuestion} onSubmit={onSubmit} footer={<>
+    return <FormBlock className="b-contest-question" title={localize("New question")} onSubmit={onSubmit} footer={<>
         <Button
             type="submit" color="primary" disabled={!title || !description}
-        >{strings.submit}</Button>
+        >{localize("Submit")}</Button>
     </>}>
         {error && error.message && <Alert>{error.message}</Alert>}
-        <Field title={strings.subject + ":"} name="title" errorResponse={error}>
+        <Field title={localize("Subject") + ":"} name="title" errorResponse={error}>
             <Input
-                type="text" name="title" placeholder={strings.subject}
+                type="text" name="title" placeholder={localize("Subject")}
                 value={title}
                 onValueChange={setTitle}
                 required />
         </Field>
-        <Field title={strings.question + ":"} name="description" errorResponse={error}>
+        <Field title={localize("Question") + ":"} name="description" errorResponse={error}>
             <Textarea
-                name="description" placeholder={strings.question}
+                name="description" placeholder={localize("Question")}
                 value={description}
                 onValueChange={setDescription}
                 required />
@@ -174,6 +177,7 @@ export const SubmitContestQuestionBlock: FC<ContestMessagesBlockProps> = props =
 
 export const CreateContestMessageBlock: FC<ContestMessagesBlockProps> = props => {
     const { contest } = props;
+    const { localize } = useContext(LocaleContext);
     const [error, setError] = useState<ErrorResponse>();
     const [title, setTitle] = useState<string>();
     const [description, setDescription] = useState<string>();
@@ -196,22 +200,22 @@ export const CreateContestMessageBlock: FC<ContestMessagesBlockProps> = props =>
     if (newMessage) {
         return <Navigate to={`/contests/${contest.id}/messages`} />;
     }
-    return <FormBlock className="b-contest-message" title={strings.newMessage} onSubmit={onSubmit} footer={<>
+    return <FormBlock className="b-contest-message" title={localize("New message")} onSubmit={onSubmit} footer={<>
         <Button
             type="submit" color="primary" disabled={!title || !description}
-        >Submit</Button>
+        >{localize("Submit")}</Button>
     </>}>
         {error && error.message && <Alert>{error.message}</Alert>}
-        <Field title="Title:" name="title" errorResponse={error}>
+        <Field title={localize("Title") + ":"} name="title" errorResponse={error}>
             <Input
-                type="text" name="title" placeholder="Title"
+                type="text" name="title" placeholder={localize("Title")}
                 value={title}
                 onValueChange={setTitle}
                 required />
         </Field>
-        <Field title="Description:" name="description" errorResponse={error}>
+        <Field title={localize("Description") + ":"} name="description" errorResponse={error}>
             <Textarea
-                name="description" placeholder="Description"
+                name="description" placeholder={localize("Description")}
                 value={description}
                 onValueChange={setDescription}
                 required />

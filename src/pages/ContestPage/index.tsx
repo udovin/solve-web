@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { Link, matchPath, Navigate, Route, Routes, useLocation, useParams } from "react-router-dom";
 import Page from "../../components/Page";
 import {
@@ -35,7 +35,7 @@ import { ContestTabs } from "./tabs";
 import { ContestMessagesBlock, CreateContestMessageBlock, SubmitContestQuestionBlock } from "./messages";
 import { EditContestBlock } from "./manage";
 import FileInput from "../../ui/FileInput";
-import { strings } from "../../Locale";
+import { LocaleContext } from "../../ui/Locale";
 
 import "./index.scss";
 
@@ -51,6 +51,7 @@ const ContestProblemSideBlock: FC<ContestSideBlockProps> = props => {
 	const { contest } = props;
 	const params = useParams();
 	const { contest_id, problem_code } = params;
+	const { localize } = useContext(LocaleContext);
 	const [newSolution, setNewSolution] = useState<Solution>();
 	const [file, setFile] = useState<File>();
 	const [compiler, setCompiler] = useState<number>();
@@ -90,19 +91,19 @@ const ContestProblemSideBlock: FC<ContestSideBlockProps> = props => {
 		return <Navigate to={`/contests/${contest_id}/solutions`} />
 	}
 	const errorMessage = error && error.message;
-	return <FormBlock onSubmit={onSubmit} title={strings.submitSolution} className="b-contest-side-submit" footer={<>
+	return <FormBlock onSubmit={onSubmit} title={localize("Submit solution")} className="b-contest-side-submit" footer={<>
 		<Button
 			type="submit"
 			color="primary"
 			disabled={!canSubmitSolution || uploading || !file || !compilerInfo}
-		>{strings.submit}</Button>
-		<span>{strings.or} <Link to={`/contests/${contest_id}/submit?problem=${problem_code}`}>{strings.pasteSourceCode}</Link>.</span>
+		>{localize("Submit")}</Button>
+		<span>{localize("or")} <Link to={`/contests/${contest_id}/submit?problem=${problem_code}`}>{localize("paste source code")}</Link>.</span>
 	</>}>
 		{errorMessage && <Alert>{errorMessage}</Alert>}
-		<Field title={strings.compiler + ":"} name="compiler_id" errorResponse={error}>
+		<Field title={localize("Compiler") + ":"} name="compiler_id" errorResponse={error}>
 			<Select
 				name="compiler_id"
-				value={String(compilerInfo?.id ?? "Select compiler")}
+				value={String(compilerInfo?.id ?? localize("Select compiler"))}
 				onValueChange={value => setCompiler(Number(value))}
 				options={compilers?.compilers?.reduce((options, compiler) => {
 					let name = compiler.name;
@@ -117,7 +118,7 @@ const ContestProblemSideBlock: FC<ContestSideBlockProps> = props => {
 				disabled={!canSubmitSolution || !compilers?.compilers}
 			/>
 		</Field>
-		<Field title={strings.solutionFile + ":"} name="file" errorResponse={error}>
+		<Field title={localize("Solution file") + ":"} name="file" errorResponse={error}>
 			<FileInput
 				name="file"
 				accept={extensions}
@@ -287,6 +288,7 @@ const ContestSideBlock: FC<ContestSideBlockProps> = props => {
 	const getNow = () => {
 		return Math.round((new Date()).getTime() / 1000);
 	};
+	const { localize } = useContext(LocaleContext);
 	const [now, setNow] = useState(getNow());
 	const beforeDuration = contest.begin_time && Math.max(contest.begin_time - now, 0);
 	const remainingDuration = contest.begin_time && contest.duration && Math.max(contest.begin_time + contest.duration - now, 0);
@@ -300,19 +302,19 @@ const ContestSideBlock: FC<ContestSideBlockProps> = props => {
 	return <Block className="b-contest-side">
 		<h3>{contest.title}</h3>
 		{state?.stage === "not_started" && <>
-			<div className="stage">{strings.contestNotStarted}</div>
+			<div className="stage">{localize("Contest not started")}</div>
 			{!!beforeDuration && <div className="duration" suppressHydrationWarning={true}>
 				<Duration value={beforeDuration} />
 			</div>}
 		</>}
 		{state?.stage === "started" && <>
-			<div className="stage">{strings.contestRunning}</div>
+			<div className="stage">{localize("Contest running")}</div>
 			{!!remainingDuration && <div className="duration" suppressHydrationWarning={true}>
 				<Duration value={remainingDuration} />
 			</div>}
 		</>}
 		{state?.stage === "finished" && <>
-			<div className="stage">{strings.contestFinished}</div>
+			<div className="stage">{localize("Contest finished")}</div>
 		</>}
 	</Block>;
 };
@@ -321,6 +323,7 @@ const ContestPage: FC = () => {
 	const params = useParams();
 	const location = useLocation();
 	const { contest_id } = params;
+	const { localize } = useContext(LocaleContext);
 	const [contest, setContest] = useState<Contest>();
 	const [newMessages, setNewMessages] = useState<number>(0);
 	const getNow = () => {
@@ -423,7 +426,7 @@ const ContestPage: FC = () => {
 	if (isIndex && !canObserveProblems && canObserveStandings) {
 		return <Navigate to={`/contests/${contest.id}/standings`} replace />;
 	}
-	return <Page title={strings.contest + ": " + title} sidebar={(isStandings || (isIndex && !canObserveProblems)) ? undefined : <Routes>
+	return <Page title={localize("Contest") + ": " + title} sidebar={(isStandings || (isIndex && !canObserveProblems)) ? undefined : <Routes>
 		<Route path="/problems/:problem_code" element={<>
 			<ContestSideBlock contest={contest} />
 			<ContestProblemSideBlock contest={contest} />

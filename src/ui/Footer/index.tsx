@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../Auth";
 import Tooltip from "../Tooltip";
 import { VERSION, getSolveVersion } from "../../api";
-import { strings } from "../../Locale";
-
-import "./index.scss";
 import Select from "../Select";
 import { ThemeContext } from "../Theme";
+import { LocaleContext } from "../Locale";
+
+import "./index.scss";
 
 export const LOCALES: Record<string, string> = {
     "en": "English",
@@ -16,6 +16,7 @@ export const LOCALES: Record<string, string> = {
 
 const Footer: FC = () => {
     const { status } = useContext(AuthContext);
+    const { localize, localizeKey } = useContext(LocaleContext);
     const { theme, setTheme } = useContext(ThemeContext);
     const locale = status?.locale ?? "en";
     const localeTitle = LOCALES[locale] ?? "English";
@@ -30,10 +31,10 @@ const Footer: FC = () => {
                         </span>}>{VERSION}</Tooltip>
                     </li>
                     <li>
-                        <a href="//github.com/udovin/solve">{strings.repository}</a>
+                        <a href="//github.com/udovin/solve">{localize("Repository")}</a>
                     </li>
-                    <li>{strings.language}: <Link to="/language">{localeTitle}</Link></li>
-                    <li>{strings.theme}: <Select options={{ "light": strings.themeLight, "dark": strings.themeDark }} value={theme} onValueChange={setTheme} /></li>
+                    <li>{localize("Language")}: <Link to="/language">{localeTitle}</Link></li>
+                    <li>{localize("Theme")}: <Select options={{ "light": localizeKey("theme_light", "Light"), "dark": localizeKey("theme_dark", "Dark") }} value={theme} onValueChange={setTheme} /></li>
                 </ul>
             </div>
         </div>
