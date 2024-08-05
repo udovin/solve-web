@@ -30,6 +30,7 @@ import { Route, Routes, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 import "./index.scss";
+import { LocaleContext } from "../../ui/Locale";
 
 type EditUserBlockProps = {
 	user: User;
@@ -38,6 +39,7 @@ type EditUserBlockProps = {
 
 const EditUserBlock: FC<EditUserBlockProps> = props => {
 	const { user, onUpdateUser } = props;
+	const { localize } = useContext(LocaleContext);
 	const [form, setForm] = useState<{ [key: string]: string }>({});
 	const [error, setError] = useState<ErrorResponse>();
 	const onSubmit = (event: any) => {
@@ -53,31 +55,31 @@ const EditUserBlock: FC<EditUserBlockProps> = props => {
 		setForm({});
 		setError(undefined);
 	};
-	return <FormBlock className="b-profile-edit" title="Edit profile" onSubmit={onSubmit} footer={<>
+	return <FormBlock className="b-profile-edit" title={localize("Edit profile")} onSubmit={onSubmit} footer={<>
 		<Button
 			type="submit" color="primary"
 			disabled={!Object.keys(form).length}
-		>Change</Button>
-		{!!Object.keys(form).length && <Button type="reset" onClick={onResetForm}>Reset</Button>}
+		>{localize("Change")}</Button>
+		{!!Object.keys(form).length && <Button type="reset" onClick={onResetForm}>{localize("Reset")}</Button>}
 	</>}>
 		{error && error.message && <Alert>{error.message}</Alert>}
-		<Field title="First name:" errorResponse={error} name="first_name">
+		<Field title={localize("First name") + ":"} errorResponse={error} name="first_name">
 			<Input
-				type="text" name="first_name" placeholder="First name"
+				type="text" name="first_name" placeholder={localize("First name")}
 				value={form.first_name ?? user.first_name}
 				onValueChange={(value) => setForm({ ...form, first_name: value })}
 			/>
 		</Field>
-		<Field title="Last name:" errorResponse={error} name="last_name">
+		<Field title={localize("Last name") + ":"} errorResponse={error} name="last_name">
 			<Input
-				type="text" name="last_name" placeholder="Last name"
+				type="text" name="last_name" placeholder={localize("Last name")}
 				value={form.last_name ?? user.last_name}
 				onValueChange={(value) => setForm({ ...form, last_name: value })}
 			/>
 		</Field>
-		<Field title="Middle name:" errorResponse={error} name="middle_name">
+		<Field title={localize("Middle name") + ":"} errorResponse={error} name="middle_name">
 			<Input
-				type="text" name="middle_name" placeholder="Middle name"
+				type="text" name="middle_name" placeholder={localize("Middle name")}
 				value={form.middle_name ?? user.middle_name}
 				onValueChange={(value) => setForm({ ...form, middle_name: value })}
 			/>
@@ -87,6 +89,7 @@ const EditUserBlock: FC<EditUserBlockProps> = props => {
 
 const EditUserStatusBlock: FC<EditUserBlockProps> = props => {
 	const { user, onUpdateUser } = props;
+	const { localize, localizeKey } = useContext(LocaleContext);
 	const [currentPassword, setCurrentPassword] = useState<string>();
 	const [newStatus, setNewStatus] = useState<string>();
 	const { status, setStatus } = useContext(AuthContext);
@@ -114,26 +117,30 @@ const EditUserStatusBlock: FC<EditUserBlockProps> = props => {
 		setNewStatus(undefined);
 		setError(undefined);
 	};
-	return <FormBlock className="b-profile-edit" title="Edit status" onSubmit={onSubmit} footer={<>
+	return <FormBlock className="b-profile-edit" title={localize("Change status")} onSubmit={onSubmit} footer={<>
 		<Button
 			type="submit" color="primary"
 			disabled={!status}
-		>Change</Button>
-		{(!!status || !!currentPassword) && <Button type="reset" onClick={onResetForm}>Reset</Button>}
+		>{localize("Change")}</Button>
+		{((newStatus && newStatus !== user.status) || !!currentPassword) && <Button type="reset" onClick={onResetForm}>{localize("Reset")}</Button>}
 	</>}>
 		{error && error.message && <Alert>{error.message}</Alert>}
-		<Field title="Current password:" name="current_password" errorResponse={error}>
+		<Field title={localize("Current password") + ":"} name="current_password" errorResponse={error}>
 			<Input
-				type="password" name="current_password" placeholder="Current password"
+				type="password" name="current_password" placeholder={localize("Current password")}
 				value={currentPassword}
 				onValueChange={(value) => setCurrentPassword(value)}
 				required
 			/>
 		</Field>
-		<Field title="Status:" errorResponse={error} name="status">
+		<Field title={localize("Status") + ":"} errorResponse={error} name="status">
 			<Select
 				name="status"
-				options={{ "pending": "Pending", "active": "Active", "blocked": "Blocked" }}
+				options={{
+					"pending": localizeKey("status_pending", "Pending"),
+					"active": localizeKey("status_active", "Active"),
+					"blocked": localizeKey("status_blocked", "Blocked"),
+				}}
 				value={newStatus ?? user.status ?? "pending"}
 				onValueChange={(value) => setNewStatus(value)}
 			/>
@@ -147,6 +154,7 @@ type ChangePasswordBlockProps = {
 
 const ChangePasswordBlock: FC<ChangePasswordBlockProps> = props => {
 	const { userID } = props;
+	const { localize } = useContext(LocaleContext);
 	const [error, setError] = useState<ErrorResponse>();
 	const [form, setForm] = useState<{ [key: string]: string }>({});
 	const equalPasswords = form.password === form.password_repeat;
@@ -162,37 +170,37 @@ const ChangePasswordBlock: FC<ChangePasswordBlockProps> = props => {
 			})
 			.catch(setError);
 	};
-	return <FormBlock title="Change password" onSubmit={onSubmit} footer={
+	return <FormBlock title={localize("Change password")} onSubmit={onSubmit} footer={
 		<Button
 			type="submit" color="primary"
 			disabled={!form.current_password || !form.password || !equalPasswords}
-		>Change</Button>
+		>{localize("Change")}</Button>
 	}>
 		{error && error.message && <Alert>{error.message}</Alert>}
-		<Field title="Current password:" name="current_password" errorResponse={error}>
+		<Field title={localize("Current password") + ":"} name="current_password" errorResponse={error}>
 			<Input
-				type="password" name="current_password" placeholder="Current password"
+				type="password" name="current_password" placeholder={localize("Current password")}
 				value={form.current_password}
 				onValueChange={(value) => setForm({ ...form, current_password: value })}
 				required
 			/>
 		</Field>
-		<Field title="New password:" name="password" errorResponse={error}>
+		<Field title={localize("New password") + ":"} name="password" errorResponse={error}>
 			<Input
-				type="password" name="password" placeholder="New password"
+				type="password" name="password" placeholder={localize("New password")}
 				value={form.password}
 				onValueChange={(value) => setForm({ ...form, password: value })}
 				required
 			/>
 		</Field>
-		<Field title="Repeat new password:">
+		<Field title={localize("Repeat new password") + ":"}>
 			<Input
-				type="password" name="password_repeat" placeholder="Repeat new password"
+				type="password" name="password_repeat" placeholder={localize("Repeat new password")}
 				value={form.password_repeat}
 				onValueChange={(value) => setForm({ ...form, password_repeat: value })}
 				required
 			/>
-			{form.password && !equalPasswords && <Alert>Passwords does not match</Alert>}
+			{form.password && !equalPasswords && <Alert>{localize("Passwords do not match")}</Alert>}
 		</Field>
 	</FormBlock>;
 };
@@ -204,9 +212,10 @@ type ChangeEmailBlockProps = {
 
 const ChangeEmailBlock: FC<ChangeEmailBlockProps> = props => {
 	const { user, onUpdateUser } = props;
+	const { status } = useContext(AuthContext);
+	const { localize } = useContext(LocaleContext);
 	const [error, setError] = useState<ErrorResponse>();
 	const [email, setEmail] = useState<string>();
-	const { status } = useContext(AuthContext);
 	const [currentPassword, setCurrentPassword] = useState<string>();
 	const [resendAvailable, setResendAvailable] = useState(true);
 	const onSubmit = (event: any) => {
@@ -235,11 +244,11 @@ const ChangeEmailBlock: FC<ChangeEmailBlockProps> = props => {
 				setError(error);
 			});
 	};
-	return <FormBlock title="Change email" onSubmit={onSubmit} footer={
+	return <FormBlock title={localize("Change email")} onSubmit={onSubmit} footer={
 		<Button
 			type="submit" color="primary"
 			disabled={email === undefined || email === user.email || !currentPassword}
-		>Change</Button>
+		>{localize("Change")}</Button>
 	}>
 		{error && error.message && <Alert>{error.message}</Alert>}
 		{status?.user?.id === user.id && status.user.status === "pending" && user.email && <Alert kind={AlertKind.INFO}>
@@ -247,9 +256,9 @@ const ChangeEmailBlock: FC<ChangeEmailBlockProps> = props => {
 				If the email has not arrived, please check the spelling of your email address and the presence of the letter in the "Spam" folder.</p>
 			{resendAvailable && <p>You can also try to <b><a href="#email-resend" onClick={onResendEmail}>resubmit</a></b> the email.</p>}
 		</Alert>}
-		<Field title="Current password:" name="current_password" errorResponse={error}>
+		<Field title={localize("Current password") + ":"} name="current_password" errorResponse={error}>
 			<Input
-				type="password" name="current_password" placeholder="Current password"
+				type="password" name="current_password" placeholder={localize("Current password")}
 				value={currentPassword}
 				onValueChange={setCurrentPassword}
 				required
@@ -273,6 +282,7 @@ type CurrentSessionsBlockProps = {
 const CurrentSessionsBlock: FC<CurrentSessionsBlockProps> = props => {
 	const { userID } = props;
 	const { status } = useContext(AuthContext);
+	const { localize, localizeKey } = useContext(LocaleContext);
 	const [error, setError] = useState<ErrorResponse>();
 	const [sessions, setSessions] = useState<Sessions>();
 	const [deletedSessions, setDeletedSessions] = useState<{ [key: number]: boolean }>();
@@ -292,15 +302,15 @@ const CurrentSessionsBlock: FC<CurrentSessionsBlockProps> = props => {
 			})
 			.catch(console.log);
 	};
-	return <Block title="Current sessions" className="b-current-sessions">{error ?
+	return <Block title={localize("Current sessions")} className="b-current-sessions">{error ?
 		<Alert>{error.message}</Alert> :
 		<table className="ui-table">
 			<thead>
 				<tr>
 					<th className="id">#</th>
-					<th className="created">Created</th>
-					<th className="expires">Expires</th>
-					<th className="actions">Actions</th>
+					<th className="created">{localize("Created")}</th>
+					<th className="expires">{localize("Expires")}</th>
+					<th className="actions">{localize("Actions")}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -316,7 +326,7 @@ const CurrentSessionsBlock: FC<CurrentSessionsBlockProps> = props => {
 							{!current && <Button
 								disabled={deleted}
 								onClick={() => onDeleteSession(session)}
-							>Close</Button>}
+							>{localizeKey("close_session", "Close")}</Button>}
 						</td>
 					</tr>;
 				})}
@@ -328,6 +338,7 @@ const CurrentSessionsBlock: FC<CurrentSessionsBlockProps> = props => {
 const EditUserPage: FC = () => {
 	const params = useParams();
 	const { user_id } = params;
+	const { localize } = useContext(LocaleContext);
 	const [user, setUser] = useState<User>();
 	const [error, setError] = useState<ErrorResponse>();
 	useEffect(() => {
@@ -340,21 +351,21 @@ const EditUserPage: FC = () => {
 	}, [user_id]);
 	const { status } = useContext(AuthContext);
 	if (error) {
-		return <Page title="Error" sidebar={<Sidebar />}>
+		return <Page title={localize("Error")} sidebar={<Sidebar />}>
 			{error.message && <Alert>{error.message}</Alert>}
 		</Page>;
 	}
 	if (!user) {
-		return <Page title="Edit user" sidebar={<Sidebar />}>Loading...</Page>;
+		return <Page title={localize("Edit user")} sidebar={<Sidebar />}>Loading...</Page>;
 	}
 	const canUpdateStatus = status?.permissions?.includes("update_user_status");
 	const { id, login } = user;
-	return <Page title={`Edit user: ${login}`} sidebar={<Sidebar />}>
+	return <Page title={localize("Edit user") + ": " + login} sidebar={<Sidebar />}>
 		<TabsGroup>
 			<Block className="b-profile-edit-tabs">
 				<Tabs>
-					<Tab tab="profile"><Link to={`/users/${login}/edit`}>Profile</Link></Tab>
-					<Tab tab="security"><Link to={`/users/${login}/edit/security`}>Security</Link></Tab>
+					<Tab tab="profile"><Link to={`/users/${login}/edit`}>{localize("Profile")}</Link></Tab>
+					<Tab tab="security"><Link to={`/users/${login}/edit/security`}>{localize("Security")}</Link></Tab>
 				</Tabs>
 			</Block>
 			<Routes>

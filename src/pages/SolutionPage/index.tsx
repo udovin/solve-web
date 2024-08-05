@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ErrorResponse, observeSolution, Problem, Solution, SolutionReport, TestReport } from "../../api";
 import Page from "../../components/Page";
@@ -12,6 +12,7 @@ import ByteSize from "../../ui/ByteSize";
 import { AccountLink } from "../SolutionsPage";
 import Code from "../../ui/Code";
 import CollapseBlock from "../../ui/CollapseBlock";
+import { LocaleContext } from "../../ui/Locale";
 
 import "./index.scss";
 
@@ -23,6 +24,7 @@ const SolutionBlock: FC<SolutionBlockProps> = props => {
 	const { solution, ...rest } = props;
 	const { id, report, problem, compiler, create_time } = solution;
 	const { statement } = problem as Problem;
+	const { localize } = useContext(LocaleContext);
 	let compilerName = compiler?.name;
 	if (compiler?.config?.language) {
 		compilerName = compiler.config.language;
@@ -35,11 +37,11 @@ const SolutionBlock: FC<SolutionBlockProps> = props => {
 			<thead>
 				<tr>
 					<th className="id">#</th>
-					<th className="date">Date</th>
-					<th className="author">Author</th>
-					<th className="problem">Problem</th>
-					<th className="compiler">Compiler</th>
-					<th className="verdict">Verdict</th>
+					<th className="date">{localize("Time")}</th>
+					<th className="author">{localize("Author")}</th>
+					<th className="problem">{localize("Problem")}</th>
+					<th className="compiler">{localize("Compiler")}</th>
+					<th className="verdict">{localize("Verdict")}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -64,15 +66,16 @@ export type SolutionReportBlockProps = BlockProps & {
 
 export const SolutionReportBlock: FC<SolutionReportBlockProps> = props => {
 	const { report, ...rest } = props;
-	return <CollapseBlock title="Tests" className="b-solution-report" {...rest}>
+	const { localize } = useContext(LocaleContext);
+	return <CollapseBlock title={localize("Tests")} className="b-solution-report" {...rest}>
 		<table className="ui-table">
 			<thead>
 				<tr>
 					<th className="id">#</th>
-					<th className="time">Time</th>
-					<th className="memory">Memory</th>
-					<th className="verdict">Verdict</th>
-					<th className="check-log">Check log</th>
+					<th className="time">{localize("Time")}</th>
+					<th className="memory">{localize("Memory")}</th>
+					<th className="verdict">{localize("Verdict")}</th>
+					<th className="check-log">{localize("Check log")}</th>
 				</tr>
 			</thead>
 			<tbody>{report && report.tests?.map((test: TestReport, index: number) => {
@@ -93,6 +96,7 @@ export const SolutionReportBlock: FC<SolutionReportBlockProps> = props => {
 const SolutionPage: FC = () => {
 	const params = useParams();
 	const { solution_id } = params;
+	const { localize } = useContext(LocaleContext);
 	const [solution, setSolution] = useState<Solution>();
 	const [error, setError] = useState<ErrorResponse>();
 	useEffect(() => {
@@ -102,19 +106,19 @@ const SolutionPage: FC = () => {
 			.catch(setError);
 	}, [solution_id]);
 	if (error) {
-		return <Page title="Error" sidebar={<Sidebar />}>
+		return <Page title={localize("Error")} sidebar={<Sidebar />}>
 			{error.message && <Alert>{error.message}</Alert>}
 		</Page>;
 	}
 	if (!solution) {
-		return <Page title="Solution" sidebar={<Sidebar />}>
+		return <Page title={localize("Solution")} sidebar={<Sidebar />}>
 			<>Loading...</>
 		</Page>;
 	}
 	const { content, compiler } = solution;
-	return <Page title="Solution" sidebar={<Sidebar />}>
+	return <Page title={localize("Solution")} sidebar={<Sidebar />}>
 		<SolutionBlock solution={solution} />
-		{content && <CollapseBlock title="Content" className="b-contest-solution-content">
+		{content && <CollapseBlock title={localize("Content")} className="b-contest-solution-content">
 			<Code value={content} language={compiler?.config?.extensions?.at(0)} />
 		</CollapseBlock>}
 		{!!solution.report?.tests && <SolutionReportBlock report={solution.report} />}

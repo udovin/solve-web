@@ -5,6 +5,7 @@ import { AuthContext } from "../../ui/Auth";
 import Page from "../../components/Page";
 import Sidebar from "../../ui/Sidebar";
 import Alert from "../../ui/Alert";
+import { LocaleContext } from "../../ui/Locale";
 
 const ConfirmEmailPage: FC = () => {
     const [redirect, setRedirect] = useState(false);
@@ -13,6 +14,7 @@ const ConfirmEmailPage: FC = () => {
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id") || "";
     const secret = searchParams.get("secret") || "";
+    const { localize } = useContext(LocaleContext);
     useEffect(() => {
         confirmEmail(id, secret)
             .then(() => setRedirect(true))
@@ -25,7 +27,7 @@ const ConfirmEmailPage: FC = () => {
         return <Navigate to={"/"} />;
     }
     if (error) {
-        return <Page title="Email confirmation" sidebar={<Sidebar />}>
+        return <Page title={localize("Email confirmation")} sidebar={<Sidebar />}>
             {error.message && <Alert>{error.message}</Alert>}
         </Page>;
     }

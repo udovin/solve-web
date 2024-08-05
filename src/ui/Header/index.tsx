@@ -19,7 +19,7 @@ const Header: FC = () => {
         return "";
     };
     const { status } = useContext(AuthContext);
-    const { localize } = useContext(LocaleContext);
+    const { localize, localizeKey } = useContext(LocaleContext);
     const [showConfirmEmail, setShowConfirmEmail] = useState(false);
     useEffect(() => {
         setShowConfirmEmail(status?.user?.status === "pending");
@@ -75,7 +75,7 @@ const Header: FC = () => {
             </ul>
         </nav>
         {showConfirmEmail && <Alert kind={AlertKind.WARNING}>
-            A confirmation email has been sent to your email address. To get full access, you need to follow the link provided in this email.
+            {localizeKey("email_confirmation_alert", "A confirmation email has been sent to your email address. To get full access, you need to follow the link provided in this email.")}
             <IconButton kind="delete" onClick={() => setShowConfirmEmail(false)}></IconButton>
         </Alert>}
     </header>;

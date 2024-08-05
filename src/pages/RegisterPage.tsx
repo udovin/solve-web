@@ -52,7 +52,7 @@ const RegisterPage = () => {
 				/>
 				{error.invalid_fields && error.invalid_fields["login"] && <Alert>{error.invalid_fields["login"].message}</Alert>}
 			</Field>
-			<Field title="E-mail:" description={localizeKey("email_confirmation", "You will receive an email to verify your account.")}>
+			<Field title="E-mail:" description={localizeKey("email_confirmation_notice", "You will receive an email to verify your account.")}>
 				<Input
 					type="text" name="email" placeholder="E-mail"
 					value={form.email || ""}

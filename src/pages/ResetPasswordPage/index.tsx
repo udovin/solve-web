@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { ErrorResponse, confirmPassword, resetUserPassword } from "../../api";
 import { Navigate, useSearchParams } from "react-router-dom";
 import Page from "../../components/Page";
@@ -8,12 +8,14 @@ import Button from "../../ui/Button";
 import Alert, { AlertKind } from "../../ui/Alert";
 import Field from "../../ui/Field";
 import Input from "../../ui/Input";
+import { LocaleContext } from "../../ui/Locale";
 
 const ResetPasswordPage: FC = () => {
     const [redirect, setRedirect] = useState(false);
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id") || "";
     const secret = searchParams.get("secret") || "";
+    const { localize } = useContext(LocaleContext);
     const [form, setForm] = useState<{ [key: string]: string }>({});
     const [error, setError] = useState<ErrorResponse>({ message: "" });
     const [success, setSuccess] = useState(false);
@@ -42,15 +44,15 @@ const ResetPasswordPage: FC = () => {
         return <Navigate to={"/login"} />;
     }
     if (!id || !secret) {
-        return <Page title="Reset password" sidebar={<Sidebar />}>
-            <FormBlock title="Reset password" onSubmit={onSendEmail} footer={
-                <Button type="submit" color="primary" disabled={success}>Reset</Button>
+        return <Page title={localize("Reset password")} sidebar={<Sidebar />}>
+            <FormBlock title={localize("Reset password")} onSubmit={onSendEmail} footer={
+                <Button type="submit" color="primary" disabled={success}>{localize("Reset")}</Button>
             }>
                 {success && <Alert kind={AlertKind.SUCCESS}>The password reset code has been successfully sent to your email address.</Alert>}
                 {error.message && <Alert>{error.message}</Alert>}
-                <Field title="Login:">
+                <Field title={localize("Username") + ":"}>
                     <Input
-                        type="login" name="login" placeholder="Login"
+                        type="login" name="login" placeholder={localize("Username")}
                         value={form.login}
                         onValueChange={(value) => setForm({ ...form, login: value })}
                         required
@@ -60,28 +62,28 @@ const ResetPasswordPage: FC = () => {
             </FormBlock>
         </Page>;
     }
-    return <Page title="Reset password" sidebar={<Sidebar />}>
-        <FormBlock title="Reset password" onSubmit={onResetPassword} footer={
-            <Button type="submit" color="primary">Reset</Button>
+    return <Page title={localize("Reset password")} sidebar={<Sidebar />}>
+        <FormBlock title={localize("Reset password")} onSubmit={onResetPassword} footer={
+            <Button type="submit" color="primary">{localize("Reset")}</Button>
         }>
             {error.message && <Alert>{error.message}</Alert>}
-            <Field title="Password:">
+            <Field title={localize("Password") + ":"}>
                 <Input
-                    type="password" name="password" placeholder="Password"
+                    type="password" name="password" placeholder={localize("Password")}
                     value={form.password}
                     onValueChange={(value) => setForm({ ...form, password: value })}
                     required
                 />
                 {error.invalid_fields && error.invalid_fields["password"] && <Alert>{error.invalid_fields["password"].message}</Alert>}
             </Field>
-            <Field title="Repeat password:">
+            <Field title={localize("Repeat password") + ":"}>
                 <Input
-                    type="password" name="password_repeat" placeholder="Repeat password"
+                    type="password" name="password_repeat" placeholder={localize("Repeat password")}
                     value={form.password_repeat}
                     onValueChange={(value) => setForm({ ...form, password_repeat: value })}
                     required
                 />
-                {form.password && !equalPasswords && <Alert>Passwords does not match</Alert>}
+                {form.password && !equalPasswords && <Alert>{localize("Passwords do not match")}</Alert>}
             </Field>
         </FormBlock>
     </Page>;
