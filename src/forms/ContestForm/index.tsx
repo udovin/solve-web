@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
 import { ErrorResponse } from "../../api";
 import Alert from "../../ui/Alert";
 import Field from "../../ui/Field";
@@ -7,6 +7,7 @@ import DateTimeInput from "../../ui/DateTimeInput";
 import DurationInput from "../../ui/DurationInput";
 import Checkbox from "../../ui/Checkbox";
 import Select from "../../ui/Select";
+import { LocaleContext } from "../../ui/Locale";
 
 type ContestFormProps = {
     title: string,
@@ -43,55 +44,56 @@ export const ContestForm: FC<ContestFormProps> = props => {
         standingsKind, onStandingsKindChange,
         error,
     } = props;
+    const { localize, localizeKey } = useContext(LocaleContext);
     return <>
         {error && error.message && <Alert>{error.message}</Alert>}
-        <Field title="Title:" name="title" errorResponse={error}>
+        <Field title={localize("Title") + ":"} name="title" errorResponse={error}>
             <Input
-                type="text" name="title" placeholder="Title"
+                type="text" name="title" placeholder={localize("Title")}
                 value={title}
                 onValueChange={onTitleChange}
                 required />
         </Field>
-        <Field name="begin_time" title="Begin time:" errorResponse={error}>
+        <Field name="begin_time" title={localize("Begin time") + ":"} errorResponse={error}>
             <DateTimeInput
                 value={beginTime}
                 onValueChange={onBeginTimeChange} />
         </Field>
-        <Field name="duration" title="Duration:" errorResponse={error}>
+        <Field name="duration" title={localize("Duration") + ":"} errorResponse={error}>
             <DurationInput
                 value={duration}
                 onValueChange={onDurationChange} />
         </Field>
-        <Field name="enable_registration" errorResponse={error} description="Enables self-registration of participants.">
+        <Field name="enable_registration" errorResponse={error} description={localizeKey("enable_registration_description", "Enables self-registration of participants.")}>
             <Checkbox
                 value={enableRegistration ?? false}
                 onValueChange={onEnableRegistrationChange} />
-            <span className="label">Enable registration</span>
+            <span className="label">{localize("Enable registration")}</span>
         </Field>
-        <Field name="enable_upsolving" errorResponse={error} description="Enables upsolving after contest is finished.">
+        <Field name="enable_upsolving" errorResponse={error} description={localizeKey("enable_upsolving_description", "Enables upsolving after contest is finished.")}>
             <Checkbox
                 value={enableUpsolving ?? false}
                 onValueChange={onEnableUpsolvingChange} />
-            <span className="label">Enable upsolving</span>
+            <span className="label">{localize("Enable upsolving")}</span>
         </Field>
-        <Field name="enable_observing" errorResponse={error} description="Enables public access to contest standings.">
+        <Field name="enable_observing" errorResponse={error} description={localizeKey("enable_observing_description", "Enables public access to contest standings.")}>
             <Checkbox
                 value={enableObserving ?? false}
                 onValueChange={onEnableObservingChange} />
-            <span className="label">Enable observing</span>
+            <span className="label">{localize("Enable observing")}</span>
         </Field>
-        <Field title="Standings:" name="standings_kind" errorResponse={error}>
+        <Field title={localize("Standings") + ":"} name="standings_kind" errorResponse={error}>
             <Select
-                options={{ disabled: "Disabled", icpc: "ICPC", ioi: "IOI" }}
+                options={{ disabled: localize("Disabled"), icpc: "ICPC", ioi: "IOI" }}
                 value={standingsKind ?? "disabled"}
                 onValueChange={onStandingsKindChange} />
         </Field>
-        <Field title="Freeze since duration:" name="freeze_begin_duration" errorResponse={error}>
+        <Field title={localize("Freeze since duration") + ":"} name="freeze_begin_duration" errorResponse={error}>
             <DurationInput
                 value={freezeBeginDuration}
                 onValueChange={onFreezeBeginDurationChange} />
         </Field>
-        <Field title="Unfreeze time:" name="freeze_end_time" errorResponse={error}>
+        <Field title={localize("Unfreeze time") + ":"} name="freeze_end_time" errorResponse={error}>
             <DateTimeInput
                 value={freezeEndTime}
                 onValueChange={onFreezeEndTimeChange} />

@@ -202,14 +202,14 @@ export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
         {problems?.problems && <Select name="problem" options={problems?.problems?.reduce((options, problem) => {
             let title = `${problem.code}. ${problem.problem.statement?.title ?? problem.problem.title}`;
             return { ...options, [problem.id]: title };
-        }, { "0": "Any problem" }) ?? {}} value={String(problemFilter ?? 0)} onValueChange={v => setProblemFilter(Number(v))} />}
+        }, { "0": localize("Any problem") }) ?? {}} value={String(problemFilter ?? 0)} onValueChange={v => setProblemFilter(Number(v))} />}
         {participants?.participants && <Select name="participant" options={participants?.participants?.reduce((options, participant) => {
             if (participant.scope || participant.group) {
                 return options;
             }
             let title = <ParticipantLink participant={participant} disabled />;
             return { ...options, [participant.id ?? 0]: title };
-        }, { "0": "Any participant" }) ?? {}} value={String(participantFilter ?? 0)} onValueChange={v => setParticipantFilter(Number(v))} />}
+        }, { "0": localize("Any participant") }) ?? {}} value={String(participantFilter ?? 0)} onValueChange={v => setParticipantFilter(Number(v))} />}
     </>
     } className="b-contest-solutions" > {
             error ?

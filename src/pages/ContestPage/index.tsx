@@ -154,6 +154,7 @@ export type DeleteContestBlockProps = {
 
 const DeleteContestBlock: FC<DeleteContestBlockProps> = props => {
 	const { contest } = props;
+	const { localize } = useContext(LocaleContext);
 	const [redirect, setRedirect] = useState<boolean>(false);
 	const [title, setTitle] = useState<string>();
 	const [error, setError] = useState<ErrorResponse>();
@@ -170,17 +171,17 @@ const DeleteContestBlock: FC<DeleteContestBlockProps> = props => {
 	if (redirect) {
 		return <Navigate to="/" />;
 	}
-	return <FormBlock className="b-contest-edit" title="Delete contest" onSubmit={onSubmit} footer={<>
+	return <FormBlock className="b-contest-edit" title={localize("Delete contest")} onSubmit={onSubmit} footer={<>
 		<Button
 			type="submit" color="danger"
 			disabled={title !== contest.title}
-		>Delete contest</Button>
+		>{localize("Delete contest")}</Button>
 		{title && <Button type="reset" onClick={onResetForm}>Reset</Button>}
 	</>}>
 		{error && error.message && <Alert>{error.message}</Alert>}
-		<Field title="Enter title of contest:">
+		<Field title={localize("Enter title of contest") + ":"}>
 			<Input
-				type="text" name="title" placeholder="Title"
+				type="text" name="title" placeholder={localize("Title")}
 				value={title ?? ""}
 				onValueChange={value => setTitle(value)}
 				required autoComplete="off" />

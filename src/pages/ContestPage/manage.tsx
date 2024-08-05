@@ -1,8 +1,9 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { Contest, ErrorResponse, updateContest } from "../../api";
 import FormBlock from "../../components/FormBlock";
 import Button from "../../ui/Button";
 import { ContestForm } from "../../forms/ContestForm";
+import { LocaleContext } from "../../ui/Locale";
 
 export type EditContestBlockProps = {
     contest: Contest;
@@ -11,6 +12,7 @@ export type EditContestBlockProps = {
 
 export const EditContestBlock: FC<EditContestBlockProps> = props => {
     const { contest, onUpdateContest } = props;
+    const { localize } = useContext(LocaleContext);
     const [title, setTitle] = useState(contest.title);
     const [beginTime, setBeginTime] = useState(contest.begin_time);
     const [duration, setDuration] = useState(contest.duration);
@@ -61,12 +63,12 @@ export const EditContestBlock: FC<EditContestBlockProps> = props => {
         freezeBeginDuration !== contest.freeze_begin_duration ||
         freezeEndTime !== contest.freeze_end_time ||
         (standingsKind ?? "disabled") !== (contest.standings_kind ?? "disabled");
-    return <FormBlock className="b-contest-edit" title="Edit contest" onSubmit={onSubmit} footer={<>
+    return <FormBlock className="b-contest-edit" title={localize("Edit contest")} onSubmit={onSubmit} footer={<>
         <Button
             type="submit" color="primary"
             disabled={!changed}
-        >Change</Button>
-        {changed && <Button type="reset" onClick={onResetForm}>Reset</Button>}
+        >{localize("Change")}</Button>
+        {changed && <Button type="reset" onClick={onResetForm}>{localize("Reset")}</Button>}
     </>}>
         <ContestForm
             title={title}

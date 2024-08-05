@@ -1,14 +1,35 @@
+@import "../../mixins.scss";
+
 .b-problems {
     .ui-block-content {
         padding: 0;
         overflow-x: auto;
     }
-  
+
     .ui-table {
         border: none;
 
         .title {
             text-align: left;
+
+            .code {
+                padding-left: 4px;
+                font-size: 12px;
+                line-height: 14px;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+@include themify {
+    .b-problems {
+        .ui-table {
+            .title {
+                .code {
+                    color: themed("label-text-color");
+                }
+            }
         }
     }
 }

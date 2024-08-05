@@ -134,18 +134,18 @@ export const ContestProblemsBlock: FC<ContestProblemsBlockProps> = props => {
             <Input name="code"
                 value={form.code || ""}
                 onValueChange={value => setForm({ ...form, code: value })}
-                placeholder="Code"
+                placeholder={localize("Code")}
                 required />
             <Input name="problem_id"
                 value={form.problem_id || ""}
                 onValueChange={value => setForm({ ...form, problem_id: value })}
-                placeholder="Problem ID"
+                placeholder={localize("Problem ID")}
                 required />
             <NumberInput name="points"
                 value={form.points ? Number(form.points) : undefined}
                 onValueChange={value => setForm({ ...form, points: String(value ?? "") })}
-                placeholder="Points" />
-            <Button type="submit">Create</Button>
+                placeholder={localize("Points")} />
+            <Button type="submit">{localize("Add")}</Button>
         </form>}
     >
         {error && <Alert>{error.message}</Alert>}

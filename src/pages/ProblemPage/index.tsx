@@ -36,7 +36,7 @@ const ProblemSamlpes: FC<ProblemSamplesProps> = props => {
 					<td className="input">
 						<div className="copy-wrap">
 							<pre>{input ?? ""}</pre>
-							<IconButton kind="document" onClick={() => { navigator.clipboard.writeText(input ?? "") }} />
+							<IconButton kind="document" onClick={() => navigator.clipboard.writeText(input ?? "")} />
 						</div>
 					</td>
 					<td className="output">

@@ -47,7 +47,7 @@ const MessageItem: FC<MessageItemProps> = props => {
             {message.title && <span className="title">{message.title}</span>}
             {message.description && <span className="description">{message.description}</span>}
             {message.participant && <span className="participant"><ParticipantLink participant={message.participant} /></span>}
-            {canAnswer && <span className="answer"><Button onClick={() => setShow(!show)}>Answer</Button></span>}
+            {canAnswer && <span className="answer"><Button onClick={() => setShow(!show)}>{localize("Answer")}</Button></span>}
         </div>
         {show && <div className="new-message">
             {error && error.message && <Alert>{error.message}</Alert>}
@@ -58,7 +58,7 @@ const MessageItem: FC<MessageItemProps> = props => {
                     onValueChange={setDescription}
                     required />
             </Field>
-            <Button onClick={onSubmit} disabled={!description}>Submit</Button>
+            <Button onClick={onSubmit} disabled={!description}>{localize("Submit")}</Button>
         </div>}
         {subMessages && <div className="children">{subMessages.map((message: ContestMessage, index: number) => {
             return <div className="message-wrap">

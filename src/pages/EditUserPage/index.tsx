@@ -120,9 +120,9 @@ const EditUserStatusBlock: FC<EditUserBlockProps> = props => {
 	return <FormBlock className="b-profile-edit" title={localize("Change status")} onSubmit={onSubmit} footer={<>
 		<Button
 			type="submit" color="primary"
-			disabled={!status}
+			disabled={!newStatus || newStatus === user.status}
 		>{localize("Change")}</Button>
-		{((newStatus && newStatus !== user.status) || !!currentPassword) && <Button type="reset" onClick={onResetForm}>{localize("Reset")}</Button>}
+		{((newStatus && newStatus !== user.status)) && <Button type="reset" onClick={onResetForm}>{localize("Reset")}</Button>}
 	</>}>
 		{error && error.message && <Alert>{error.message}</Alert>}
 		<Field title={localize("Current password") + ":"} name="current_password" errorResponse={error}>

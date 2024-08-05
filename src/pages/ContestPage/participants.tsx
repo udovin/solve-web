@@ -37,7 +37,7 @@ type ContestParticipantsBlockProps = {
 
 export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props => {
     const { contest } = props;
-    const { localizeKey } = useContext(LocaleContext);
+    const { localize, localizeKey } = useContext(LocaleContext);
     const [error, setError] = useState<ErrorResponse>();
     const [participants, setParticipants] = useState<ContestParticipants>();
     const [account, setAccount] = useState<Account>();
@@ -90,10 +90,10 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
         });
     };
     return <Block
-        title="Participants" className="b-contest-participants"
+        title={localize("Participants")} className="b-contest-participants"
         footer={canCreateParticipant && <form onSubmit={onSubmit}>
             <AccountInput
-                placeholder="Participant"
+                placeholder={localize("Participant")}
                 account={account}
                 onAccountChange={setAccount}
                 fetchAccounts={fetchAccounts} />
@@ -103,7 +103,7 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
                 options={Object.fromEntries(Object.entries(KINDS).map(([key, value]) => [key, localizeKey(`participant_${key}`, value ?? key)]))}
                 onValueChange={setKind}
             />
-            <Button type="submit" disabled={!account}>Create</Button>
+            <Button type="submit" disabled={!account}>{localize("Add")}</Button>
         </form>}
     >
         {error && <Alert>{error.message}</Alert>}
@@ -111,9 +111,9 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
             <thead>
                 <tr>
                     <th className="id">#</th>
-                    <th className="login">Login</th>
-                    <th className="kind">Kind</th>
-                    <th className="actions">Actions</th>
+                    <th className="login">{localize("Participant")}</th>
+                    <th className="kind">{localize("Kind")}</th>
+                    <th className="actions">{localize("Actions")}</th>
                 </tr>
             </thead>
             <tbody>

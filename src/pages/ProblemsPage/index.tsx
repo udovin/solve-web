@@ -13,10 +13,11 @@ import "./index.scss";
 
 export type ProblemsBlockProps = BlockProps & {
 	problems: Problem[];
+	showCodes?: boolean;
 };
 
 const ProblemsBlock: FC<ProblemsBlockProps> = props => {
-	const { problems, ...rest } = props;
+	const { problems, showCodes, ...rest } = props;
 	const { localize } = useContext(LocaleContext);
 	return <Block className="b-problems" title={localize("Problems")} {...rest}>
 		<table className="ui-table">
@@ -31,6 +32,7 @@ const ProblemsBlock: FC<ProblemsBlockProps> = props => {
 					return <tr key={index} className="problem">
 						<td className="title">
 							<Link to={`/problems/${id}`}>{statement?.title ?? title}</Link>
+							{showCodes && <span className="code" onClick={() => navigator.clipboard.writeText(title)}>({title})</span>}
 						</td>
 					</tr>;
 				})}
@@ -55,12 +57,13 @@ const ProblemsPage: FC = () => {
 			{error.message && <Alert>{error.message}</Alert>}
 		</Page>;
 	}
+	const canCreate = !!status?.permissions?.includes("create_problem");
 	return <Page title={localize("Problems")} sidebar={<Sidebar />}>
-		{status?.permissions?.includes("create_problem") && <p>
-			<Link to={"/problems/create"}><Button>Create</Button></Link>
+		{canCreate && <p>
+			<Link to={"/problems/create"}><Button>{localize("Create")}</Button></Link>
 		</p>}
 		{problems ?
-			<ProblemsBlock problems={problems.problems || []} /> :
+			<ProblemsBlock problems={problems.problems || []} showCodes={canCreate} /> :
 			<>Loading...</>}
 	</Page>;
 };
