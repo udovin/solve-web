@@ -4,12 +4,16 @@ import { localeUser } from "../../api";
 
 export type LocalizeFn = (text: string) => string;
 export type LocalizeKeyFn = (key: string, text: string) => string;
+export type LocalizePluralFn = (texts: string[], num: number) => string;
+export type LocalizePluralKeyFn = (key: string, texts: string[], num: number) => string;
 
 type LocaleContextProps = {
     name: string,
     localizations: { [index: string]: string },
     localize: LocalizeFn,
     localizeKey: LocalizeKeyFn,
+    localizePlural: LocalizePluralFn,
+    localizePluralKey: LocalizePluralKeyFn,
     setLocale(name: string): void;
 };
 
@@ -18,7 +22,9 @@ const LocaleContext = createContext<LocaleContextProps>({
     localizations: {},
     localize: (text: string) => text,
     localizeKey: (_key: string, text: string) => text,
-    setLocale: (_name: string) => { },
+    localizePlural: (texts: string[], _num: number) => texts[0],
+    localizePluralKey: (_key: string, texts: string[], _num: number) => texts[0],
+    setLocale: (name: string) => console.error("Cannot set locale: " + name),
 });
 
 const getLocalizationKey = (text: string) => {
@@ -54,15 +60,37 @@ const LocaleProvider: FC<{ children?: ReactNode }> = props => {
             .catch(console.log);
     };
     useEffect(refreshLocale, [setName, setLocalizations]);
-    const localizeKey = (key: string, text: string) => {
-        return localizations["web." + key] ?? localizations[key] ?? text;
+    const plural = (num: number) => {
+        if (name === "ru") {
+            const m10 = num % 10;
+            const m100 = num % 100;
+            if (m10 === 1 && m100 !== 11) {
+                return 0;
+            }
+            if (m10 >= 2 && m10 <= 4 && (m100 < 10 || m100 >= 20)) {
+                return 1;
+            }
+            return 2;
+        }
+        return num === 1 ? 0 : 1;
     };
+    const localizeKey = (key: string, text: string) => localizations[`web.${key}`] ?? localizations[key] ?? text;
+    const localizePluralKey = (key: string, texts: string[], num: number) => localizeKey(`${key}:${plural(num)}`, texts[num === 1 ? 0 : 1]).replaceAll("%d", num.toString());
     const localize = (text: string) => localizeKey(getLocalizationKey(text), text);
+    const localizePlural = (texts: string[], num: number) => localizePluralKey(getLocalizationKey(texts[0]), texts, num);
     const setLocale = (name: string) => {
         localStorage.setItem("locale", name);
         refreshLocale();
     };
-    return <LocaleContext.Provider value={{ name, localizations, localize, localizeKey, setLocale }}>
+    return <LocaleContext.Provider value={{
+        name,
+        localizations,
+        localize,
+        localizeKey,
+        localizePlural,
+        localizePluralKey,
+        setLocale
+    }}>
         {props.children}
     </LocaleContext.Provider>;
 };

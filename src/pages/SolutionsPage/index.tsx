@@ -30,6 +30,7 @@ type AccountLinkProps = {
 export const AccountLink: FC<AccountLinkProps> = props => {
 	const { account, disabled } = props;
 	const { user, scope_user, scope } = account;
+	const { localize } = useContext(LocaleContext);
 	if (user) {
 		if (disabled) {
 			return <>{user.login}</>;
@@ -37,7 +38,7 @@ export const AccountLink: FC<AccountLinkProps> = props => {
 		return <UserLink user={user} />;
 	}
 	if (scope) {
-		return <><span className="kind">Scope: </span>{scope.title ?? scope.id}</>;
+		return <><span className="kind">{localize("Scope")}: </span>{scope.title ?? scope.id}</>;
 	}
 	if (scope_user) {
 		return <>{scope_user.title ?? scope_user.login}</>;

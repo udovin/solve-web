@@ -1,6 +1,5 @@
 import { FC, useContext } from "react";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../Auth";
 import Tooltip from "../Tooltip";
 import { VERSION, getSolveVersion } from "../../api";
 import Select from "../Select";
