@@ -7,8 +7,7 @@ import { LocaleContext } from "../../ui/Locale";
 import "./index.scss";
 
 const LanguagePage = () => {
-    const { localize, name, setLocale } = useContext(LocaleContext);
-    const locale = name ?? "en";
+    const { localize, locale, setLocale } = useContext(LocaleContext);
     return <Page title={localize("Change language")}>
         <Block title={localize("Change language")} className="b-locales">
             <ul>

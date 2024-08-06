@@ -1,91 +1,91 @@
 @import "../../mixins.scss";
 
 .ui-verdict {
-    &.failed {
-        font-style: italic;
-    }
+	&.failed {
+		font-style: italic;
+	}
 
-    &.accepted,
-    &.ce,
-    &.rejected,
-    &.wa,
-    &.pe,
-    &.tle,
-    &.mle,
-    &.re,
-    &.pa {
-        font-weight: bold;
-    }
+	&.accepted,
+	&.ce,
+	&.rejected,
+	&.wa,
+	&.pe,
+	&.tle,
+	&.mle,
+	&.re,
+	&.pa {
+		font-weight: bold;
+	}
 }
 
 .ui-verdict-wrap {
-    .points {
-        display: block;
-        font-size: 12px;
-        font-weight: normal;
-    }
+	.points {
+		display: block;
+		font-size: 12px;
+		font-weight: normal;
+	}
 }
 
 .ui-verdict-details {
-    .item {
-        display: block;
-        margin-bottom: 2px;
+	.item {
+		display: block;
+		margin-bottom: 2px;
 
-        &:last-child {
-            margin-bottom: 0;
-        }
-    }
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
 
-    .test {
-        margin-top: -2px;
-    }
+	.test {
+		margin-top: -2px;
+	}
 
-    .points,
-    .time,
-    .memory {
-        font-size: 12px;
-    }
+	.points,
+	.time,
+	.memory {
+		font-size: 12px;
+	}
 }
 
 @include themify {
-    .ui-verdict {
-        &.failed {
-            color: themed("text-color");
-        }
+	.ui-verdict {
+		&.failed {
+			color: themed("text-color");
+		}
 
-        &.queued,
-        &.running {
-            color: themed("label-text-color");
-        }
+		&.queued,
+		&.running {
+			color: themed("label-text-color");
+		}
 
-        &.accepted {
-            color: themed("success-alert-text-color");
-        }
+		&.accepted {
+			color: themed("success-alert-text-color");
+		}
 
-        &.ce,
-        &.rejected,
-        &.wa,
-        &.pe {
-            color: themed("danger-alert-text-color");
-        }
+		&.ce,
+		&.rejected,
+		&.wa,
+		&.pe {
+			color: themed("danger-alert-text-color");
+		}
 
-        &.tle,
-        &.mle,
-        &.re,
-        &.pa {
-            color: themed("info-alert-text-color");
-        }
-    }
+		&.tle,
+		&.mle,
+		&.re,
+		&.pa {
+			color: themed("info-alert-text-color");
+		}
+	}
 
-    .ui-verdict-wrap {
-        .points {
-            color: themed("label-text-color");
-        }
-    }
+	.ui-verdict-wrap {
+		.points {
+			color: themed("label-text-color");
+		}
+	}
 
-    .ui-verdict-details {
-        .memory {
-            color: themed("label-text-color");
-        }
-    }
+	.ui-verdict-details {
+		.memory {
+			color: themed("label-text-color");
+		}
+	}
 }

@@ -14,9 +14,8 @@ export const LOCALES: Record<string, string> = {
 };
 
 const Footer: FC = () => {
-    const { localize, localizeKey, name } = useContext(LocaleContext);
+    const { localize, localizeKey, locale } = useContext(LocaleContext);
     const { theme, setTheme } = useContext(ThemeContext);
-    const locale = name ?? "en";
     const localeTitle = LOCALES[locale] ?? "English";
     return <footer id="footer">
         <div id="footer-nav">
