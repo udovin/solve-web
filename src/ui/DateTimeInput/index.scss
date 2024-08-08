@@ -1,76 +1,76 @@
 @import "../../mixins.scss";
 
 .ui-calendar-portal {
-    display: block;
-    position: absolute;
-    padding-top: 2px;
-    z-index: 20;
+	display: block;
+	position: absolute;
+	padding-top: 2px;
+	z-index: 20;
 
-    >.calendar {
-        display: block;
-        border: 1px solid;
-        border-radius: 4px;
-        overflow: hidden;
+	>.calendar {
+		display: block;
+		border: 1px solid;
+		border-radius: 4px;
+		overflow: hidden;
 
-        >table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            padding: 4px;
+		>table {
+			width: 100%;
+			border-collapse: separate;
+			border-spacing: 0;
+			padding: 4px;
 
-            td {
-                padding: 1px;
-                text-align: center;
+			td {
+				padding: 1px;
+				text-align: center;
 
-                >button {
-                    padding: 2px 4px;
-                    width: 100%;
-                    height: 100%;
-                    border: 1px solid transparent;
-                    border-radius: 4px;
-                    background-color: transparent;
-                    text-align: center;
-                    font-family: inherit;
-                    font-size: inherit;
-                }
+				>button {
+					padding: 2px 4px;
+					width: 100%;
+					height: 100%;
+					border: 1px solid transparent;
+					border-radius: 4px;
+					background-color: transparent;
+					text-align: center;
+					font-family: inherit;
+					font-size: inherit;
+				}
 
-                &.this-date>button {
-                    font-weight: bold;
-                }
-            }
-        }
-    }
+				&.this-date>button {
+					font-weight: bold;
+				}
+			}
+		}
+	}
 }
 
 @include themify {
-    .ui-calendar-portal {
-        >.calendar {
-            border-color: themed("button-active-border-color");
-            background-color: themed("block-background-color");
-            box-shadow: 0 0 2px themed("button-active-border-color");
+	.ui-calendar-portal {
+		>.calendar {
+			border-color: themed("button-active-border-color");
+			background-color: themed("block-background-color");
+			box-shadow: 0 0 2px themed("button-active-border-color");
 
-            >table {
+			>table {
 
-                td {
-                    >button {
-                        color: themed("label-text-color");
+				td {
+					>button {
+						color: themed("label-text-color");
 
-                        &:hover {
-                            border-color: themed("button-hover-border-color");
-                        }
-                    }
+						&:hover {
+							border-color: themed("button-hover-border-color");
+						}
+					}
 
-                    &.this-month>button {
-                        color: themed("text-color");
-                    }
+					&.this-month>button {
+						color: themed("text-color");
+					}
 
-                    &.selected>button {
-                        border-color: themed("primary-button-border-color");
-                        background-color: themed("primary-button-background-color");
-                        color: themed("primary-button-text-color");
-                    }
-                }
-            }
-        }
-    }
+					&.selected>button {
+						border-color: themed("primary-button-border-color");
+						background-color: themed("primary-button-background-color");
+						color: themed("primary-button-text-color");
+					}
+				}
+			}
+		}
+	}
 }

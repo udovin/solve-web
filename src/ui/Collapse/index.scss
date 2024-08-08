@@ -1,60 +1,60 @@
 @import "../../mixins.scss";
 
 .ui-collapse {
-    margin: 0 0 10px 0;
-    border: 1px solid;
-    border-radius: 4px;
+	margin: 0 0 10px 0;
+	border: 1px solid;
+	border-radius: 4px;
 
-    &:last-child {
-        margin-bottom: 0;
-    }
+	&:last-child {
+		margin-bottom: 0;
+	}
 
-    .ui-collapse-header {
-        position: relative;
-        padding: 10px 10px 10px 34px;
+	.ui-collapse-header {
+		position: relative;
+		padding: 10px 10px 10px 34px;
 
-        &:hover {
-            cursor: pointer;
-        }
+		&:hover {
+			cursor: pointer;
+		}
 
-        >.arrow {
-            display: block;
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            left: 10px;
-            background-repeat: no-repeat;
-            background-size: 600% 600%;
-            background-position: 40% 60%;
-            transform: rotate(0);
-            @include transition(transform 150ms ease-out);
-        }
-    }
+		>.arrow {
+			display: block;
+			position: absolute;
+			width: 20px;
+			height: 20px;
+			left: 10px;
+			background-repeat: no-repeat;
+			background-size: 600% 600%;
+			background-position: 40% 60%;
+			transform: rotate(0);
+			@include transition(transform 150ms ease-out);
+		}
+	}
 
-    &.expanded .ui-collapse-header {
-        >.arrow {
-            transform: rotate(-180deg);
-            @include transition(transform 150ms ease-in);
-        }
-    }
+	&.expanded .ui-collapse-header {
+		>.arrow {
+			transform: rotate(-180deg);
+			@include transition(transform 150ms ease-in);
+		}
+	}
 
-    .ui-collapse-content {
-        padding: 10px;
-        border-top: 1px solid;
-    }
+	.ui-collapse-content {
+		padding: 10px;
+		border-top: 1px solid;
+	}
 }
 
 @include themify {
-    .ui-collapse {
-        border-color: themed("block-border-color");
-        background-color: themed("block-background-color");
+	.ui-collapse {
+		border-color: themed("block-border-color");
+		background-color: themed("block-background-color");
 
-        .ui-collapse-header >.arrow {
-            background-image: themed("icons");
-        }
+		.ui-collapse-header>.arrow {
+			background-image: themed("icons");
+		}
 
-        .ui-collapse-content {
-            border-color: themed("block-border-color");
-        }
-    }
+		.ui-collapse-content {
+			border-color: themed("block-border-color");
+		}
+	}
 }

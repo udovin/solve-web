@@ -3,6 +3,7 @@ import { hydrateRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import App from "./App";
+import { MetadataProvider } from "./ui/Metadata";
 
 import "./index.scss";
 
@@ -10,7 +11,9 @@ hydrateRoot(
 	document.getElementById("root")!,
 	<React.StrictMode>
 		<BrowserRouter basename={process.env.PUBLIC_URL}>
-			<App />
+			<MetadataProvider>
+				<App />
+			</MetadataProvider>
 		</BrowserRouter>
 	</React.StrictMode>
 );

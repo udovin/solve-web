@@ -1,43 +1,43 @@
 @import "../../mixins.scss";
 
 .ui-code {
-    border: 1px solid;
-    border-radius: 4px;
-    overflow: hidden;
+	border: 1px solid;
+	border-radius: 4px;
+	overflow: hidden;
 
-    .cm-gutter.cm-lineNumbers {
-        margin-left: 4px;
-    }
+	.cm-gutter.cm-lineNumbers {
+		margin-left: 4px;
+	}
 }
 
 @include themify {
-    .ui-code {
-        border-color: themed("block-border-color");
+	.ui-code {
+		border-color: themed("block-border-color");
 
-        .cm-gutters {
-            background-color: themed("group-row-background-color");
-            border-color: themed("block-border-color");
-            color: themed("label-text-color");
-        }
+		.cm-gutters {
+			background-color: themed("group-row-background-color");
+			border-color: themed("block-border-color");
+			color: themed("label-text-color");
+		}
 
-        .hl-comment {
-            color: themed("code-comment-text-color");
-        }
+		.hl-comment {
+			color: themed("code-comment-text-color");
+		}
 
-        .hl-keyword {
-            color: themed("code-keyword-text-color");
-        }
+		.hl-keyword {
+			color: themed("code-keyword-text-color");
+		}
 
-        .hl-type {
-            color: themed("code-type-text-color");
-        }
+		.hl-type {
+			color: themed("code-type-text-color");
+		}
 
-        .hl-string {
-            color: themed("code-string-text-color");
-        }
+		.hl-string {
+			color: themed("code-string-text-color");
+		}
 
-        .hl-number {
-            color: themed("code-number-text-color");
-        }
-    }
+		.hl-number {
+			color: themed("code-number-text-color");
+		}
+	}
 }
