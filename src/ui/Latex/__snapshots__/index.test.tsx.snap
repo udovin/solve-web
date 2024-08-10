@@ -654,3 +654,19 @@ exports[`renders correctly 3`] = `
   </div>
 </body>
 `;
+
+exports[`renders correctly 4`] = `
+<body>
+  <div>
+    <div
+      class="ui-latex "
+    >
+      <u
+        class="underline"
+      >
+        Underline
+      </u>
+    </div>
+  </div>
+</body>
+`;

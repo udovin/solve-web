@@ -17,3 +17,7 @@ test("renders correctly", () => {
 	expect(document.body).toMatchSnapshot();
 });
 
+test("renders correctly", () => {
+	render(<Latex content={`\\underline{Underline}`} />);
+	expect(document.body).toMatchSnapshot();
+});

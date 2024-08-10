@@ -22,6 +22,7 @@ export type LatexProps = {
 const parser = unified().use(unifiedLatexFromString, {
 	macros: {
 		"def": { signature: "m m" },
+		"underline": { signature: "m", renderInfo: { inParMode: true } },
 	},
 });
 
@@ -55,6 +56,20 @@ const macros: Record<string, (node: Macro, info: VisitInfo, context: Context) =>
 			attributes = { ...attributes, style: style, "data-scale": scale };
 		}
 		return htmlLike({ tag: "img", attributes });
+	},
+	"underline": (node: Macro) => {
+		if (!node.args) {
+			return null;
+		}
+		const args = node.args.map((arg) => {
+			if (arg.openMark === "" && arg.content.length === 0) {
+				return null;
+			}
+			return arg.content;
+		});
+		const content = args[args.length - 1] || [];
+		const attributes = { className: "underline" };
+		return htmlLike({ tag: "u", content, attributes });
 	},
 	"^": (_: Macro, info: VisitInfo) => {
 		if (info.context.inMathMode) {
