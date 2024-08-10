@@ -18,6 +18,6 @@ test("renders correctly", () => {
 });
 
 test("renders correctly", () => {
-	render(<Latex content={`\\underline{Underline}`} />);
+	render(<Latex content={`\\underline{Underline} {\\bfseries Bold} $\\bf{Bold2}$ {\\bf Bold3} Normal`} />);
 	expect(document.body).toMatchSnapshot();
 });

@@ -666,6 +666,96 @@ exports[`renders correctly 4`] = `
       >
         Underline
       </u>
+       
+      <b
+        class="textbf"
+      >
+        Bold
+      </b>
+       
+      <span
+        class="inline-math"
+      >
+        <span
+          class="katex"
+        >
+          <span
+            class="katex-mathml"
+          >
+            <math
+              xmlns="http://www.w3.org/1998/Math/MathML"
+            >
+              <semantics>
+                <mrow>
+                  <mi
+                    mathvariant="bold"
+                  >
+                    B
+                  </mi>
+                  <mi
+                    mathvariant="bold"
+                  >
+                    o
+                  </mi>
+                  <mi
+                    mathvariant="bold"
+                  >
+                    l
+                  </mi>
+                  <mi
+                    mathvariant="bold"
+                  >
+                    d
+                  </mi>
+                  <mn
+                    mathvariant="bold"
+                  >
+                    2
+                  </mn>
+                </mrow>
+                <annotation
+                  encoding="application/x-tex"
+                >
+                  \\bf{Bold2}
+                </annotation>
+              </semantics>
+            </math>
+          </span>
+          <span
+            aria-hidden="true"
+            class="katex-html"
+          >
+            <span
+              class="base"
+            >
+              <span
+                class="strut"
+                style="height: 0.6944em;"
+              />
+              <span
+                class="mord"
+              >
+                <span
+                  class="mord"
+                >
+                  <span
+                    class="mord mathbf"
+                  >
+                    Bold2
+                  </span>
+                </span>
+              </span>
+            </span>
+          </span>
+        </span>
+      </span>
+       
+      <b
+        class="textbf"
+      >
+        Bold3
+      </b>
+       Normal
     </div>
   </div>
 </body>

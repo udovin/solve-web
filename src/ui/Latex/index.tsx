@@ -88,6 +88,12 @@ const macros: Record<string, (node: Macro, info: VisitInfo, context: Context) =>
 		}
 		return s("^");
 	},
+	"bf": (_: Macro, info: VisitInfo) => {
+		if (!info.context.hasMathModeAncestor) {
+			return undefined;
+		}
+		return s("\\bf");
+	},
 };
 
 const Latex: FC<LatexProps> = props => {
