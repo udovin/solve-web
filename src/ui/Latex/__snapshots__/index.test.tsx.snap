@@ -17,55 +17,6 @@ exports[`renders correctly 1`] = `
           class="katex"
         >
           <span
-            class="katex-mathml"
-          >
-            <math
-              xmlns="http://www.w3.org/1998/Math/MathML"
-            >
-              <semantics>
-                <mrow>
-                  <msup>
-                    <mi>
-                      a
-                    </mi>
-                    <mi>
-                      n
-                    </mi>
-                  </msup>
-                  <mo>
-                    +
-                  </mo>
-                  <msup>
-                    <mi>
-                      b
-                    </mi>
-                    <mi>
-                      n
-                    </mi>
-                  </msup>
-                  <mo
-                    mathvariant="normal"
-                  >
-                    ≠
-                  </mo>
-                  <msup>
-                    <mi>
-                      c
-                    </mi>
-                    <mi>
-                      n
-                    </mi>
-                  </msup>
-                </mrow>
-                <annotation
-                  encoding="application/x-tex"
-                >
-                  a^{n} + b^{n} \\ne c^{n}
-                </annotation>
-              </semantics>
-            </math>
-          </span>
-          <span
             aria-hidden="true"
             class="katex-html"
           >
@@ -314,58 +265,6 @@ exports[`renders correctly 1`] = `
           class="katex"
         >
           <span
-            class="katex-mathml"
-          >
-            <math
-              xmlns="http://www.w3.org/1998/Math/MathML"
-            >
-              <semantics>
-                <mrow>
-                  <mi>
-                    a
-                  </mi>
-                  <mo
-                    separator="true"
-                  >
-                    ,
-                  </mo>
-                  <mi>
-                    b
-                  </mi>
-                  <mo
-                    separator="true"
-                  >
-                    ,
-                  </mo>
-                  <mi>
-                    c
-                  </mi>
-                  <mo
-                    separator="true"
-                  >
-                    ,
-                  </mo>
-                  <mi>
-                    n
-                  </mi>
-                  <mo>
-                    ∈
-                  </mo>
-                  <mi
-                    mathvariant="double-struck"
-                  >
-                    N
-                  </mi>
-                </mrow>
-                <annotation
-                  encoding="application/x-tex"
-                >
-                  a, b, c, n \\in \\N
-                </annotation>
-              </semantics>
-            </math>
-          </span>
-          <span
             aria-hidden="true"
             class="katex-html"
           >
@@ -461,32 +360,6 @@ exports[`renders correctly 1`] = `
           class="katex"
         >
           <span
-            class="katex-mathml"
-          >
-            <math
-              xmlns="http://www.w3.org/1998/Math/MathML"
-            >
-              <semantics>
-                <mrow>
-                  <mi>
-                    n
-                  </mi>
-                  <mo>
-                    ≥
-                  </mo>
-                  <mn>
-                    3
-                  </mn>
-                </mrow>
-                <annotation
-                  encoding="application/x-tex"
-                >
-                  n \\ge 3
-                </annotation>
-              </semantics>
-            </math>
-          </span>
-          <span
             aria-hidden="true"
             class="katex-html"
           >
@@ -550,31 +423,6 @@ exports[`renders correctly 2`] = `
         <span
           class="katex"
         >
-          <span
-            class="katex-mathml"
-          >
-            <math
-              xmlns="http://www.w3.org/1998/Math/MathML"
-            >
-              <semantics>
-                <mrow>
-                  <msup>
-                    <mi>
-                      a
-                    </mi>
-                    <mi>
-                      b
-                    </mi>
-                  </msup>
-                </mrow>
-                <annotation
-                  encoding="application/x-tex"
-                >
-                  a^{b}
-                </annotation>
-              </semantics>
-            </math>
-          </span>
           <span
             aria-hidden="true"
             class="katex-html"
@@ -679,48 +527,6 @@ exports[`renders correctly 4`] = `
         <span
           class="katex"
         >
-          <span
-            class="katex-mathml"
-          >
-            <math
-              xmlns="http://www.w3.org/1998/Math/MathML"
-            >
-              <semantics>
-                <mrow>
-                  <mi
-                    mathvariant="bold"
-                  >
-                    B
-                  </mi>
-                  <mi
-                    mathvariant="bold"
-                  >
-                    o
-                  </mi>
-                  <mi
-                    mathvariant="bold"
-                  >
-                    l
-                  </mi>
-                  <mi
-                    mathvariant="bold"
-                  >
-                    d
-                  </mi>
-                  <mn
-                    mathvariant="bold"
-                  >
-                    2
-                  </mn>
-                </mrow>
-                <annotation
-                  encoding="application/x-tex"
-                >
-                  \\bf{Bold2}
-                </annotation>
-              </semantics>
-            </math>
-          </span>
           <span
             aria-hidden="true"
             class="katex-html"

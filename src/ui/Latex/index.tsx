@@ -121,12 +121,14 @@ const Latex: FC<LatexProps> = props => {
 			katex.render(dm.textContent ?? "", dm as HTMLElement, {
 				displayMode: true,
 				throwOnError: false,
+				output: "html",
 			});
 		});
 		node.querySelectorAll(".inline-math").forEach(im => {
 			katex.render(im.textContent ?? "", im as HTMLElement, {
 				displayMode: false,
 				throwOnError: false,
+				output: "html",
 			});
 		});
 		node.querySelectorAll<HTMLImageElement>("img[data-scale]").forEach(img => {
