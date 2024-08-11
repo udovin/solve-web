@@ -1,6 +1,6 @@
-import { FC, useContext, useEffect, useMemo, useState } from "react";
-import { DateFormatter } from "../../utils";
-import { LocaleContext } from "../Locale";
+import { FC, useEffect, useMemo, useState } from "react";
+import { DateFormatter } from "../../utils/date";
+import { useLocale } from "../Locale";
 import Tooltip from "../Tooltip";
 
 export type DateTimeProps = {
@@ -14,7 +14,7 @@ const DateTime: FC<DateTimeProps> = props => {
 	const getNow = () => {
 		return Math.round((new Date()).getTime() / 1000);
 	};
-	const { localizeKey, localizePluralKey } = useContext(LocaleContext);
+	const { localizeKey, localizePluralKey } = useLocale();
 	const [now, setNow] = useState(getNow());
 	const fmt = localizeKey("datetime_format", DATETIME_FORMAT);
 	const format = useMemo(() => DateFormatter(fmt), [fmt]);

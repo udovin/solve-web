@@ -1,5 +1,5 @@
-import { FC, ReactNode, useContext } from "react";
-import { MetadataContext } from "../ui/Metadata";
+import { FC, ReactNode } from "react";
+import { useMetadata } from "../ui/Metadata";
 
 export type PageProps = {
 	title: string;
@@ -9,7 +9,7 @@ export type PageProps = {
 
 const Page: FC<PageProps> = props => {
 	const { title, sidebar, children } = props;
-	const { setTitle } = useContext(MetadataContext);
+	const { setTitle } = useMetadata();
 	setTitle(title);
 	return <main id="main" className={sidebar ? undefined : "content"}>
 		{sidebar && <div id="sidebar-wrap"><div id="sidebar">{sidebar}</div></div>}

@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Link, Route, Routes, useParams } from "react-router-dom";
 import Page from "../../components/Page";
 import Block from "../../ui/Block";
@@ -9,12 +9,12 @@ import { AdminRolesBlock } from "./roles";
 import { AdminSettingsBlock } from "./settings";
 import { AdminScopeBlock, AdminScopesBlock } from "./scopes";
 import { ErrorResponse, observeScope, Scope } from "../../api";
-import { LocaleContext } from "../../ui/Locale";
+import { useLocale } from "../../ui/Locale";
 
 import "./index.scss";
 
 const AdminTabs: FC = () => {
-    const { localize } = useContext(LocaleContext);
+    const { localize } = useLocale();
     return <Block className="b-admin-tabs">
         <Tabs>
             {<Tab tab="settings">
@@ -67,7 +67,7 @@ const AdminScopeTab: FC = () => {
 };
 
 const AdminPage: FC = () => {
-    const { localize } = useContext(LocaleContext);
+    const { localize } = useLocale();
     return <Page title={localize("Admin")} sidebar={<Sidebar />}>
         <TabsGroup>
             <AdminTabs />

@@ -1,9 +1,9 @@
-import { FC, useContext } from "react";
+import { FC } from "react";
 import { SolutionReport, TestReport } from "../../api";
 import ByteSize from "../ByteSize";
 import Duration from "../Duration";
 import Tooltip from "../Tooltip";
-import { LocaleContext, LocalizeKeyFn } from "../Locale";
+import { LocalizeKeyFn, useLocale } from "../Locale";
 
 import "./index.scss";
 
@@ -111,7 +111,7 @@ const getDescription = (localizeKey: LocalizeKeyFn, info?: VerdictInfo) => {
 
 const Verdict: FC<VerdictProps> = props => {
 	const { report } = props;
-	const { localize, localizeKey } = useContext(LocaleContext);
+	const { localize, localizeKey } = useLocale();
 	const verdict = report?.verdict;
 	const points = report?.points;
 	const used_time = report?.used_time;
@@ -139,7 +139,7 @@ type TestVerdictProps = {
 
 export const TestVerdict: FC<TestVerdictProps> = props => {
 	const { report } = props;
-	const { localizeKey } = useContext(LocaleContext);
+	const { localizeKey } = useLocale();
 	const verdict = report?.verdict;
 	const info = VERDICTS[verdict ? verdict : "running"];
 	const title = getTitle(localizeKey, info) ?? verdict;

@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { Contest, ContestMessage, ContestMessages, createContestMessage, ErrorResponse, observeContestMessages, submitContestQuestion } from "../../api";
 import FormBlock from "../../components/FormBlock";
@@ -9,7 +9,7 @@ import Field from "../../ui/Field";
 import Input from "../../ui/Input";
 import Textarea from "../../ui/Textarea";
 import { ParticipantLink } from "./participants";
-import { LocaleContext } from "../../ui/Locale";
+import { useLocale } from "../../ui/Locale";
 
 type MessageItemProps = {
     contest: Contest;
@@ -21,7 +21,7 @@ type MessageItemProps = {
 
 const MessageItem: FC<MessageItemProps> = props => {
     const { contest, message, subMessages, canCreateMessage, onNewMessage } = props;
-    const { localize } = useContext(LocaleContext);
+    const { localize } = useLocale();
     const [show, setShow] = useState(false);
     const [error, setError] = useState<ErrorResponse>();
     const [description, setDescription] = useState<string>();
@@ -82,7 +82,7 @@ const toNumber = (n?: string | null) => {
 export const ContestMessagesBlock: FC<ContestMessagesBlockProps> = props => {
     const { contest } = props;
     const { id, permissions, state } = contest;
-    const { localize } = useContext(LocaleContext);
+    const { localize } = useLocale();
     const canSubmitQuestion = permissions?.includes("submit_contest_question") && state?.participant;
     const canCreateMessage = permissions?.includes("create_contest_message");
     const [error, setError] = useState<ErrorResponse>();
@@ -129,7 +129,7 @@ export const ContestMessagesBlock: FC<ContestMessagesBlockProps> = props => {
 
 export const SubmitContestQuestionBlock: FC<ContestMessagesBlockProps> = props => {
     const { contest } = props;
-    const { localize } = useContext(LocaleContext);
+    const { localize } = useLocale();
     const [error, setError] = useState<ErrorResponse>();
     const [title, setTitle] = useState<string>();
     const [description, setDescription] = useState<string>();
@@ -177,7 +177,7 @@ export const SubmitContestQuestionBlock: FC<ContestMessagesBlockProps> = props =
 
 export const CreateContestMessageBlock: FC<ContestMessagesBlockProps> = props => {
     const { contest } = props;
-    const { localize } = useContext(LocaleContext);
+    const { localize } = useLocale();
     const [error, setError] = useState<ErrorResponse>();
     const [title, setTitle] = useState<string>();
     const [description, setDescription] = useState<string>();

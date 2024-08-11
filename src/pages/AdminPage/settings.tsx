@@ -1,14 +1,14 @@
-import { FormEvent, useContext, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { createSetting, deleteSetting, ErrorResponse, observeSettings, Setting, Settings } from "../../api";
 import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
 import Button from "../../ui/Button";
 import IconButton from "../../ui/IconButton";
 import Input from "../../ui/Input";
-import { LocaleContext } from "../../ui/Locale";
+import { useLocale } from "../../ui/Locale";
 
 export const AdminSettingsBlock = () => {
-    const { localize } = useContext(LocaleContext);
+    const { localize } = useLocale();
     const [settings, setSettings] = useState<Settings>();
     const [form, setForm] = useState<{ [key: string]: string }>({});
     const [error, setError] = useState<ErrorResponse>();

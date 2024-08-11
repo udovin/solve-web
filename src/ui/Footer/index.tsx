@@ -1,10 +1,10 @@
-import { FC, useContext } from "react";
+import { FC } from "react";
 import { Link } from "react-router-dom";
 import Tooltip from "../Tooltip";
 import { VERSION, getSolveVersion } from "../../api";
 import Select from "../Select";
-import { ThemeContext } from "../Theme";
-import { LocaleContext } from "../Locale";
+import { useTheme } from "../Theme";
+import { useLocale } from "../Locale";
 
 import "./index.scss";
 
@@ -14,8 +14,8 @@ export const LOCALES: Record<string, string> = {
 };
 
 const Footer: FC = () => {
-    const { localize, localizeKey, locale } = useContext(LocaleContext);
-    const { theme, setTheme } = useContext(ThemeContext);
+    const { localize, localizeKey, locale } = useLocale();
+    const { theme, setTheme } = useTheme();
     const localeTitle = LOCALES[locale] ?? "English";
     return <footer id="footer">
         <div id="footer-nav">

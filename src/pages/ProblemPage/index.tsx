@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { BASE, ErrorResponse, observeProblem, Problem, ProblemStatementSample, ProblemTask } from "../../api";
 import Page from "../../components/Page";
@@ -11,7 +11,7 @@ import Icon from "../../ui/Icon";
 import IconButton from "../../ui/IconButton";
 import Latex from "../../ui/Latex";
 import Sidebar from "../../ui/Sidebar";
-import { LocaleContext } from "../../ui/Locale";
+import { useLocale } from "../../ui/Locale";
 
 import "./index.scss";
 
@@ -21,7 +21,7 @@ type ProblemSamplesProps = {
 
 const ProblemSamlpes: FC<ProblemSamplesProps> = props => {
 	const { samples } = props;
-	const { localize } = useContext(LocaleContext);
+	const { localize } = useLocale();
 	return <table className="ui-table section samples">
 		<thead>
 			<tr>
@@ -85,7 +85,7 @@ type ProblemBlockProps = {
 export const ProblemBlock: FC<ProblemBlockProps> = props => {
 	const { problem, code, imageBaseUrl } = props;
 	const { config, statement } = problem;
-	const { localize } = useContext(LocaleContext);
+	const { localize } = useLocale();
 	return <Block title={`${code ? `${code}. ` : ""}${statement?.title ?? problem.title}`} className="b-problem-statement">
 		<ProblemTaskNotice task={problem.last_task} />
 		{config && <table className="ui-table section limits">
@@ -159,7 +159,7 @@ export const ManageProblemSideBlock: FC<ManageProblemSideBlockProps> = props => 
 const ProblemPage: FC = () => {
 	const params = useParams();
 	const { problem_id } = params;
-	const { localize } = useContext(LocaleContext);
+	const { localize } = useLocale();
 	const [problem, setProblem] = useState<Problem>();
 	const [error, setError] = useState<ErrorResponse>();
 	useEffect(() => {

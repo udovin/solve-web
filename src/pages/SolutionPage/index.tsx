@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ErrorResponse, observeSolution, Problem, Solution, SolutionReport, TestReport } from "../../api";
 import Page from "../../components/Page";
@@ -12,7 +12,7 @@ import ByteSize from "../../ui/ByteSize";
 import { AccountLink } from "../SolutionsPage";
 import Code from "../../ui/Code";
 import CollapseBlock from "../../ui/CollapseBlock";
-import { LocaleContext } from "../../ui/Locale";
+import { useLocale } from "../../ui/Locale";
 
 import "./index.scss";
 
@@ -24,7 +24,7 @@ const SolutionBlock: FC<SolutionBlockProps> = props => {
 	const { solution, ...rest } = props;
 	const { id, report, problem, compiler, create_time } = solution;
 	const { statement } = problem as Problem;
-	const { localize } = useContext(LocaleContext);
+	const { localize } = useLocale();
 	let compilerName = compiler?.name;
 	if (compiler?.config?.language) {
 		compilerName = compiler.config.language;
@@ -66,7 +66,7 @@ export type SolutionReportBlockProps = BlockProps & {
 
 export const SolutionReportBlock: FC<SolutionReportBlockProps> = props => {
 	const { report, ...rest } = props;
-	const { localize } = useContext(LocaleContext);
+	const { localize } = useLocale();
 	return <CollapseBlock title={localize("Tests")} className="b-solution-report" {...rest}>
 		<table className="ui-table">
 			<thead>
@@ -96,7 +96,7 @@ export const SolutionReportBlock: FC<SolutionReportBlockProps> = props => {
 const SolutionPage: FC = () => {
 	const params = useParams();
 	const { solution_id } = params;
-	const { localize } = useContext(LocaleContext);
+	const { localize } = useLocale();
 	const [solution, setSolution] = useState<Solution>();
 	const [error, setError] = useState<ErrorResponse>();
 	useEffect(() => {

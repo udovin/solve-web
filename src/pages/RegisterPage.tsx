@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import Page from "../components/Page";
 import Input from "../ui/Input";
@@ -8,11 +8,11 @@ import Field from "../ui/Field";
 import Alert from "../ui/Alert";
 import { ErrorResponse, registerUser } from "../api";
 import Sidebar from "../ui/Sidebar";
-import { LocaleContext } from "../ui/Locale";
+import { useLocale } from "../ui/Locale";
 
 const RegisterPage = () => {
 	const [success, setSuccess] = useState<boolean>();
-	const { localize, localizeKey } = useContext(LocaleContext);
+	const { localize, localizeKey } = useLocale();
 	const [error, setError] = useState<ErrorResponse>({ message: "" });
 	const [form, setForm] = useState<{ [key: string]: string }>({});
 	const onSubmit = (event: any) => {

@@ -1,6 +1,6 @@
-import { FC, useEffect, useState, useContext } from "react";
+import { FC, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../../ui/Auth";
+import { useAuth } from "../../ui/Auth";
 import { Contests, ErrorResponse, Contest, observeContests } from "../../api";
 import Alert from "../../ui/Alert";
 import Button from "../../ui/Button";
@@ -9,7 +9,7 @@ import Sidebar from "../../ui/Sidebar";
 import Block, { BlockProps } from "../../ui/Block";
 import DateTime from "../../ui/DateTime";
 import Duration from "../../ui/Duration";
-import { LocaleContext } from "../../ui/Locale";
+import { useLocale } from "../../ui/Locale";
 
 import "./index.scss";
 
@@ -19,7 +19,7 @@ export type ContestsBlockProps = BlockProps & {
 
 const ContestsBlock: FC<ContestsBlockProps> = props => {
 	const { contests, ...rest } = props;
-	const { localize } = useContext(LocaleContext);
+	const { localize } = useLocale();
 	return <Block className="b-contests" title={localize("Contests")} {...rest}>
 		<table className="ui-table">
 			<thead>
@@ -61,8 +61,8 @@ const ContestsBlock: FC<ContestsBlockProps> = props => {
 const ContestsPage: FC = () => {
 	const [contests, setContests] = useState<Contests>();
 	const [error, setError] = useState<ErrorResponse>();
-	const { status } = useContext(AuthContext);
-	const { localize } = useContext(LocaleContext);
+	const { status } = useAuth();
+	const { localize } = useLocale();
 	useEffect(() => {
 		setContests(undefined);
 		observeContests()

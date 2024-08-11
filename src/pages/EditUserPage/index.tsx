@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Page from "../../components/Page";
 import {
 	ErrorResponse,
@@ -21,16 +21,16 @@ import Input from "../../ui/Input";
 import Button from "../../ui/Button";
 import Field from "../../ui/Field";
 import Alert, { AlertKind } from "../../ui/Alert";
-import { AuthContext } from "../../ui/Auth";
+import { useAuth } from "../../ui/Auth";
 import Sidebar from "../../ui/Sidebar";
 import DateTime from "../../ui/DateTime";
 import Select from "../../ui/Select";
 import { Tab, TabContent, Tabs, TabsGroup } from "../../ui/Tabs";
 import { Route, Routes, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useLocale } from "../../ui/Locale";
 
 import "./index.scss";
-import { LocaleContext } from "../../ui/Locale";
 
 type EditUserBlockProps = {
 	user: User;
@@ -39,7 +39,7 @@ type EditUserBlockProps = {
 
 const EditUserBlock: FC<EditUserBlockProps> = props => {
 	const { user, onUpdateUser } = props;
-	const { localize } = useContext(LocaleContext);
+	const { localize } = useLocale();
 	const [form, setForm] = useState<{ [key: string]: string }>({});
 	const [error, setError] = useState<ErrorResponse>();
 	const onSubmit = (event: any) => {
@@ -89,10 +89,10 @@ const EditUserBlock: FC<EditUserBlockProps> = props => {
 
 const EditUserStatusBlock: FC<EditUserBlockProps> = props => {
 	const { user, onUpdateUser } = props;
-	const { localize, localizeKey } = useContext(LocaleContext);
+	const { localize, localizeKey } = useLocale();
 	const [currentPassword, setCurrentPassword] = useState<string>();
 	const [newStatus, setNewStatus] = useState<string>();
-	const { status, setStatus } = useContext(AuthContext);
+	const { status, setStatus } = useAuth();
 	const [error, setError] = useState<ErrorResponse>();
 	const onSubmit = (event: any) => {
 		event.preventDefault();
@@ -154,7 +154,7 @@ type ChangePasswordBlockProps = {
 
 const ChangePasswordBlock: FC<ChangePasswordBlockProps> = props => {
 	const { userID } = props;
-	const { localize } = useContext(LocaleContext);
+	const { localize } = useLocale();
 	const [error, setError] = useState<ErrorResponse>();
 	const [form, setForm] = useState<{ [key: string]: string }>({});
 	const equalPasswords = form.password === form.password_repeat;
@@ -212,8 +212,8 @@ type ChangeEmailBlockProps = {
 
 const ChangeEmailBlock: FC<ChangeEmailBlockProps> = props => {
 	const { user, onUpdateUser } = props;
-	const { status } = useContext(AuthContext);
-	const { localize } = useContext(LocaleContext);
+	const { status } = useAuth();
+	const { localize } = useLocale();
 	const [error, setError] = useState<ErrorResponse>();
 	const [email, setEmail] = useState<string>();
 	const [currentPassword, setCurrentPassword] = useState<string>();
@@ -281,8 +281,8 @@ type CurrentSessionsBlockProps = {
 
 const CurrentSessionsBlock: FC<CurrentSessionsBlockProps> = props => {
 	const { userID } = props;
-	const { status } = useContext(AuthContext);
-	const { localize, localizeKey } = useContext(LocaleContext);
+	const { status } = useAuth();
+	const { localize, localizeKey } = useLocale();
 	const [error, setError] = useState<ErrorResponse>();
 	const [sessions, setSessions] = useState<Sessions>();
 	const [deletedSessions, setDeletedSessions] = useState<{ [key: number]: boolean }>();
@@ -338,7 +338,7 @@ const CurrentSessionsBlock: FC<CurrentSessionsBlockProps> = props => {
 const EditUserPage: FC = () => {
 	const params = useParams();
 	const { user_id } = params;
-	const { localize } = useContext(LocaleContext);
+	const { localize } = useLocale();
 	const [user, setUser] = useState<User>();
 	const [error, setError] = useState<ErrorResponse>();
 	useEffect(() => {
@@ -349,7 +349,7 @@ const EditUserPage: FC = () => {
 			})
 			.catch(setError);
 	}, [user_id]);
-	const { status } = useContext(AuthContext);
+	const { status } = useAuth();
 	if (error) {
 		return <Page title={localize("Error")} sidebar={<Sidebar />}>
 			{error.message && <Alert>{error.message}</Alert>}

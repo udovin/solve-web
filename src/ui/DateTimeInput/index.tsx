@@ -1,8 +1,8 @@
-import { CSSProperties, FC, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { CSSProperties, FC, useEffect, useMemo, useRef, useState } from "react";
 import Input from "../Input";
 import Portal from "../Portal";
-import { DateFormatter, DateParser } from "../../utils";
-import { LocaleContext } from "../Locale";
+import { DateFormatter, DateParser } from "../../utils/date";
+import { useLocale } from "../Locale";
 import { DATETIME_FORMAT } from "../DateTime";
 
 import "./index.scss";
@@ -32,7 +32,7 @@ const getMonthCalendar = (year: number, month: number) => {
 
 const DateTimeInput: FC<DateTimeInputProps> = props => {
     const { value, onValueChange, disabled } = props;
-    const { localizeKey } = useContext(LocaleContext);
+    const { localizeKey } = useLocale();
     const fmt = localizeKey("datetime_format", DATETIME_FORMAT);
     const placeholder = localizeKey("datetime_input_placeholder", fmt);
     const valueDate = useMemo(() => value ? new Date(value * 1000) : new Date(), [value]);

@@ -1,4 +1,4 @@
-import { FC, ReactNode, createContext, useEffect, useState } from "react";
+import { FC, ReactNode, createContext, useContext, useEffect, useState } from "react";
 
 import { localeUser } from "../../api";
 
@@ -96,4 +96,6 @@ const LocaleProvider: FC<{ children?: ReactNode }> = props => {
 	</LocaleContext.Provider>;
 };
 
-export { LocaleContext, LocaleProvider };
+const useLocale = () => useContext(LocaleContext);
+
+export { LocaleProvider, useLocale };

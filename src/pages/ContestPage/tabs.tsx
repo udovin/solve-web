@@ -1,9 +1,9 @@
-import { FC, useContext } from "react";
+import { FC } from "react";
 import { Link } from "react-router-dom";
 import { Contest } from "../../api";
 import Block, { BlockProps } from "../../ui/Block";
 import { Tab, Tabs } from "../../ui/Tabs";
-import { LocaleContext } from "../../ui/Locale";
+import { useLocale } from "../../ui/Locale";
 
 type ContestTabsProps = BlockProps & {
     contest: Contest;
@@ -14,7 +14,7 @@ type ContestTabsProps = BlockProps & {
 export const ContestTabs: FC<ContestTabsProps> = props => {
     const { contest, newMessages } = props;
     const { id, permissions, state } = contest;
-    const { localize } = useContext(LocaleContext);
+    const { localize } = useLocale();
     const canRegister = !state?.participant && permissions?.includes("register_contest");
     const canObserveProblems = permissions?.includes("observe_contest_problems");
     const canSubmitSolution = permissions?.includes("submit_contest_solution");

@@ -1,4 +1,4 @@
-import { FC, useContext, useState } from "react";
+import { FC, useState } from "react";
 import { ErrorResponse, confirmPassword, resetUserPassword } from "../../api";
 import { Navigate, useSearchParams } from "react-router-dom";
 import Page from "../../components/Page";
@@ -8,14 +8,14 @@ import Button from "../../ui/Button";
 import Alert, { AlertKind } from "../../ui/Alert";
 import Field from "../../ui/Field";
 import Input from "../../ui/Input";
-import { LocaleContext } from "../../ui/Locale";
+import { useLocale } from "../../ui/Locale";
 
 const ResetPasswordPage: FC = () => {
     const [redirect, setRedirect] = useState(false);
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id") || "";
     const secret = searchParams.get("secret") || "";
-    const { localize } = useContext(LocaleContext);
+    const { localize } = useLocale();
     const [form, setForm] = useState<{ [key: string]: string }>({});
     const [error, setError] = useState<ErrorResponse>({ message: "" });
     const [success, setSuccess] = useState(false);

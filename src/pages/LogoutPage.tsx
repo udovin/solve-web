@@ -1,10 +1,10 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { logoutUser } from "../api";
-import { AuthContext } from "../ui/Auth";
+import { useAuth } from "../ui/Auth";
 
 const LogoutPage = () => {
-	const { status, refreshStatus } = useContext(AuthContext);
+	const { status, refreshStatus } = useAuth();
 	const [success, setSuccess] = useState<boolean>();
 	useEffect(() => {
 		if (!status) {

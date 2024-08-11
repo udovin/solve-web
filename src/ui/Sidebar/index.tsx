@@ -1,15 +1,15 @@
-import { FC, useContext } from "react";
+import { FC } from "react";
 import { Link } from "react-router-dom";
 import Block from "../Block";
-import { AuthContext } from "../Auth";
+import { useAuth } from "../Auth";
 import Icon from "../Icon";
-import { LocaleContext } from "../Locale";
+import { useLocale } from "../Locale";
 
 import "./index.scss";
 
 const Sidebar: FC = () => {
-	const { status } = useContext(AuthContext);
-	const { localize } = useContext(LocaleContext);
+	const { status } = useAuth();
+	const { localize } = useLocale();
 	const user = status?.user || status?.scope_user;
 	const accountLinks = <>
 		{status?.user && <li><Link to={`/users/${status.user.login}`}><Icon kind="account" /><span className="label">{localize("Profile")}</span></Link></li>}

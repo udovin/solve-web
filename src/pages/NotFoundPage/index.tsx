@@ -1,13 +1,13 @@
-import { FC, useContext } from "react";
+import { FC } from "react";
 import Page from "../../components/Page";
 import Block from "../../ui/Block";
 import Sidebar from "../../ui/Sidebar";
-import { LocaleContext } from "../../ui/Locale";
-import { MetadataContext } from "../../ui/Metadata";
+import { useLocale } from "../../ui/Locale";
+import { useMetadata } from "../../ui/Metadata";
 
 const NotFoundPage: FC = () => {
-	const { localize } = useContext(LocaleContext);
-	const { setStatusCode } = useContext(MetadataContext);
+	const { localize } = useLocale();
+	const { setStatusCode } = useMetadata();
 	setStatusCode(404);
 	return <Page title={localize("Page not found")} sidebar={<Sidebar />}>
 		<Block title={localize("Page not found")}>

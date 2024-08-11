@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Page from "../../components/Page";
 import { ErrorResponse, observeUser, User } from "../../api";
 import Block from "../../ui/Block";
@@ -6,7 +6,7 @@ import Sidebar from "../../ui/Sidebar";
 import Field from "../../ui/Field";
 import Alert from "../../ui/Alert";
 import { useParams } from "react-router-dom";
-import { LocaleContext } from "../../ui/Locale";
+import { useLocale } from "../../ui/Locale";
 
 export type UserPageParams = {
 	user_id: string;
@@ -15,7 +15,7 @@ export type UserPageParams = {
 const UserPage: FC = () => {
 	const params = useParams();
 	const { user_id } = params;
-	const { localize } = useContext(LocaleContext);
+	const { localize } = useLocale();
 	const [user, setUser] = useState<User>();
 	const [error, setError] = useState<ErrorResponse>();
 	useEffect(() => {

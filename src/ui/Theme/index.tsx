@@ -1,4 +1,5 @@
-import { FC, ReactNode, createContext, useEffect, useState } from "react";
+import { FC, ReactNode, createContext, useContext, useEffect, useState } from "react";
+import { useMetadata } from "../Metadata";
 
 type ThemeContextProps = {
 	theme: string;
@@ -7,11 +8,13 @@ type ThemeContextProps = {
 
 const ThemeContext = createContext<ThemeContextProps>({
 	theme: "light",
-	setTheme: () => { },
+	setTheme: (_theme: string) => { },
 });
 
 const ThemeProvider: FC<{ children?: ReactNode }> = props => {
-	const [theme, setTheme] = useState("light");
+	const { children } = props;
+	const { getServerData } = useMetadata();
+	const [theme, setTheme] = useState(getServerData<string>("theme") ?? "light");
 	useEffect(() => {
 		const classList = document.body.classList;
 		classList.forEach((name) => {
@@ -34,8 +37,20 @@ const ThemeProvider: FC<{ children?: ReactNode }> = props => {
 		setTheme(theme);
 	};
 	return <ThemeContext.Provider value={{ theme, setTheme: updateTheme }}>
-		{props.children}
+		{children}
 	</ThemeContext.Provider>;
 };
 
-export { ThemeContext, ThemeProvider };
+const ServerThemeProvider: FC<{ children?: ReactNode, theme: string }> = props => {
+	const { children, theme } = props;
+	const { setServerData } = useMetadata();
+	setServerData("theme", theme);
+	const setTheme = (theme: string) => console.error(`Cannot set theme: ${theme}`);
+	return <ThemeContext.Provider value={{ theme, setTheme }}>
+		{children}
+	</ThemeContext.Provider>;
+};
+
+const useTheme = () => useContext(ThemeContext);
+
+export { ThemeProvider, ServerThemeProvider, useTheme };

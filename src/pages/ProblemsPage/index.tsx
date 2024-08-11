@@ -1,13 +1,13 @@
-import { FC, useEffect, useState, useContext } from "react";
+import { FC, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../../ui/Auth";
+import { useAuth } from "../../ui/Auth";
 import { Problems, ErrorResponse, Problem, observeProblems } from "../../api";
 import Alert from "../../ui/Alert";
 import Button from "../../ui/Button";
 import Page from "../../components/Page";
 import Sidebar from "../../ui/Sidebar";
 import Block, { BlockProps } from "../../ui/Block";
-import { LocaleContext } from "../../ui/Locale";
+import { useLocale } from "../../ui/Locale";
 
 import "./index.scss";
 
@@ -18,7 +18,7 @@ export type ProblemsBlockProps = BlockProps & {
 
 const ProblemsBlock: FC<ProblemsBlockProps> = props => {
 	const { problems, showCodes, ...rest } = props;
-	const { localize } = useContext(LocaleContext);
+	const { localize } = useLocale();
 	return <Block className="b-problems" title={localize("Problems")} {...rest}>
 		<table className="ui-table">
 			<thead>
@@ -42,10 +42,10 @@ const ProblemsBlock: FC<ProblemsBlockProps> = props => {
 };
 
 const ProblemsPage: FC = () => {
-	const { localize } = useContext(LocaleContext);
+	const { localize } = useLocale();
 	const [problems, setProblems] = useState<Problems>();
 	const [error, setError] = useState<ErrorResponse>();
-	const { status } = useContext(AuthContext);
+	const { status } = useAuth();
 	useEffect(() => {
 		setProblems(undefined);
 		observeProblems()

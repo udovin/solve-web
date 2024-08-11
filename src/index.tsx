@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import App from "./App";
 import { MetadataProvider } from "./ui/Metadata";
+import { ThemeProvider } from "./ui/Theme";
 
 import "./index.scss";
 
@@ -12,7 +13,9 @@ hydrateRoot(
 	<React.StrictMode>
 		<BrowserRouter basename={process.env.PUBLIC_URL}>
 			<MetadataProvider>
-				<App />
+				<ThemeProvider>
+					<App />
+				</ThemeProvider>
 			</MetadataProvider>
 		</BrowserRouter>
 	</React.StrictMode>

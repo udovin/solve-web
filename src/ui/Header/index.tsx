@@ -1,9 +1,9 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { AuthContext } from "../Auth";
+import { useAuth } from "../Auth";
 import Alert, { AlertKind } from "../Alert";
 import IconButton from "../IconButton";
-import { LocaleContext } from "../Locale";
+import { useLocale } from "../Locale";
 
 import "./index.scss";
 
@@ -18,8 +18,8 @@ const Header: FC = () => {
         }
         return "";
     };
-    const { status } = useContext(AuthContext);
-    const { localize, localizeKey } = useContext(LocaleContext);
+    const { status } = useAuth();
+    const { localize, localizeKey } = useLocale();
     const [showConfirmEmail, setShowConfirmEmail] = useState(false);
     useEffect(() => {
         setShowConfirmEmail(status?.user?.status === "pending");

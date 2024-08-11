@@ -1,4 +1,4 @@
-import { FC, useContext } from "react";
+import { FC } from "react";
 import { ErrorResponse } from "../../api";
 import Alert from "../../ui/Alert";
 import Field from "../../ui/Field";
@@ -7,7 +7,7 @@ import DateTimeInput from "../../ui/DateTimeInput";
 import DurationInput from "../../ui/DurationInput";
 import Checkbox from "../../ui/Checkbox";
 import Select from "../../ui/Select";
-import { LocaleContext } from "../../ui/Locale";
+import { useLocale } from "../../ui/Locale";
 
 type ContestFormProps = {
     title: string,
@@ -44,7 +44,7 @@ export const ContestForm: FC<ContestFormProps> = props => {
         standingsKind, onStandingsKindChange,
         error,
     } = props;
-    const { localize, localizeKey } = useContext(LocaleContext);
+    const { localize, localizeKey } = useLocale();
     return <>
         {error && error.message && <Alert>{error.message}</Alert>}
         <Field title={localize("Title") + ":"} name="title" errorResponse={error}>

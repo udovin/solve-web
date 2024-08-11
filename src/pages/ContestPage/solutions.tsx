@@ -1,4 +1,4 @@
-import { FC, useCallback, useContext, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import { Compilers, Contest, ContestParticipants, ContestProblems, ContestSolution, ContestSolutions, ErrorResponse, observeCompilers, observeContestParticipants, observeContestProblems, observeContestSolution, observeContestSolutions, rejudgeContestSolution, Solution, submitContestSolution } from "../../api";
 import FormBlock from "../../components/FormBlock";
@@ -16,7 +16,7 @@ import Tooltip from "../../ui/Tooltip";
 import Verdict from "../../ui/Verdict";
 import { SolutionReportBlock } from "../SolutionPage";
 import { ParticipantLink } from "./participants";
-import { LocaleContext } from "../../ui/Locale";
+import { useLocale } from "../../ui/Locale";
 
 type ContestSolutionRowProps = {
     contest: Contest;
@@ -77,7 +77,7 @@ const needUpdateSolution = (solution: ContestSolution) => {
 
 export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
     const { contest } = props;
-    const { localize } = useContext(LocaleContext);
+    const { localize } = useLocale();
     const [error, setError] = useState<ErrorResponse>();
     const [solutions, setSolutions] = useState<ContestSolutions>();
     const [loading, setLoading] = useState(false);
@@ -247,7 +247,7 @@ type ContestSolutionBlockProps = {
 
 export const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
     const { contest, solutionID } = props;
-    const { localize } = useContext(LocaleContext);
+    const { localize } = useLocale();
     const [error, setError] = useState<ErrorResponse>();
     const [solution, setSolution] = useState<ContestSolution>();
     useEffect(() => {
@@ -313,7 +313,7 @@ export const ContestSubmitSolutionBlock: FC<ContestSubmitSolutionBlockProps> = p
     const { search } = useLocation();
     const query = new URLSearchParams(search);
     const queryProblem = query.get("problem") || undefined;
-    const { localize } = useContext(LocaleContext);
+    const { localize } = useLocale();
     const [newSolution, setNewSolution] = useState<Solution>();
     const [problem, setProblem] = useState<string | undefined>(queryProblem);
     const [compiler, setCompiler] = useState<number>();

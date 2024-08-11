@@ -1,20 +1,20 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { confirmEmail, ErrorResponse } from "../../api";
 import { Navigate, useSearchParams } from "react-router-dom";
-import { AuthContext } from "../../ui/Auth";
+import { useAuth } from "../../ui/Auth";
 import Page from "../../components/Page";
 import Sidebar from "../../ui/Sidebar";
 import Alert from "../../ui/Alert";
-import { LocaleContext } from "../../ui/Locale";
+import { useLocale } from "../../ui/Locale";
 
 const ConfirmEmailPage: FC = () => {
     const [redirect, setRedirect] = useState(false);
     const [error, setError] = useState<ErrorResponse>();
-    const { status, setStatus } = useContext(AuthContext);
+    const { status, setStatus } = useAuth();
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id") || "";
     const secret = searchParams.get("secret") || "";
-    const { localize } = useContext(LocaleContext);
+    const { localize } = useLocale();
     useEffect(() => {
         confirmEmail(id, secret)
             .then(() => setRedirect(true))

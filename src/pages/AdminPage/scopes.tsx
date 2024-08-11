@@ -1,4 +1,4 @@
-import { FC, FormEvent, useContext, useEffect, useState } from "react";
+import { FC, FormEvent, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { createScope, createScopeUser, deleteScope, deleteScopeUser, ErrorResponse, logoutScopeUser, observeScopes, observeScopeUsers, Scope, Scopes, ScopeUser, ScopeUsers, updateScopeUser } from "../../api";
 import Alert from "../../ui/Alert";
@@ -7,10 +7,10 @@ import Button from "../../ui/Button";
 import IconButton from "../../ui/IconButton";
 import Input from "../../ui/Input";
 import Tooltip from "../../ui/Tooltip";
-import { LocaleContext } from "../../ui/Locale";
+import { useLocale } from "../../ui/Locale";
 
 export const AdminScopesBlock: FC = () => {
-    const { localize } = useContext(LocaleContext);
+    const { localize } = useLocale();
     const [scopes, setScopes] = useState<Scopes>();
     const [form, setForm] = useState<{ [key: string]: string }>({});
     const [error, setError] = useState<ErrorResponse>();
@@ -84,7 +84,7 @@ type AdminScopeBlockProps = {
 
 export const AdminScopeBlock: FC<AdminScopeBlockProps> = props => {
     const { scope } = props;
-    const { localize } = useContext(LocaleContext);
+    const { localize } = useLocale();
     const [users, setUsers] = useState<ScopeUsers>();
     const [form, setForm] = useState<{ [key: string]: string }>({});
     const [error, setError] = useState<ErrorResponse>();

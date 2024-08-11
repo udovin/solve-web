@@ -1,4 +1,4 @@
-import { FC, FormEvent, useContext, useEffect, useState } from "react";
+import { FC, FormEvent, useEffect, useState } from "react";
 import { createRole, createRoleRole, deleteRole, deleteRoleRole, ErrorResponse, observeRoleRoles, observeRoles, Role, RoleRoles, Roles } from "../../api";
 import { Collapse, CollapseContent, CollapseHeader } from "../../ui/Collapse";
 import Alert from "../../ui/Alert";
@@ -6,10 +6,10 @@ import Block from "../../ui/Block";
 import Button from "../../ui/Button";
 import IconButton from "../../ui/IconButton";
 import Input from "../../ui/Input";
-import { LocaleContext } from "../../ui/Locale";
+import { useLocale } from "../../ui/Locale";
 
 export const AdminRolesBlock = () => {
-    const { localize } = useContext(LocaleContext);
+    const { localize } = useLocale();
     const [roles, setRoles] = useState<Roles>();
     const [form, setForm] = useState<{ [key: string]: string }>({});
     const [error, setError] = useState<ErrorResponse>();
@@ -83,7 +83,7 @@ type RoleItemProps = {
 
 const RoleItem: FC<RoleItemProps> = props => {
     const { role } = props;
-    const { localize } = useContext(LocaleContext);
+    const { localize } = useLocale();
     const [roles, setRoles] = useState<RoleRoles>();
     const [error, setError] = useState<ErrorResponse>();
     const [form, setForm] = useState<{ [key: string]: string }>({});

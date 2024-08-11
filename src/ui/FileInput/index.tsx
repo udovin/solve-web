@@ -1,7 +1,7 @@
-import { ChangeEvent, FC, useContext, useEffect, useRef } from "react";
+import { ChangeEvent, FC, useEffect, useRef } from "react";
 import Button from "../Button";
 import Icon from "../Icon";
-import { LocaleContext } from "../Locale";
+import { useLocale } from "../Locale";
 
 import "./index.scss";
 
@@ -16,7 +16,7 @@ export type FileInputProps = {
 
 const FileInput: FC<FileInputProps> = props => {
     const { name, accept, file, onFileChange, disabled, ...rest } = props;
-    const { localize } = useContext(LocaleContext);
+    const { localize } = useLocale();
     const ref = useRef<HTMLInputElement>(null);
     useEffect(() => {
         const element = ref.current;

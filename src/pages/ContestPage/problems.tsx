@@ -1,4 +1,4 @@
-import { FC, FormEvent, useContext, useEffect, useState } from "react";
+import { FC, FormEvent, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Contest, ContestProblem, ContestProblems, createContestProblem, deleteContestProblem, ErrorResponse, observeContestProblems, updateContestProblem, UpdateContestProblemForm } from "../../api";
 import FormBlock from "../../components/FormBlock";
@@ -11,7 +11,7 @@ import Field from "../../ui/Field";
 import IconButton from "../../ui/IconButton";
 import Input from "../../ui/Input";
 import NumberInput from "../../ui/NumberInput";
-import { LocaleContext } from "../../ui/Locale";
+import { useLocale } from "../../ui/Locale";
 
 type ContestProblemRowProps = {
     contest: Contest;
@@ -24,7 +24,7 @@ const ContestProblemRow: FC<ContestProblemRowProps> = props => {
     const { contest, problem: contestProblem, onUpdate, onDelete } = props;
     const { code, problem, solved, points, locales } = contestProblem;
     const { title, statement } = problem;
-    const { localize } = useContext(LocaleContext);
+    const { localize } = useLocale();
     const [open, setOpen] = useState(false);
     const [error, setError] = useState<ErrorResponse>();
     const [newCode, setNewCode] = useState(code);
@@ -89,7 +89,7 @@ type ContestProblemsBlockProps = {
 
 export const ContestProblemsBlock: FC<ContestProblemsBlockProps> = props => {
     const { contest } = props;
-    const { localize } = useContext(LocaleContext);
+    const { localize } = useLocale();
     const [error, setError] = useState<ErrorResponse>();
     const [problems, setProblems] = useState<ContestProblems>();
     const [form, setForm] = useState<{ [key: string]: string }>({});

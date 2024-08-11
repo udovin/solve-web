@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Link, matchPath, Navigate, Route, Routes, useLocation, useParams } from "react-router-dom";
 import Page from "../../components/Page";
 import {
@@ -35,7 +35,7 @@ import { ContestTabs } from "./tabs";
 import { ContestMessagesBlock, CreateContestMessageBlock, SubmitContestQuestionBlock } from "./messages";
 import { EditContestBlock } from "./manage";
 import FileInput from "../../ui/FileInput";
-import { LocaleContext } from "../../ui/Locale";
+import { useLocale } from "../../ui/Locale";
 
 import "./index.scss";
 
@@ -51,7 +51,7 @@ const ContestProblemSideBlock: FC<ContestSideBlockProps> = props => {
 	const { contest } = props;
 	const params = useParams();
 	const { contest_id, problem_code } = params;
-	const { localize } = useContext(LocaleContext);
+	const { localize } = useLocale();
 	const [newSolution, setNewSolution] = useState<Solution>();
 	const [file, setFile] = useState<File>();
 	const [compiler, setCompiler] = useState<number>();
@@ -154,7 +154,7 @@ export type DeleteContestBlockProps = {
 
 const DeleteContestBlock: FC<DeleteContestBlockProps> = props => {
 	const { contest } = props;
-	const { localize } = useContext(LocaleContext);
+	const { localize } = useLocale();
 	const [redirect, setRedirect] = useState<boolean>(false);
 	const [title, setTitle] = useState<string>();
 	const [error, setError] = useState<ErrorResponse>();
@@ -289,7 +289,7 @@ const ContestSideBlock: FC<ContestSideBlockProps> = props => {
 	const getNow = () => {
 		return Math.round((new Date()).getTime() / 1000);
 	};
-	const { localize } = useContext(LocaleContext);
+	const { localize } = useLocale();
 	const [now, setNow] = useState(getNow());
 	const beforeDuration = contest.begin_time && Math.max(contest.begin_time - now, 0);
 	const remainingDuration = contest.begin_time && contest.duration && Math.max(contest.begin_time + contest.duration - now, 0);
@@ -324,7 +324,7 @@ const ContestPage: FC = () => {
 	const params = useParams();
 	const location = useLocation();
 	const { contest_id } = params;
-	const { localize } = useContext(LocaleContext);
+	const { localize } = useLocale();
 	const [contest, setContest] = useState<Contest>();
 	const [newMessages, setNewMessages] = useState<number>(0);
 	const getNow = () => {

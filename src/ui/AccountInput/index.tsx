@@ -1,7 +1,7 @@
-import { CSSProperties, FC, useContext, useEffect, useRef, useState } from "react";
+import { CSSProperties, FC, useEffect, useRef, useState } from "react";
 import Input from "../Input";
 import Portal from "../Portal";
-import { LocaleContext } from "../Locale";
+import { useLocale } from "../Locale";
 
 import "./index.scss";
 
@@ -21,7 +21,7 @@ export type AccountInputProps = {
 
 const AccountInput: FC<AccountInputProps> = props => {
 	const { placeholder, disabled, account, onAccountChange, fetchAccounts } = props;
-	const { localize } = useContext(LocaleContext);
+	const { localize } = useLocale();
 	const ref = useRef<HTMLInputElement>(null);
 	const [focused, setFocused] = useState(false);
 	const [style, setStyle] = useState<CSSProperties>({});

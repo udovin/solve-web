@@ -1,9 +1,9 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Contest, ErrorResponse, updateContest } from "../../api";
 import FormBlock from "../../components/FormBlock";
 import Button from "../../ui/Button";
 import { ContestForm } from "../../forms/ContestForm";
-import { LocaleContext } from "../../ui/Locale";
+import { useLocale } from "../../ui/Locale";
 
 export type EditContestBlockProps = {
     contest: Contest;
@@ -12,7 +12,7 @@ export type EditContestBlockProps = {
 
 export const EditContestBlock: FC<EditContestBlockProps> = props => {
     const { contest, onUpdateContest } = props;
-    const { localize } = useContext(LocaleContext);
+    const { localize } = useLocale();
     const [title, setTitle] = useState(contest.title);
     const [beginTime, setBeginTime] = useState(contest.begin_time);
     const [duration, setDuration] = useState(contest.duration);

@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ErrorResponse, observeSolutions, Problem, Scope, ScopeUser, Solution, Solutions, User } from "../../api";
 import Page from "../../components/Page";
@@ -8,7 +8,7 @@ import Block, { BlockProps } from "../../ui/Block";
 import DateTime from "../../ui/DateTime";
 import UserLink from "../../ui/UserLink";
 import Verdict from "../../ui/Verdict";
-import { LocaleContext } from "../../ui/Locale";
+import { useLocale } from "../../ui/Locale";
 
 import "./index.scss";
 
@@ -30,7 +30,7 @@ type AccountLinkProps = {
 export const AccountLink: FC<AccountLinkProps> = props => {
 	const { account, disabled } = props;
 	const { user, scope_user, scope } = account;
-	const { localize } = useContext(LocaleContext);
+	const { localize } = useLocale();
 	if (user) {
 		if (disabled) {
 			return <>{user.login}</>;
@@ -48,7 +48,7 @@ export const AccountLink: FC<AccountLinkProps> = props => {
 
 const SolutionsBlock: FC<SolutionsBlockProps> = props => {
 	const { solutions, ...rest } = props;
-	const { localize } = useContext(LocaleContext);
+	const { localize } = useLocale();
 	return <Block className="b-solutions" title={localize("Solutions")} {...rest}>
 		<table className="ui-table">
 			<thead>
@@ -89,7 +89,7 @@ const SolutionsBlock: FC<SolutionsBlockProps> = props => {
 };
 
 const SolutionsPage: FC = () => {
-	const { localize } = useContext(LocaleContext);
+	const { localize } = useLocale();
 	const [solutions, setSolutions] = useState<Solutions>();
 	const [error, setError] = useState<ErrorResponse>();
 	useEffect(() => {

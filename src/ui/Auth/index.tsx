@@ -1,4 +1,4 @@
-import { FC, ReactNode, createContext, useEffect, useState } from "react";
+import { FC, ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { Status, statusUser } from "../../api";
 
 type Auth = {
@@ -25,4 +25,6 @@ const AuthProvider: FC<{ children?: ReactNode }> = props => {
 	</AuthContext.Provider>;
 };
 
-export { AuthContext, AuthProvider };
+const useAuth = () => useContext(AuthContext);
+
+export { AuthProvider, useAuth };

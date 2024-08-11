@@ -1,11 +1,11 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Contest, ContestParticipant, ContestStandings, ContestStandingsCell, observeContestStandings } from "../../api";
 import Block from "../../ui/Block";
 import Checkbox from "../../ui/Checkbox";
 import Field from "../../ui/Field";
 import { ParticipantLink } from "./participants";
-import { AuthContext } from "../../ui/Auth";
-import { LocaleContext } from "../../ui/Locale";
+import { useAuth } from "../../ui/Auth";
+import { useLocale } from "../../ui/Locale";
 
 type ContestStandingsBlockProps = {
     contest: Contest;
@@ -13,7 +13,7 @@ type ContestStandingsBlockProps = {
 
 export const ContestStandingsBlock: FC<ContestStandingsBlockProps> = props => {
     const { contest } = props;
-    const { localize } = useContext(LocaleContext);
+    const { localize } = useLocale();
     const [standings, setStandings] = useState<ContestStandings>();
     const [ignoreFreeze, setIgnoreFreeze] = useState<boolean>();
     const [onlyOfficial, setOnlyOfficial] = useState<boolean>(localStorage.getItem("contest_only_official") === "true");
@@ -57,8 +57,8 @@ const ICPCStandingsTable: FC<StandingsTableProps> = props => {
     const { standings } = props;
     let currentGroup = 0;
     let currentGroupScore: number | undefined = undefined;
-    const { status } = useContext(AuthContext);
-    const { localize } = useContext(LocaleContext);
+    const { status } = useAuth();
+    const { localize } = useLocale();
     const isCurrent = (rowParticipant?: ContestParticipant) => {
         if (!rowParticipant) {
             return false;
@@ -146,8 +146,8 @@ const ICPCStandingsTable: FC<StandingsTableProps> = props => {
 
 const IOIStandingsTable: FC<StandingsTableProps> = props => {
     const { standings } = props;
-    const { status } = useContext(AuthContext);
-    const { localize } = useContext(LocaleContext);
+    const { status } = useAuth();
+    const { localize } = useLocale();
     const isCurrent = (rowParticipant?: ContestParticipant) => {
         if (!rowParticipant) {
             return false;
