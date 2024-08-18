@@ -5,6 +5,7 @@ import reportWebVitals from "./reportWebVitals";
 import App from "./App";
 import { MetadataProvider } from "./ui/Metadata";
 import { ThemeProvider } from "./ui/Theme";
+import { LocaleProvider } from "./ui/Locale";
 
 import "./index.scss";
 
@@ -14,7 +15,9 @@ hydrateRoot(
 		<BrowserRouter basename={process.env.PUBLIC_URL}>
 			<MetadataProvider>
 				<ThemeProvider>
-					<App />
+					<LocaleProvider>
+						<App />
+					</LocaleProvider>
 				</ThemeProvider>
 			</MetadataProvider>
 		</BrowserRouter>

@@ -10,6 +10,7 @@ import { createProxyMiddleware } from "http-proxy-middleware";
 import App from "../src/App";
 import { MetadataState, ServerMetadataProvider } from "../src/ui/Metadata";
 import { ServerThemeProvider } from "../src/ui/Theme";
+import { ServerLocaleProvider } from "../src/ui/Locale";
 
 const PROXY = process.env.PROXY || "http://localhost:4242";
 const PORT = process.env.PORT || 8080;
@@ -33,15 +34,51 @@ const getTheme = (raw: string) => {
 	return raw === "dark" ? "dark" : "light";
 };
 
-app.get("/*", (req: Request, resp: Response) => {
+const getHeaders = (req: Request) => {
+	const headers: Record<string, string> = {};
+	if (req.headers["authorization"]) {
+		headers["Authorization"] = req.headers["authorization"];
+	}
+	if (req.headers["cookie"]) {
+		headers["Cookie"] = req.headers["cookie"];
+	}
+	if (req.headers["accept-language"]) {
+		headers["Accept-Language"] = req.headers["accept-language"];
+	}
+	if (req.headers["user-agent"]) {
+		headers["User-Agent"] = req.headers["user-agent"];
+	}
+	return headers;
+};
+
+app.get("/*", async (req: Request, resp: Response) => {
 	const SERVER_DATA: Record<string, any> = {};
 	const metadata: MetadataState = { data: SERVER_DATA };
 	const theme = getTheme(req.signedCookies.theme ?? req.cookies.theme ?? "light");
+	const localeResult = await fetch(PROXY + "/api/v0/locale", { headers: getHeaders(req) })
+		.then(resp => resp.json())
+		.then(result => {
+			let locale = (result.name as string | undefined) ?? "en";
+			let localizations: { [index: string]: string } = {};
+			(result.localizations ?? []).forEach((item: any) => {
+				if (item.key) {
+					localizations[item.key] = item.text ?? "";
+				}
+			});
+			return { locale, localizations };
+		})
+		.catch(error => {
+			console.warn("Cannot fetch locale:", error);
+			return { locale: "en", localizations: {} };
+		});
+	const { locale, localizations } = localeResult;
 	const { pipe } = renderToPipeableStream(
 		<StaticRouter location={req.url}>
 			<ServerMetadataProvider state={metadata}>
 				<ServerThemeProvider theme={theme}>
-					<App />
+					<ServerLocaleProvider locale={locale} localizations={localizations}>
+						<App />
+					</ServerLocaleProvider>
 				</ServerThemeProvider>
 			</ServerMetadataProvider>
 		</StaticRouter>, {
