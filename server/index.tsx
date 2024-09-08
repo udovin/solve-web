@@ -11,6 +11,8 @@ import App from "../src/App";
 import { MetadataState, ServerMetadataProvider } from "../src/ui/Metadata";
 import { ServerThemeProvider } from "../src/ui/Theme";
 import { ServerLocaleProvider } from "../src/ui/Locale";
+import { ServerAuthProvider } from "../src/ui/Auth";
+import { Status } from "../src/api";
 
 const PROXY = process.env.PROXY || "http://localhost:4242";
 const PORT = process.env.PORT || 8080;
@@ -48,6 +50,20 @@ const getHeaders = (req: Request) => {
 	if (req.headers["user-agent"]) {
 		headers["User-Agent"] = req.headers["user-agent"];
 	}
+	if (req.headers["x-forwarded-for"]) {
+		const header = req.headers["x-forwarded-for"];
+		const value = header instanceof Array ? (header.length > 0 ? header[0] : undefined) : header;
+		if (value) {
+			headers["X-Forwarded-For"] = value;
+		}
+	}
+	if (req.headers["x-real-ip"]) {
+		const header = req.headers["x-real-ip"];
+		const value = header instanceof Array ? (header.length > 0 ? header[0] : undefined) : header;
+		if (value) {
+			headers["X-Real-IP"] = value;
+		}
+	}
 	return headers;
 };
 
@@ -55,7 +71,7 @@ app.get("/*", async (req: Request, resp: Response) => {
 	const SERVER_DATA: Record<string, any> = {};
 	const metadata: MetadataState = { data: SERVER_DATA };
 	const theme = getTheme(req.signedCookies.theme ?? req.cookies.theme ?? "light");
-	const localeResult = await fetch(PROXY + "/api/v0/locale", { headers: getHeaders(req) })
+	const localeResult = fetch(PROXY + "/api/v0/locale", { headers: getHeaders(req) })
 		.then(resp => resp.json())
 		.then(result => {
 			let locale = (result.name as string | undefined) ?? "en";
@@ -71,13 +87,22 @@ app.get("/*", async (req: Request, resp: Response) => {
 			console.warn("Cannot fetch locale:", error);
 			return { locale: "en", localizations: {} };
 		});
-	const { locale, localizations } = localeResult;
+	const statusResult = fetch(PROXY + "/api/v0/status", { headers: getHeaders(req) })
+		.then(resp => resp.json() as Status)
+		.catch(error => {
+			console.warn("Cannot fetch auth:", error);
+			return undefined;
+		});
+	const { locale, localizations } = await localeResult;
+	const status = await statusResult;
 	const { pipe } = renderToPipeableStream(
 		<StaticRouter location={req.url}>
 			<ServerMetadataProvider state={metadata}>
 				<ServerThemeProvider theme={theme}>
 					<ServerLocaleProvider locale={locale} localizations={localizations}>
-						<App />
+						<ServerAuthProvider status={status}>
+							<App />
+						</ServerAuthProvider>
 					</ServerLocaleProvider>
 				</ServerThemeProvider>
 			</ServerMetadataProvider>

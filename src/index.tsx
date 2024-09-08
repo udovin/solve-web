@@ -6,6 +6,7 @@ import App from "./App";
 import { MetadataProvider } from "./ui/Metadata";
 import { ThemeProvider } from "./ui/Theme";
 import { LocaleProvider } from "./ui/Locale";
+import { AuthProvider } from "./ui/Auth";
 
 import "./index.scss";
 
@@ -16,7 +17,9 @@ hydrateRoot(
 			<MetadataProvider>
 				<ThemeProvider>
 					<LocaleProvider>
-						<App />
+						<AuthProvider>
+							<App />
+						</AuthProvider>
 					</LocaleProvider>
 				</ThemeProvider>
 			</MetadataProvider>

@@ -37,36 +37,34 @@ const AdminPage = lazy(() => import("./pages/AdminPage"));
 const App: FC = () => {
 	return (
 		<div id="layout">
-			<AuthProvider>
-				<Header />
-				<Suspense>
-					<Routes>
-						<Route index element={<IndexPage />} />
-						<Route path="/contests" element={<ContestsPage />} />
-						<Route path="/contests/create" element={<CreateContestPage />} />
-						<Route path="/contests/:contest_id/*" element={<ContestPage />} />
-						<Route path="/problems" element={<ProblemsPage />} />
-						<Route path="/problems/:problem_id" element={<ProblemPage />} />
-						<Route path="/problems/:problem_id/edit" element={<EditProblemPage />} />
-						<Route path="/problems/create" element={<CreateProblemPage />} />
-						<Route path="/solutions" element={<SolutionsPage />} />
-						<Route path="/solutions/:solution_id" element={<SolutionPage />} />
-						<Route path="/compilers/create" element={<CreateCompilerPage />} />
-						<Route path="/login" element={<LoginPage />} />
-						<Route path="/login/:scope_id" element={<LoginPage />} />
-						<Route path="/logout" element={<LogoutPage />} />
-						<Route path="/register" element={<RegisterPage />} />
-						<Route path="/users/:user_id" element={<UserPage />} />
-						<Route path="/users/:user_id/edit/*" element={<EditUserPage />} />
-						<Route path="/language" element={<LanguagePage />} />
-						<Route path="/confirm-email" element={<ConfirmEmailPage />} />
-						<Route path="/reset-password" element={<ResetPasswordPage />} />
-						<Route path="/admin/*" element={<AdminPage />} />
-						<Route path="*" element={<NotFoundPage />} />
-					</Routes>
-				</Suspense>
-				<Footer />
-			</AuthProvider>
+			<Header />
+			<Suspense>
+				<Routes>
+					<Route index element={<IndexPage />} />
+					<Route path="/contests" element={<ContestsPage />} />
+					<Route path="/contests/create" element={<CreateContestPage />} />
+					<Route path="/contests/:contest_id/*" element={<ContestPage />} />
+					<Route path="/problems" element={<ProblemsPage />} />
+					<Route path="/problems/:problem_id" element={<ProblemPage />} />
+					<Route path="/problems/:problem_id/edit" element={<EditProblemPage />} />
+					<Route path="/problems/create" element={<CreateProblemPage />} />
+					<Route path="/solutions" element={<SolutionsPage />} />
+					<Route path="/solutions/:solution_id" element={<SolutionPage />} />
+					<Route path="/compilers/create" element={<CreateCompilerPage />} />
+					<Route path="/login" element={<LoginPage />} />
+					<Route path="/login/:scope_id" element={<LoginPage />} />
+					<Route path="/logout" element={<LogoutPage />} />
+					<Route path="/register" element={<RegisterPage />} />
+					<Route path="/users/:user_id" element={<UserPage />} />
+					<Route path="/users/:user_id/edit/*" element={<EditUserPage />} />
+					<Route path="/language" element={<LanguagePage />} />
+					<Route path="/confirm-email" element={<ConfirmEmailPage />} />
+					<Route path="/reset-password" element={<ResetPasswordPage />} />
+					<Route path="/admin/*" element={<AdminPage />} />
+					<Route path="*" element={<NotFoundPage />} />
+				</Routes>
+			</Suspense>
+			<Footer />
 		</div>
 	);
 };

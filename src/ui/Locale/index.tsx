@@ -47,11 +47,14 @@ const getLocalizationKey = (text: string) => {
 
 type Localizations = { [index: string]: string };
 
+const LOCALE_KEY = "locale";
+const LOCALIZATIONS_KEY = "localizations";
+
 const LocaleProvider: FC<{ children?: ReactNode }> = props => {
 	const { children } = props;
 	const { getServerData } = useMetadata();
-	const [locale, setLocale] = useState(getServerData<string>("locale") ?? "en");
-	const [localizations, setLocalizations] = useState<Localizations>(getServerData<Localizations>("localizations") ?? {});
+	const [locale, setLocale] = useState(getServerData<string>(LOCALE_KEY) ?? "en");
+	const [localizations, setLocalizations] = useState(getServerData<Localizations>(LOCALIZATIONS_KEY));
 	const refreshLocale = () => {
 		localeUser()
 			.then(result => {
@@ -64,7 +67,12 @@ const LocaleProvider: FC<{ children?: ReactNode }> = props => {
 			})
 			.catch(console.log);
 	};
-	useEffect(refreshLocale, [setLocale, setLocalizations]);
+	useEffect(() => {
+		if (localizations !== undefined) {
+			return;
+		}
+		refreshLocale();
+	}, [setLocale, setLocalizations]);
 	const plural = (num: number) => {
 		if (locale === "ru") {
 			const m10 = num % 10;
@@ -79,7 +87,7 @@ const LocaleProvider: FC<{ children?: ReactNode }> = props => {
 		}
 		return num === 1 ? 0 : 1;
 	};
-	const localizeKey = (key: string, text: string) => localizations[`web.${key}`] ?? localizations[key] ?? text;
+	const localizeKey = (key: string, text: string) => localizations?.[`web.${key}`] ?? localizations?.[key] ?? text;
 	const localizePluralKey = (key: string, texts: string[], num: number) => localizeKey(`${key}:${plural(num)}`, texts[num === 1 ? 0 : 1]).replaceAll("%d", num.toString());
 	const localize = (text: string) => localizeKey(getLocalizationKey(text), text);
 	const localizePlural = (texts: string[], num: number) => localizePluralKey(getLocalizationKey(texts[0]), texts, num);
@@ -90,7 +98,7 @@ const LocaleProvider: FC<{ children?: ReactNode }> = props => {
 	};
 	return <LocaleContext.Provider value={{
 		locale,
-		localizations,
+		localizations: localizations ?? {},
 		localize,
 		localizeKey,
 		localizePlural,
@@ -104,8 +112,8 @@ const LocaleProvider: FC<{ children?: ReactNode }> = props => {
 const ServerLocaleProvider: FC<{ children?: ReactNode, locale: string, localizations: Localizations }> = props => {
 	const { children, locale, localizations } = props;
 	const { setServerData } = useMetadata();
-	setServerData("locale", locale);
-	setServerData("localizations", localizations);
+	setServerData(LOCALE_KEY, locale);
+	setServerData(LOCALIZATIONS_KEY, localizations);
 	const plural = (num: number) => {
 		if (locale === "ru") {
 			const m10 = num % 10;
