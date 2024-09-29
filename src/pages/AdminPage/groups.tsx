@@ -177,7 +177,7 @@ export const AdminGroupBlock: FC<AdminGroupBlockProps> = props => {
                     return <tr key={key}>
                         <td className="id">{member.id}</td>
                         <td className="login"><AccountLink account={{ user: member.account?.user }} /></td>
-                        <td className="kind">{localizeKey(`member_${kind}`, KINDS[kind] ?? kind)}</td>
+                        <td className="kind">{localizeKey(`member_${member.kind}`, KINDS[member.kind] ?? member.kind)}</td>
                         <td className="actions">
                             <Tooltip content="Delete"><IconButton kind="delete" onClick={onDelete} /></Tooltip>
                         </td>
