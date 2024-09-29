@@ -1,6 +1,5 @@
 import { FC, Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./ui/Auth";
 import Header from "./ui/Header";
 import Footer from "./ui/Footer";
 import IndexPage from "./pages/IndexPage";

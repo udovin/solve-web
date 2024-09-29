@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ErrorResponse, observeSolutions, Problem, Scope, ScopeUser, Solution, Solutions, User } from "../../api";
+import { ErrorResponse, Group, observeSolutions, Problem, Scope, ScopeUser, Solution, Solutions, User } from "../../api";
 import Page from "../../components/Page";
 import Sidebar from "../../ui/Sidebar";
 import Alert from "../../ui/Alert";
@@ -20,6 +20,7 @@ interface Account {
 	user?: User;
 	scope?: Scope;
 	scope_user?: ScopeUser;
+	group?: Group;
 };
 
 type AccountLinkProps = {
@@ -29,7 +30,7 @@ type AccountLinkProps = {
 
 export const AccountLink: FC<AccountLinkProps> = props => {
 	const { account, disabled } = props;
-	const { user, scope_user, scope } = account;
+	const { user, scope_user, scope, group } = account;
 	const { localize } = useLocale();
 	if (user) {
 		if (disabled) {
@@ -37,11 +38,14 @@ export const AccountLink: FC<AccountLinkProps> = props => {
 		}
 		return <UserLink user={user} />;
 	}
+	if (scope_user) {
+		return <>{scope_user.title ?? scope_user.login}</>;
+	}
 	if (scope) {
 		return <><span className="kind">{localize("Scope")}: </span>{scope.title ?? scope.id}</>;
 	}
-	if (scope_user) {
-		return <>{scope_user.title ?? scope_user.login}</>;
+	if (group) {
+		return <><span className="kind">{localize("Group")}: </span>{group.title ?? group.id}</>;
 	}
 	return <>&mdash;</>;
 };

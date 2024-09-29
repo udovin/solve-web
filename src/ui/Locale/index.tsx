@@ -72,7 +72,7 @@ const LocaleProvider: FC<{ children?: ReactNode }> = props => {
 			return;
 		}
 		refreshLocale();
-	}, [setLocale, setLocalizations]);
+	}, [localizations, setLocale, setLocalizations]);
 	const plural = (num: number) => {
 		if (locale === "ru") {
 			const m10 = num % 10;

@@ -279,6 +279,21 @@ export type ScopeUsers = {
 
 export type Group = {
 	id: number;
+	title: string;
+};
+
+export type Groups = {
+	groups?: Group[];
+};
+
+export type GroupMember = {
+	id: number;
+	kind: string;
+	account?: Account;
+};
+
+export type GroupMembers = {
+	members?: GroupMember[];
 };
 
 export const RUNNING: number = -1;
@@ -712,10 +727,6 @@ export const observeContestStandings = (id: number, ignoreFreeze?: boolean, only
 };
 
 export type CreateContestParticipantForm = {
-	user_id?: number;
-	user_login?: string;
-	scope_user_id?: number;
-	scope_id?: number;
 	kind: string;
 	account_id?: number;
 };
@@ -1037,6 +1048,62 @@ export const logoutScopeUser = (scopeID: number, userID: number) => {
 	}), true);
 };
 
+export const observeGroups = () => {
+	return parseResp<Groups>(fetch(`${BASE}/api/v0/groups`, {
+		method: "GET",
+		headers: getHeaders(),
+	}));
+};
+
+export const observeGroup = (id: number) => {
+	return parseResp<Group>(fetch(`${BASE}/api/v0/groups/${id}`, {
+		method: "GET",
+		headers: getHeaders(),
+	}));
+};
+
+export const createGroup = (form: CreateScopeForm) => {
+	return parseResp<Group>(fetch(`${BASE}/api/v0/groups`, {
+		method: "POST",
+		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
+		body: JSON.stringify(form),
+	}), true);
+};
+
+export const deleteGroup = (id: number) => {
+	return parseResp<Group>(fetch(`${BASE}/api/v0/groups/${id}`, {
+		method: "DELETE",
+		headers: getHeaders(),
+	}), true);
+};
+
+export const observeGroupMembers = (groupID: number) => {
+	return parseResp<GroupMembers>(fetch(`${BASE}/api/v0/groups/${groupID}/members`, {
+		method: "GET",
+		headers: getHeaders(),
+	}));
+};
+
+export type CreateGroupMemberForm = {
+	kind: string;
+	account_id: number;
+};
+
+export const createGroupMember = (groupID: number, form: CreateGroupMemberForm) => {
+	return parseResp<GroupMember>(fetch(`${BASE}/api/v0/groups/${groupID}/members`, {
+		method: "POST",
+		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
+		body: JSON.stringify(form),
+	}), true);
+};
+
+export const deleteGroupMember = (groupID: number, memberID: number) => {
+	return parseResp<GroupMember>(fetch(`${BASE}/api/v0/groups/${groupID}/members/${memberID}`, {
+		method: "DELETE",
+		headers: getHeaders(),
+	}), true);
+};
+
 export const observeContestMessages = (contestID: number) => {
 	return parseResp<ContestMessages>(fetch(`${BASE}/api/v0/contests/${contestID}/messages`, {
 		method: "GET",
@@ -1077,6 +1144,7 @@ export type Account = {
 	user?: User;
 	scope_user?: ScopeUser;
 	scope?: Scope;
+	group?: Group;
 };
 
 export type Accounts = {

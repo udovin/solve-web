@@ -84,7 +84,7 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
                 return {
                     id: account.id,
                     kind: account.kind,
-                    title: account.user?.login ?? account.scope_user?.title ?? account.scope?.title,
+                    title: account.user?.login ?? account.scope_user?.title ?? account.scope?.title ?? account.group?.title,
                 };
             }) ?? [];
         });

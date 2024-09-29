@@ -29,7 +29,7 @@ const AuthProvider: FC<{ children?: ReactNode }> = props => {
 			return;
 		}
 		refreshStatus();
-	}, [setStatus]);
+	}, [status, setStatus]);
 	return <AuthContext.Provider value={{ status, setStatus, refreshStatus }}>
 		{children}
 	</AuthContext.Provider>;

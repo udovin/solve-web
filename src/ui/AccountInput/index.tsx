@@ -12,6 +12,7 @@ export type Account = {
 };
 
 export type AccountInputProps = {
+	kinds?: string[];
 	placeholder?: string;
 	disabled?: boolean;
 	account?: Account;
@@ -20,12 +21,17 @@ export type AccountInputProps = {
 };
 
 const AccountInput: FC<AccountInputProps> = props => {
-	const { placeholder, disabled, account, onAccountChange, fetchAccounts } = props;
+	const { kinds, placeholder, disabled, account, onAccountChange, fetchAccounts } = props;
+	const hasUser = kinds ? kinds.includes("user") : true;
+	const hasScopeUser = kinds ? kinds.includes("scope_user") : true;
+	const hasScope = kinds ? kinds.includes("scope") : true;
+	const hasGroup = kinds ? kinds.includes("group") : true;
+	const isOnly = kinds && kinds.length === 1;
 	const { localize } = useLocale();
 	const ref = useRef<HTMLInputElement>(null);
 	const [focused, setFocused] = useState(false);
 	const [style, setStyle] = useState<CSSProperties>({});
-	const [kind, setKind] = useState<string | undefined>(account?.kind);
+	const [kind, setKind] = useState<string | undefined>(isOnly ? kinds[0] : account?.kind);
 	const [query, setQuery] = useState<string | undefined>(account?.title ?? account?.id.toString());
 	const [accounts, setAccounts] = useState<Account[]>([]);
 	const updateStyle = () => {
@@ -81,11 +87,11 @@ const AccountInput: FC<AccountInputProps> = props => {
 			<div className="ui-search-portal" style={style} onMouseDown={(event) => { event.preventDefault(); }}>
 				<div className="search-box">
 					<ul className="tabs">
-						<li className={kind === undefined ? "selected" : undefined} onClick={() => setKind(undefined)}>{localize("All")}</li>
-						<li className={kind === "user" ? "selected" : undefined} onClick={() => setKind("user")}>{localize("Users")}</li>
-						<li className={kind === "scope_user" ? "selected" : undefined} onClick={() => setKind("scope_user")}>{localize("Scope users")}</li>
-						<li className={kind === "scope" ? "selected" : undefined} onClick={() => setKind("scope")}>{localize("Scopes")}</li>
-						<li className={kind === "group" ? "selected" : undefined} onClick={() => setKind("group")}>{localize("Groups")}</li>
+						{!isOnly && <li className={kind === undefined ? "selected" : undefined} onClick={() => setKind(undefined)}>{localize("All")}</li>}
+						{hasUser && <li className={kind === "user" ? "selected" : undefined} onClick={() => setKind("user")}>{localize("Users")}</li>}
+						{hasScopeUser && <li className={kind === "scope_user" ? "selected" : undefined} onClick={() => setKind("scope_user")}>{localize("Scope users")}</li>}
+						{hasScope && <li className={kind === "scope" ? "selected" : undefined} onClick={() => setKind("scope")}>{localize("Scopes")}</li>}
+						{hasGroup && <li className={kind === "group" ? "selected" : undefined} onClick={() => setKind("group")}>{localize("Groups")}</li>}
 					</ul>
 					<ul className="accounts">
 						{accounts && accounts.map((item: Account, key: number) => {
