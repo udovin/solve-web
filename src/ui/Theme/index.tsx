@@ -35,7 +35,7 @@ const ThemeProvider: FC<{ children?: ReactNode }> = props => {
 			return;
 		}
 		localStorage.setItem("theme", theme);
-		document.cookie = `theme=${encodeURIComponent(theme)};SameSite=Strict;MaxAge=31536000`;
+		document.cookie = `theme=${encodeURIComponent(theme)};SameSite=Strict;Max-Age=31536000`;
 		setTheme(theme);
 	};
 	return <ThemeContext.Provider value={{ theme, setTheme: updateTheme }}>

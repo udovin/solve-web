@@ -93,7 +93,7 @@ const LocaleProvider: FC<{ children?: ReactNode }> = props => {
 	const localizePlural = (texts: string[], num: number) => localizePluralKey(getLocalizationKey(texts[0]), texts, num);
 	const updateLocale = (name: string) => {
 		localStorage.setItem("locale", name);
-		document.cookie = `locale=${encodeURIComponent(name)};SameSite=Strict;MaxAge=31536000`;
+		document.cookie = `locale=${encodeURIComponent(name)};SameSite=Strict;Max-Age=31536000`;
 		refreshLocale();
 	};
 	return <LocaleContext.Provider value={{
