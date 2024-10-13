@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { Contest, ErrorResponse, updateContest } from "../../api";
 import FormBlock from "../../components/FormBlock";
 import Button from "../../ui/Button";
-import { ContestForm } from "../../forms/ContestForm";
+import { ContestForm } from "../../ui/ContestForm";
 import { useLocale } from "../../ui/Locale";
 
 export type EditContestBlockProps = {

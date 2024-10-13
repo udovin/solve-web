@@ -94,6 +94,7 @@ export const AdminGroupBlock: FC<AdminGroupBlockProps> = props => {
     const { group } = props;
     const { localize, localizeKey } = useLocale();
     const [members, setMembers] = useState<GroupMembers>();
+    const [accountQuery, setAccountQuery] = useState<string>();
     const [account, setAccount] = useState<Account>();
     const [kind, setKind] = useState<string>("regular");
     const [error, setError] = useState<ErrorResponse>();
@@ -116,6 +117,7 @@ export const AdminGroupBlock: FC<AdminGroupBlockProps> = props => {
         })
             .then(member => {
                 setMembers({ ...members, members: [...(members?.members ?? []), member] });
+                setAccountQuery(undefined);
                 setAccount(undefined);
                 setKind("regular");
                 setError(undefined);
@@ -138,6 +140,8 @@ export const AdminGroupBlock: FC<AdminGroupBlockProps> = props => {
         <form onSubmit={onCreate}>
             <AccountInput
                 placeholder={localize("Participant")}
+                query={accountQuery}
+                onQueryChange={setAccountQuery}
                 account={account}
                 onAccountChange={setAccount}
                 kinds={["user"]}
@@ -148,7 +152,7 @@ export const AdminGroupBlock: FC<AdminGroupBlockProps> = props => {
                 options={Object.fromEntries(Object.entries(KINDS).map(([key, value]) => [key, localizeKey(`member_${key}`, value ?? key)]))}
                 onValueChange={setKind}
             />
-            <Button type="submit">{localize("Add")}</Button>
+            <Button type="submit" disabled={!account}>{localize("Add")}</Button>
         </form>
         <table className="ui-table">
             <thead>

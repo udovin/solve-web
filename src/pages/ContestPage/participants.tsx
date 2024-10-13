@@ -40,6 +40,7 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
     const { localize, localizeKey } = useLocale();
     const [error, setError] = useState<ErrorResponse>();
     const [participants, setParticipants] = useState<ContestParticipants>();
+    const [accountQuery, setAccountQuery] = useState<string>();
     const [account, setAccount] = useState<Account>();
     const [kind, setKind] = useState<string>("regular");
     useEffect(() => {
@@ -62,6 +63,7 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
         createContestParticipant(contest.id, createForm)
             .then(participant => {
                 setParticipants({ ...participants, participants: [...(participants?.participants ?? []), participant] });
+                setAccountQuery(undefined);
                 setAccount(undefined);
                 setError(undefined);
             })
@@ -94,6 +96,8 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
         footer={canCreateParticipant && <form onSubmit={onSubmit}>
             <AccountInput
                 placeholder={localize("Participant")}
+                query={accountQuery}
+                onQueryChange={setAccountQuery}
                 account={account}
                 onAccountChange={setAccount}
                 fetchAccounts={fetchAccounts} />

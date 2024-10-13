@@ -1,13 +1,13 @@
 import { FC } from "react";
 import { ErrorResponse } from "../../api";
-import Alert from "../../ui/Alert";
-import Field from "../../ui/Field";
-import Input from "../../ui/Input";
-import DateTimeInput from "../../ui/DateTimeInput";
-import DurationInput from "../../ui/DurationInput";
-import Checkbox from "../../ui/Checkbox";
-import Select from "../../ui/Select";
-import { useLocale } from "../../ui/Locale";
+import Alert from "../Alert";
+import Field from "../Field";
+import Input from "../Input";
+import DateTimeInput from "../DateTimeInput";
+import DurationInput from "../DurationInput";
+import Checkbox from "../Checkbox";
+import Select from "../Select";
+import { useLocale } from "../Locale";
 
 type ContestFormProps = {
     title: string,

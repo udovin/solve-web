@@ -66,8 +66,16 @@ const TestAccountInput: FC<AccountInputProps> = props => {
 		}
 		return Promise.reject(new Error("Failed!"));
 	};
+	const [query, setQuery] = useState<string>();
 	const [account, setAccount] = useState<Account | undefined>({ "id": 1, "kind": "user", "title": "Admin" });
-	return <AccountInput account={account} onAccountChange={setAccount} fetchAccounts={fetchAccounts} {...rest} />;
+	return <AccountInput
+		query={query}
+		onQueryChange={setQuery}
+		account={account}
+		onAccountChange={setAccount}
+		fetchAccounts={fetchAccounts}
+		{...rest}
+	/>;
 };
 
 export const Index = () => <>

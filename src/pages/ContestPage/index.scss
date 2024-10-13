@@ -95,9 +95,48 @@
     }
 }
 
-
 @include themify {
     .b-contest-problems {
+        .ui-table {
+            tr {
+                &.solved {
+                    background-color: themed("success-row-background-color");
+                }
+
+                &.not-solved {
+                    background-color: themed("danger-row-background-color");
+                }
+            }
+        }
+    }
+}
+
+.b-contest-side-problems {
+    .ui-block-content {
+        padding: 0;
+        overflow-x: auto;
+        border-radius: 3px;
+    }
+
+    .ui-table {
+        border: none;
+
+        tr {
+            >.code {
+                text-align: right;
+                width: 1%;
+                white-space: nowrap;
+            }
+
+            >.title {
+                text-align: left;
+            }
+        }
+    }
+}
+
+@include themify {
+    .b-contest-side-problems {
         .ui-table {
             tr {
                 &.solved {

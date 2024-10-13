@@ -15,13 +15,15 @@ export type AccountInputProps = {
 	kinds?: string[];
 	placeholder?: string;
 	disabled?: boolean;
+	query?: string;
+	onQueryChange?(query?: string): void;
 	account?: Account;
 	onAccountChange?(account?: Account): void;
 	fetchAccounts?(kind?: string, query?: string): Promise<Account[]>;
 };
 
 const AccountInput: FC<AccountInputProps> = props => {
-	const { kinds, placeholder, disabled, account, onAccountChange, fetchAccounts } = props;
+	const { kinds, placeholder, disabled, query, onQueryChange, account, onAccountChange, fetchAccounts } = props;
 	const hasUser = kinds ? kinds.includes("user") : true;
 	const hasScopeUser = kinds ? kinds.includes("scope_user") : true;
 	const hasScope = kinds ? kinds.includes("scope") : true;
@@ -32,8 +34,11 @@ const AccountInput: FC<AccountInputProps> = props => {
 	const [focused, setFocused] = useState(false);
 	const [style, setStyle] = useState<CSSProperties>({});
 	const [kind, setKind] = useState<string | undefined>(isOnly ? kinds[0] : account?.kind);
-	const [query, setQuery] = useState<string | undefined>(account?.title ?? account?.id.toString());
+	// const [query, setQuery] = useState<string | undefined>(account?.title ?? account?.id.toString());
 	const [accounts, setAccounts] = useState<Account[]>([]);
+	if (account && !query && onQueryChange) {
+		onQueryChange(account.title ?? account.id.toString());
+	}
 	const updateStyle = () => {
 		if (!ref.current) {
 			return;
@@ -58,16 +63,20 @@ const AccountInput: FC<AccountInputProps> = props => {
 		};
 	}, [ref, focused]);
 	const updateQuery = (query: string) => {
-		setQuery(query);
+		if (onQueryChange) {
+			onQueryChange(query);
+		}
 		if (onAccountChange) {
 			onAccountChange(undefined);
 		}
 	};
 	const updateAccount = (account: Account) => {
+		if (onQueryChange) {
+			onQueryChange(account.title ?? account.id.toString());
+		}
 		if (onAccountChange) {
 			onAccountChange(account);
 		}
-		setQuery(account.title ?? account.id.toString());
 	};
 	useEffect(() => {
 		if (fetchAccounts) {
@@ -89,9 +98,9 @@ const AccountInput: FC<AccountInputProps> = props => {
 					<ul className="tabs">
 						{!isOnly && <li className={kind === undefined ? "selected" : undefined} onClick={() => setKind(undefined)}>{localize("All")}</li>}
 						{hasUser && <li className={kind === "user" ? "selected" : undefined} onClick={() => setKind("user")}>{localize("Users")}</li>}
-						{hasScopeUser && <li className={kind === "scope_user" ? "selected" : undefined} onClick={() => setKind("scope_user")}>{localize("Scope users")}</li>}
-						{hasScope && <li className={kind === "scope" ? "selected" : undefined} onClick={() => setKind("scope")}>{localize("Scopes")}</li>}
 						{hasGroup && <li className={kind === "group" ? "selected" : undefined} onClick={() => setKind("group")}>{localize("Groups")}</li>}
+						{hasScope && <li className={kind === "scope" ? "selected" : undefined} onClick={() => setKind("scope")}>{localize("Scopes")}</li>}
+						{hasScopeUser && <li className={kind === "scope_user" ? "selected" : undefined} onClick={() => setKind("scope_user")}>{localize("Scope users")}</li>}
 					</ul>
 					<ul className="accounts">
 						{accounts && accounts.map((item: Account, key: number) => {

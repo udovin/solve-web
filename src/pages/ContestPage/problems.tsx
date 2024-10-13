@@ -196,3 +196,49 @@ export const ContestProblemsBlock: FC<ContestProblemsBlockProps> = props => {
         </table>
     </Block>;
 };
+
+type ContestProblemsSideBlock = {
+    contest: Contest;
+};
+
+export const ContestProblemsSideBlock: FC<ContestProblemsSideBlock> = props => {
+    const { contest } = props;
+    const { localize } = useLocale();
+    const [error, setError] = useState<ErrorResponse>();
+    const [problems, setProblems] = useState<ContestProblems>();
+    useEffect(() => {
+        observeContestProblems(contest.id)
+            .then(problems => {
+                setProblems(problems)
+                setError(undefined)
+            })
+            .catch(setError)
+    }, [contest.id]);
+    if (!problems) {
+        return <></>;
+    }
+    let contestProblems: ContestProblem[] = problems.problems ?? [];
+    contestProblems.sort((a, b: ContestProblem) => {
+        return String(a.code).localeCompare(b.code);
+    });
+    return <Block className="b-contest-side-problems">
+        {error && <Alert>{error.message}</Alert>}
+        <table className="ui-table">
+            <tbody>
+                {contestProblems.map((contestProblem: ContestProblem, key: number) => {
+                    const { code, problem, solved } = contestProblem;
+                    const { title, statement } = problem;
+                    return <tr className={`problem${solved === true ? " solved" : (solved === false ? " not-solved" : "")}`} key={key}>
+                        <td className="code">
+                            <Link to={`/contests/${contest.id}/problems/${code}`}>{code}</Link>
+                        </td>
+                        <td className="title">
+                            <Link to={`/contests/${contest.id}/problems/${code}`}>{statement?.title ?? title}</Link>
+                        </td>
+                    </tr>;
+                })}
+            </tbody>
+        </table>
+    </Block>;
+};
+

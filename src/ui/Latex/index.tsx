@@ -114,7 +114,7 @@ const Latex: FC<LatexProps> = props => {
 	});
 	const html = convertToHtml(ast);
 	const ref = useCallback((node: HTMLDivElement) => {
-		if (!node) {
+		if (!node || !content) {
 			return;
 		}
 		node.querySelectorAll(".display-math").forEach(dm => {
@@ -141,7 +141,7 @@ const Latex: FC<LatexProps> = props => {
 				};
 			}
 		});
-	}, []);
+	}, [content]);
 	return <div
 		className={`ui-latex ${className ?? ""}`}
 		ref={ref}

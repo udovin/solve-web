@@ -25,7 +25,7 @@ import Alert from "../../ui/Alert";
 import { TabContent, TabsGroup } from "../../ui/Tabs";
 import Select from "../../ui/Select";
 import { ProblemBlock } from "../ProblemPage";
-import { ContestProblemsBlock } from "./problems";
+import { ContestProblemsBlock, ContestProblemsSideBlock } from "./problems";
 import { ContestSolutionsBlock, ContestSolutionBlock, ContestSubmitSolutionBlock } from "./solutions";
 import { ContestParticipantsBlock } from "./participants";
 import { ContestRegisterBlock } from "./register";
@@ -431,6 +431,7 @@ const ContestPage: FC = () => {
 		<Route path="/problems/:problem_code" element={<>
 			<ContestSideBlock contest={contest} />
 			<ContestProblemSideBlock contest={contest} />
+			<ContestProblemsSideBlock contest={contest} />
 		</>} />
 		<Route path="*" element={<ContestSideBlock contest={contest} />} />
 	</Routes>}>

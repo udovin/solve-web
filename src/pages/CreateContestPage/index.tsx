@@ -4,7 +4,7 @@ import Page from "../../components/Page";
 import Button from "../../ui/Button";
 import FormBlock from "../../components/FormBlock";
 import { Contest, ErrorResponse, createContest } from "../../api";
-import { ContestForm } from "../../forms/ContestForm";
+import { ContestForm } from "../../ui/ContestForm";
 
 const CreateContestPage: FC = () => {
 	const [newContest, setNewContest] = useState<Contest>();
