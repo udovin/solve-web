@@ -131,8 +131,7 @@ const ContestProblemSideBlock: FC<ContestSideBlockProps> = props => {
 };
 
 const ContestProblemBlock: FC = () => {
-	const params = useParams();
-	const { contest_id, problem_code } = params;
+	const { contest_id, problem_code } = useParams();
 	const [problem, setProblem] = useState<ContestProblem>();
 	useEffect(() => {
 		observeContestProblem(Number(contest_id), problem_code ?? "")

@@ -1,5 +1,5 @@
 import { FC, FormEvent, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Contest, ContestProblem, ContestProblems, createContestProblem, deleteContestProblem, ErrorResponse, observeContestProblems, updateContestProblem, UpdateContestProblemForm } from "../../api";
 import FormBlock from "../../components/FormBlock";
 import Alert from "../../ui/Alert";
@@ -197,13 +197,13 @@ export const ContestProblemsBlock: FC<ContestProblemsBlockProps> = props => {
     </Block>;
 };
 
-type ContestProblemsSideBlock = {
+type ContestProblemsSideBlockProps = {
     contest: Contest;
 };
 
-export const ContestProblemsSideBlock: FC<ContestProblemsSideBlock> = props => {
+export const ContestProblemsSideBlock: FC<ContestProblemsSideBlockProps> = props => {
     const { contest } = props;
-    const { localize } = useLocale();
+    const { problem_code } = useParams();
     const [error, setError] = useState<ErrorResponse>();
     const [problems, setProblems] = useState<ContestProblems>();
     useEffect(() => {
@@ -230,10 +230,10 @@ export const ContestProblemsSideBlock: FC<ContestProblemsSideBlock> = props => {
                     const { title, statement } = problem;
                     return <tr className={`problem${solved === true ? " solved" : (solved === false ? " not-solved" : "")}`} key={key}>
                         <td className="code">
-                            <Link to={`/contests/${contest.id}/problems/${code}`}>{code}</Link>
+                            {code === problem_code ? <>{code}</> : <Link to={`/contests/${contest.id}/problems/${code}`}>{code}</Link>}
                         </td>
                         <td className="title">
-                            <Link to={`/contests/${contest.id}/problems/${code}`}>{statement?.title ?? title}</Link>
+                            {code === problem_code ? <>{statement?.title ?? title}</> : <Link to={`/contests/${contest.id}/problems/${code}`}>{statement?.title ?? title}</Link>}
                         </td>
                     </tr>;
                 })}

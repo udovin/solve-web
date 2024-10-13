@@ -122,10 +122,16 @@
         border: none;
 
         tr {
+            td {
+                padding: 6px 10px;
+            }
+
             >.code {
                 text-align: right;
                 width: 1%;
                 white-space: nowrap;
+                border-right: none;
+                padding-right: 0;
             }
 
             >.title {
