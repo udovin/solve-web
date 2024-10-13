@@ -17,6 +17,7 @@ export const ContestStandingsBlock: FC<ContestStandingsBlockProps> = props => {
     const [standings, setStandings] = useState<ContestStandings>();
     const [ignoreFreeze, setIgnoreFreeze] = useState<boolean>();
     const [onlyOfficial, setOnlyOfficial] = useState<boolean>(localStorage.getItem("contest_only_official") === "true");
+    const [autoUpdate, setAutoUpdate] = useState<boolean>(localStorage.getItem("contest_auto_update") === "true");
     const [canChangeFreeze, setCanChangeFreeze] = useState<boolean>(false);
     useEffect(() => {
         observeContestStandings(contest.id, ignoreFreeze, onlyOfficial)
@@ -24,8 +25,25 @@ export const ContestStandingsBlock: FC<ContestStandingsBlockProps> = props => {
                 setStandings(standings);
                 setCanChangeFreeze(ignoreFreeze || standings.frozen);
             });
-        localStorage.setItem("contest_only_official", onlyOfficial ? "true" : "false")
+        localStorage.setItem("contest_only_official", onlyOfficial ? "true" : "false");
     }, [contest.id, ignoreFreeze, onlyOfficial]);
+    useEffect(() => {
+        localStorage.setItem("contest_auto_update", autoUpdate ? "true" : "false");
+    }, [autoUpdate]);
+    useEffect(() => {
+        if (!autoUpdate) {
+            return;
+        }
+        const updateStandings = () => {
+            observeContestStandings(contest.id, ignoreFreeze, onlyOfficial)
+                .then(standings => {
+                    setStandings(standings);
+                    setCanChangeFreeze(ignoreFreeze || standings.frozen);
+                });
+        };
+        const interval = setInterval(updateStandings, 10000);
+        return () => clearInterval(interval);
+    }, [contest.id, autoUpdate, ignoreFreeze, onlyOfficial]);
     if (!standings) {
         return <>Loading...</>;
     }
@@ -43,6 +61,12 @@ export const ContestStandingsBlock: FC<ContestStandingsBlockProps> = props => {
                 value={onlyOfficial ?? false}
                 onValueChange={setOnlyOfficial} />
             <span className="label">{localize("Official")}</span>
+        </Field>
+        <Field>
+            <Checkbox
+                value={autoUpdate ?? false}
+                onValueChange={setAutoUpdate} />
+            <span className="label">{localize("Auto-update")}</span>
         </Field>
     </>} className="b-contest-standings">
         {standings.kind === "ioi" ? <IOIStandingsTable standings={standings} /> : <ICPCStandingsTable standings={standings} />}
