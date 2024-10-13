@@ -1,5 +1,6 @@
 import { FC, ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { useMetadata } from "../Metadata";
+import { getCookie, setCookie } from "../../api";
 
 type ThemeContextProps = {
 	theme: string;
@@ -28,14 +29,13 @@ const ThemeProvider: FC<{ children?: ReactNode }> = props => {
 	}, [theme]);
 	useEffect(() => {
 		const browserTheme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? "dark" : "light";
-		setTheme(localStorage.getItem("theme") ?? browserTheme);
+		setTheme(getCookie("theme") ?? browserTheme);
 	}, [setTheme]);
 	const updateTheme = (theme: string) => {
 		if (theme !== "light" && theme !== "dark") {
 			return;
 		}
-		localStorage.setItem("theme", theme);
-		document.cookie = `theme=${encodeURIComponent(theme)};SameSite=Strict;Max-Age=31536000`;
+		setCookie("theme", theme);
 		setTheme(theme);
 	};
 	return <ThemeContext.Provider value={{ theme, setTheme: updateTheme }}>

@@ -1,6 +1,6 @@
 import { FC, ReactNode, createContext, useContext, useEffect, useState } from "react";
 
-import { localeUser } from "../../api";
+import { localeUser, setCookie } from "../../api";
 import { useMetadata } from "../Metadata";
 
 export type LocalizeFn = (text: string) => string;
@@ -92,8 +92,7 @@ const LocaleProvider: FC<{ children?: ReactNode }> = props => {
 	const localize = (text: string) => localizeKey(getLocalizationKey(text), text);
 	const localizePlural = (texts: string[], num: number) => localizePluralKey(getLocalizationKey(texts[0]), texts, num);
 	const updateLocale = (name: string) => {
-		localStorage.setItem("locale", name);
-		document.cookie = `locale=${encodeURIComponent(name)};SameSite=Strict;Max-Age=31536000`;
+		setCookie("locale", name);
 		refreshLocale();
 	};
 	return <LocaleContext.Provider value={{

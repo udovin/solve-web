@@ -363,18 +363,6 @@ export type RegisterForm = {
 	middle_name?: string;
 };
 
-export const getLocale = () => {
-	if (typeof window !== 'undefined') {
-		return localStorage.getItem("locale") ?? "en";
-	}
-	return "en";
-};
-
-// Note: cannot be called from server side.
-export const setLocale = (locale: string) => {
-	localStorage.setItem("locale", locale);
-};
-
 let fetchActuality = Date.now();
 
 // Note: cannot be called from server side.
@@ -383,7 +371,7 @@ const getHeaders = () => {
 		"X-Solve-Web-Version": "0.0.1",
 		"X-Solve-Sync": (Date.now() < fetchActuality ? "1" : "0"),
 	};
-	const locale = localStorage.getItem("locale");
+	const locale = getCookie("locale");
 	if (locale) {
 		headers["Accept-Language"] = locale;
 	}
@@ -401,6 +389,20 @@ let solveVersion: string | null = null;
 
 export const getSolveVersion = () => {
 	return solveVersion;
+};
+
+export const setCookie = (key: string, value: string) => {
+	document.cookie = `${key}=${encodeURIComponent(value)};Path=${BASE}/;SameSite=Strict;Max-Age=31536000`;
+};
+
+const escapeGetCookieKey = (text: string) => {
+	//eslint-disable-next-line
+	return text.replace(/([.*+?\^$(){}|\[\]\/\\])/g, '\\$1');
+};
+
+export const getCookie = (key: string) => {
+	let match = document.cookie.match(RegExp('(?:^|;\\s*)' + escapeGetCookieKey(key) + '=([^;]*)'));
+	return match ? match[1] : null;
 };
 
 const parseResp = <T = any>(promise: Promise<Response>, syncFetch: boolean = false) => {
