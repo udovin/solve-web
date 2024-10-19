@@ -114,18 +114,18 @@ const Latex: FC<LatexProps> = props => {
 	});
 	const html = convertToHtml(ast);
 	const ref = useCallback((node: HTMLDivElement) => {
-		if (!node || !content) {
+		if (!node || !html) {
 			return;
 		}
-		node.querySelectorAll(".display-math").forEach(dm => {
-			katex.render(dm.textContent ?? "", dm as HTMLElement, {
+		node.querySelectorAll<HTMLElement>(".display-math").forEach(dm => {
+			katex.render(dm.textContent ?? "", dm, {
 				displayMode: true,
 				throwOnError: false,
 				output: "html",
 			});
 		});
-		node.querySelectorAll(".inline-math").forEach(im => {
-			katex.render(im.textContent ?? "", im as HTMLElement, {
+		node.querySelectorAll<HTMLElement>(".inline-math").forEach(im => {
+			katex.render(im.textContent ?? "", im, {
 				displayMode: false,
 				throwOnError: false,
 				output: "html",
@@ -141,7 +141,7 @@ const Latex: FC<LatexProps> = props => {
 				};
 			}
 		});
-	}, [content]);
+	}, [html]);
 	return <div
 		className={`ui-latex ${className ?? ""}`}
 		ref={ref}

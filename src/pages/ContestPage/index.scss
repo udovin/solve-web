@@ -85,6 +85,12 @@
 
             >.title {
                 text-align: left;
+
+                >.points {
+                    padding-left: 4px;
+                    font-size: 12px;
+                    line-height: 14px;
+                }
             }
 
             >.actions {
@@ -105,6 +111,10 @@
 
                 &.not-solved {
                     background-color: themed("danger-row-background-color");
+                }
+
+                >.title>.points {
+                    color: themed("label-text-color");
                 }
             }
         }
@@ -136,6 +146,12 @@
 
             >.title {
                 text-align: left;
+
+                >.points {
+                    padding-left: 4px;
+                    font-size: 12px;
+                    line-height: 14px;
+                }
             }
         }
     }
@@ -151,6 +167,10 @@
 
                 &.not-solved {
                     background-color: themed("danger-row-background-color");
+                }
+
+                >.title>.points {
+                    color: themed("label-text-color");
                 }
             }
         }

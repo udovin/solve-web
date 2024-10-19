@@ -44,6 +44,7 @@ const ContestProblemRow: FC<ContestProblemRowProps> = props => {
         </td>
         <td className="title">
             <Link to={`/contests/${contest.id}/problems/${code}`}>{statement?.title ?? title}</Link>
+            {points && <span className="points">({localize("Points")}: {points})</span>}
         </td>
         <td className="actions">
             {onUpdate && <IconButton kind="edit" onClick={() => setOpen(true)} />}
@@ -204,6 +205,7 @@ type ContestProblemsSideBlockProps = {
 export const ContestProblemsSideBlock: FC<ContestProblemsSideBlockProps> = props => {
     const { contest } = props;
     const { problem_code } = useParams();
+    const { localize } = useLocale();
     const [error, setError] = useState<ErrorResponse>();
     const [problems, setProblems] = useState<ContestProblems>();
     useEffect(() => {
@@ -226,7 +228,7 @@ export const ContestProblemsSideBlock: FC<ContestProblemsSideBlockProps> = props
         <table className="ui-table">
             <tbody>
                 {contestProblems.map((contestProblem: ContestProblem, key: number) => {
-                    const { code, problem, solved } = contestProblem;
+                    const { code, problem, points, solved } = contestProblem;
                     const { title, statement } = problem;
                     return <tr className={`problem${solved === true ? " solved" : (solved === false ? " not-solved" : "")}`} key={key}>
                         <td className="code">
@@ -234,6 +236,7 @@ export const ContestProblemsSideBlock: FC<ContestProblemsSideBlockProps> = props
                         </td>
                         <td className="title">
                             {code === problem_code ? <>{statement?.title ?? title}</> : <Link to={`/contests/${contest.id}/problems/${code}`}>{statement?.title ?? title}</Link>}
+                            {points && <span className="points">({localize("Points")}: {points})</span>}
                         </td>
                     </tr>;
                 })}
