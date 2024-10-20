@@ -17,6 +17,7 @@ export type LatexProps = {
 	className?: string;
 	content?: string;
 	imageBaseUrl?: string;
+	macrosWhitelist?: string[];
 };
 
 const parser = unified().use(unifiedLatexFromString, {
@@ -32,8 +33,8 @@ type Context = {
 
 const macros: Record<string, (node: Macro, info: VisitInfo, context: Context) => any> = {
 	"def": () => null,
-	"includegraphics": (node: Macro, _: VisitInfo, context: Context) => {
-		if (!node.args) {
+	"includegraphics": (node: Macro, info: VisitInfo, context: Context) => {
+		if (!node.args || info.context.inMathMode) {
 			return null;
 		}
 		const args = pgfkeysArgToObject(node.args[1]);
@@ -96,12 +97,29 @@ const macros: Record<string, (node: Macro, info: VisitInfo, context: Context) =>
 	},
 };
 
+export const MinimalMacros = ["texttt", "textbf", "underline", "^", "{", "}", "\\"];
+
 const Latex: FC<LatexProps> = props => {
-	const { className, content, imageBaseUrl } = props;
+	const { className, content, imageBaseUrl, macrosWhitelist } = props;
 	const ast = parser.parse(content ?? "");
 	const context = {
 		imageBaseUrl: imageBaseUrl,
 	};
+	if (macrosWhitelist) {
+		const macrosWhitelistMap = macrosWhitelist.reduce((acc, item) => ({ ...acc, [item]: true }), {} as Record<string, boolean>)
+		replaceNode(ast, (node, info) => {
+			if (node.type === "macro") {
+				if (info.context.inMathMode) {
+					return undefined;
+				}
+				if (macrosWhitelistMap[node.content]) {
+					return undefined;
+				}
+				return null;
+			}
+			return undefined;
+		});
+	}
 	replaceNode(ast, (node, info) => {
 		if (node.type !== "macro") {
 			return undefined;
