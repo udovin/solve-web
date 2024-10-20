@@ -60,6 +60,9 @@ const MessageItem: FC<MessageItemProps> = props => {
                     required />
             </Field>
             <Button onClick={onSubmit} disabled={!description}>{localize("Submit")}</Button>
+            <Button onClick={() => setDescription("Yes")}>Yes</Button>
+            <Button onClick={() => setDescription("No")}>No</Button>
+            <Button onClick={() => setDescription("No comment")}>No comment</Button>
         </div>}
         {subMessages && <div className="children">{subMessages.map((message: ContestMessage, index: number) => {
             return <div className="message-wrap">
