@@ -41,7 +41,7 @@
             }
         }
 
-        >ul.accounts {
+        >ul.items {
             display: block;
             margin: 0;
             padding: 0;
@@ -82,7 +82,7 @@
                 }
             }
 
-            >ul.accounts>li {
+            >ul.items>li {
                 background-color: themed("button-background-color");
                 color: themed("button-text-color");
 

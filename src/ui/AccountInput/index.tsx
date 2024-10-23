@@ -34,7 +34,6 @@ const AccountInput: FC<AccountInputProps> = props => {
 	const [focused, setFocused] = useState(false);
 	const [style, setStyle] = useState<CSSProperties>({});
 	const [kind, setKind] = useState<string | undefined>(isOnly ? kinds[0] : account?.kind);
-	// const [query, setQuery] = useState<string | undefined>(account?.title ?? account?.id.toString());
 	const [accounts, setAccounts] = useState<Account[]>([]);
 	if (account && !query && onQueryChange) {
 		onQueryChange(account.title ?? account.id.toString());
@@ -102,7 +101,7 @@ const AccountInput: FC<AccountInputProps> = props => {
 						{hasScope && <li className={kind === "scope" ? "selected" : undefined} onClick={() => setKind("scope")}>{localize("Scopes")}</li>}
 						{hasScopeUser && <li className={kind === "scope_user" ? "selected" : undefined} onClick={() => setKind("scope_user")}>{localize("Scope users")}</li>}
 					</ul>
-					<ul className="accounts">
+					<ul className="items">
 						{accounts && accounts.map((item: Account, key: number) => {
 							return <li
 								className={item.id === account?.id ? "selected" : undefined}
