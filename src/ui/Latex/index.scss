@@ -1,9 +1,9 @@
 @import "katex/dist/katex.min.css";
+@import "../../mixins.scss";
 
 .ui-latex {
 	.lstlisting {
 		padding: 10px;
-		background-color: #eeeeee;
 		border-radius: 4px;
 		font-family: monospace;
 		overflow: auto;
@@ -15,5 +15,14 @@
 
 	img {
 		max-width: 100%;
+	}
+}
+
+@include themify {
+	.ui-latex {
+		.lstlisting {
+			color: themed("button-active-text-color");
+			background-color: themed("button-active-background-color");
+		}
 	}
 }
