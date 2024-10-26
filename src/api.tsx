@@ -748,8 +748,17 @@ export const deleteContestParticipant = (contestID: number, participantID: numbe
 	}));
 };
 
-export const observeProblems = () => {
-	return parseResp(fetch(`${BASE}/api/v0/problems`, {
+export type ProblemFilter = {
+	query?: string,
+};
+
+export const observeProblems = (filter: AccountFilter = {}) => {
+	const query: Record<string, string> = {};
+	if (filter.query) {
+		query["q"] = filter.query;
+	}
+	const queryString = encodeQueryData(query);
+	return parseResp<Problems>(fetch(`${BASE}/api/v0/problems?${queryString}`, {
 		method: "GET",
 		headers: getHeaders(),
 	}));

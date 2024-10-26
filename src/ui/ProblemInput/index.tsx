@@ -6,6 +6,7 @@ import "../AccountInput/index.scss";
 
 export type Problem = {
 	id: number;
+	name?: string;
 	title?: string;
 };
 
@@ -26,7 +27,7 @@ const ProblemInput: FC<ProblemInputProps> = props => {
 	const [style, setStyle] = useState<CSSProperties>({});
 	const [problems, setProblems] = useState<Problem[]>([]);
 	if (problem && !query && onQueryChange) {
-		onQueryChange(problem.title ?? problem.id.toString());
+		onQueryChange(problem.name ?? problem.id.toString());
 	}
 	const updateStyle = () => {
 		if (!ref.current) {
@@ -61,7 +62,7 @@ const ProblemInput: FC<ProblemInputProps> = props => {
 	};
 	const updateProblem = (problem: Problem) => {
 		if (onQueryChange) {
-			onQueryChange(problem.title ?? problem.id.toString());
+			onQueryChange(problem.name ?? problem.id.toString());
 		}
 		if (onProblemChange) {
 			onProblemChange(problem);
@@ -90,7 +91,10 @@ const ProblemInput: FC<ProblemInputProps> = props => {
 								className={item.id === problem?.id ? "selected" : undefined}
 								onClick={() => updateProblem(item)}
 								key={key}
-							>{item.title ?? item.id}</li>;
+							>
+								<span className="title">{item.title ?? item.name ?? item.id}</span>
+								{item.title && item.name && <span className="subtitle">{item.name}</span>}
+							</li>;
 						})}
 					</ul>
 				</div>

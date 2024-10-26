@@ -11,24 +11,32 @@ const TestProblemInput: FC<ProblemInputProps> = props => {
 		return Promise.resolve([
 			{
 				"id": 1,
+				"name": "add",
 				"title": "A + B",
 			},
 			{
 				"id": 2,
+				"name": "mul",
 				"title": "A * B",
 			},
 			{
 				"id": 3,
+				"name": "pow",
 				"title": "A ^ B",
 			},
 			{
 				"id": 4,
+				"name": "tet",
 				"title": "A ^^ B",
+			},
+			{
+				"id": 5,
+				"name": "broken",
 			}
 		]);
 	};
 	const [query, setQuery] = useState<string>();
-	const [problem, setProblem] = useState<Problem | undefined>({ "id": 1, "title": "A + B" });
+	const [problem, setProblem] = useState<Problem | undefined>({ "id": 1, "name": "add", "title": "A + B" });
 	return <ProblemInput
 		query={query}
 		onQueryChange={setQuery}

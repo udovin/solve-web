@@ -53,6 +53,15 @@
                 display: block;
                 padding: 4px 10px;
 
+                .title {
+                    display: block;
+                }
+
+                .subtitle {
+                    display: block;
+                    font-size: 12px;
+                }
+
                 &:hover {
                     cursor: pointer;
                 }

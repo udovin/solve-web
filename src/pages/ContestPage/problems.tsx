@@ -1,6 +1,6 @@
 import { FC, FormEvent, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Contest, ContestProblem, ContestProblems, createContestProblem, deleteContestProblem, ErrorResponse, observeContestProblems, updateContestProblem, UpdateContestProblemForm } from "../../api";
+import { Contest, ContestProblem, ContestProblems, createContestProblem, deleteContestProblem, ErrorResponse, observeContestProblems, observeProblems, updateContestProblem, UpdateContestProblemForm } from "../../api";
 import FormBlock from "../../components/FormBlock";
 import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
@@ -12,6 +12,7 @@ import IconButton from "../../ui/IconButton";
 import Input from "../../ui/Input";
 import NumberInput from "../../ui/NumberInput";
 import { useLocale } from "../../ui/Locale";
+import ProblemInput, { Problem as FormProblem } from "../../ui/ProblemInput";
 
 type ContestProblemRowProps = {
     contest: Contest;
@@ -93,7 +94,10 @@ export const ContestProblemsBlock: FC<ContestProblemsBlockProps> = props => {
     const { localize } = useLocale();
     const [error, setError] = useState<ErrorResponse>();
     const [problems, setProblems] = useState<ContestProblems>();
-    const [form, setForm] = useState<{ [key: string]: string }>({});
+    const [code, setCode] = useState<string>();
+    const [problem, setProblem] = useState<FormProblem>();
+    const [problemQuery, setProblemQuery] = useState<string>();
+    const [points, setPoints] = useState<number>();
     useEffect(() => {
         observeContestProblems(contest.id)
             .then(problems => {
@@ -104,14 +108,20 @@ export const ContestProblemsBlock: FC<ContestProblemsBlockProps> = props => {
     }, [contest.id]);
     const onSubmit = (event: FormEvent) => {
         event.preventDefault();
+        if (!code || !problem) {
+            return;
+        }
         createContestProblem(contest.id, {
-            code: form.code ?? "",
-            problem_id: Number(form.problem_id ?? 0),
-            points: form.points ? Number(form.points) : undefined,
+            code: code,
+            problem_id: problem.id,
+            points: points,
         })
             .then(problem => {
                 setProblems({ ...problems, problems: [...(problems?.problems ?? []), problem] });
-                setForm({});
+                setCode(undefined);
+                setProblem(undefined);
+                setProblemQuery(undefined);
+                setPoints(undefined);
                 setError(undefined);
             })
             .catch(setError);
@@ -128,25 +138,38 @@ export const ContestProblemsBlock: FC<ContestProblemsBlockProps> = props => {
     contestProblems.sort((a, b: ContestProblem) => {
         return String(a.code).localeCompare(b.code);
     });
+    const fetchProblems = (query?: string) => {
+        return observeProblems({ query: query }).then(problems => {
+            return problems?.problems?.map(problem => {
+                return {
+                    id: problem.id,
+                    name: problem.title,
+                    title: problem.statement?.title,
+                };
+            }) ?? [];
+        });
+    };
     return <Block
         title={localize("Problems")}
         className="b-contest-problems"
         footer={canCreateProblem && <form onSubmit={onSubmit}>
             <Input name="code"
-                value={form.code || ""}
-                onValueChange={value => setForm({ ...form, code: value })}
+                value={code || ""}
+                onValueChange={setCode}
                 placeholder={localize("Code")}
                 required />
-            <Input name="problem_id"
-                value={form.problem_id || ""}
-                onValueChange={value => setForm({ ...form, problem_id: value })}
-                placeholder={localize("Problem ID")}
-                required />
+            <ProblemInput
+                problem={problem}
+                onProblemChange={setProblem}
+                query={problemQuery}
+                onQueryChange={setProblemQuery}
+                fetchProblems={fetchProblems}
+                placeholder={localize("Problem")} />
             <NumberInput name="points"
-                value={form.points ? Number(form.points) : undefined}
-                onValueChange={value => setForm({ ...form, points: String(value ?? "") })}
+                value={points}
+                onValueChange={setPoints}
                 placeholder={localize("Points")} />
-            <Button type="submit">{localize("Add")}</Button>
+            <Button type="submit" disabled={!code || !problem}>{localize("Add")}</Button>
         </form>}
     >
         {error && <Alert>{error.message}</Alert>}
@@ -170,7 +193,6 @@ export const ContestProblemsBlock: FC<ContestProblemsBlockProps> = props => {
                                     contestProblems.splice(pos, 1);
                                 }
                                 setProblems({ ...problems, problems: contestProblems });
-                                setForm({});
                                 setError(undefined);
                             })
                             .catch(setError);
