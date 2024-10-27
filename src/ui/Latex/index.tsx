@@ -8,6 +8,7 @@ import { replaceNode } from "@unified-latex/unified-latex-util-replace";
 import { printRaw } from "@unified-latex/unified-latex-util-print-raw";
 import { pgfkeysArgToObject } from "@unified-latex/unified-latex-util-pgfkeys";
 import { VisitInfo } from "@unified-latex/unified-latex-util-visit";
+import { getArgsContent } from "@unified-latex/unified-latex-util-arguments";
 import { unified } from "unified";
 import katex from "katex";
 
@@ -95,9 +96,23 @@ const macros: Record<string, (node: Macro, info: VisitInfo, context: Context) =>
 		}
 		return s("\\bf");
 	},
+	"url": (node: Macro) => {
+		const args = getArgsContent(node);
+		const url = printRaw(args[0] || "#");
+		return htmlLike({
+			tag: "a",
+			attributes: {
+				className: "url",
+				href: url,
+				target: "_blank",
+				rel: "nofollow",
+			},
+			content: [{ type: "string", content: url }],
+		});
+	}
 };
 
-export const MinimalMacros = ["texttt", "textbf", "underline", "^", "{", "}", "\\"];
+export const MinimalMacros = ["texttt", "textbf", "underline", "^", "{", "}", "\\", "url"];
 
 const Latex: FC<LatexProps> = props => {
 	const { className, content, imageBaseUrl, macrosWhitelist } = props;
