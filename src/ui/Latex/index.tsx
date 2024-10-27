@@ -18,7 +18,7 @@ export type LatexProps = {
 	className?: string;
 	content?: string;
 	imageBaseUrl?: string;
-	macrosWhitelist?: string[];
+	allowedMacros?: string[];
 };
 
 const parser = unified().use(unifiedLatexFromString, {
@@ -109,25 +109,25 @@ const macros: Record<string, (node: Macro, info: VisitInfo, context: Context) =>
 			},
 			content: [{ type: "string", content: url }],
 		});
-	}
+	},
 };
 
-export const MinimalMacros = ["texttt", "textbf", "underline", "^", "{", "}", "\\", "url"];
+export const MessageMacros = ["texttt", "textbf", "underline", "^", "{", "}", "\\", "url"];
 
 const Latex: FC<LatexProps> = props => {
-	const { className, content, imageBaseUrl, macrosWhitelist } = props;
+	const { className, content, imageBaseUrl, allowedMacros } = props;
 	const ast = parser.parse(content ?? "");
 	const context = {
 		imageBaseUrl: imageBaseUrl,
 	};
-	if (macrosWhitelist) {
-		const macrosWhitelistMap = macrosWhitelist.reduce((acc, item) => ({ ...acc, [item]: true }), {} as Record<string, boolean>)
+	if (allowedMacros) {
+		const allowedMacrosMap = allowedMacros.reduce((acc, item) => ({ ...acc, [item]: true }), {} as Record<string, boolean>)
 		replaceNode(ast, (node, info) => {
 			if (node.type === "macro") {
 				if (info.context.inMathMode) {
 					return undefined;
 				}
-				if (macrosWhitelistMap[node.content]) {
+				if (allowedMacrosMap[node.content]) {
 					return undefined;
 				}
 				return null;

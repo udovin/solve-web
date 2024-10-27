@@ -10,7 +10,7 @@ import Input from "../../ui/Input";
 import Textarea from "../../ui/Textarea";
 import { ParticipantLink } from "./participants";
 import { useLocale } from "../../ui/Locale";
-import Latex, { MinimalMacros } from "../../ui/Latex";
+import Latex, { MessageMacros } from "../../ui/Latex";
 
 type MessageItemProps = {
     contest: Contest;
@@ -46,7 +46,7 @@ const MessageItem: FC<MessageItemProps> = props => {
     return <div className="message-wrap">
         <div className="message">
             {message.title && <span className="title">{message.title}</span>}
-            {message.description && <span className="description"><Latex content={message.description} macrosWhitelist={MinimalMacros} /></span>}
+            {message.description && <span className="description"><Latex content={message.description} allowedMacros={MessageMacros} /></span>}
             {message.participant && <span className="participant"><ParticipantLink participant={message.participant} /></span>}
             {canAnswer && <span className="answer"><Button onClick={() => setShow(!show)}>{localize("Answer")}</Button></span>}
         </div>
@@ -68,7 +68,7 @@ const MessageItem: FC<MessageItemProps> = props => {
             return <div className="message-wrap">
                 <div className="message" key={index}>
                     {message.title && <span className="title">{message.title}</span>}
-                    {message.description && <span className="description"><Latex content={message.description} macrosWhitelist={MinimalMacros} /></span>}
+                    {message.description && <span className="description"><Latex content={message.description} allowedMacros={MessageMacros} /></span>}
                 </div>
             </div>;
         })}</div>}
