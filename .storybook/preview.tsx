@@ -1,3 +1,7 @@
+import { DocsContainer } from "@storybook/blocks";
+import { themes } from "@storybook/theming";
+import React from "react";
+
 import "../src/index.scss";
 
 export const globalTypes = {
@@ -7,11 +11,11 @@ export const globalTypes = {
 		defaultValue: "light",
 		toolbar: {
 			icon: "circlehollow",
-			// Array of plain string values or MenuItem shape (see below)
-			items: ["light", "dark"],
-			// Property that specifies if the name of the item will be displayed
+			items: [
+				{ value: "light", icon: "circlehollow", title: "Light" },
+				{ value: "dark", icon: "circle", title: "Dark" },
+			],
 			showName: true,
-			// Change title based on selected value
 			dynamicTitle: true,
 		},
 	},
@@ -26,7 +30,24 @@ const withThemeProvider = (Story, context) => {
 	});
 	document.body.classList.add(`theme-${theme}`);
 	return <Story />;
-}
+};
+
+const ThemeDocsContainer = ({ children, context }) => {
+	const theme = context.store?.userGlobals?.globals?.theme;
+	return (
+		<DocsContainer
+			theme={theme === "light" ? themes.light : themes.dark}
+			context={context}
+		>
+			{children}
+		</DocsContainer>
+	);
+};
 
 export const decorators = [withThemeProvider];
 export const tags = ["autodocs"];
+export const parameters = {
+	docs: {
+		container: ThemeDocsContainer,
+	},
+};
