@@ -3,13 +3,14 @@ import { EditorView, ViewUpdate, keymap, lineNumbers, highlightSpecialChars } fr
 import { Annotation, EditorState, Extension, StateEffect } from "@codemirror/state";
 import { indentWithTab, history, defaultKeymap, historyKeymap } from "@codemirror/commands";
 import { closeBrackets } from "@codemirror/autocomplete";
-import { HighlightStyle, syntaxHighlighting, bracketMatching, foldGutter, indentOnInput, indentUnit } from "@codemirror/language";
+import { HighlightStyle, syntaxHighlighting, bracketMatching, foldGutter, indentOnInput, indentUnit, StreamLanguage } from "@codemirror/language";
 import { tags } from "@lezer/highlight";
 import { cpp } from "@codemirror/lang-cpp";
 import { python } from "@codemirror/lang-python";
 import { java } from "@codemirror/lang-java";
 import { rust } from "@codemirror/lang-rust";
 import { go } from "@codemirror/lang-go";
+import { stex } from "@codemirror/legacy-modes/mode/stex";
 
 import "./index.scss";
 
@@ -20,6 +21,7 @@ export type CodeProps = {
 	onValueChange?(value: string, vu: ViewUpdate): void;
 	editable?: boolean;
 	readOnly?: boolean;
+	showLineNumbers?: boolean;
 };
 
 const languages: Record<string, Extension | undefined> = {
@@ -29,6 +31,7 @@ const languages: Record<string, Extension | undefined> = {
 	"java": java(),
 	"rs": rust(),
 	"go": go(),
+	"stex": StreamLanguage.define(stex),
 };
 
 const highlightStyle = HighlightStyle.define([
@@ -43,7 +46,7 @@ const highlightStyle = HighlightStyle.define([
 const External = Annotation.define<boolean>();
 
 const Code: FC<CodeProps> = props => {
-	const { className, value, onValueChange, language, editable, readOnly } = props;
+	const { className, value, onValueChange, language, editable, readOnly, showLineNumbers } = props;
 	const ref = useRef<HTMLDivElement>(null);
 	const [view, setView] = useState<EditorView>();
 	const updateListener = EditorView.updateListener.of((vu: ViewUpdate) => {
@@ -55,8 +58,6 @@ const Code: FC<CodeProps> = props => {
 	});
 	let extensions: Extension[] = [
 		[
-			lineNumbers(),
-			foldGutter(),
 			highlightSpecialChars(),
 			history(),
 			indentOnInput(),
@@ -81,6 +82,9 @@ const Code: FC<CodeProps> = props => {
 	const languageImpl = language ? languages[language] : undefined;
 	if (languageImpl) {
 		extensions.push(languageImpl);
+	}
+	if (showLineNumbers) {
+		extensions.push(lineNumbers(), foldGutter());
 	}
 	useEffect(() => {
 		if (!ref.current) {
@@ -112,7 +116,7 @@ const Code: FC<CodeProps> = props => {
 		if (view) {
 			view.dispatch({ effects: StateEffect.reconfigure.of(extensions) });
 		}
-	}, [editable, readOnly, language]); // eslint-disable-line react-hooks/exhaustive-deps
+	}, [editable, readOnly, language, showLineNumbers]); // eslint-disable-line react-hooks/exhaustive-deps
 	return <div className={`ui-code ${className ?? ""}`.trimEnd()} ref={ref} />;
 };
 

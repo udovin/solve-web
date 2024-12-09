@@ -1,6 +1,7 @@
-import { CSSProperties, FC, useEffect, useRef, useState } from "react";
+import { CSSProperties, FC, useCallback, useEffect, useRef, useState } from "react";
 import Input from "../Input";
 import Portal from "../Portal";
+import { useDebounce } from "../../utils/debounce";
 
 import "../AccountInput/index.scss";
 
@@ -68,11 +69,17 @@ const ProblemInput: FC<ProblemInputProps> = props => {
 			onProblemChange(problem);
 		}
 	};
-	useEffect(() => {
+	const debouncedQuery = useDebounce(query, 300);
+	const updateProblems = useCallback(() => {
 		if (fetchProblems) {
-			fetchProblems(query).then(setProblems).catch(console.log);
+			fetchProblems(debouncedQuery).then(setProblems).catch(console.log);
 		}
-	}, [query, fetchProblems]);
+	}, [debouncedQuery, fetchProblems]);
+	useEffect(() => {
+		if (focused) {
+			updateProblems();
+		}
+	}, [focused, updateProblems]);
 	return <>
 		<Input
 			value={query}

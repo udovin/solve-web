@@ -7,10 +7,10 @@ import Block from "../../ui/Block";
 import Button from "../../ui/Button";
 import Field from "../../ui/Field";
 import Input from "../../ui/Input";
-import Textarea from "../../ui/Textarea";
 import { ParticipantLink } from "./participants";
 import { useLocale } from "../../ui/Locale";
 import Latex, { MessageMacros } from "../../ui/Latex";
+import Code from "../../ui/Code";
 
 type MessageItemProps = {
     contest: Contest;
@@ -53,11 +53,11 @@ const MessageItem: FC<MessageItemProps> = props => {
         {show && <div className="new-message">
             {error && error.message && <Alert>{error.message}</Alert>}
             <Field title={localize("Description") + ":"} name="description" errorResponse={error}>
-                <Textarea
-                    name="description" placeholder={localize("Description")}
+                <Code
                     value={description}
                     onValueChange={setDescription}
-                    required />
+                    language="stex"
+                    editable />
             </Field>
             <Button onClick={onSubmit} disabled={!description}>{localize("Submit")}</Button>
             <Button onClick={() => setDescription("Yes")}>Yes</Button>
@@ -170,11 +170,11 @@ export const SubmitContestQuestionBlock: FC<ContestMessagesBlockProps> = props =
                 required />
         </Field>
         <Field title={localize("Question") + ":"} name="description" errorResponse={error}>
-            <Textarea
-                name="description" placeholder={localize("Question")}
+            <Code
                 value={description}
                 onValueChange={setDescription}
-                required />
+                language="stex"
+                editable />
         </Field>
     </FormBlock>;
 };
@@ -218,11 +218,11 @@ export const CreateContestMessageBlock: FC<ContestMessagesBlockProps> = props =>
                 required />
         </Field>
         <Field title={localize("Description") + ":"} name="description" errorResponse={error}>
-            <Textarea
-                name="description" placeholder={localize("Description")}
+            <Code
                 value={description}
                 onValueChange={setDescription}
-                required />
+                language="stex"
+                editable />
         </Field>
     </FormBlock>;
 };

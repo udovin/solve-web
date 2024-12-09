@@ -427,6 +427,21 @@
     }
 }
 
+.b-contest-message,
+.b-contest-question,
+.b-contest-messages {
+    .ui-code {
+        .cm-scroller {
+            max-height: 420px;
+        }
+
+        .cm-content,
+        .cm-gutter {
+            min-height: 48px;
+        }
+    }
+}
+
 .b-contest-messages {
     .controls {
         margin-bottom: 8px;

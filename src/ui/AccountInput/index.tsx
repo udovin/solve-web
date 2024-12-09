@@ -1,7 +1,8 @@
-import { CSSProperties, FC, useEffect, useRef, useState } from "react";
+import { CSSProperties, FC, useCallback, useEffect, useRef, useState } from "react";
 import Input from "../Input";
 import Portal from "../Portal";
 import { useLocale } from "../Locale";
+import { useDebounce } from "../../utils/debounce";
 
 import "./index.scss";
 
@@ -77,11 +78,17 @@ const AccountInput: FC<AccountInputProps> = props => {
 			onAccountChange(account);
 		}
 	};
-	useEffect(() => {
+	const debouncedQuery = useDebounce(query, 300);
+	const updateAccounts = useCallback(() => {
 		if (fetchAccounts) {
-			fetchAccounts(kind, query).then(setAccounts).catch(console.log);
+			fetchAccounts(kind, debouncedQuery).then(setAccounts).catch(console.log);
 		}
-	}, [kind, query, fetchAccounts]);
+	}, [kind, debouncedQuery, fetchAccounts]);
+	useEffect(() => {
+		if (focused) {
+			updateAccounts();
+		}
+	}, [focused, updateAccounts]);
 	return <>
 		<Input
 			value={query}

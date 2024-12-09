@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useCallback, useState } from "react";
 import AccountInput, { Account, AccountInputProps } from ".";
 
 export default {
@@ -7,7 +7,7 @@ export default {
 
 const TestAccountInput: FC<AccountInputProps> = props => {
 	const { ...rest } = props;
-	const fetchAccounts = (kind?: string, query?: string) => {
+	const fetchAccounts = useCallback((kind?: string, query?: string) => {
 		if (kind === undefined) {
 			return Promise.resolve([
 				{
@@ -65,7 +65,7 @@ const TestAccountInput: FC<AccountInputProps> = props => {
 			]);
 		}
 		return Promise.reject(new Error("Failed!"));
-	};
+	}, []);
 	const [query, setQuery] = useState<string>();
 	const [account, setAccount] = useState<Account | undefined>({ "id": 1, "kind": "user", "title": "Admin" });
 	return <AccountInput

@@ -118,8 +118,8 @@ const SolutionPage: FC = () => {
 	const { content, compiler } = solution;
 	return <Page title={localize("Solution")} sidebar={<Sidebar />}>
 		<SolutionBlock solution={solution} />
-		{content && <CollapseBlock title={localize("Content")} className="b-contest-solution-content">
-			<Code value={content} language={compiler?.config?.extensions?.at(0)} />
+		{content && <CollapseBlock title={localize("Content")} className="b-solution-content">
+			<Code value={content} language={compiler?.config?.extensions?.at(0)} readOnly showLineNumbers />
 		</CollapseBlock>}
 		{!!solution.report?.tests && <SolutionReportBlock report={solution.report} />}
 	</Page>;

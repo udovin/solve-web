@@ -1,4 +1,4 @@
-import { FC, FormEvent, useEffect, useState } from "react";
+import { FC, FormEvent, useCallback, useEffect, useState } from "react";
 import { Contest, ContestParticipant, ContestParticipants, createContestParticipant, CreateContestParticipantForm, deleteContestParticipant, ErrorResponse, observeAccounts, observeContestParticipants } from "../../api";
 import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
@@ -71,16 +71,7 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
     };
     const canCreateParticipant = contest.permissions?.includes("create_contest_participant");
     const canDeleteParticipant = contest.permissions?.includes("delete_contest_participant");
-    if (!participants) {
-        return <Block title="Participants" className="b-contest-participants">
-            {error ? <Alert>{error.message}</Alert> : "Loading..."}
-        </Block>;
-    }
-    let contestParticipants: ContestParticipant[] = participants.participants ?? [];
-    contestParticipants.sort((a, b: ContestParticipant) => {
-        return (a.id ?? 0) - (b.id ?? 0);
-    });
-    const fetchAccounts = (kind?: string, query?: string) => {
+    const fetchAccounts = useCallback((kind?: string, query?: string) => {
         return observeAccounts({ kind, query }).then(accounts => {
             return accounts?.accounts?.map(account => {
                 return {
@@ -90,7 +81,16 @@ export const ContestParticipantsBlock: FC<ContestParticipantsBlockProps> = props
                 };
             }) ?? [];
         });
-    };
+    }, []);
+    if (!participants) {
+        return <Block title="Participants" className="b-contest-participants">
+            {error ? <Alert>{error.message}</Alert> : "Loading..."}
+        </Block>;
+    }
+    let contestParticipants: ContestParticipant[] = participants.participants ?? [];
+    contestParticipants.sort((a, b: ContestParticipant) => {
+        return (a.id ?? 0) - (b.id ?? 0);
+    });
     return <Block
         title={localize("Participants")} className="b-contest-participants"
         footer={canCreateParticipant && <form onSubmit={onSubmit}>

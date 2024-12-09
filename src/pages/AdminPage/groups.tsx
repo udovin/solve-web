@@ -1,4 +1,4 @@
-import { FC, FormEvent, useEffect, useState } from "react";
+import { FC, FormEvent, useCallback, useEffect, useState } from "react";
 import { useLocale } from "../../ui/Locale";
 import { Account, createGroup, createGroupMember, deleteGroup, deleteGroupMember, ErrorResponse, Group, GroupMember, GroupMembers, Groups, observeAccounts, observeGroupMembers, observeGroups } from "../../api";
 import Block from "../../ui/Block";
@@ -124,7 +124,7 @@ export const AdminGroupBlock: FC<AdminGroupBlockProps> = props => {
             })
             .catch(setError);
     };
-    const fetchAccounts = (kind?: string, query?: string) => {
+    const fetchAccounts = useCallback((kind?: string, query?: string) => {
         return observeAccounts({ kind, query }).then(accounts => {
             return accounts?.accounts?.map(account => {
                 return {
@@ -134,7 +134,7 @@ export const AdminGroupBlock: FC<AdminGroupBlockProps> = props => {
                 };
             }) ?? [];
         });
-    };
+    }, []);
     return <Block title={localize("Group members") + ": " + group.title} className="b-admin-group-members">
         {error && <Alert>{error.message}</Alert>}
         <form onSubmit={onCreate}>

@@ -298,7 +298,7 @@ export const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
             </table>
         </Block>
         {content && <CollapseBlock title={localize("Source code")} className="b-contest-solution-content">
-            <Code value={content} language={compiler?.config?.extensions?.at(0)} readOnly={true} />
+            <Code value={content} language={compiler?.config?.extensions?.at(0)} readOnly showLineNumbers />
         </CollapseBlock>}
         {!!report?.tests && <SolutionReportBlock report={report} />}
     </>;
@@ -401,10 +401,11 @@ export const ContestSubmitSolutionBlock: FC<ContestSubmitSolutionBlockProps> = p
         </Field>
         <Field title={localize("Source code") + ":"} name="content">
             <Code
-                editable={true}
                 language={compilerInfo?.config?.extensions?.at(0)}
                 value={content}
-                onValueChange={setContent} />
+                onValueChange={setContent}
+                editable
+                showLineNumbers />
         </Field>
         <Field title={localize("Solution file") + ":"} name="file" errorResponse={error}>
             <FileInput

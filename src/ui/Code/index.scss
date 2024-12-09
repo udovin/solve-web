@@ -5,6 +5,10 @@
 	border-radius: 4px;
 	overflow: hidden;
 
+	.cm-content {
+		cursor: text;
+	}
+
 	.cm-gutter.cm-lineNumbers {
 		margin-left: 4px;
 	}
@@ -13,6 +17,10 @@
 @include themify {
 	.ui-code {
 		border-color: themed("block-border-color");
+
+		.cm-content {
+			caret-color: themed("text-color");
+		}
 
 		.cm-gutters {
 			background-color: themed("group-row-background-color");

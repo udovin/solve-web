@@ -1,0 +1,70 @@
+@import "../../mixins.scss";
+
+.b-post-create {
+    ul.tabs {
+        display: block;
+        margin: 0;
+        padding: 0 0 4px 0;
+        list-style: none;
+        @include clear-fix;
+
+        >li {
+            display: block;
+            float: left;
+            padding: 2px 4px;
+            margin-right: 2px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            background-color: transparent;
+            text-align: center;
+            font-family: inherit;
+            font-size: inherit;
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+
+    .ui-code .cm-content,
+    .ui-code .cm-gutter {
+        min-height: 240px;
+    }
+
+    .preview {
+        border: 1px solid;
+        border-radius: 4px;
+        overflow: hidden;
+
+        .ui-latex {
+            padding: 4px 6px;
+            min-height: 20px;
+        }
+    }
+}
+
+@include themify {
+    .b-post-create {
+        ul.tabs>li {
+            color: themed("label-text-color");
+
+            &:hover {
+                border-color: themed("button-hover-border-color");
+            }
+
+            &.selected {
+                border-color: themed("primary-button-border-color");
+                background-color: themed("primary-button-background-color");
+                color: themed("primary-button-text-color");
+            }
+        }
+
+        .preview {
+            border-color: themed("block-border-color");
+        }
+    }
+}
