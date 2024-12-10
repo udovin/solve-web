@@ -1,15 +1,5 @@
 @import "../../mixins.scss";
 
-.b-contest-tabs {
-    >.ui-block>.ui-block-content {
-        padding-bottom: 0;
-
-        .ui-tabs {
-            border-bottom: 0;
-        }
-    }
-}
-
 .b-contest-side {
     h3 {
         text-align: center;

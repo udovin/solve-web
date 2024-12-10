@@ -12,33 +12,8 @@
         border-radius: 4px;
         overflow: hidden;
 
-        >ul.tabs {
-            display: block;
-            margin: 0;
+        >.ui-tabs {
             padding: 4px;
-            list-style: none;
-            @include clear-fix;
-
-            >li {
-                display: block;
-                float: left;
-                padding: 2px 4px;
-                margin-right: 2px;
-                border: 1px solid transparent;
-                border-radius: 4px;
-                background-color: transparent;
-                text-align: center;
-                font-family: inherit;
-                font-size: inherit;
-
-                &:hover {
-                    cursor: pointer;
-                }
-
-                &:last-child {
-                    margin-right: 0;
-                }
-            }
         }
 
         >ul.items {
@@ -76,20 +51,6 @@
             border-color: themed("button-active-border-color");
             background-color: themed("block-background-color");
             box-shadow: 0 0 2px themed("button-active-border-color");
-
-            >ul.tabs>li {
-                color: themed("label-text-color");
-
-                &:hover {
-                    border-color: themed("button-hover-border-color");
-                }
-
-                &.selected {
-                    border-color: themed("primary-button-border-color");
-                    background-color: themed("primary-button-background-color");
-                    color: themed("primary-button-text-color");
-                }
-            }
 
             >ul.items>li {
                 background-color: themed("button-background-color");

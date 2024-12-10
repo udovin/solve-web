@@ -1,38 +1,42 @@
-import { createContext, FC, ReactNode, useContext, useEffect, useState } from "react";
+import { createContext, FC, ReactNode, useContext } from "react";
 
 import "./index.scss";
 
-type TabContextProps = {
-	currentTab?: string;
-	setCurrentTab?(tab: string): void;
+type TabsContext = {
+    value?: string;
+    onValueChange?(value?: string): void;
 };
 
-const TabContext = createContext<TabContextProps>({});
+const TabsContext = createContext<TabsProps>({});
 
-const TabsGroup: FC<{ children?: ReactNode }> = props => {
-	const { children } = props;
-	const [currentTab, setCurrentTab] = useState<string>();
-	return <TabContext.Provider value={{ currentTab, setCurrentTab }}>{children}</TabContext.Provider>;
+export type TabsProps = {
+    value?: string;
+    onValueChange?(value?: string): void;
+    children?: ReactNode;
 };
 
-const Tabs: FC<{ children?: ReactNode }> = props => {
-	const { children } = props;
-	return <ul className="ui-tabs">{children}</ul>;
+const Tabs: FC<TabsProps> = props => {
+    const { value, onValueChange, children } = props;
+    return <ul className="ui-tabs">
+        <TabsContext.Provider value={{ value, onValueChange }}>
+            {children}
+        </TabsContext.Provider>
+    </ul>;
 };
 
-const Tab: FC<{ tab: string, children?: ReactNode }> = props => {
-	const { tab, children } = props;
-	const { currentTab } = useContext(TabContext);
-	return <li className={tab === currentTab ? "active" : undefined}>{children}</li>;
+export type TabProps = {
+    value?: string;
+    children?: ReactNode;
 };
 
-const TabContent: FC<{ tab: string, children?: ReactNode, setCurrent?: boolean }> = props => {
-	const { tab, children, setCurrent } = props;
-	const { currentTab, setCurrentTab } = useContext(TabContext);
-	useEffect(() => {
-		setCurrent && setCurrentTab && setCurrentTab(tab);
-	}, [tab, setCurrentTab, setCurrent]);
-	return <>{tab === currentTab && children}</>;
+const Tab: FC<TabProps> = props => {
+    const { value, children } = props;
+    const { value: currentValue, onValueChange } = useContext(TabsContext);
+    return <li
+        className={`ui-tab${value === currentValue ? " selected" : ""}`}
+        onClick={() => onValueChange && onValueChange(value)}>
+        {children}
+    </li>;
 };
 
-export { TabsGroup, Tabs, Tab, TabContent };
+export { Tabs, Tab };

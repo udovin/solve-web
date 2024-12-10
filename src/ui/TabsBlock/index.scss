@@ -1,0 +1,67 @@
+@import "../../mixins.scss";
+
+.ui-tabs-block {
+    .ui-block-content {
+        padding-bottom: 0;
+    }
+
+    .ui-tabs {
+        .ui-tab {
+            display: block;
+            margin: 0 4px 0 0;
+            padding: 0;
+            border: none;
+
+            &:last-child {
+                margin-right: 0;
+            }
+
+            >a {
+                display: block;
+                padding: 0 10px;
+                height: 32px;
+                line-height: 32px;
+                border: 1px solid transparent;
+                border-bottom: 0;
+                border-radius: 4px 4px 0 0;
+                @include transition(border-color 150ms ease-out, background-color 150ms ease-out);
+
+                &:hover {
+                    text-decoration: none;
+                    @include transition(border-color 150ms ease-in, background-color 150ms ease-in);
+                }
+            }
+        }
+    }
+}
+
+@include themify {
+    .ui-tabs-block {
+        .ui-tabs {
+            .ui-tab {
+                display: block;
+                margin: 0 4px 0 0;
+                padding: 0;
+                border: none;
+
+                &:last-child {
+                    margin-right: 0;
+                }
+
+                >a {
+                    background-color: themed("button-background-color");
+
+                    &:hover {
+                        background-color: themed("button-active-background-color");
+                    }
+                }
+
+                &.selected>a {
+                    border-color: themed("primary-button-border-color");
+                    background-color: themed("primary-button-background-color");
+                    color: themed("primary-button-text-color");
+                }
+            }
+        }
+    }
+}

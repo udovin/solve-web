@@ -1,15 +1,5 @@
 @import "../../mixins.scss";
 
-.b-profile-edit-tabs {
-    >.ui-block>.ui-block-content {
-        padding-bottom: 0;
-
-        .ui-tabs {
-            border-bottom: 0;
-        }
-    }
-}
-
 .b-profile-edit {
     >.ui-block>.ui-block-footer {
         @include clear-fix;

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, ReactNode, useEffect, useState } from "react";
 import Page from "../../components/Page";
 import {
 	ErrorResponse,
@@ -25,10 +25,11 @@ import { useAuth } from "../../ui/Auth";
 import Sidebar from "../../ui/Sidebar";
 import DateTime from "../../ui/DateTime";
 import Select from "../../ui/Select";
-import { Tab, TabContent, Tabs, TabsGroup } from "../../ui/Tabs";
+import { Tab } from "../../ui/Tabs";
 import { Route, Routes, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useLocale } from "../../ui/Locale";
+import TabsBlock from "../../ui/TabsBlock";
 
 import "./index.scss";
 
@@ -335,6 +336,12 @@ const CurrentSessionsBlock: FC<CurrentSessionsBlockProps> = props => {
 	}</Block>;
 };
 
+const SetValue: FC<{ value?: string, setValue(tab?: string): void, children?: ReactNode }> = props => {
+	const { value, setValue, children } = props;
+	useEffect(() => setValue(value), [value, setValue]);
+	return <>{children}</>
+};
+
 const EditUserPage: FC = () => {
 	const params = useParams();
 	const { user_id } = params;
@@ -350,6 +357,7 @@ const EditUserPage: FC = () => {
 			.catch(setError);
 	}, [user_id]);
 	const { status } = useAuth();
+	const [tab, setTab] = useState<string>();
 	if (error) {
 		return <Page title={localize("Error")} sidebar={<Sidebar />}>
 			{error.message && <Alert>{error.message}</Alert>}
@@ -361,25 +369,21 @@ const EditUserPage: FC = () => {
 	const canUpdateStatus = status?.permissions?.includes("update_user_status");
 	const { id, login } = user;
 	return <Page title={localize("Edit user") + ": " + login} sidebar={<Sidebar />}>
-		<TabsGroup>
-			<Block className="b-profile-edit-tabs">
-				<Tabs>
-					<Tab tab="profile"><Link to={`/users/${login}/edit`}>{localize("Profile")}</Link></Tab>
-					<Tab tab="security"><Link to={`/users/${login}/edit/security`}>{localize("Security")}</Link></Tab>
-				</Tabs>
-			</Block>
-			<Routes>
-				<Route index element={<TabContent tab="profile" setCurrent>
-					<EditUserBlock user={user} onUpdateUser={setUser} />
-					{canUpdateStatus && <EditUserStatusBlock user={user} onUpdateUser={setUser} />}
-				</TabContent>} />
-				<Route path="/security" element={<TabContent tab="security" setCurrent>
-					<ChangePasswordBlock userID={id} />
-					<ChangeEmailBlock user={user} onUpdateUser={setUser} />
-					<CurrentSessionsBlock userID={id} />
-				</TabContent>} />
-			</Routes>
-		</TabsGroup>
+		<TabsBlock value={tab}>
+			<Tab><Link to={`/users/${login}/edit`}>{localize("Profile")}</Link></Tab>
+			<Tab value="security"><Link to={`/users/${login}/edit/security`}>{localize("Security")}</Link></Tab>
+		</TabsBlock>
+		<Routes>
+			<Route index element={<SetValue setValue={setTab}>
+				<EditUserBlock user={user} onUpdateUser={setUser} />
+				{canUpdateStatus && <EditUserStatusBlock user={user} onUpdateUser={setUser} />}
+			</SetValue>} />
+			<Route path="/security" element={<SetValue value="security" setValue={setTab}>
+				<ChangePasswordBlock userID={id} />
+				<ChangeEmailBlock user={user} onUpdateUser={setUser} />
+				<CurrentSessionsBlock userID={id} />
+			</SetValue>} />
+		</Routes>
 	</Page>;
 };
 

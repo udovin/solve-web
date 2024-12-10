@@ -4,7 +4,7 @@ import Page from "../../components/Page";
 import Button from "../../ui/Button";
 import FormBlock from "../../components/FormBlock";
 import { Contest, ErrorResponse } from "../../api";
-import PostForm from "../../ui/PostForm";
+import PostForm, { BlockPostAttachment } from "../../ui/PostForm";
 import { useLocale } from "../../ui/Locale";
 import { useDebounce } from "../../utils/debounce";
 
@@ -15,6 +15,7 @@ const CreatePostPage: FC = () => {
     const [newPost, setNewPost] = useState<Contest>();
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
+    const [attachments, setAttachments] = useState<BlockPostAttachment[]>([]);
     const [error, setError] = useState<ErrorResponse>();
     const onSubmit = (event: any) => {
         event.preventDefault();
@@ -58,6 +59,8 @@ const CreatePostPage: FC = () => {
                 onTitleChange={setTitle}
                 description={description}
                 onDescriptionChange={setDescription}
+                attachments={attachments}
+                onAttachmentsChange={setAttachments}
                 error={error}
             />
         </FormBlock>

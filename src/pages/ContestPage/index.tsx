@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, ReactNode, useEffect, useState } from "react";
 import { Link, matchPath, Navigate, Route, Routes, useLocation, useParams } from "react-router-dom";
 import Page from "../../components/Page";
 import {
@@ -22,7 +22,6 @@ import Field from "../../ui/Field";
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
 import Alert from "../../ui/Alert";
-import { TabContent, TabsGroup } from "../../ui/Tabs";
 import Select from "../../ui/Select";
 import { ProblemBlock } from "../ProblemPage";
 import { ContestProblemsBlock, ContestProblemsSideBlock } from "./problems";
@@ -188,98 +187,106 @@ const DeleteContestBlock: FC<DeleteContestBlockProps> = props => {
 	</FormBlock>;
 };
 
+const SetValue: FC<{ value?: string, setValue(tab?: string): void, children?: ReactNode }> = props => {
+	const { value, setValue, children } = props;
+	useEffect(() => setValue(value), [value, setValue]);
+	return <>{children}</>
+};
+
 type ContestTabProps = {
 	contest: Contest;
 	setContest?(contest: Contest): void;
+	setTab(tab?: string): void;
 };
 
 const ContestProblemsTab: FC<ContestTabProps> = props => {
-	const { contest } = props;
+	const { contest, setTab } = props;
 	const { permissions } = contest;
 	const canObserveProblems = permissions?.includes("observe_contest_problems");
-	return <TabContent tab="problems" setCurrent>
+	return <SetValue value="problems" setValue={setTab}>
 		{canObserveProblems ? <ContestProblemsBlock contest={contest} /> : <ContestSideBlock contest={contest} />}
-	</TabContent>;
+	</SetValue>;
 };
 
 const ContestSubmitSolutionTab: FC<ContestTabProps> = props => {
-	const { contest } = props;
-	return <TabContent tab="submit" setCurrent>
+	const { contest, setTab } = props;
+	return <SetValue value="submit" setValue={setTab}>
 		<ContestSubmitSolutionBlock contest={contest} />
-	</TabContent>;
+	</SetValue>;
 };
 
 const ContestSolutionsTab: FC<ContestTabProps> = props => {
-	const { contest } = props;
-	return <TabContent tab="solutions" setCurrent>
+	const { contest, setTab } = props;
+	return <SetValue value="solutions" setValue={setTab}>
 		<ContestSolutionsBlock contest={contest} />
-	</TabContent>;
+	</SetValue>;
 };
 
 const ContestStandingsTab: FC<ContestTabProps> = props => {
-	const { contest } = props;
-	return <TabContent tab="standings" setCurrent>
+	const { contest, setTab } = props;
+	return <SetValue value="standings" setValue={setTab}>
 		<ContestSideBlock contest={contest} />
 		<ContestStandingsBlock contest={contest} />
-	</TabContent>;
+	</SetValue>;
 };
 
 const ContestMessagesTab: FC<ContestTabProps> = props => {
-	const { contest } = props;
-	return <TabContent tab="messages" setCurrent>
+	const { contest, setTab } = props;
+	return <SetValue value="messages" setValue={setTab}>
 		<ContestMessagesBlock contest={contest} />
-	</TabContent>;
+	</SetValue>;
 };
 
 const ContestQuestionTab: FC<ContestTabProps> = props => {
-	const { contest } = props;
-	return <TabContent tab="question" setCurrent>
+	const { contest, setTab } = props;
+	return <SetValue value="question" setValue={setTab}>
 		<SubmitContestQuestionBlock contest={contest} />
-	</TabContent>;
+	</SetValue>;
 };
 
 const ContestCreateMessageTab: FC<ContestTabProps> = props => {
-	const { contest } = props;
-	return <TabContent tab="create-message" setCurrent>
+	const { contest, setTab } = props;
+	return <SetValue value="create-message" setValue={setTab}>
 		<CreateContestMessageBlock contest={contest} />
-	</TabContent>;
+	</SetValue>;
 };
 
 const ContestRegisterTab: FC<ContestTabProps> = props => {
-	const { contest } = props;
-	return <TabContent tab="register" setCurrent>
+	const { contest, setTab } = props;
+	return <SetValue value="register" setValue={setTab}>
 		<ContestRegisterBlock contest={contest} />
-	</TabContent>;
+	</SetValue>;
 };
 
 const ContestParticipantsTab: FC<ContestTabProps> = props => {
-	const { contest } = props;
-	return <TabContent tab="participants" setCurrent>
+	const { contest, setTab } = props;
+	return <SetValue value="participants" setValue={setTab}>
 		<ContestParticipantsBlock contest={contest} />
-	</TabContent>;
+	</SetValue>;
 };
 
 const ContestSolutionTab: FC<ContestTabProps> = props => {
-	const { contest } = props;
+	const { contest, setTab } = props;
 	const params = useParams();
-	return <TabContent tab="solution" setCurrent>
+	return <SetValue value="solution" setValue={setTab}>
 		<ContestSolutionBlock contest={contest} solutionID={Number(params.solution_id)} />
-	</TabContent>;
+	</SetValue>;
 };
 
 const ContestProblemTab: FC<ContestTabProps> = props => {
-	return <TabContent tab="problem" setCurrent>
+	const { setTab } = props;
+	return <SetValue value="problem" setValue={setTab}>
 		<ContestProblemBlock />
-	</TabContent>;
+	</SetValue>;
 };
 
 const ContestManageTab: FC<ContestTabProps> = props => {
-	const { contest, setContest } = props;
+	const { contest, setContest, setTab } = props;
 	const { permissions } = contest;
-	return <TabContent tab="manage" setCurrent>
+	return <SetValue value="manage" setValue={setTab}>
 		{permissions?.includes("update_contest") && <EditContestBlock contest={contest} onUpdateContest={setContest} />}
 		{permissions?.includes("delete_contest") && <DeleteContestBlock contest={contest} />}
-	</TabContent>;
+	</SetValue>;
 };
 
 const ContestSideBlock: FC<ContestSideBlockProps> = props => {
@@ -326,6 +333,7 @@ const ContestPage: FC = () => {
 	const { localize } = useLocale();
 	const [contest, setContest] = useState<Contest>();
 	const [newMessages, setNewMessages] = useState<number>(0);
+	const [tab, setTab] = useState<string>();
 	const getNow = () => {
 		return Math.round((new Date()).getTime() / 1000);
 	};
@@ -434,26 +442,24 @@ const ContestPage: FC = () => {
 		</>} />
 		<Route path="*" element={<ContestSideBlock contest={contest} />} />
 	</Routes>}>
-		<TabsGroup>
-			{(isIndex && !canObserveProblems) ? <></> : <ContestTabs contest={contest} newMessages={newMessages} />}
-			<Routes>
-				<Route index element={<ContestProblemsTab contest={contest} />} />
-				{canObserveProblems && <Route path="/problems" element={<ContestProblemsTab contest={contest} />} />}
-				<Route path="/solutions" element={<ContestSolutionsTab contest={contest} />} />
-				{canSubmitSolution && <Route path="/submit" element={<ContestSubmitSolutionTab contest={contest} />} />}
-				{canObserveStandings && <Route path="/standings" element={<ContestStandingsTab contest={contest} />} />}
-				{canObserveMessages && <Route path="/messages" element={<ContestMessagesTab contest={contest} />} />}
-				{canSubmitQuestion && <Route path="/question" element={<ContestQuestionTab contest={contest} />} />}
-				{canCreateMessage && <Route path="/messages/create" element={<ContestCreateMessageTab contest={contest} />} />}
-				{canObserveParticipants && <Route path="/participants" element={<ContestParticipantsTab contest={contest} />} />}
-				<Route path="/register" element={<ContestRegisterTab contest={contest} />} />
-				<Route path="/solutions/:solution_id" element={<ContestSolutionTab contest={contest} />} />
-				<Route path="/problems/:problem_code" element={<ContestProblemTab contest={contest} />} />
-				{canManageContest && <Route path="/manage" element={<ContestManageTab contest={contest} setContest={setContest} />} />}
-				<Route path="*" element={<Navigate to={`/contests/${contest_id}`} />} />
-			</Routes>
-		</TabsGroup>
-	</Page>;
-};
+		{(isIndex && !canObserveProblems) ? <></> : <ContestTabs contest={contest} tab={tab} newMessages={newMessages} />}
+		<Routes>
+			<Route index element={<ContestProblemsTab contest={contest} setTab={setTab} />} />
+			{canObserveProblems && <Route path="/problems" element={<ContestProblemsTab contest={contest} setTab={setTab} />} />}
+			<Route path="/solutions" element={<ContestSolutionsTab contest={contest} setTab={setTab} />} />
+			{canSubmitSolution && <Route path="/submit" element={<ContestSubmitSolutionTab contest={contest} setTab={setTab} />} />}
+			{canObserveStandings && <Route path="/standings" element={<ContestStandingsTab contest={contest} setTab={setTab} />} />}
+			{canObserveMessages && <Route path="/messages" element={<ContestMessagesTab contest={contest} setTab={setTab} />} />}
+			{canSubmitQuestion && <Route path="/question" element={<ContestQuestionTab contest={contest} setTab={setTab} />} />}
+			{canCreateMessage && <Route path="/messages/create" element={<ContestCreateMessageTab contest={contest} setTab={setTab} />} />}
+			{canObserveParticipants && <Route path="/participants" element={<ContestParticipantsTab contest={contest} setTab={setTab} />} />}
+			<Route path="/register" element={<ContestRegisterTab contest={contest} setTab={setTab} />} />
+			<Route path="/solutions/:solution_id" element={<ContestSolutionTab contest={contest} setTab={setTab} />} />
+			<Route path="/problems/:problem_code" element={<ContestProblemTab contest={contest} setTab={setTab} />} />
+			{canManageContest && <Route path="/manage" element={<ContestManageTab contest={contest} setContest={setContest} setTab={setTab} />} />}
+			<Route path="*" element={<Navigate to={`/contests/${contest_id}`} />} />
+		</Routes>
+	</Page >;
+}
 
 export default ContestPage;

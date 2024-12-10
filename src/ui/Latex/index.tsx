@@ -17,6 +17,7 @@ import "./index.scss";
 export type LatexProps = {
 	className?: string;
 	content?: string;
+	resolveImageUrl?(name: string): void;
 	imageBaseUrl?: string;
 	allowedMacros?: string[];
 };
@@ -29,7 +30,7 @@ const parser = unified().use(unifiedLatexFromString, {
 });
 
 type Context = {
-	imageBaseUrl?: string;
+	resolveImageUrl(name: string): void;
 };
 
 const macros: Record<string, (node: Macro, info: VisitInfo, context: Context) => any> = {
@@ -52,7 +53,7 @@ const macros: Record<string, (node: Macro, info: VisitInfo, context: Context) =>
 			scale = printRaw(args["scale"][0]);
 		}
 		const imageName = printRaw(node.args[3].content);
-		const imageUrl = (context.imageBaseUrl ?? "") + imageName;
+		const imageUrl = context.resolveImageUrl(imageName);
 		let attributes: object = { src: imageUrl, style: style };
 		if (scale) {
 			attributes = { ...attributes, style: style, "data-scale": scale };
@@ -114,14 +115,18 @@ const macros: Record<string, (node: Macro, info: VisitInfo, context: Context) =>
 
 export const MessageMacros = ["texttt", "textbf", "underline", "^", "{", "}", "\\", "url"];
 
+
 const Latex: FC<LatexProps> = props => {
-	const { className, content, imageBaseUrl, allowedMacros } = props;
+	const { className, content, resolveImageUrl, imageBaseUrl, allowedMacros } = props;
 	const ast = parser.parse(content ?? "");
-	const context = {
-		imageBaseUrl: imageBaseUrl,
+	const defaultResolveImageUrl = (name: string) => {
+		return (imageBaseUrl ?? "") + name;
+	};
+	const context: Context = {
+		resolveImageUrl: resolveImageUrl ?? defaultResolveImageUrl,
 	};
 	if (allowedMacros) {
-		const allowedMacrosMap = allowedMacros.reduce((acc, item) => ({ ...acc, [item]: true }), {} as Record<string, boolean>)
+		const allowedMacrosMap = allowedMacros.reduce((map, item) => ({ ...map, [item]: true }), {} as Record<string, boolean>)
 		replaceNode(ast, (node, info) => {
 			if (node.type === "macro") {
 				if (info.context.inMathMode) {

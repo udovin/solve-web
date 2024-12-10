@@ -1,34 +1,6 @@
 @import "../../mixins.scss";
 
 .b-post-create {
-    ul.tabs {
-        display: block;
-        margin: 0;
-        padding: 0 0 4px 0;
-        list-style: none;
-        @include clear-fix;
-
-        >li {
-            display: block;
-            float: left;
-            padding: 2px 4px;
-            margin-right: 2px;
-            border: 1px solid transparent;
-            border-radius: 4px;
-            background-color: transparent;
-            text-align: center;
-            font-family: inherit;
-            font-size: inherit;
-
-            &:hover {
-                cursor: pointer;
-            }
-
-            &:last-child {
-                margin-right: 0;
-            }
-        }
-    }
 
     .ui-code .cm-content,
     .ui-code .cm-gutter {
@@ -45,26 +17,54 @@
             min-height: 20px;
         }
     }
+
+    .attachments {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        li {
+            margin-bottom: 4px;
+
+            @include clear-fix;
+
+            .file {
+                display: block;
+                float: left;
+                width: 42px;
+                height: 42px;
+                line-height: 42px;
+                text-align: center;
+                padding: 2px;
+                border: 1px solid;
+                border-radius: 4px;
+                overflow: hidden;
+
+                img {
+                    max-width: 42px;
+                    max-height: 42px;
+                    vertical-align: middle;
+                }
+            }
+
+            .name {
+                display: block;
+                margin-left: 52px;
+            }
+        }
+    }
 }
 
 @include themify {
     .b-post-create {
-        ul.tabs>li {
-            color: themed("label-text-color");
-
-            &:hover {
-                border-color: themed("button-hover-border-color");
-            }
-
-            &.selected {
-                border-color: themed("primary-button-border-color");
-                background-color: themed("primary-button-background-color");
-                color: themed("primary-button-text-color");
-            }
-        }
-
         .preview {
             border-color: themed("block-border-color");
+        }
+
+        .attachments {
+            .file {
+                border-color: themed("block-border-color");
+            }
         }
     }
 }

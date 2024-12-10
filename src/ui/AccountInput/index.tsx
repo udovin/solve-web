@@ -3,6 +3,7 @@ import Input from "../Input";
 import Portal from "../Portal";
 import { useLocale } from "../Locale";
 import { useDebounce } from "../../utils/debounce";
+import { Tabs, Tab } from "../Tabs";
 
 import "./index.scss";
 
@@ -101,13 +102,13 @@ const AccountInput: FC<AccountInputProps> = props => {
 		{focused && !disabled && <Portal>
 			<div className="ui-search-portal" style={style} onMouseDown={(event) => { event.preventDefault(); }}>
 				<div className="search-box">
-					<ul className="tabs">
-						{!isOnly && <li className={kind === undefined ? "selected" : undefined} onClick={() => setKind(undefined)}>{localize("All")}</li>}
-						{hasUser && <li className={kind === "user" ? "selected" : undefined} onClick={() => setKind("user")}>{localize("Users")}</li>}
-						{hasGroup && <li className={kind === "group" ? "selected" : undefined} onClick={() => setKind("group")}>{localize("Groups")}</li>}
-						{hasScope && <li className={kind === "scope" ? "selected" : undefined} onClick={() => setKind("scope")}>{localize("Scopes")}</li>}
-						{hasScopeUser && <li className={kind === "scope_user" ? "selected" : undefined} onClick={() => setKind("scope_user")}>{localize("Scope users")}</li>}
-					</ul>
+					{!isOnly && <Tabs value={kind} onValueChange={setKind}>
+						<Tab>{localize("All")}</Tab>
+						{hasUser && <Tab value={"user"}>{localize("Users")}</Tab>}
+						{hasGroup && <Tab value={"group"}>{localize("Groups")}</Tab>}
+						{hasScope && <Tab value={"scope"}>{localize("Scopes")}</Tab>}
+						{hasScopeUser && <Tab value={"scope_user"}>{localize("Scope users")}</Tab>}
+					</Tabs>}
 					<ul className="items">
 						{accounts && accounts.map((item: Account, key: number) => {
 							return <li
