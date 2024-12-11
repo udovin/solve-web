@@ -9,7 +9,6 @@ import { useLocale } from "../../ui/Locale";
 import Sidebar from "../../ui/Sidebar";
 import Alert from "../../ui/Alert";
 
-
 import "../CreatePostPage/index.scss";
 
 const EditPostPage: FC = () => {
@@ -65,9 +64,7 @@ const EditPostPage: FC = () => {
                 return list;
             }, [] as number[]),
         })
-            .then(() => {
-                /* TODO: Redirect post */
-            })
+            .then(setPost)
             .catch(setError);
     };
     if (!post) {
@@ -80,13 +77,17 @@ const EditPostPage: FC = () => {
             <>Loading...</>
         </Page>;
     }
-    return <Page title={localize("Edit post")}>
+    const changed = title !== post.title ||
+        description !== post.description ||
+        publish !== !!post.publish_time ||
+        attachments.reduce((result, item) => result || !!item.deleted || !!item.file, false);
+    return <Page title={localize("Edit post")} sidebar={<Sidebar />}>
         <FormBlock
             className="b-post-create"
             onSubmit={onSubmit}
             title={localize("Edit post")}
             footer={
-                <Button type="submit" color="primary">{localize("Update")}</Button>
+                <Button type="submit" color="primary" disabled={!changed}>{localize("Update")}</Button>
             }
         >
             <PostForm

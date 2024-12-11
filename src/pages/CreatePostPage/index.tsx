@@ -7,6 +7,7 @@ import { createPost, ErrorResponse, Post, PostFormFile } from "../../api";
 import PostForm, { PostAttachment } from "../../ui/PostForm";
 import { useLocale } from "../../ui/Locale";
 import { useDebounce } from "../../utils/debounce";
+import Sidebar from "../../ui/Sidebar";
 
 import "./index.scss";
 
@@ -57,7 +58,7 @@ const CreatePostPage: FC = () => {
     if (newPost) {
         return <Navigate to={"/posts/" + newPost.id} />
     }
-    return <Page title={localize("Create post")}>
+    return <Page title={localize("Create post")} sidebar={<Sidebar />}>
         <FormBlock
             className="b-post-create"
             onSubmit={onSubmit}
