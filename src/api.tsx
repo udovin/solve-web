@@ -1185,3 +1185,85 @@ export const observeAccounts = (filter: AccountFilter = {}) => {
 		headers: getHeaders(),
 	}));
 };
+
+export type PostFile = {
+	id: number;
+	name: string;
+};
+
+export type Post = {
+	id: number;
+	title?: string;
+	description?: string;
+	create_time?: number;
+	files?: PostFile[];
+	publish_time?: number;
+};
+
+export type PostFormFile = {
+	name: string;
+	content: File;
+};
+
+export type CreatePostForm = {
+	title: string;
+	description: string;
+	publish: boolean;
+	files?: PostFormFile[];
+};
+
+export const createPost = (form: CreatePostForm) => {
+	const formData = new FormData();
+	const data = {
+		title: form.title,
+		description: form.description,
+		publish: form.publish,
+		files: form.files?.map(item => ({ name: item.name })),
+	};
+	formData.append("data", new Blob([JSON.stringify(data)], { type: "application/json" }), "");
+	form.files?.map(item => formData.append(`file_${item.name}`, item.content));
+	return parseResp<Post>(fetch(`${BASE}/api/v0/posts`, {
+		method: "POST",
+		headers: getHeaders(),
+		body: formData,
+	}), true);
+};
+
+export const observePost = (id: number, withFiles?: boolean) => {
+	const query: Record<string, string> = {};
+	if (withFiles) {
+		query["with_files"] = "t";
+	}
+	const queryString = encodeQueryData(query);
+	return parseResp<Post>(fetch(`${BASE}/api/v0/posts/${id}?${queryString}`, {
+		method: "GET",
+		headers: getHeaders(),
+	}));
+};
+
+export type UpdatePostRequest = {
+	id: number;
+	title?: string;
+	description?: string;
+	publish: boolean;
+	files?: PostFormFile[];
+	delete_files?: number[];
+};
+
+export const updatePost = (request: UpdatePostRequest) => {
+	const formData = new FormData();
+	const data = {
+		title: request.title,
+		description: request.description,
+		publish: request.publish,
+		files: request.files?.map(item => ({ name: item.name })),
+		delete_files: request.delete_files,
+	};
+	formData.append("data", new Blob([JSON.stringify(data)], { type: "application/json" }), "");
+	request.files?.map(item => formData.append(`file_${item.name}`, item.content));
+	return parseResp<Post>(fetch(`${BASE}/api/v0/posts/${request.id}`, {
+		method: "PATCH",
+		headers: getHeaders(),
+		body: formData,
+	}), true);
+};

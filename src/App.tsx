@@ -31,6 +31,7 @@ const CreateContestPage = lazy(() => import("./pages/CreateContestPage"));
 
 const PostPage = lazy(() => import("./pages/PostPage"));
 const CreatePostPage = lazy(() => import("./pages/CreatePostPage"));
+const EditPostPage = lazy(() => import("./pages/EditPostPage"));
 
 const CreateCompilerPage = lazy(() => import("./pages/CreateCompilerPage"));
 
@@ -47,6 +48,7 @@ const App: FC = () => {
 					<Route path="/contests/create" element={<CreateContestPage />} />
 					<Route path="/posts/create" element={<CreatePostPage />} />
 					<Route path="/posts/:post_id" element={<PostPage />} />
+					<Route path="/posts/:post_id/edit" element={<EditPostPage />} />
 					<Route path="/contests/:contest_id/*" element={<ContestPage />} />
 					<Route path="/problems" element={<ProblemsPage />} />
 					<Route path="/problems/:problem_id" element={<ProblemPage />} />

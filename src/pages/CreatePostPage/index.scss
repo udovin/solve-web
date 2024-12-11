@@ -2,6 +2,10 @@
 
 .b-post-create {
 
+    .ui-tabs {
+        margin-bottom: 4px;
+    }
+
     .ui-code .cm-content,
     .ui-code .cm-gutter {
         min-height: 240px;
@@ -19,37 +23,55 @@
     }
 
     .attachments {
-        margin: 0;
-        padding: 0;
-        list-style: none;
+        border-spacing: 0;
+        width: 100%;
 
-        li {
-            margin-bottom: 4px;
+        tr {
+            td {
+                padding: 0 8px 8px 0;
+                vertical-align: middle;
 
-            @include clear-fix;
+                &:last-child {
+                    padding-right: 0;
+                }
+            }
 
+            &:last-child td {
+                padding-bottom: 0;
+            }
+        }
+
+        .attachment {
             .file {
-                display: block;
-                float: left;
-                width: 42px;
-                height: 42px;
-                line-height: 42px;
+                width: 50px;
+                line-height: 0;
                 text-align: center;
-                padding: 2px;
-                border: 1px solid;
-                border-radius: 4px;
-                overflow: hidden;
 
                 img {
-                    max-width: 42px;
-                    max-height: 42px;
-                    vertical-align: middle;
+                    max-width: 40px;
+                    max-height: 40px;
+                    padding: 4px;
+                    border: 1px solid;
+                    border-radius: 4px;
                 }
             }
 
             .name {
-                display: block;
-                margin-left: 52px;
+                vertical-align: middle;
+
+                .title {
+                    display: block;
+                    padding: 4px 0;
+                }
+            }
+
+            .action {
+                width: 1%;
+                vertical-align: middle;
+            }
+
+            &.deleted {
+                text-decoration: line-through;
             }
         }
     }
@@ -62,8 +84,12 @@
         }
 
         .attachments {
-            .file {
-                border-color: themed("block-border-color");
+            .attachment {
+                .file {
+                    img {
+                        border-color: themed("block-border-color");
+                    }
+                }
             }
         }
     }

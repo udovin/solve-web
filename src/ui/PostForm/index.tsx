@@ -10,28 +10,35 @@ import FileInput from "../FileInput";
 import Button from "../Button";
 import IconButton from "../IconButton";
 import { Tab, Tabs } from "../Tabs";
+import ByteSize from "../ByteSize";
+import Checkbox from "../Checkbox";
 
-export type BlockPostAttachment = {
+export type PostAttachment = {
     name: string,
     file?: File,
     url?: string,
+    id?: number,
+    deleted?: boolean,
 };
 
-export type BlogPostFormProps = {
+export type PostFormProps = {
     title: string,
     onTitleChange(value: string): void,
     description: string,
     onDescriptionChange(value: string): void,
-    attachments: BlockPostAttachment[],
-    onAttachmentsChange(attachments: BlockPostAttachment[]): void,
+    attachments: PostAttachment[],
+    onAttachmentsChange(attachments: PostAttachment[]): void,
+    publish: boolean,
+    onPublishChange(value: boolean): void;
     error?: ErrorResponse,
 };
 
-const PostForm: FC<BlogPostFormProps> = props => {
+const PostForm: FC<PostFormProps> = props => {
     const {
         title, onTitleChange,
         description, onDescriptionChange,
         attachments, onAttachmentsChange,
+        publish, onPublishChange,
         error,
     } = props;
     const { localize, localizeKey } = useLocale();
@@ -77,35 +84,63 @@ const PostForm: FC<BlogPostFormProps> = props => {
             />}
             {descriptionTab === "preview" && <div className="preview"><Latex content={description} resolveImageUrl={resolveImageUrl} /></div>}
         </Field>
-        <Field title={localize("Attachments") + ":"}>
-            <></>
-        </Field>
-        <table className={"attachments"}>
-            <tbody>
-                {attachments.map((attachment, index) => {
-                    return <tr key={index}>
-                        <td className="file">
-                            <img src={attachment.url} />
-                        </td>
-                        <td className="name">
-                            <Input value={attachment.name} onValueChange={value => onAttachmentsChange(attachments.map((item, i) => {
-                                if (i === index) {
-                                    return { ...item, name: value };
-                                }
-                                return item;
-                            }))} />
+        <div className="ui-field">
+            <span className="label">{localize("Attachments") + ":"}</span>
+            <table className="attachments">
+                <tbody>
+                    {attachments.map((attachment, index) => {
+                        return <tr key={index} className={`attachment${attachment.deleted ? " deleted" : ""}`}>
+                            <td className="file">
+                                <img src={attachment.url} />
+                            </td>
+                            <td className="name">
+                                {attachment.id ? <>
+                                    <span className="title">{attachment.name}</span>
+                                </> : <>
+                                    <Input value={attachment.name} onValueChange={value =>
+                                        onAttachmentsChange(attachments.map((item, i) => {
+                                            if (i === index) {
+                                                return { ...item, name: value };
+                                            }
+                                            return item;
+                                        }))
+                                    } />
+                                    {attachment.file && <div><ByteSize value={attachment.file?.size} /></div>}
+                                </>}
+                            </td>
+                            <td className="action">
+                                {!attachment.deleted && <IconButton kind="delete" onClick={() =>
+                                    onAttachmentsChange(attachment.id ?
+                                        attachments.map((item, i) => {
+                                            if (i === index) {
+                                                return { ...item, deleted: true };
+                                            }
+                                            return item;
+                                        }) :
+                                        attachments.filter((item, i) => {
+                                            return i !== index;
+                                        }))
+                                } />}
+                            </td>
+                        </tr>;
+                    })}
+                    <tr className="attachment">
+                        <td colSpan={2}>
+                            <FileInput file={file} onFileChange={setFile} />
                         </td>
                         <td className="action">
-                            <IconButton kind="delete" onClick={() => onAttachmentsChange(attachments.filter((item, i) => {
-                                return i !== index;
-                            }))} />
+                            <Button onClick={addAttachment} disabled={!file}>Add</Button>
                         </td>
-                    </tr>;
-                })}
-            </tbody>
-        </table>
-        <FileInput file={file} onFileChange={setFile} />
-        <Button onClick={addAttachment} disabled={!file}>Add</Button>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <Field name="publish" errorResponse={error} description="Enables public access to post.">
+            <Checkbox
+                value={publish}
+                onValueChange={onPublishChange} />
+            <span className="label">{localize("Publish")}</span>
+        </Field>
     </>;
 };
 
