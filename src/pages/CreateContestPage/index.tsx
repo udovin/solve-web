@@ -14,6 +14,7 @@ const CreateContestPage: FC = () => {
 	const [enableRegistration, setEnableRegistration] = useState<boolean>();
 	const [enableUpsolving, setEnableUpsolving] = useState<boolean>();
 	const [enableObserving, setEnableObserving] = useState<boolean>();
+	const [enableVirtual, setEnableVirtual] = useState<boolean>();
 	const [freezeBeginDuration, setFreezeBeginDuration] = useState<number>();
 	const [freezeEndTime, setFreezeEndTime] = useState<number>();
 	const [standingsKind, setStandingsKind] = useState<string>();
@@ -28,6 +29,7 @@ const CreateContestPage: FC = () => {
 			enable_registration: enableRegistration,
 			enable_upsolving: enableUpsolving,
 			enable_observing: enableObserving,
+			enable_virtual: enableVirtual,
 			freeze_begin_duration: freezeBeginDuration ?? 0,
 			freeze_end_time: freezeEndTime ?? 0,
 			standings_kind: standingsKind,
@@ -55,6 +57,8 @@ const CreateContestPage: FC = () => {
 				onEnableUpsolvingChange={setEnableUpsolving}
 				enableObserving={enableObserving}
 				onEnableObservingChange={setEnableObserving}
+				enableVirtual={enableVirtual}
+				onEnableVirtualChange={setEnableVirtual}
 				freezeBeginDuration={freezeBeginDuration}
 				onFreezeBeginDurationChange={setFreezeBeginDuration}
 				freezeEndTime={freezeEndTime}

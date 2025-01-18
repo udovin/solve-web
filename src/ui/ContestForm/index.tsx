@@ -20,6 +20,8 @@ type ContestFormProps = {
     onEnableRegistrationChange(value?: boolean): void,
     enableUpsolving?: boolean,
     onEnableUpsolvingChange(value?: boolean): void,
+    enableVirtual?: boolean,
+    onEnableVirtualChange(value?: boolean): void,
     enableObserving?: boolean,
     onEnableObservingChange(value?: boolean): void,
     freezeBeginDuration?: number,
@@ -39,6 +41,7 @@ export const ContestForm: FC<ContestFormProps> = props => {
         enableRegistration, onEnableRegistrationChange,
         enableUpsolving, onEnableUpsolvingChange,
         enableObserving, onEnableObservingChange,
+        enableVirtual, onEnableVirtualChange,
         freezeBeginDuration, onFreezeBeginDurationChange,
         freezeEndTime, onFreezeEndTimeChange,
         standingsKind, onStandingsKindChange,
@@ -81,6 +84,12 @@ export const ContestForm: FC<ContestFormProps> = props => {
                 value={enableObserving ?? false}
                 onValueChange={onEnableObservingChange} />
             <span className="label">{localize("Enable observing")}</span>
+        </Field>
+        <Field name="enable_virtual" errorResponse={error} description={localizeKey("enable_virtual_description", "Enables virtuial participation.")}>
+            <Checkbox
+                value={enableVirtual ?? false}
+                onValueChange={onEnableVirtualChange} />
+            <span className="label">{localize("Enable virtual")}</span>
         </Field>
         <Field title={localize("Standings") + ":"} name="standings_kind" errorResponse={error}>
             <Select

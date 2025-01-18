@@ -297,8 +297,9 @@ const ContestSideBlock: FC<ContestSideBlockProps> = props => {
 	};
 	const { localize } = useLocale();
 	const [now, setNow] = useState(getNow());
-	const beforeDuration = contest.begin_time && Math.max(contest.begin_time - now, 0);
-	const remainingDuration = contest.begin_time && contest.duration && Math.max(contest.begin_time + contest.duration - now, 0);
+	const beginTime = contest.state?.begin_time ?? contest.begin_time;
+	const beforeDuration = beginTime && Math.max(beginTime - now, 0);
+	const remainingDuration = beginTime && contest.duration && Math.max(beginTime + contest.duration - now, 0);
 	useEffect(() => {
 		if (!remainingDuration || remainingDuration <= 0) {
 			return;

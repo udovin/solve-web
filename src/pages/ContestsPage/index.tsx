@@ -35,6 +35,7 @@ const ContestsBlock: FC<ContestsBlockProps> = props => {
 					const { id, title, begin_time, duration, permissions, state } = contest;
 					const canObserve = permissions?.includes("observe_contest_problems");
 					const canRegister = !state?.participant && permissions?.includes("register_contest");
+					const canVirtual = contest.enable_virtual && permissions?.includes("register_contest_virtual");
 					return <tr key={index} className="contest">
 						<td className="title">
 							<Link to={`/contests/${id}`}>{title}</Link>
@@ -46,10 +47,10 @@ const ContestsBlock: FC<ContestsBlockProps> = props => {
 							{begin_time ? <DateTime value={begin_time} /> : <>&mdash;</>}
 						</td>
 						<td className="actions">
-							{
-								(canRegister && <Link to={`/contests/${id}/register`}>{localize("Register")} &raquo;</Link>) ||
-								(canObserve && <Link to={`/contests/${id}`}>{localize("Enter")} &raquo;</Link>)
+							{canRegister && <Link to={`/contests/${id}/register`}>{localize("Register")} &raquo;</Link>
 							}
+							{canObserve && !canRegister && <Link to={`/contests/${id}`}>{localize("Enter")} &raquo;</Link>}
+							{canVirtual && !canRegister && <Link to={`/contests/${id}/register`}>{localize("Virtual")} &raquo;</Link>}
 						</td>
 					</tr>;
 				})}

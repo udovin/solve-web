@@ -19,6 +19,7 @@ export const EditContestBlock: FC<EditContestBlockProps> = props => {
     const [enableRegistration, setEnableRegistration] = useState(contest.enable_registration);
     const [enableUpsolving, setEnableUpsolving] = useState(contest.enable_upsolving);
     const [enableObserving, setEnableObserving] = useState(contest.enable_observing);
+    const [enableVirtual, setEnableVirtual] = useState(contest.enable_virtual);
     const [freezeBeginDuration, setFreezeBeginDuration] = useState(contest.freeze_begin_duration);
     const [freezeEndTime, setFreezeEndTime] = useState(contest.freeze_end_time);
     const [standingsKind, setStandingsKind] = useState(contest.standings_kind);
@@ -30,6 +31,7 @@ export const EditContestBlock: FC<EditContestBlockProps> = props => {
         setEnableRegistration(contest.enable_registration);
         setEnableUpsolving(contest.enable_upsolving);
         setEnableObserving(contest.enable_observing);
+        setEnableVirtual(contest.enable_virtual);
         setFreezeBeginDuration(contest.freeze_begin_duration);
         setFreezeEndTime(contest.freeze_end_time);
         setStandingsKind(contest.standings_kind);
@@ -44,6 +46,7 @@ export const EditContestBlock: FC<EditContestBlockProps> = props => {
             enable_registration: enableRegistration,
             enable_upsolving: enableUpsolving,
             enable_observing: enableObserving,
+            enable_virtual: enableVirtual,
             freeze_begin_duration: freezeBeginDuration ?? 0,
             freeze_end_time: freezeEndTime ?? 0,
             standings_kind: standingsKind,
@@ -60,6 +63,7 @@ export const EditContestBlock: FC<EditContestBlockProps> = props => {
         enableRegistration !== contest.enable_registration ||
         enableUpsolving !== contest.enable_upsolving ||
         enableObserving !== contest.enable_observing ||
+        enableVirtual !== contest.enable_virtual ||
         freezeBeginDuration !== contest.freeze_begin_duration ||
         freezeEndTime !== contest.freeze_end_time ||
         (standingsKind ?? "disabled") !== (contest.standings_kind ?? "disabled");
@@ -83,6 +87,8 @@ export const EditContestBlock: FC<EditContestBlockProps> = props => {
             onEnableUpsolvingChange={setEnableUpsolving}
             enableObserving={enableObserving}
             onEnableObservingChange={setEnableObserving}
+            enableVirtual={enableVirtual}
+            onEnableVirtualChange={setEnableVirtual}
             freezeBeginDuration={freezeBeginDuration}
             onFreezeBeginDurationChange={setFreezeBeginDuration}
             freezeEndTime={freezeEndTime}

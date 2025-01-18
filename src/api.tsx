@@ -80,6 +80,7 @@ export type Problems = {
 
 export type ContestState = {
 	stage: string;
+	begin_time?: number;
 	participant?: ContestParticipant;
 };
 
@@ -91,6 +92,7 @@ export type Contest = {
 	permissions?: string[];
 	enable_upsolving?: boolean;
 	enable_observing?: boolean;
+	enable_virtual?: boolean;
 	enable_registration?: boolean;
 	freeze_begin_duration?: number;
 	freeze_end_time?: number;
@@ -558,10 +560,16 @@ export const observeContest = (id: number) => {
 	}));
 };
 
-export const registerContest = (id: number) => {
+type RegisterContestForm = {
+	kind?: string,
+	begin_time?: number,
+};
+
+export const registerContest = (id: number, form: RegisterContestForm) => {
 	return parseResp(fetch(`${BASE}/api/v0/contests/${id}/register`, {
 		method: "POST",
-		headers: getHeaders(),
+		headers: { ...getHeaders(), ...POST_JSON_HEADERS },
+		body: JSON.stringify(form),
 	}));
 };
 
@@ -595,6 +603,7 @@ export type CreateContestForm = {
 	enable_registration?: boolean;
 	enable_upsolving?: boolean;
 	enable_observing?: boolean;
+	enable_virtual?: boolean;
 	freeze_begin_duration?: number;
 	freeze_end_time?: number;
 	standings_kind?: string;
@@ -615,6 +624,7 @@ export type UpdateContestForm = {
 	enable_registration?: boolean;
 	enable_upsolving?: boolean;
 	enable_observing?: boolean;
+	enable_virtual?: boolean;
 	freeze_begin_duration?: number;
 	freeze_end_time?: number;
 	standings_kind?: string;

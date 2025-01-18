@@ -19,6 +19,7 @@ const KINDS: Record<string, string | undefined> = {
     "upsolving": "Upsolving",
     "manager": "Manager",
     "observer": "Observer",
+    "virtual": "Virtual",
 };
 
 export const ParticipantLink: FC<ParticipantLinkProps> = props => {
