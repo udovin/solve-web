@@ -386,6 +386,10 @@
                 .kind {
                     color: themed("label-text-color");
                 }
+
+                .fake {
+                    color: themed("label-text-color");
+                }
             }
 
             tr>.problem {

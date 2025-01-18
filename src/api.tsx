@@ -148,6 +148,10 @@ export type ContestProblems = {
 	problems?: ContestProblem[];
 };
 
+export type ContestFakeParticipant = {
+	title: string;
+};
+
 export type ContestParticipant = {
 	id?: number;
 	kind: string;
@@ -157,6 +161,8 @@ export type ContestParticipant = {
 	// Groups.
 	scope?: Scope;
 	group?: Group;
+	// ContestFakeParticipant.
+	fake?: ContestFakeParticipant;
 };
 
 export type ContestParticipants = {

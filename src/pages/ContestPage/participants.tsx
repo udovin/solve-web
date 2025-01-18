@@ -26,6 +26,9 @@ export const ParticipantLink: FC<ParticipantLinkProps> = props => {
     const { participant, disabled } = props;
     const { kind } = participant;
     const { localizeKey } = useLocale();
+    if (participant.fake) {
+        return <span className="fake">{participant.fake.title}</span>;
+    }
     return <>
         {(!!participant.kind && participant.kind !== "regular") && <span className="kind">{localizeKey(`participant_${kind}`, KINDS[kind] ?? kind)}: </span>}
         <AccountLink account={participant} disabled={disabled} />
