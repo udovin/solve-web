@@ -151,7 +151,7 @@ export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
                 .then(result => mergeSolutions(result?.solutions ?? []))
                 .catch(setError);
         };
-        const interval = setInterval(updateSolutions, 2000);
+        const interval = setInterval(updateSolutions, 10000);
         return () => clearInterval(interval);
     }, [contest.id, solutions, participantFilter, problemFilter]);
     const loadMoreSolutions = useCallback(() => {
