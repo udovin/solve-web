@@ -151,26 +151,28 @@ export const ContestSolutionsBlock: FC<ContestSolutionsBlockProps> = props => {
                 .then(result => mergeSolutions(result?.solutions ?? []))
                 .catch(setError);
         };
-        const interval = setInterval(updateSolutions, 10000);
+        const interval = setInterval(updateSolutions, 5000);
         return () => clearInterval(interval);
     }, [contest.id, solutions, participantFilter, problemFilter]);
     const loadMoreSolutions = useCallback(() => {
-        if (loading) {
-            return;
-        }
-        setLoading(true);
-        observeContestSolutions(contest.id, {
-            begin_id: solutions?.next_begin_id ?? 0,
-            participant_id: participantFilter,
-            problem_id: problemFilter,
-        })
-            .then(result => setSolutions({
-                solutions: [...(solutions?.solutions ?? []), ...(result.solutions ?? [])],
-                next_begin_id: result.next_begin_id,
-            }))
-            .catch(setError)
-            .finally(() => setLoading(false));
-    }, [contest, loading, solutions, participantFilter, problemFilter]);
+        setLoading(loading => {
+            if (loading) {
+                return true;
+            }
+            observeContestSolutions(contest.id, {
+                begin_id: solutions?.next_begin_id ?? 0,
+                participant_id: participantFilter,
+                problem_id: problemFilter,
+            })
+                .then(result => setSolutions({
+                    solutions: [...(solutions?.solutions ?? []), ...(result.solutions ?? [])],
+                    next_begin_id: result.next_begin_id,
+                }))
+                .catch(setError)
+                .finally(() => setLoading(false));
+            return true;
+        });
+    }, [contest, solutions, participantFilter, problemFilter]);
     useEffect(() => {
         if (!document || !document.scrollingElement) {
             return;

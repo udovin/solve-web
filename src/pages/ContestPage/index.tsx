@@ -372,20 +372,20 @@ const ContestPage: FC = () => {
 			return;
 		}
 		const seenMessage = toNumber(localStorage.getItem("contest_seen_message")) ?? 0;
-		// observeContestMessages(contest.id)
-		// 	.then((messages: ContestMessages) => {
-		// 		let newMessages: number = 0;
-		// 		messages.messages?.forEach(message => {
-		// 			if (message.participant?.id === contest.state?.participant?.id) {
-		// 				return;
-		// 			}
-		// 			if (message.id > seenMessage) {
-		// 				newMessages++;
-		// 			}
-		// 		});
-		// 		setNewMessages(newMessages);
-		// 	})
-		// 	.catch(console.log);
+		observeContestMessages(contest.id)
+			.then((messages: ContestMessages) => {
+				let newMessages: number = 0;
+				messages.messages?.forEach(message => {
+					if (message.participant?.id === contest.state?.participant?.id) {
+						return;
+					}
+					if (message.id > seenMessage) {
+						newMessages++;
+					}
+				});
+				setNewMessages(newMessages);
+			})
+			.catch(console.log);
 	}, [contest]);
 	useEffect(() => {
 		if (!contest || contest.state?.stage !== "started") {
@@ -413,7 +413,7 @@ const ContestPage: FC = () => {
 					setNewMessages(newMessages);
 				})
 				.catch(console.log);
-		}, 2000);
+		}, 5000);
 		return () => clearInterval(intervalID);
 	}, [contest]);
 	if (!contest) {

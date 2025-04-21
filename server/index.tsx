@@ -15,7 +15,7 @@ import { ServerAuthProvider } from "../src/ui/Auth";
 import { Status } from "../src/api";
 
 const PROXY = process.env.PROXY || "http://localhost:4242";
-const PORT = process.env.PORT || 8080;
+const PORT = Number(process.env.PORT || "8080");
 
 const app = express();
 
