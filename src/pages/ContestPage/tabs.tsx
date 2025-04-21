@@ -26,7 +26,7 @@ export const ContestTabs: FC<ContestTabsProps> = props => {
     const canObserveMessages = permissions?.includes("observe_contest_messages");
     const canObserveParticipants = permissions?.includes("observe_contest_participants");
     const canManage = permissions?.includes("update_contest") || permissions?.includes("delete_contest");
-    return <TabsBlock value={tab}>
+    return <TabsBlock className="b-contest-tabs"  value={tab}>
         {canObserveProblems && <Tab value="problems">
             <Link to={`/contests/${id}`}>{localize("Problems")}</Link>
         </Tab>}

@@ -16,6 +16,41 @@
     }
 }
 
+.b-contest-tabs {
+    .ui-tab {
+        .counter {
+            display: inline-block;
+            margin-left: 4px;
+            padding: 3px;
+            font-size: 10px;
+            font-weight: bold;
+            line-height: 10px;
+            min-width: 10px;
+            height: 10px;
+            text-align: center;
+            border-radius: 8px;
+            animation: b-contest-tabs-counter-blinker 2s linear infinite;
+        }
+    }
+}
+
+@keyframes b-contest-tabs-counter-blinker {
+    50% {
+        opacity: 0.3;
+    }
+}
+
+@include themify {
+    .b-contest-tabs {
+        .ui-tab {
+            .counter {
+                color: themed("danger-alert-text-color");
+                background: themed("danger-alert-border-color");
+            }
+        }
+    }
+}
+
 @include themify {
     .b-contest-side {
         .stage {
