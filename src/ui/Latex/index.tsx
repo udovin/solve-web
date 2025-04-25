@@ -26,6 +26,7 @@ const parser = unified().use(unifiedLatexFromString, {
 	macros: {
 		"def": { signature: "m m" },
 		"underline": { signature: "m", renderInfo: { inParMode: true } },
+		"DefTestcases": { signature: "o o" },
 	},
 });
 
@@ -111,6 +112,24 @@ const macros: Record<string, (node: Macro, info: VisitInfo, context: Context) =>
 			content: [{ type: "string", content: url }],
 		});
 	},
+	"DefTestcases": (node: Macro, info: VisitInfo, context: Context) => {
+		const args = getArgsContent(node);
+		return [
+			s("Each test contains multiple test cases."),
+			s("The first line contains the number of test cases "),
+			{
+				type: "inlinemath",
+				content: printRaw(args[0] || ""),
+			},
+			s(" ("),
+			{
+				type: "inlinemath",
+				content: "1 \\le " + printRaw(args[0] || "") + " \\le " + printRaw(args[1] || ""),
+			},
+			s(")."),
+			s("The description of the test cases follows."),
+		];
+	}
 };
 
 export const MessageMacros = ["texttt", "textbf", "underline", "^", "{", "}", "\\", "url"];
