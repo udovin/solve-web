@@ -114,10 +114,21 @@ const macros: Record<string, (node: Macro, info: VisitInfo, context: Context) =>
 	},
 	"DefTestcases": (node: Macro, info: VisitInfo, context: Context) => {
 		const args = getArgsContent(node);
-		const text = "Each test contains multiple test cases.\n" +
-			"The first line contains the number of test cases $#1$ ($1 \\le #1 \\le #2$).\n" +
-			"The description of the test cases follows.\n";
-		return s(text.replace(/#1/g, printRaw(args[0] || "")).replace(/#2/g, printRaw(args[1] || "")));
+		return [
+			s("Each test contains multiple test cases."),
+			s("The first line contains the number of test cases "),
+			{
+				type: "inlinemath",
+				content: printRaw(args[0] || ""),
+			},
+			s(" ("),
+			{
+				type: "inlinemath",
+				content: "1 \\le " + printRaw(args[0] || "") + " \\le " + printRaw(args[1] || ""),
+			},
+			s(")."),
+			s("The description of the test cases follows."),
+		];
 	}
 };
 
