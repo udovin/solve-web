@@ -26,7 +26,7 @@ const parser = unified().use(unifiedLatexFromString, {
 	macros: {
 		"def": { signature: "m m" },
 		"underline": { signature: "m", renderInfo: { inParMode: true } },
-		"DefTestcases": { signature: "m m" },
+		"DefTestcases": { signature: "o o" },
 	},
 });
 
