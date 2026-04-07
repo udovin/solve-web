@@ -213,6 +213,7 @@ export type SolutionReport = {
 	used_time?: number;
 	used_memory?: number;
 	test_number?: number;
+	compile_log?: string;
 };
 
 export type ContestSolution = {

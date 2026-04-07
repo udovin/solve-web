@@ -36,6 +36,20 @@
     }
 }
 
+.b-solution-compile-log {
+    .ui-block-content {
+        padding: 0;
+        overflow-x: auto;
+    }
+
+    .log {
+        margin: 0;
+        padding: 10px;
+        font-family: monospace;
+        overflow: auto;
+    }
+}
+
 .b-solution-report {
     .ui-block-content {
         padding: 0;
@@ -72,6 +86,12 @@
 }
 
 @include themify {
+    .b-solution-compile-log {
+        .log {
+            background-color: themed("button-active-background-color");
+        }
+    }
+
     .b-solution-report {
         .ui-table {
             .check-log .log {

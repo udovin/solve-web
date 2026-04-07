@@ -121,6 +121,9 @@ const SolutionPage: FC = () => {
 		{content && <CollapseBlock title={localize("Content")} className="b-solution-content">
 			<Code value={content} language={compiler?.config?.extensions?.at(0)} readOnly showLineNumbers />
 		</CollapseBlock>}
+		{solution.report?.compile_log && <CollapseBlock title={localize("Compilation log")} className="b-solution-compile-log">
+			<pre className="log">{solution.report.compile_log}</pre>
+		</CollapseBlock>}
 		{!!solution.report?.tests && <SolutionReportBlock report={solution.report} />}
 	</Page>;
 };
