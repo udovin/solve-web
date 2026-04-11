@@ -206,6 +206,24 @@ export type TestReport = {
 	check_log?: string;
 };
 
+export type Position = {
+	line: number;
+	column: number;
+};
+
+export type Span = {
+	start: Position;
+	end?: Position;
+};
+
+export type Diagnostic = {
+	level: string;
+	span?: Span;
+	message: string;
+	code?: string;
+	details?: Diagnostic[];
+};
+
 export type SolutionReport = {
 	verdict: string;
 	points?: number;
@@ -214,6 +232,7 @@ export type SolutionReport = {
 	used_memory?: number;
 	test_number?: number;
 	compile_log?: string;
+	compile_diagnostics?: Diagnostic[];
 };
 
 export type ContestSolution = {

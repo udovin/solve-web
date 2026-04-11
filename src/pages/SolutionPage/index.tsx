@@ -119,7 +119,7 @@ const SolutionPage: FC = () => {
 	return <Page title={localize("Solution")} sidebar={<Sidebar />}>
 		<SolutionBlock solution={solution} />
 		{content && <CollapseBlock title={localize("Content")} className="b-solution-content">
-			<Code value={content} language={compiler?.config?.extensions?.at(0)} readOnly showLineNumbers />
+			<Code value={content} language={compiler?.config?.extensions?.at(0)} readOnly showLineNumbers diagnostics={solution.report?.compile_diagnostics} />
 		</CollapseBlock>}
 		{solution.report?.compile_log && <CollapseBlock title={localize("Compilation log")} className="b-solution-compile-log">
 			<pre className="log">{solution.report.compile_log}</pre>

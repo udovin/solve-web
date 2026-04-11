@@ -300,7 +300,7 @@ export const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
             </table>
         </Block>
         {content && <CollapseBlock title={localize("Source code")} className="b-contest-solution-content">
-            <Code value={content} language={compiler?.config?.extensions?.at(0)} readOnly showLineNumbers />
+            <Code value={content} language={compiler?.config?.extensions?.at(0)} readOnly showLineNumbers diagnostics={report?.compile_diagnostics} />
         </CollapseBlock>}
         {report?.compile_log && <CollapseBlock title={localize("Compilation log")} className="b-solution-compile-log">
             <pre className="log">{report.compile_log}</pre>
