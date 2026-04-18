@@ -28,6 +28,7 @@
     "@unified-latex/unified-latex-util-pgfkeys": "^1.7.1",
     "@unified-latex/unified-latex-util-print-raw": "^1.7.0",
     "@unified-latex/unified-latex-util-replace": "^1.2.2",
+    "ansi-to-html": "^0.7.2",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "express": "^4.19.2",

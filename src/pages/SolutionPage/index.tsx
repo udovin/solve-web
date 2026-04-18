@@ -11,6 +11,7 @@ import Duration from "../../ui/Duration";
 import ByteSize from "../../ui/ByteSize";
 import { AccountLink } from "../SolutionsPage";
 import Code from "../../ui/Code";
+import AnsiLog from "../../ui/AnsiLog";
 import CollapseBlock from "../../ui/CollapseBlock";
 import { useLocale } from "../../ui/Locale";
 
@@ -122,7 +123,7 @@ const SolutionPage: FC = () => {
 			<Code value={content} language={compiler?.config?.extensions?.at(0)} readOnly showLineNumbers diagnostics={solution.report?.compile_diagnostics} />
 		</CollapseBlock>}
 		{solution.report?.compile_log && <CollapseBlock title={localize("Compilation log")} className="b-solution-compile-log">
-			<pre className="log">{solution.report.compile_log}</pre>
+			<AnsiLog value={solution.report.compile_log} />
 		</CollapseBlock>}
 		{!!solution.report?.tests && <SolutionReportBlock report={solution.report} />}
 	</Page>;

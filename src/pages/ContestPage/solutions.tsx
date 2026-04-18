@@ -6,6 +6,7 @@ import Alert from "../../ui/Alert";
 import Block from "../../ui/Block";
 import Button from "../../ui/Button";
 import Code from "../../ui/Code";
+import AnsiLog from "../../ui/AnsiLog";
 import CollapseBlock from "../../ui/CollapseBlock";
 import DateTime from "../../ui/DateTime";
 import Field from "../../ui/Field";
@@ -303,7 +304,7 @@ export const ContestSolutionBlock: FC<ContestSolutionBlockProps> = props => {
             <Code value={content} language={compiler?.config?.extensions?.at(0)} readOnly showLineNumbers diagnostics={report?.compile_diagnostics} />
         </CollapseBlock>}
         {report?.compile_log && <CollapseBlock title={localize("Compilation log")} className="b-solution-compile-log">
-            <pre className="log">{report.compile_log}</pre>
+            <AnsiLog value={report.compile_log} />
         </CollapseBlock>}
         {!!report?.tests && <SolutionReportBlock report={report} />}
     </>;
