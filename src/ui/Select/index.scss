@@ -1,6 +1,6 @@
-@import "../../mixins.scss";
-
 @use "../Input/index.scss";
+
+@import "../../mixins.scss";
 
 .ui-select {
 	display: inline-block;
@@ -166,16 +166,16 @@
 		.ui-select-options {
 			border-color: themed("button-border-color");
 			background-color: themed("button-background-color");
-	
+
 			>.option {
 				background-color: themed("button-background-color");
 				color: themed("button-text-color");
-	
+
 				&:hover {
 					background-color: themed("button-active-background-color");
 					color: themed("button-active-text-color");
 				}
-	
+
 				&.selected {
 					background-color: themed("primary-button-background-color");
 					color: themed("primary-button-text-color");
