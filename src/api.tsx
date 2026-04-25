@@ -170,7 +170,9 @@ export type ContestParticipants = {
 };
 
 export type ContestStandingsColumn = {
+	id?: number;
 	code?: string;
+	title?: string;
 	points?: number;
 	total_solutions?: number;
 	accepted_solutions?: number;

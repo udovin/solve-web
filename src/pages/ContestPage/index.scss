@@ -369,6 +369,14 @@
             text-align: center;
             padding: 4px;
 
+            >a,
+            >.ui-tooltip,
+            >.ui-tooltip>a {
+                display: block;
+                color: inherit;
+                text-decoration: none;
+            }
+
             .code {
                 display: block;
                 white-space: nowrap;
