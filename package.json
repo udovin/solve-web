@@ -98,7 +98,7 @@
     "@typescript-eslint/parser": "^6.9.2-alpha.7",
     "rewire": "^7.0.0",
     "sass-loader": "^13.3.2",
-    "storybook": "^8.4.6",
+    "storybook": "^8.6.14",
     "ts-loader": "^9.4.2",
     "url-loader": "^4.1.1",
     "webpack": "^5.94.0",
